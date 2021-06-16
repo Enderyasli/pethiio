@@ -1,0 +1,6 @@
+<resources>
+    <declare-styleable name="inputLabel">
+        <attr name="showTitle" format="boolean" />
+        <attr name="showInput" format="boolean" />
+    </declare-styleable>
+</resources>

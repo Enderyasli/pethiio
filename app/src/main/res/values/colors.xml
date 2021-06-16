@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#04d2b9</color>
+    <color name="colorPrimaryDark">#d25d04</color>
+    <color name="colorAccent">#03DAC5</color>
+    <color name="white">#ffffff</color>
+    <color name="md_grey_300">#E0E0E0</color>
+    <color name="black">#000000</color>
+    <color name="marineButton">#04d2b9</color>
+    <color name="orangeButton">#d25d04</color>
+    <color name="grey">#828282</color>
+    <color name="whitegrey">#FAFAFA</color>
+    <color name="bordergrey">#E0E0E0</color>
+    <color name="hint_text_color">#C7C7C7</color>
+    <color name="input_text_color">#828282</color>
+    <color name="light_button">#f0f0f0</color>
+    <color name="disabled_button_color">#c8c8c8</color>
+    <color name="signup_bg_color">#d25d04</color>
+    <color name="red">#f00000</color>
+    <color name="tinder_btn_color">#faede3</color>
+    <color name="slider_bg_color">#daf8f5</color>
+
+</resources>

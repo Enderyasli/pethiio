@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.main.view.fragments.animal.AddAnimalFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/signup_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/default_margin"
+            android:layout_marginTop="@dimen/signup_title_top_margin"
+            android:layout_marginRight="@dimen/default_margin"
+            android:fontFamily="@font/poppins_semibold"
+            android:text="Hayvan Ekle"
+            android:textColor="@color/orangeButton"
+            android:textSize="40dp" />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="41dp"
+            android:layout_marginRight="20dp"
+            android:orientation="vertical">
+
+            <include
+                android:id="@+id/nameLy"
+                layout="@layout/common_rounded_input_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <include
+                android:id="@+id/ageLy"
+                layout="@layout/common_rounded_input_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:orientation="horizontal">
+
+                <include
+                    android:id="@+id/genderLy"
+                    layout="@layout/common_spinner_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="6dp"
+                    android:layout_weight="1" />
+
+                <include
+                    android:id="@+id/typeLy"
+                    layout="@layout/common_spinner_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:layout_weight="1" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:orientation="horizontal">
+
+                <include
+                    android:id="@+id/breedLy"
+                    layout="@layout/common_spinner_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="6dp"
+                    android:layout_weight="1" />
+
+                <include
+                    android:id="@+id/colorLy"
+                    layout="@layout/common_spinner_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:layout_weight="1" />
+
+            </LinearLayout>
+
+
+            <TextView
+                android:id="@+id/character_title_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_minimum"
+                android:layout_marginTop="@dimen/default_margin"
+                android:layout_marginRight="@dimen/margin_minimum"
+                android:fontFamily="@font/poppins_semibold"
+                android:text="Kişilik"
+                android:textColor="@color/input_text_color"
+                android:textSize="14sp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/character_rc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+
+        <Button
+            android:id="@+id/skip_btn"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/common_button_height"
+            android:layout_marginLeft="@dimen/default_margin"
+            android:layout_marginTop="48dp"
+            android:layout_marginRight="@dimen/default_margin"
+            android:layout_marginBottom="50dp"
+            android:background="@drawable/orange_button_bg"
+            android:fontFamily="@font/poppins_semibold"
+            android:text="İlerle"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="16dp" />
+
+    </LinearLayout>
+</ScrollView>

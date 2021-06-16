@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/appStarterNavGraph"
+    app:startDestination="@id/navigation_welcome">
+
+    <fragment
+        android:id="@+id/navigation_onboarding"
+        android:name="com.pawtind.android.ui.main.view.onboarding.OnBoardingFragment"
+        android:label="Onboarding"
+        app:launchSingleTop="true"
+        tools:layout="@layout/fragment_on_boarding">
+        <action
+            android:id="@+id/action_navigation_start_to_mobile_navigation"
+            app:destination="@id/mobile_navigation" />
+        <action
+            android:id="@+id/action_navigation_onboarding_to_navigation_welcome"
+            app:destination="@id/navigation_welcome" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_welcome"
+        android:name="com.pawtind.android.ui.main.view.login.WelcomeFragment"
+        android:label="Onboarding"
+        app:launchSingleTop="true"
+        tools:layout="@layout/fragment_welcome">
+        <action
+            android:id="@+id/action_navigation_start_to_mobile_navigation"
+            app:destination="@id/mobile_navigation" />
+        <action
+            android:id="@+id/action_navigation_welcome_to_navigation_onboarding"
+            app:destination="@id/navigation_onboarding" />
+        <action
+            android:id="@+id/action_navigation_welcome_to_navigation_signup"
+            app:destination="@id/navigation_signup"
+            app:enterAnim="@anim/slide_left"
+            app:popExitAnim="@anim/slide_right" />
+        <action
+            android:id="@+id/action_navigation_welcome_to_navigation_login"
+            app:destination="@id/navigation_login" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_login"
+        android:name="com.pawtind.android.ui.main.view.login.LoginFragment"
+        android:label="Onboarding"
+        app:launchSingleTop="true"
+        tools:layout="@layout/fragment_login">
+
+
+        <action
+            android:id="@+id/action_navigation_login_to_mobile_navigation"
+            app:destination="@id/mobile_navigation" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_signup"
+        android:name="com.pawtind.android.ui.main.view.login.singUp.RegisterFragment"
+        android:label="Onboarding"
+        app:launchSingleTop="true"
+        tools:layout="@layout/fragment_signup">
+
+        <action
+            app:popUpTo="@id/navigation_register_detail"
+            android:id="@+id/action_navigation_signup_to_navigation_register_detail"
+            app:destination="@id/navigation_register_detail" />
+    </fragment>
+    <fragment
+        android:id="@+id/navigation_register_detail"
+        android:name="com.pawtind.android.ui.main.view.login.singUp.RegisterDetailFragment"
+        android:label="RegisterDetail"
+        app:launchSingleTop="true"
+        tools:layout="@layout/fragment_save_info">
+        <action
+            android:id="@+id/action_navigation_register_detail_to_navigation_add_animal"
+            app:destination="@id/navigation_add_animal" />
+    </fragment>
+    <fragment
+        android:id="@+id/navigation_add_animal"
+        android:name="com.pawtind.android.ui.main.view.fragments.animal.AddAnimalFragment"
+        android:label="AddAnimal"
+        app:launchSingleTop="true"
+        tools:layout="@layout/fragment_add_animal">
+        <action
+            android:id="@+id/action_navigation_add_animal_to_navigation_photo"
+            app:destination="@id/navigation_photo" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_photo"
+        android:name="com.pawtind.android.ui.main.view.login.singUp.AddImageFragment"
+        android:label="AddImage"
+        app:launchSingleTop="true"
+        tools:layout="@layout/fragment_add_image">
+        <action
+            android:id="@+id/action_navigation_photo_to_navigation_animal_list"
+            app:destination="@id/navigation_animal_list" />
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/navigation_animal_list"
+        android:name="com.pawtind.android.ui.main.view.fragments.animal.AnimalListFragment"
+        android:label="AnimalList"
+        app:launchSingleTop="true"
+        tools:layout="@layout/fragment_animal_list">
+        <action
+            android:id="@+id/action_navigation_animal_list_to_mobile_navigation"
+            app:destination="@id/mobile_navigation" />
+    </fragment>
+    <navigation
+        android:id="@+id/mobile_navigation"
+        app:startDestination="@+id/navigation_home">
+
+        <fragment
+            android:id="@+id/navigation_home"
+            android:name="com.pawtind.android.ui.main.view.fragments.HomeFragment"
+            android:label="Home"
+            tools:layout="@layout/fragment_home" />
+
+        <fragment
+            android:id="@+id/navigation_dashboard"
+            android:name="com.pawtind.android.ui.main.view.fragments.DashboardFragment"
+            android:label="Favori"
+            tools:layout="@layout/fragment_dashboard" />
+
+        <fragment
+            android:id="@+id/navigation_search"
+            android:name="com.pawtind.android.ui.main.view.fragments.MessageFragment"
+            android:label="Search"
+            tools:layout="@layout/fragment_message" />
+
+
+
+    </navigation>
+</navigation>

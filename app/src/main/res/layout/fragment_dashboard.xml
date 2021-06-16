@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.pawtind.android.ui.main.view.fragments.DashboardFragment">
+
+
+    <TextView
+        android:id="@+id/title_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="26dp"
+        android:layout_marginTop="@dimen/signup_title_top_margin"
+        android:layout_marginBottom="3dp"
+        android:text="Bul"
+        android:textColor="@color/orangeButton"
+        android:textSize="@dimen/signup_title_size" />
+
+    <ImageView
+        android:id="@+id/settings_img"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_alignParentEnd="true"
+        android:layout_gravity="right"
+        android:layout_marginTop="62dp"
+        android:layout_marginRight="17dp"
+        android:src="@drawable/gear" />
+
+    <LinearLayout
+        android:id="@+id/no_result_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/title_tv"
+        android:layout_centerHorizontal="true"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/no_result_img"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_marginLeft="60dp"
+            android:layout_marginTop="120dp"
+            android:layout_marginRight="60dp"
+            android:src="@drawable/frame" />
+
+        <TextView
+            android:id="@+id/no_animal_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="15dp"
+            android:layout_marginLeft="@dimen/default_margin"
+            android:layout_marginTop="50dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginRight="@dimen/default_margin"
+            android:fontFamily="@font/poppins_medium"
+            android:gravity="center"
+            android:text="Etrafında arama kriterlerine uyan kimse yok"
+            android:textColor="@color/grey"
+            android:textSize="22sp"
+            app:background="@color/light_button"
+            tools:ignore="RtlSymmetry" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipChildren="false">
+
+            <RelativeLayout
+                android:id="@+id/button_container"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="80dp"
+                android:clipChildren="false"
+                android:orientation="horizontal">
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/skip_button"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:layout_marginEnd="90dp"
+                    app:cardBackgroundColor="@color/tinder_btn_color"
+                    app:cardCornerRadius="25dp">
+
+                    <ImageView
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/x_btn" />
+                </androidx.cardview.widget.CardView>
+
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/like_button"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:layout_toEndOf="@id/skip_button"
+                    app:cardBackgroundColor="@color/tinder_btn_color"
+                    app:cardCornerRadius="25dp">
+
+                    <ImageView
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/heart" />
+                </androidx.cardview.widget.CardView>
+
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/slider_horizontal"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="60dp"
+                    app:cardBackgroundColor="@color/slider_bg_color"
+                    app:cardCornerRadius="15dp">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/slidershorizontal" />
+                </androidx.cardview.widget.CardView>
+
+
+            </RelativeLayout>
+
+            <com.yuyakaido.android.cardstackview.CardStackView
+                android:id="@+id/card_stack_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_above="@+id/button_container"
+                android:layout_marginLeft="@dimen/default_margin"
+                android:layout_marginTop="150dp"
+                android:layout_marginRight="@dimen/default_margin"
+                android:layout_marginBottom="40dp"
+                android:clipToPadding="false" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

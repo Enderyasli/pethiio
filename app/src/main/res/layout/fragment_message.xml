@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.pawtind.android.ui.main.view.fragments.MessageFragment">
+
+    <TextView
+        android:id="@+id/title_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="26dp"
+        android:layout_marginTop="@dimen/signup_title_top_margin"
+        android:layout_marginBottom="3dp"
+        android:text="Mesajlar"
+        android:textColor="@color/orangeButton"
+        android:textSize="@dimen/signup_title_size" />
+
+    <ImageView
+        android:id="@+id/settings_img"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_alignParentEnd="true"
+        android:layout_gravity="right"
+        android:layout_marginTop="62dp"
+        android:layout_marginEnd="17dp"
+        android:src="@drawable/gear" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/messages_rv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/title_tv"
+        android:layout_marginTop="40dp" />
+
+</RelativeLayout>

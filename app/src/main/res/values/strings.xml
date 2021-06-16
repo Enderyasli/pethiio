@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_name">Pawtind</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="skip">Skip</string>
+    <string name="title_onboarding_1">Çiftleştir</string>
+    <string name="title_onboarding_2">Sahiplen</string>
+    <string name="title_onboarding_3">Arkadaş Bul</string>
+    <string name="next">Next</string>
+    <string name="Welcome">Hoşgeldin!</string>
+    <string name="welcome_description">Kayıt olmak için kendinle ilgili bilgilerini gir.</string>
+    <string name="login">Giriş Yap</string>
+    <string name="sign_up">Kayıt Ol</string>
+    <string name="signup_description">Kayıt olmak için kendinle ilgili bilgileri gir.</string>
+    <string name="privacy_policy">$Kullanım Koşulları$ ve $Gizlilik Sözleşmesi\'ni$ onaylıyorum.</string>
+    <string name="enter_info">Bilgilerini Gir</string>
+    <string name="add_animal">Hayvan Ekle</string>
+    <string name="go_without_animal">Hayvan Eklemeden Devam Et</string>
+    <string name="add_photo">Fotoğraf Ekle</string>
+    <string name="complete">Tamamla</string>
+    <string name="forgot_password">Şifreni mi unuttun?</string>
+    <string name="my_animals">Hayvanlarım</string>
+    <string name="my_animals_description">Super! İlk Hayvanını ekledin. Uygulamaya devam etmek için tamamlayı tıkla ya da yeni hayvan ekle</string>
+</resources>
