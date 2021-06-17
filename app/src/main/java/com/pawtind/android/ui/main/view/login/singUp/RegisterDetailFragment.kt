@@ -13,6 +13,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.pawtind.android.R
+import com.pawtind.android.data.model.signup.RegisterInfo
 import com.pawtind.android.databinding.FragmentSaveInfoBinding
 import com.pawtind.android.ui.base.RegisterBaseFragment
 import com.pawtind.android.ui.main.viewmodel.signup.RegisterBaseViewModel
@@ -59,21 +60,6 @@ class RegisterDetailFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
             binding.goWithoutAnimalTv.text =
                 getLocalizedString(Constants.registerSkipButtonTitle)
 
-
-            var gender = arrayOf("Kadın", "Erkek")
-            val genderAdapter =
-                ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, gender)
-            genderAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-
-            with(binding.genderLy.spinner)
-            {
-                adapter = genderAdapter
-                setSelection(0, false)
-                onItemSelectedListener = this@RegisterDetailFragment
-                gravity = Gravity.CENTER
-
-            }
-
         })
 
         viewModel.getRegisterDetailLookUps().observe(this, {
@@ -96,9 +82,26 @@ class RegisterDetailFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
 
         })
 
-
         binding.addAnimalBtn.setOnClickListener {
             fetchAddAnimal()
+            postRegisterInfo(
+                RegisterInfo(
+                    aboutMe = "test",
+                    dateOfBirth = "2021/06/16",
+                    gender = "FEMALE"
+                )
+            )
+            findNavController().navigate(R.id.action_navigation_register_detail_to_navigation_add_animal)
+        }
+
+        binding.addAnimalBtn.setOnClickListener {
+            postRegisterInfo(
+                RegisterInfo(
+                    aboutMe = "test",
+                    dateOfBirth = "2021/06/16",
+                    gender = "FEMALE"
+                )
+            )
             findNavController().navigate(R.id.action_navigation_register_detail_to_navigation_add_animal)
         }
 
@@ -119,6 +122,7 @@ class RegisterDetailFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
                 .setAspectRatio(1, 1)
                 .start(requireContext(), this)
         }
+
 
         return view
 

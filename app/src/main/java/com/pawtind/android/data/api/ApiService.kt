@@ -3,7 +3,10 @@ package com.pawtind.android.data.api
 import com.pawtind.android.data.model.AccessToken
 import com.pawtind.android.data.model.signup.Login
 import com.pawtind.android.data.model.signup.Register
+import io.reactivex.Observable
 import io.reactivex.Single
+import retrofit2.http.GET
+import retrofit2.http.Query
 
 interface ApiService {
 

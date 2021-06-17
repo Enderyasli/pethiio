@@ -58,13 +58,12 @@
     <fragment
         android:id="@+id/navigation_signup"
         android:name="com.pawtind.android.ui.main.view.login.singUp.RegisterFragment"
-        android:label="Onboarding"
+        android:label="Register"
         app:launchSingleTop="true"
-        tools:layout="@layout/fragment_signup">
+        tools:layout="@layout/fragment_register">
 
         <action
-            app:popUpTo="@id/navigation_register_detail"
-            android:id="@+id/action_navigation_signup_to_navigation_register_detail"
+            android:id="@+id/action_navigation_register_to_navigation_register_detail"
             app:destination="@id/navigation_register_detail" />
     </fragment>
     <fragment

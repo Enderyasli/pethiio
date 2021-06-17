@@ -3,11 +3,13 @@ package com.pawtind.android.ui.main.viewmodel.signup
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.pawtind.android.data.api.ServiceBuilder
 import com.pawtind.android.data.model.AccessToken
 import com.pawtind.android.data.model.LookUpsResponse
 import com.pawtind.android.data.model.PawtindResponse
 import com.pawtind.android.data.model.signup.Login
 import com.pawtind.android.data.model.signup.Register
+import com.pawtind.android.data.model.signup.RegisterInfo
 import com.pawtind.android.data.repository.MainRepository
 import com.pawtind.android.utils.Resource
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -18,7 +20,8 @@ class RegisterBaseViewModel(private val mainRepository: MainRepository) : ViewMo
 
     private val login = MutableLiveData<Resource<Login>>()
     private val register = MutableLiveData<Resource<Login>>()
-    private val postRegister = MutableLiveData<Resource<AccessToken>>()
+    public val postRegister = MutableLiveData<Resource<AccessToken>>()
+    private val postRegisterInfo = MutableLiveData<Resource<AccessToken>>()
     private val fields = MutableLiveData<List<PawtindResponse>>()
     private val registerFields = MutableLiveData<List<PawtindResponse>>()
     private val registerDetailFields = MutableLiveData<List<PawtindResponse>>()
@@ -27,6 +30,7 @@ class RegisterBaseViewModel(private val mainRepository: MainRepository) : ViewMo
     private val addAnimalImageFields = MutableLiveData<List<PawtindResponse>>()
     private val addAnimalFields = MutableLiveData<List<PawtindResponse>>()
     private val compositeDisposable = CompositeDisposable()
+    private var accessToken: String = ""
 
 
     public fun fetchLogin() {
@@ -59,10 +63,25 @@ class RegisterBaseViewModel(private val mainRepository: MainRepository) : ViewMo
         )
     }
 
+    //    public fun fetchRegisterDetail() {
+//        register.postValue(Resource.loading(null))
+//        compositeDisposable.add(
+//            mainRepository.getRegisterDetail()
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe({ registerData ->
+//                    register.postValue(Resource.success(registerData))
+//                    registerDetailFields.postValue(registerData.fields)
+//                    registerDetailLookUps.postValue(registerData.lookups)
+//                }, {
+//                    register.postValue(Resource.error("Something Went Wrong", null))
+//                })
+//        )
+//    }
     public fun fetchRegisterDetail() {
         register.postValue(Resource.loading(null))
         compositeDisposable.add(
-            mainRepository.getRegisterDetail()
+            ServiceBuilder.buildService().getRegisterInfoPageData()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ registerData ->
@@ -115,9 +134,27 @@ class RegisterBaseViewModel(private val mainRepository: MainRepository) : ViewMo
                 .subscribe(
                     { registerData ->
                         postRegister.postValue(Resource.success(registerData))
+                        accessToken = registerData.accessToken
                     },
                     {
-                        postRegister.postValue(Resource.error("Something Went Wrong", null))
+                        postRegister.postValue(Resource.error("Something went wrong", null))
+                    }
+                )
+        )
+    }
+
+    public fun postRegisterInfo(registerInfo: RegisterInfo) {
+        postRegister.postValue(Resource.loading(null))
+        compositeDisposable.add(
+            ServiceBuilder.buildService(accessToken).postRegisterInfo(registerInfo)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                    { registerData ->
+                        postRegisterInfo.postValue(Resource.success(registerData))
+                    },
+                    {
+                        postRegisterInfo.postValue(Resource.error("Something went wrong", null))
                     }
                 )
         )
@@ -160,6 +197,7 @@ class RegisterBaseViewModel(private val mainRepository: MainRepository) : ViewMo
     fun getAddAnimalFields(): LiveData<List<PawtindResponse>> {
         return addAnimalFields
     }
+
     fun getAddAnimalLookUps(): LiveData<List<LookUpsResponse>> {
         return addAnimalLookUps
     }

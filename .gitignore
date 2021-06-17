@@ -1,9 +1,24 @@
-# These are some examples of commonly ignored file patterns.
-# You should customize this list as applicable to your project.
-# Learn more about .gitignore:
-#     https://www.atlassian.com/git/tutorials/saving-changes/gitignore
+*.iml
+.gradle
+/local.properties
+.externalNativeBuild
+/build/**
+/captures
+/library/build/**
+/slideDateTimePicker/build/**
+/app/build/**
+/.idea/**
+/.gradle
+.cxx
+*.apk
+local.properties
 
-# Node artifact files
+./gradle
+
+**/build/
+!src/**/build/
+!gradle-wrapper.jar
+
 node_modules/
 dist/
 
@@ -12,6 +27,7 @@ dist/
 
 # Compiled Python bytecode
 *.py[cod]
+
 
 # Log files
 *.log
@@ -46,20 +62,6 @@ Thumbs.db
 *.flv
 *.mov
 *.wmv
-
-*.iml
-.gradle
-/local.properties
-.externalNativeBuild
-/build/**
-/captures
-/library/build/**
-/slideDateTimePicker/build/**
-/app/build/**
-/.idea/**
-.cxx
-*.apk
-local.properties
 
 ### Android ###
 # Built application files
@@ -100,5 +102,6 @@ atlassian-ide-plugin.xml
 *.zip
 *.tar.gz
 *.rar
+
 
 

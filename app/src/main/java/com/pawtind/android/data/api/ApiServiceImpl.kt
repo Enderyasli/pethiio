@@ -4,6 +4,7 @@ import com.pawtind.android.data.model.AccessToken
 import com.pawtind.android.data.model.signup.Login
 import com.pawtind.android.data.model.signup.Register
 import com.rx2androidnetworking.Rx2AndroidNetworking
+import io.reactivex.Observable
 import io.reactivex.Single
 
 class ApiServiceImpl : ApiService {
@@ -46,5 +47,6 @@ class ApiServiceImpl : ApiService {
             .build()
             .getObjectSingle(AccessToken::class.java)
     }
+
 
 }

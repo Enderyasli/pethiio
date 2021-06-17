@@ -8,19 +8,21 @@ import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import com.pawtind.android.R
 import com.pawtind.android.data.model.signup.Register
-import com.pawtind.android.databinding.FragmentSignupBinding
+import com.pawtind.android.databinding.FragmentRegisterBinding
 import com.pawtind.android.ui.base.RegisterBaseFragment
 import com.pawtind.android.ui.main.viewmodel.signup.RegisterBaseViewModel
 import com.pawtind.android.utils.Constants
+import com.pawtind.android.utils.Status
 
 
 class RegisterFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
 
     override var bottomNavigationViewVisibility = View.GONE
-    private var _binding: FragmentSignupBinding? = null
+    private var _binding: FragmentRegisterBinding? = null
 
     private val binding get() = _binding!!
     override var useSharedViewModel = true
@@ -52,6 +54,7 @@ class RegisterFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
                 getLocalizedString(Constants.registerEmailTitle)
             binding.emailPlaceholderTv.hint =
                 getLocalizedString(Constants.registerEmailPlaceholder)
+            binding.emailPlaceholderTv.setText("@gmail.com")
             binding.passwordTitleTv.text =
                 getLocalizedString(Constants.registerPasswordTitle)
             binding.passwordDetailTv.text =
@@ -91,16 +94,17 @@ class RegisterFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentSignupBinding.inflate(inflater, container, false)
+        _binding = FragmentRegisterBinding.inflate(inflater, container, false)
         val view = binding.root
 
         binding.signupBtn.setOnClickListener {
 
             var valid = true
-//            if (TextUtils.isEmpty(binding.nameLy.placeholderTv.text.trim())) {
-//                binding.nameLy.placeholderTv.error = "Name cannot be empty"
-//                valid = false
-//            }
+            if (TextUtils.isEmpty(binding.emailPlaceholderTv.text.trim())) {
+                binding.emailPlaceholderTv.error = "Name cannot be empty"
+                binding.emailPlaceholderTv.requestFocus()
+                valid = false
+            }
 
             if (valid) {
                 postRegister(
@@ -111,8 +115,24 @@ class RegisterFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
                         "testparola"
                     )
                 )
-                fetchRegisterDetail()
-                findNavController().navigate(R.id.action_navigation_signup_to_navigation_register_detail)
+                viewModel.postRegister.observe(viewLifecycleOwner, {
+                    when (it.status) {
+                        Status.SUCCESS -> {
+                            activity?.runOnUiThread {
+                                fetchRegisterDetail()
+                                findNavController().navigate(R.id.action_navigation_register_to_navigation_register_detail)
+                            }
+
+                        }
+                        Status.ERROR -> {
+                            Toast.makeText(requireContext(), it.message, Toast.LENGTH_LONG).show()
+
+                        }
+                        Status.LOADING -> {
+                        }
+                    }
+                })
+
 
             }
 

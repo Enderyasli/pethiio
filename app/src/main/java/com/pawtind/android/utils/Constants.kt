@@ -4,6 +4,7 @@ class Constants {
 
     companion object {
 
+        const val BASE_URL: String = "http://api.pawtind.com/api/"
         const val registerTitle: String = "title"
         const val registerEmailPlaceholder: String = "emailPlaceholder"
         const val registerEmailTitle: String = "emailTitle"

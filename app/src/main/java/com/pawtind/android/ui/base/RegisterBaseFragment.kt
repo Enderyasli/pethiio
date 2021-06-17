@@ -7,15 +7,20 @@ import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.pawtind.android.data.api.ApiHelper
 import com.pawtind.android.data.api.ApiServiceImpl
+import com.pawtind.android.data.model.AccessToken
 import com.pawtind.android.data.model.LookUpsResponse
 import com.pawtind.android.data.model.PawtindResponse
 import com.pawtind.android.data.model.signup.Register
+import com.pawtind.android.data.model.signup.RegisterInfo
 import com.pawtind.android.ui.main.view.MainActivity
 import com.pawtind.android.ui.main.viewmodel.signup.RegisterBaseViewModel
+import com.pawtind.android.utils.Resource
+import com.pawtind.android.utils.Status
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 
@@ -154,6 +159,11 @@ abstract class RegisterBaseFragment<VModel : RegisterBaseViewModel> : Fragment()
 
     open fun postRegister(register: Register) {
         viewModel.postRegister(register)
+    }
+
+
+    open fun postRegisterInfo(registerInfo: RegisterInfo) {
+        viewModel.postRegisterInfo(registerInfo)
     }
 
     private fun init() {
