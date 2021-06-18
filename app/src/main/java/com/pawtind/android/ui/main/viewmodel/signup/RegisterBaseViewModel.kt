@@ -21,7 +21,7 @@ class RegisterBaseViewModel(private val mainRepository: MainRepository) : ViewMo
     private val login = MutableLiveData<Resource<Login>>()
     private val register = MutableLiveData<Resource<Login>>()
     public val postRegister = MutableLiveData<Resource<AccessToken>>()
-    private val postRegisterInfo = MutableLiveData<Resource<AccessToken>>()
+    val postRegisterInfo = MutableLiveData<Resource<AccessToken>>()
     private val fields = MutableLiveData<List<PawtindResponse>>()
     private val registerFields = MutableLiveData<List<PawtindResponse>>()
     private val registerDetailFields = MutableLiveData<List<PawtindResponse>>()

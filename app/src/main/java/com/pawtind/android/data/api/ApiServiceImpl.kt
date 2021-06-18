@@ -35,7 +35,7 @@ class ApiServiceImpl : ApiService {
     }
 
     override fun getAnimalAddPageData(): Single<Login> {
-        return Rx2AndroidNetworking.get("http://api.pawtind.com/api/page/animal-add/info")
+        return Rx2AndroidNetworking.get("http://api.pawtind.com/api/page/pet-add/info")
             .build()
             .getObjectSingle(Login::class.java)
     }

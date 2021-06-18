@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/appStarterNavGraph"
-    app:startDestination="@id/navigation_welcome">
+    app:startDestination="@id/navigation_register_detail">
 
     <fragment
         android:id="@+id/navigation_onboarding"
@@ -34,7 +34,7 @@
             app:destination="@id/navigation_onboarding" />
         <action
             android:id="@+id/action_navigation_welcome_to_navigation_signup"
-            app:destination="@id/navigation_signup"
+            app:destination="@id/navigation_register"
             app:enterAnim="@anim/slide_left"
             app:popExitAnim="@anim/slide_right" />
         <action
@@ -56,7 +56,7 @@
     </fragment>
 
     <fragment
-        android:id="@+id/navigation_signup"
+        android:id="@+id/navigation_register"
         android:name="com.pawtind.android.ui.main.view.login.singUp.RegisterFragment"
         android:label="Register"
         app:launchSingleTop="true"

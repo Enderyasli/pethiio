@@ -16,6 +16,7 @@ import com.pawtind.android.ui.base.RegisterBaseFragment
 import com.pawtind.android.ui.main.adapter.CharacterAdapter
 import com.pawtind.android.ui.main.viewmodel.signup.RegisterBaseViewModel
 import com.pawtind.android.utils.Constants
+import kotlinx.android.synthetic.main.common_rounded_input_tv.view.*
 import kotlinx.android.synthetic.main.fragment_home.*
 
 class AddAnimalFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
@@ -53,9 +54,10 @@ class AddAnimalFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
             binding.nameLy.placeholderTv.hint =
                 getLocalizedString(Constants.registerNamePlaceholder)
 
-            binding.ageLy.titleTv.text = getLocalizedSpan(Constants.animalAddAgeTitle)
-            binding.ageLy.placeholderTv.hint =
-                getLocalizedString(Constants.animalAddAgePlaceholder)
+
+            binding.yearLy.titleTv.text = getLocalizedSpan(Constants.animalAddYearTitle)
+            binding.yearLy.spinner.prompt="test"
+            binding.monthLy.titleTv.text = getLocalizedString(Constants.animalAddMonthTitle)
 
             binding.genderLy.titleTv.text = getLocalizedSpan(Constants.animalAddGenderTitle)
             binding.typeLy.titleTv.text = getLocalizedSpan(Constants.animalAddTypeTitle)
@@ -63,6 +65,77 @@ class AddAnimalFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
             binding.colorLy.titleTv.text = getLocalizedSpan(Constants.animalAddColorTitle)
             binding.characterTitleTv.text = getLocalizedString(Constants.animalAddCharacterTitle)
 
+
+        })
+
+        viewModel.getAddAnimalLookUps().observe(this, {
+
+            setLookUps(it)
+
+            val genderAdapter =
+                ArrayAdapter(
+                    requireContext(),
+                    android.R.layout.simple_spinner_item,
+                    getLookUps("gender")
+                )
+            genderAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+
+            val typeAdapter =
+                ArrayAdapter(
+                    requireContext(),
+                    android.R.layout.simple_spinner_item,
+                    getLookUps("animals")
+                )
+            typeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+
+            val breedAdapter =
+                ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, breed)
+            breedAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+
+            val colorAdapter =
+                ArrayAdapter(
+                    requireContext(),
+                    android.R.layout.simple_spinner_item,
+                    getLookUps("color")
+                )
+            colorAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            binding.genderLy.spinner.id = GENDER_ID
+
+            with(binding.genderLy.spinner)
+            {
+                adapter = genderAdapter
+                setSelection(0, false)
+                onItemSelectedListener = this@AddAnimalFragment
+                gravity = Gravity.CENTER
+
+            }
+
+            with(binding.typeLy.spinner)
+            {
+                adapter = typeAdapter
+                setSelection(0, false)
+                onItemSelectedListener = this@AddAnimalFragment
+                gravity = Gravity.CENTER
+
+            }
+
+            with(binding.breedLy.spinner)
+            {
+                adapter = breedAdapter
+                setSelection(0, false)
+                onItemSelectedListener = this@AddAnimalFragment
+                gravity = Gravity.CENTER
+
+            }
+
+            with(binding.colorLy.spinner)
+            {
+                adapter = colorAdapter
+                setSelection(0, false)
+                onItemSelectedListener = this@AddAnimalFragment
+                gravity = Gravity.CENTER
+
+            }
 
             binding.characterRc.layoutManager = GridLayoutManager(requireContext(), 3)
 
@@ -74,74 +147,6 @@ class AddAnimalFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
             binding.characterRc.adapter = adapter
         })
 
-        viewModel.getAddAnimalLookUps().observe(this, {
-
-//            setLookUps(it)
-//            binding.characterRc.layoutManager = GridLayoutManager(requireContext(), 3)
-//
-//            var adapter = CharacterAdapter(
-//                requireContext(),
-//                arrayListOf("Item", "Item", "Item", "Item", "Item", "Item")
-//            )
-//
-//            binding.characterRc.adapter = adapter
-        })
-
-
-        val genderAdapter =
-            ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, gender)
-        genderAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-
-        val typeAdapter =
-            ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, type)
-        typeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-
-        val breedAdapter =
-            ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, breed)
-        breedAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-
-        val colorAdapter =
-            ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, color)
-        colorAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-
-
-        binding.genderLy.spinner.id = GENDER_ID
-
-        with(binding.genderLy.spinner)
-        {
-            adapter = genderAdapter
-            setSelection(0, false)
-            onItemSelectedListener = this@AddAnimalFragment
-            gravity = Gravity.CENTER
-
-        }
-
-        with(binding.typeLy.spinner)
-        {
-            adapter = typeAdapter
-            setSelection(0, false)
-            onItemSelectedListener = this@AddAnimalFragment
-            gravity = Gravity.CENTER
-
-        }
-
-        with(binding.breedLy.spinner)
-        {
-            adapter = breedAdapter
-            setSelection(0, false)
-            onItemSelectedListener = this@AddAnimalFragment
-            gravity = Gravity.CENTER
-
-        }
-
-        with(binding.colorLy.spinner)
-        {
-            adapter = colorAdapter
-            setSelection(0, false)
-            onItemSelectedListener = this@AddAnimalFragment
-            gravity = Gravity.CENTER
-
-        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

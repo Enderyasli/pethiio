@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
@@ -18,6 +19,7 @@ import com.pawtind.android.databinding.FragmentSaveInfoBinding
 import com.pawtind.android.ui.base.RegisterBaseFragment
 import com.pawtind.android.ui.main.viewmodel.signup.RegisterBaseViewModel
 import com.pawtind.android.utils.Constants
+import com.pawtind.android.utils.Status
 import com.theartofdev.edmodo.cropper.CropImage
 import kotlinx.android.synthetic.main.fragment_add_image.*
 
@@ -83,26 +85,67 @@ class RegisterDetailFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
         })
 
         binding.addAnimalBtn.setOnClickListener {
+
             fetchAddAnimal()
-            postRegisterInfo(
-                RegisterInfo(
-                    aboutMe = "test",
-                    dateOfBirth = "2021/06/16",
-                    gender = "FEMALE"
-                )
-            )
-            findNavController().navigate(R.id.action_navigation_register_detail_to_navigation_add_animal)
+            if (findNavController().currentDestination?.id == R.id.navigation_register_detail)
+                findNavController().navigate(R.id.action_navigation_register_detail_to_navigation_add_animal)
+
+//            postRegisterInfo(
+//                RegisterInfo(
+//                    aboutMe = "test",
+//                    dateOfBirth = "2021-06-16",
+//                    gender = "FEMALE"
+//                )
+//            )
+//
+//            viewModel.postRegisterInfo.observe(viewLifecycleOwner, {
+//                when (it.status) {
+//                    Status.SUCCESS -> {
+//                        activity?.runOnUiThread {
+//                            fetchAddAnimal()
+//                            if (findNavController().currentDestination?.id == R.id.navigation_register_detail)
+//                                findNavController().navigate(R.id.action_navigation_register_detail_to_navigation_add_animal)
+//
+//                        }
+//
+//                    }
+//                    Status.ERROR -> {
+//                        Toast.makeText(requireContext(), it.message, Toast.LENGTH_LONG).show()
+//
+//                    }
+//                    Status.LOADING -> {
+//                    }
+//                }
+//            })
         }
 
-        binding.addAnimalBtn.setOnClickListener {
+        binding.goWithoutAnimalTv.setOnClickListener {
             postRegisterInfo(
                 RegisterInfo(
                     aboutMe = "test",
-                    dateOfBirth = "2021/06/16",
+                    dateOfBirth = "2021-06-16",
                     gender = "FEMALE"
                 )
             )
-            findNavController().navigate(R.id.action_navigation_register_detail_to_navigation_add_animal)
+
+            viewModel.postRegisterInfo.observe(viewLifecycleOwner, {
+                when (it.status) {
+                    Status.SUCCESS -> {
+                        activity?.runOnUiThread {
+                            fetchAddAnimal()
+                            findNavController().navigate(R.id.action_navigation_register_detail_to_navigation_add_animal)
+
+                        }
+
+                    }
+                    Status.ERROR -> {
+                        Toast.makeText(requireContext(), it.message, Toast.LENGTH_LONG).show()
+
+                    }
+                    Status.LOADING -> {
+                    }
+                }
+            })
         }
 
     }

@@ -120,7 +120,9 @@ class RegisterFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
                         Status.SUCCESS -> {
                             activity?.runOnUiThread {
                                 fetchRegisterDetail()
-                                findNavController().navigate(R.id.action_navigation_register_to_navigation_register_detail)
+                                if (findNavController().currentDestination?.id == R.id.navigation_register)
+                                    findNavController().navigate(R.id.action_navigation_register_to_navigation_register_detail)
+
                             }
 
                         }
