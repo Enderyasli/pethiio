@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/appStarterNavGraph"
-    app:startDestination="@id/navigation_register_detail">
+    app:startDestination="@id/navigation_welcome">
 
     <fragment
         android:id="@+id/navigation_onboarding"
@@ -13,8 +13,8 @@
         app:launchSingleTop="true"
         tools:layout="@layout/fragment_on_boarding">
         <action
-            android:id="@+id/action_navigation_start_to_mobile_navigation"
-            app:destination="@id/mobile_navigation" />
+            android:id="@+id/action_navigation_start_to_navigation_main"
+            app:destination="@id/navigation_main" />
         <action
             android:id="@+id/action_navigation_onboarding_to_navigation_welcome"
             app:destination="@id/navigation_welcome" />
@@ -27,8 +27,8 @@
         app:launchSingleTop="true"
         tools:layout="@layout/fragment_welcome">
         <action
-            android:id="@+id/action_navigation_start_to_mobile_navigation"
-            app:destination="@id/mobile_navigation" />
+            android:id="@+id/action_navigation_start_to_navigation_main"
+            app:destination="@id/navigation_main" />
         <action
             android:id="@+id/action_navigation_welcome_to_navigation_onboarding"
             app:destination="@id/navigation_onboarding" />
@@ -51,8 +51,8 @@
 
 
         <action
-            android:id="@+id/action_navigation_login_to_mobile_navigation"
-            app:destination="@id/mobile_navigation" />
+            android:id="@+id/action_navigation_login_to_navigation_main"
+            app:destination="@id/navigation_main" />
     </fragment>
 
     <fragment
@@ -106,11 +106,11 @@
         app:launchSingleTop="true"
         tools:layout="@layout/fragment_animal_list">
         <action
-            android:id="@+id/action_navigation_animal_list_to_mobile_navigation"
-            app:destination="@id/mobile_navigation" />
+            android:id="@+id/action_navigation_animal_list_to_navigation_main"
+            app:destination="@id/navigation_main" />
     </fragment>
     <navigation
-        android:id="@+id/mobile_navigation"
+        android:id="@+id/navigation_main"
         app:startDestination="@+id/navigation_home">
 
         <fragment

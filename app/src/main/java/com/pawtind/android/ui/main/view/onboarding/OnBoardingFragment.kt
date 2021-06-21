@@ -1,12 +1,9 @@
 package com.pawtind.android.ui.main.view.onboarding
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
-import android.widget.ImageButton
 import android.widget.TextView
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager.widget.ViewPager
@@ -51,7 +48,7 @@ class OnBoardingFragment : BaseFragment() {
 
         textNextStep.setOnClickListener {
             if (getItem(+1) > mViewPager.childCount - 1) {
-                findNavController().navigate(R.id.action_navigation_start_to_mobile_navigation)
+                findNavController().navigate(R.id.action_navigation_start_to_navigation_main)
             } else {
                 mViewPager.setCurrentItem(getItem(+1), true)
             }

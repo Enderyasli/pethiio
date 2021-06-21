@@ -15,6 +15,7 @@ import com.pawtind.android.data.api.ApiServiceImpl
 import com.pawtind.android.data.model.AccessToken
 import com.pawtind.android.data.model.LookUpsResponse
 import com.pawtind.android.data.model.PawtindResponse
+import com.pawtind.android.data.model.PetAdd
 import com.pawtind.android.data.model.signup.Register
 import com.pawtind.android.data.model.signup.RegisterInfo
 import com.pawtind.android.ui.main.view.MainActivity
@@ -76,6 +77,20 @@ abstract class RegisterBaseFragment<VModel : RegisterBaseViewModel> : Fragment()
             }
         }
         return emptyList()
+    }
+
+    fun getLookUpKey(key: String, value: String): String {
+
+        lookUpsResponse?.forEach { it ->
+            if (it.key == key) {
+
+                it.value.forEach {
+                    if (it.value == value)
+                        return it.key
+                }
+            }
+        }
+        return ""
     }
 
     fun getLocalizedSpan(key: String): SpannableString? {
@@ -164,6 +179,10 @@ abstract class RegisterBaseFragment<VModel : RegisterBaseViewModel> : Fragment()
 
     open fun postRegisterInfo(registerInfo: RegisterInfo) {
         viewModel.postRegisterInfo(registerInfo)
+    }
+
+    open fun postPetAdd(petAdd: PetAdd) {
+        viewModel.postPetAdd(petAdd)
     }
 
     private fun init() {

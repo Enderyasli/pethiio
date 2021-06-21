@@ -4,9 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.pawtind.android.data.api.ServiceBuilder
-import com.pawtind.android.data.model.AccessToken
-import com.pawtind.android.data.model.LookUpsResponse
-import com.pawtind.android.data.model.PawtindResponse
+import com.pawtind.android.data.model.*
 import com.pawtind.android.data.model.signup.Login
 import com.pawtind.android.data.model.signup.Register
 import com.pawtind.android.data.model.signup.RegisterInfo
@@ -20,8 +18,9 @@ class RegisterBaseViewModel(private val mainRepository: MainRepository) : ViewMo
 
     private val login = MutableLiveData<Resource<Login>>()
     private val register = MutableLiveData<Resource<Login>>()
-    public val postRegister = MutableLiveData<Resource<AccessToken>>()
+    val postRegister = MutableLiveData<Resource<AccessToken>>()
     val postRegisterInfo = MutableLiveData<Resource<AccessToken>>()
+    val postPetAdd = MutableLiveData<Resource<PetAddResponse>>()
     private val fields = MutableLiveData<List<PawtindResponse>>()
     private val registerFields = MutableLiveData<List<PawtindResponse>>()
     private val registerDetailFields = MutableLiveData<List<PawtindResponse>>()
@@ -155,6 +154,23 @@ class RegisterBaseViewModel(private val mainRepository: MainRepository) : ViewMo
                     },
                     {
                         postRegisterInfo.postValue(Resource.error("Something went wrong", null))
+                    }
+                )
+        )
+    }
+
+    public fun postPetAdd(petAdd: PetAdd) {
+        postRegister.postValue(Resource.loading(null))
+        compositeDisposable.add(
+            ServiceBuilder.buildService(accessToken).postPetAdd(petAdd)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                    { registerData ->
+                        postPetAdd.postValue(Resource.success(registerData))
+                    },
+                    {
+                        postPetAdd.postValue(Resource.error("Something went wrong", null))
                     }
                 )
         )

@@ -1,14 +1,12 @@
 package com.pawtind.android.ui.main.view.fragments.animal
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.pawtind.android.R
 import com.pawtind.android.databinding.FragmentAnimalListBinding
-import com.pawtind.android.databinding.FragmentLoginBinding
 import com.pawtind.android.ui.base.BaseFragment
 
 class AnimalListFragment : BaseFragment() {
@@ -33,7 +31,7 @@ class AnimalListFragment : BaseFragment() {
         val view = binding.root
 
         binding.completeBtn.setOnClickListener {
-            findNavController().navigate(R.id.action_navigation_animal_list_to_mobile_navigation)
+            findNavController().navigate(R.id.action_navigation_animal_list_to_navigation_main)
         }
 
 

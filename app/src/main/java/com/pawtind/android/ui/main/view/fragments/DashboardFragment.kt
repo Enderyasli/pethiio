@@ -41,7 +41,7 @@ class DashboardFragment : BaseFragment(), CardStackListener {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentDashboardBinding.inflate(inflater, container, false)
         val view = binding.root
 

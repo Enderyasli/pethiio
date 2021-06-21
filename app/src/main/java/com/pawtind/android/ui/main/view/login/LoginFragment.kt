@@ -98,7 +98,7 @@ class LoginFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
         val view = binding.root
 
         binding.loginBtn.setOnClickListener {
-            findNavController().navigate(R.id.action_navigation_login_to_mobile_navigation)
+            findNavController().navigate(R.id.action_navigation_login_to_navigation_main)
         }
 
         return view
