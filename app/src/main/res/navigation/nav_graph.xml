@@ -8,7 +8,7 @@
 
     <fragment
         android:id="@+id/navigation_onboarding"
-        android:name="com.pawtind.android.ui.main.view.onboarding.OnBoardingFragment"
+        android:name="com.pethiio.android.ui.main.view.onboarding.OnBoardingFragment"
         android:label="Onboarding"
         app:launchSingleTop="true"
         tools:layout="@layout/fragment_on_boarding">
@@ -22,7 +22,7 @@
 
     <fragment
         android:id="@+id/navigation_welcome"
-        android:name="com.pawtind.android.ui.main.view.login.WelcomeFragment"
+        android:name="com.pethiio.android.ui.main.view.login.WelcomeFragment"
         android:label="Onboarding"
         app:launchSingleTop="true"
         tools:layout="@layout/fragment_welcome">
@@ -44,7 +44,7 @@
 
     <fragment
         android:id="@+id/navigation_login"
-        android:name="com.pawtind.android.ui.main.view.login.LoginFragment"
+        android:name="com.pethiio.android.ui.main.view.login.LoginFragment"
         android:label="Onboarding"
         app:launchSingleTop="true"
         tools:layout="@layout/fragment_login">
@@ -57,7 +57,7 @@
 
     <fragment
         android:id="@+id/navigation_register"
-        android:name="com.pawtind.android.ui.main.view.login.singUp.RegisterFragment"
+        android:name="com.pethiio.android.ui.main.view.login.singUp.RegisterFragment"
         android:label="Register"
         app:launchSingleTop="true"
         tools:layout="@layout/fragment_register">
@@ -68,7 +68,7 @@
     </fragment>
     <fragment
         android:id="@+id/navigation_register_detail"
-        android:name="com.pawtind.android.ui.main.view.login.singUp.RegisterDetailFragment"
+        android:name="com.pethiio.android.ui.main.view.login.singUp.RegisterDetailFragment"
         android:label="RegisterDetail"
         app:launchSingleTop="true"
         tools:layout="@layout/fragment_save_info">
@@ -78,7 +78,7 @@
     </fragment>
     <fragment
         android:id="@+id/navigation_add_animal"
-        android:name="com.pawtind.android.ui.main.view.fragments.animal.AddAnimalFragment"
+        android:name="com.pethiio.android.ui.main.view.fragments.animal.AddAnimalFragment"
         android:label="AddAnimal"
         app:launchSingleTop="true"
         tools:layout="@layout/fragment_add_animal">
@@ -89,7 +89,7 @@
 
     <fragment
         android:id="@+id/navigation_photo"
-        android:name="com.pawtind.android.ui.main.view.login.singUp.AddImageFragment"
+        android:name="com.pethiio.android.ui.main.view.login.singUp.AddImageFragment"
         android:label="AddImage"
         app:launchSingleTop="true"
         tools:layout="@layout/fragment_add_image">
@@ -101,7 +101,7 @@
 
     <fragment
         android:id="@+id/navigation_animal_list"
-        android:name="com.pawtind.android.ui.main.view.fragments.animal.AnimalListFragment"
+        android:name="com.pethiio.android.ui.main.view.fragments.animal.AnimalListFragment"
         android:label="AnimalList"
         app:launchSingleTop="true"
         tools:layout="@layout/fragment_animal_list">
@@ -115,19 +115,19 @@
 
         <fragment
             android:id="@+id/navigation_home"
-            android:name="com.pawtind.android.ui.main.view.fragments.HomeFragment"
+            android:name="com.pethiio.android.ui.main.view.fragments.HomeFragment"
             android:label="Home"
             tools:layout="@layout/fragment_home" />
 
         <fragment
             android:id="@+id/navigation_dashboard"
-            android:name="com.pawtind.android.ui.main.view.fragments.DashboardFragment"
+            android:name="com.pethiio.android.ui.main.view.fragments.DashboardFragment"
             android:label="Favori"
             tools:layout="@layout/fragment_dashboard" />
 
         <fragment
             android:id="@+id/navigation_search"
-            android:name="com.pawtind.android.ui.main.view.fragments.MessageFragment"
+            android:name="com.pethiio.android.ui.main.view.fragments.MessageFragment"
             android:label="Search"
             tools:layout="@layout/fragment_message" />
 

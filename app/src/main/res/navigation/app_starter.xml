@@ -8,7 +8,7 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="com.pawtind.android.ui.main.view.onboarding.OnBoardingFragment"
+        android:name="com.pethiio.android.ui.main.view.onboarding.OnBoardingFragment"
         android:label="Onboarding"
         tools:layout="@layout/fragment_on_boarding" />
 
