@@ -21,12 +21,10 @@ import com.pethiio.android.utils.Constants
 import com.pethiio.android.utils.Status
 import com.theartofdev.edmodo.cropper.CropImage
 import kotlinx.android.synthetic.main.fragment_add_image.*
-import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
-import okhttp3.RequestBody
-
-
+import okhttp3.RequestBody.Companion.asRequestBody
+import java.io.File
 
 
 class RegisterDetailFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
@@ -105,7 +103,7 @@ class RegisterDetailFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
                     Status.SUCCESS -> {
                         activity?.runOnUiThread {
                             fetchAddAnimal()
-                            viewModel.getAddAnimalFields().observe(viewLifecycleOwner,{
+                            viewModel.getAddAnimalFields().observe(viewLifecycleOwner, {
                                 fetchAddAnimalDetail("1")
                             })
                             if (findNavController().currentDestination?.id == R.id.navigation_register_detail)
@@ -217,7 +215,16 @@ class RegisterDetailFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
 
                 binding.imagePlaceholder.visibility = View.GONE
 
-                postRegisterAvatar(MultipartBody.Part.createFormData("user_image", result.uri.toString()))
+                val file = File(resultUri.path.toString())
+
+                val requestBody = file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
+
+                val filePart =
+                    MultipartBody.Part.createFormData("file", file.name, requestBody)
+
+                postRegisterAvatar(
+                    filePart
+                )
 
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 val error = result.error

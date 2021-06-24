@@ -6,7 +6,7 @@ import okhttp3.Request
 import okhttp3.Response
 
 
-class TokenInterceptor : HttpLoggingInterceptor() {
+class TokenInterceptor : Interceptor {
 
     lateinit var accessToken: String
     override fun intercept(chain: Interceptor.Chain): Response {
