@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.pethiio.android.data.api.ApiHelper
 import com.pethiio.android.data.api.ApiServiceImpl
+import com.pethiio.android.data.model.AnimalDetailResponse
 import com.pethiio.android.data.model.LookUpsResponse
 import com.pethiio.android.data.model.PawtindResponse
 import com.pethiio.android.data.model.PetAdd
@@ -34,6 +35,7 @@ abstract class RegisterBaseFragment<VModel : RegisterBaseViewModel> : Fragment()
 
     private var pawtindResponse: List<PawtindResponse>? = null
     private var lookUpsResponse: List<LookUpsResponse>? = null
+    private var animalDetailResponse: AnimalDetailResponse? = null
 
     private val disposableContainer = CompositeDisposable()
 
@@ -75,6 +77,17 @@ abstract class RegisterBaseFragment<VModel : RegisterBaseViewModel> : Fragment()
             }
         }
         return emptyList()
+    }
+
+    fun getAnimalPersonalities(): ArrayList<String> {
+
+        val arrayList = arrayListOf<String>()
+        animalDetailResponse?.personalities?.forEach {
+
+            arrayList.add(it.value)
+
+        }
+        return arrayList
     }
 
     fun getLookUpKey(key: String, value: String): String {
@@ -120,6 +133,10 @@ abstract class RegisterBaseFragment<VModel : RegisterBaseViewModel> : Fragment()
 
     fun setLookUps(lookUpsResponseList: List<LookUpsResponse>) {
         lookUpsResponse = lookUpsResponseList
+    }
+
+    fun setAnimalDetail(animalDetailResponse1: AnimalDetailResponse) {
+        animalDetailResponse = animalDetailResponse1
     }
 
     override fun onResume() {

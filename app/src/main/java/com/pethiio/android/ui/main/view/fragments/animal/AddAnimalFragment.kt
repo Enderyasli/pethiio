@@ -93,7 +93,16 @@ class AddAnimalFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
 
         })
         viewModel.getAddAnimalDetails().observe(this, {
-            it
+            setAnimalDetail(it)
+
+            binding.characterRc.layoutManager = GridLayoutManager(requireContext(), 3)
+
+            var adapter = CharacterAdapter(
+                requireContext(),
+                getAnimalPersonalities()
+            )
+
+            binding.characterRc.adapter = adapter
         })
 
         viewModel.getAddAnimalLookUps().observe(this, {
@@ -193,14 +202,6 @@ class AddAnimalFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
 
             binding.genderLy.spinner
 
-            binding.characterRc.layoutManager = GridLayoutManager(requireContext(), 3)
-
-            var adapter = CharacterAdapter(
-                requireContext(),
-                arrayListOf("Item", "Item", "Item", "Item", "Item", "Item")
-            )
-
-            binding.characterRc.adapter = adapter
         })
 
     }
