@@ -5,7 +5,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
 
-class PawApplication : Application() {
+class PethiioApplication : Application() {
 
     companion object {
         private var instance: Application? = null

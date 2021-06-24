@@ -3,7 +3,7 @@ package com.pethiio.android.utils
 import android.content.Context
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
-import com.pethiio.android.PawApplication
+import com.pethiio.android.PethiioApplication
 
 public object PreferenceHelper {
 
@@ -22,7 +22,7 @@ public object PreferenceHelper {
 
     class SharedPreferencesManager {
         private val sharedPreferences: SharedPreferences =
-            PawApplication.context.getSharedPreferences(MY_APP_PREFERENCES, Context.MODE_PRIVATE)
+            PethiioApplication.context.getSharedPreferences(MY_APP_PREFERENCES, Context.MODE_PRIVATE)
 
         public var isFirstDownload: Boolean?
             get() = sharedPreferences.getBoolean(IS_FIRST, true)
