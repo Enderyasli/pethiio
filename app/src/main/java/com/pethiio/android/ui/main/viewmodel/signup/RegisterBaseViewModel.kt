@@ -20,7 +20,7 @@ import retrofit2.http.Multipart
 class RegisterBaseViewModel(private val mainRepository: MainRepository) : ViewModel() {
 
     private val login = MutableLiveData<Resource<Login>>()
-    private val register = MutableLiveData<Resource<Login>>()
+    val register = MutableLiveData<Resource<Login>>()
     val postRegister = MutableLiveData<Resource<AccessToken>>()
     val postRegisterInfo = MutableLiveData<Resource<AccessToken>>()
     val postRegisterAvatar = MutableLiveData<Resource<AccessToken>>()
@@ -68,21 +68,7 @@ class RegisterBaseViewModel(private val mainRepository: MainRepository) : ViewMo
         )
     }
 
-    //    public fun fetchRegisterDetail() {
-//        register.postValue(Resource.loading(null))
-//        compositeDisposable.add(
-//            mainRepository.getRegisterDetail()
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe({ registerData ->
-//                    register.postValue(Resource.success(registerData))
-//                    registerDetailFields.postValue(registerData.fields)
-//                    registerDetailLookUps.postValue(registerData.lookups)
-//                }, {
-//                    register.postValue(Resource.error("Something Went Wrong", null))
-//                })
-//        )
-//    }
+
     public fun fetchRegisterDetail() {
         register.postValue(Resource.loading(null))
         compositeDisposable.add(

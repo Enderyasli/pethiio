@@ -43,20 +43,20 @@ class RegisterFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
             binding.signupDescription.text = getLocalizedString(Constants.registerSubTitle)
 
             binding.nameLy.titleTv.text =
-                getLocalizedString(Constants.registerNameTitle)
+                getLocalizedSpan(Constants.registerNameTitle)
             binding.nameLy.placeholderTv.hint =
                 getLocalizedString(Constants.registerNamePlaceholder)
             binding.surnameLy.titleTv.text =
-                getLocalizedString(Constants.registerSurnameTitle)
+                getLocalizedSpan(Constants.registerSurnameTitle)
             binding.surnameLy.placeholderTv.hint =
                 getLocalizedString(Constants.registerSurnamePlaceholder)
             binding.emailTitleTv.text =
-                getLocalizedString(Constants.registerEmailTitle)
+                getLocalizedSpan(Constants.registerEmailTitle)
             binding.emailPlaceholderTv.hint =
                 getLocalizedString(Constants.registerEmailPlaceholder)
             binding.emailPlaceholderTv.setText("@gmail.com")
             binding.passwordTitleTv.text =
-                getLocalizedString(Constants.registerPasswordTitle)
+                getLocalizedSpan(Constants.registerPasswordTitle)
             binding.passwordDetailTv.text =
                 getLocalizedString(Constants.registerPasswordDetail)
             binding.passwordPlaceholderTv.hint =
@@ -88,6 +88,7 @@ class RegisterFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
 
         })
 
+
     }
 
     override fun onCreateView(
@@ -99,20 +100,18 @@ class RegisterFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
 
         binding.signupBtn.setOnClickListener {
 
-            var valid = true
-            if (TextUtils.isEmpty(binding.emailPlaceholderTv.text.trim())) {
-                binding.emailPlaceholderTv.error = "Name cannot be empty"
-                binding.emailPlaceholderTv.requestFocus()
-                valid = false
-            }
+            var valid = getViewError(binding.emailPlaceholderTv, "Email cannot be empty")
+            valid = getViewError(binding.nameLy.placeholderTv, "Name cannot be empty")
+            valid = getViewError(binding.surnameLy.placeholderTv, "Surname cannot be empty")
+            valid = getViewError(binding.passwordPlaceholderTv, "Password cannot be empty")
 
             if (valid) {
                 postRegister(
                     Register(
                         binding.emailPlaceholderTv.text.toString().trim(),
-                        "Ender",
-                        "Yaşlı",
-                        "testparola"
+                        binding.nameLy.placeholderTv.text.toString().trim(),
+                        binding.surnameLy.placeholderTv.text.toString().trim(),
+                        binding.passwordPlaceholderTv.text.toString().trim(),
                     )
                 )
                 viewModel.postRegister.observe(viewLifecycleOwner, {

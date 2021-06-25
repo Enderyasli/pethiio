@@ -4,8 +4,10 @@ import android.graphics.Color
 import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableString
+import android.text.TextUtils
 import android.text.style.ForegroundColorSpan
 import android.view.View
+import android.widget.EditText
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
@@ -121,6 +123,15 @@ abstract class RegisterBaseFragment<VModel : RegisterBaseViewModel> : Fragment()
 
     }
 
+    fun getViewError(editText: EditText, message: String): Boolean {
+        var valid = true
+        if (TextUtils.isEmpty(editText.text.trim())) {
+            editText.error = message
+            editText.requestFocus()
+            valid = false
+        }
+        return valid
+    }
 
     fun getSpannableString(key: String): SpannableString {
 
@@ -210,6 +221,7 @@ abstract class RegisterBaseFragment<VModel : RegisterBaseViewModel> : Fragment()
     open fun postRegisterAvatar(multipart: MultipartBody.Part) {
         viewModel.postRegisterAvatar(multipart)
     }
+
     open fun postPetPhoto(multipart: List<MultipartBody.Part>) {
         viewModel.postPetPhoto(multipart)
     }
