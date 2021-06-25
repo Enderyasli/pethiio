@@ -22,7 +22,10 @@ public object PreferenceHelper {
 
     class SharedPreferencesManager {
         private val sharedPreferences: SharedPreferences =
-            PethiioApplication.context.getSharedPreferences(MY_APP_PREFERENCES, Context.MODE_PRIVATE)
+            PethiioApplication.context.getSharedPreferences(
+                MY_APP_PREFERENCES,
+                Context.MODE_PRIVATE
+            )
 
         public var isFirstDownload: Boolean?
             get() = sharedPreferences.getBoolean(IS_FIRST, true)
@@ -32,11 +35,16 @@ public object PreferenceHelper {
             get() = sharedPreferences.getString(ACCESS_TOKEN, "").toString()
             set(value) = sharedPreferences.edit().putString(ACCESS_TOKEN, value).apply()
 
+        public var petId: Int
+            get() = sharedPreferences.getInt(PET_ID, 0)
+            set(value) = sharedPreferences.edit().putInt(PET_ID, value).apply()
+
 
         companion object {
             private const val MY_APP_PREFERENCES = "Pawtind-Android"
             private const val IS_FIRST = "isFirstDownload"
             private const val ACCESS_TOKEN = "accessToken"
+            private const val PET_ID = "pet_id"
             private var instance: SharedPreferencesManager? = null
 
             @Synchronized

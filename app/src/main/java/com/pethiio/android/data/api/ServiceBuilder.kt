@@ -21,7 +21,6 @@ object ServiceBuilder {
     }
 
 
-//    var interceptor2: HttpLoggingInterceptor = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
 
     private val client = OkHttpClient
         .Builder()
@@ -29,7 +28,6 @@ object ServiceBuilder {
         .addNetworkInterceptor(interceptor2)
         .connectTimeout(60, TimeUnit.SECONDS)
         .readTimeout(60, TimeUnit.SECONDS)
-//        .addInterceptor(interceptor2)
         .build()
 
     private val retrofit = Retrofit.Builder()

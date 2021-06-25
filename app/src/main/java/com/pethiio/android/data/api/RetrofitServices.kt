@@ -24,6 +24,13 @@ interface RetrofitServices {
         @Part file: MultipartBody.Part
     ): Observable<AccessToken>
 
+    @Multipart
+    @POST("page/pet-add-photo/{animalId}")
+    fun postPetPhoto(
+        @Path("animalId") animalId: Int,
+        @Part files: List<MultipartBody.Part>
+    ): Observable<AccessToken>
+
     @POST("page/pet-add")
     fun postPetAdd(@Body petAdd: PetAdd): Observable<PetAddResponse>
 

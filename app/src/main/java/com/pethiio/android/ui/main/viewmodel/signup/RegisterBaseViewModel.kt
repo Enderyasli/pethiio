@@ -23,6 +23,8 @@ class RegisterBaseViewModel(private val mainRepository: MainRepository) : ViewMo
     private val register = MutableLiveData<Resource<Login>>()
     val postRegister = MutableLiveData<Resource<AccessToken>>()
     val postRegisterInfo = MutableLiveData<Resource<AccessToken>>()
+    val postRegisterAvatar = MutableLiveData<Resource<AccessToken>>()
+    val postPetPhoto = MutableLiveData<Resource<AccessToken>>()
     val postPetAdd = MutableLiveData<Resource<PetAddResponse>>()
     private val fields = MutableLiveData<List<PawtindResponse>>()
     private val registerFields = MutableLiveData<List<PawtindResponse>>()
@@ -194,10 +196,33 @@ class RegisterBaseViewModel(private val mainRepository: MainRepository) : ViewMo
                     { registerData ->
                         PreferenceHelper.SharedPreferencesManager.getInstance().accessToken =
                             registerData.accessToken
-                        postRegisterInfo.postValue(Resource.success(registerData))
+                        postRegisterAvatar.postValue(Resource.success(registerData))
                     },
                     {
-                        postRegisterInfo.postValue(Resource.error("Something went wrong", null))
+                        postRegisterAvatar.postValue(Resource.error("Something went wrong", null))
+                    }
+                )
+        )
+    }
+
+    public fun postPetPhoto(multipart: List<MultipartBody.Part>) {
+        postPetPhoto.postValue(Resource.loading(null))
+        compositeDisposable.add(
+            ServiceBuilder.buildService(PreferenceHelper.SharedPreferencesManager.getInstance().accessToken)
+                .postPetPhoto(
+                    PreferenceHelper.SharedPreferencesManager.getInstance().petId,
+                    multipart
+                )
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                    { registerData ->
+                        PreferenceHelper.SharedPreferencesManager.getInstance().accessToken =
+                            registerData.accessToken
+                        postPetPhoto.postValue(Resource.success(registerData))
+                    },
+                    {
+                        postPetPhoto.postValue(Resource.error("Something went wrong", null))
                     }
                 )
         )
@@ -211,6 +236,8 @@ class RegisterBaseViewModel(private val mainRepository: MainRepository) : ViewMo
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                     { registerData ->
+                        PreferenceHelper.SharedPreferencesManager.getInstance().petId =
+                            registerData.id
                         postPetAdd.postValue(Resource.success(registerData))
                     },
                     {

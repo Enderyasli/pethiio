@@ -62,6 +62,7 @@
             android:orientation="horizontal">
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/img1_ly"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 app:cardBackgroundColor="@color/light_button"
@@ -98,6 +99,7 @@
                 android:layout_weight="1" />
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/img2_ly"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 app:cardBackgroundColor="@color/light_button"
@@ -134,6 +136,7 @@
                 android:layout_weight="1" />
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/img3_ly"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 app:cardBackgroundColor="@color/light_button"

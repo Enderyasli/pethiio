@@ -53,25 +53,7 @@ class AddAnimalFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
     override fun setUpViews() {
         super.setUpViews()
 
-        viewModel.getAddAnimalFields().observe(this, {
 
-            setPawtindResponseList(it)
-            binding.nameLy.titleTv.text = getLocalizedSpan(Constants.registerNameTitle)
-            binding.nameLy.placeholderTv.hint =
-                getLocalizedString(Constants.registerNamePlaceholder)
-
-
-            binding.yearLy.titleTv.text = getLocalizedSpan(Constants.animalAddYearTitle)
-            binding.monthLy.titleTv.text = getLocalizedString(Constants.animalAddMonthTitle)
-
-            binding.genderLy.titleTv.text = getLocalizedSpan(Constants.animalAddGenderTitle)
-            binding.typeLy.titleTv.text = getLocalizedSpan(Constants.animalAddTypeTitle)
-            binding.breedLy.titleTv.text = getLocalizedSpan(Constants.animalAddBreedTitle)
-            binding.colorLy.titleTv.text = getLocalizedSpan(Constants.animalAddColorTitle)
-            binding.characterTitleTv.text = getLocalizedString(Constants.animalAddCharacterTitle)
-
-
-        })
 
         viewModel.getAddAnimalFields().observe(this, {
 
@@ -83,7 +65,6 @@ class AddAnimalFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
 
             binding.yearLy.titleTv.text = getLocalizedSpan(Constants.animalAddYearTitle)
             binding.monthLy.titleTv.text = getLocalizedString(Constants.animalAddMonthTitle)
-
             binding.genderLy.titleTv.text = getLocalizedSpan(Constants.animalAddGenderTitle)
             binding.typeLy.titleTv.text = getLocalizedSpan(Constants.animalAddTypeTitle)
             binding.breedLy.titleTv.text = getLocalizedSpan(Constants.animalAddBreedTitle)
@@ -97,7 +78,7 @@ class AddAnimalFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
 
             binding.characterRc.layoutManager = GridLayoutManager(requireContext(), 3)
 
-            var adapter = CharacterAdapter(
+            val adapter = CharacterAdapter(
                 requireContext(),
                 getAnimalPersonalities()
             )
@@ -129,7 +110,7 @@ class AddAnimalFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
             typeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
 
             val breedAdapter =
-                ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, breed)
+                ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, getAnimalBreeds())
             breedAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
 
             val colorAdapter =
@@ -154,6 +135,9 @@ class AddAnimalFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
             binding.typeLy.spinner.id = TYPE_ID
             binding.breedLy.spinner.id = BREED_ID
             binding.colorLy.spinner.id = COLOR_ID
+            binding.genderLy.spinner.onItemSelectedListener = this
+            binding.typeLy.spinner.onItemSelectedListener = this
+
 
             with(binding.genderLy.spinner)
             {
@@ -239,7 +223,8 @@ class AddAnimalFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
                 when (it.status) {
                     Status.SUCCESS -> {
                         activity?.runOnUiThread {
-                            findNavController().navigate(R.id.action_navigation_add_animal_to_navigation_photo)
+                            if (findNavController().currentDestination?.id == R.id.navigation_add_animal)
+                                findNavController().navigate(R.id.action_navigation_add_animal_to_navigation_photo)
                         }
                     }
                     Status.ERROR -> {
@@ -284,7 +269,7 @@ class AddAnimalFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
     }
 
     override fun onNothingSelected(parent: AdapterView<*>?) {
-        TODO("Not yet implemented")
+
     }
 
 

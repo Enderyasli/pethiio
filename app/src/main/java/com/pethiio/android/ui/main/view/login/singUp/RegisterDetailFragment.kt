@@ -105,9 +105,12 @@ class RegisterDetailFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
                             fetchAddAnimal()
                             viewModel.getAddAnimalFields().observe(viewLifecycleOwner, {
                                 fetchAddAnimalDetail("1")
+
+                                viewModel.getAddAnimalDetails().observe(viewLifecycleOwner, {
+                                    if (findNavController().currentDestination?.id == R.id.navigation_register_detail)
+                                        findNavController().navigate(R.id.action_navigation_register_detail_to_navigation_add_animal)
+                                })
                             })
-                            if (findNavController().currentDestination?.id == R.id.navigation_register_detail)
-                                findNavController().navigate(R.id.action_navigation_register_detail_to_navigation_add_animal)
 
                         }
 
@@ -166,6 +169,7 @@ class RegisterDetailFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
                         activity?.runOnUiThread {
                             fetchAddAnimal()
                             fetchAddAnimalDetail("1")
+                            if (findNavController().currentDestination?.id == R.id.navigation_register_detail)
                             findNavController().navigate(R.id.action_navigation_register_detail_to_navigation_add_animal)
 
                         }
@@ -216,15 +220,9 @@ class RegisterDetailFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
                 binding.imagePlaceholder.visibility = View.GONE
 
                 val file = File(resultUri.path.toString())
-
                 val requestBody = file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
-
-                val filePart =
-                    MultipartBody.Part.createFormData("file", file.name, requestBody)
-
-                postRegisterAvatar(
-                    filePart
-                )
+                val filePart = MultipartBody.Part.createFormData("file", file.name, requestBody)
+                postRegisterAvatar(filePart)
 
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 val error = result.error

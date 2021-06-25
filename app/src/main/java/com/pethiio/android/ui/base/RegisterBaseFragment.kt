@@ -83,9 +83,16 @@ abstract class RegisterBaseFragment<VModel : RegisterBaseViewModel> : Fragment()
 
         val arrayList = arrayListOf<String>()
         animalDetailResponse?.personalities?.forEach {
-
             arrayList.add(it.value)
+        }
+        return arrayList
+    }
 
+    fun getAnimalBreeds(): ArrayList<String> {
+
+        val arrayList = arrayListOf<String>()
+        animalDetailResponse?.breeds?.forEach {
+            arrayList.add(it.value)
         }
         return arrayList
     }
@@ -202,6 +209,9 @@ abstract class RegisterBaseFragment<VModel : RegisterBaseViewModel> : Fragment()
 
     open fun postRegisterAvatar(multipart: MultipartBody.Part) {
         viewModel.postRegisterAvatar(multipart)
+    }
+    open fun postPetPhoto(multipart: List<MultipartBody.Part>) {
+        viewModel.postPetPhoto(multipart)
     }
 
     open fun postPetAdd(petAdd: PetAdd) {
