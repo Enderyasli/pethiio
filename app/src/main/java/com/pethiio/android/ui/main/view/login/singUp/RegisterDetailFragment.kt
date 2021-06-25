@@ -11,6 +11,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.navigation.fragment.findNavController
+import com.bigkoo.pickerview.builder.TimePickerBuilder
 import com.bumptech.glide.Glide
 import com.pethiio.android.R
 import com.pethiio.android.data.model.signup.RegisterInfo
@@ -25,6 +26,8 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import java.io.File
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 class RegisterDetailFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
@@ -170,7 +173,7 @@ class RegisterDetailFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
                             fetchAddAnimal()
                             fetchAddAnimalDetail("1")
                             if (findNavController().currentDestination?.id == R.id.navigation_register_detail)
-                            findNavController().navigate(R.id.action_navigation_register_detail_to_navigation_add_animal)
+                                findNavController().navigate(R.id.action_navigation_register_detail_to_navigation_add_animal)
 
                         }
 
@@ -183,6 +186,28 @@ class RegisterDetailFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
                     }
                 }
             })
+        }
+
+        binding.birthPlaceholderTv.setOnClickListener {
+
+            val selectedDate = Calendar.getInstance()
+            val startDate = Calendar.getInstance()
+            startDate.set(1900, 0, 1)
+            val endDate = Calendar.getInstance()
+            //TimePicker
+            val pvTime = TimePickerBuilder(requireContext()) { date, v ->
+                val spf = SimpleDateFormat("yyyy-MM-dd")
+                val newDate = spf.format(date)
+
+                binding.birthPlaceholderTv.text = newDate.toString()
+            }
+                .setRangDate(startDate, endDate)
+                .setDate(endDate)
+                .setCancelText("Vazgeç")
+                .setSubmitText("Onayla")
+                .build()
+
+            pvTime.show()
         }
 
     }
