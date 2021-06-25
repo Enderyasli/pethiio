@@ -168,7 +168,7 @@ class RegisterBaseViewModel(private val mainRepository: MainRepository) : ViewMo
     public fun postRegisterInfo(registerInfo: RegisterInfo) {
         postRegister.postValue(Resource.loading(null))
         compositeDisposable.add(
-            ServiceBuilder.buildService(PreferenceHelper.SharedPreferencesManager.getInstance().accessToken)
+            ServiceBuilder.buildService()
                 .postRegisterInfo(registerInfo)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -188,7 +188,7 @@ class RegisterBaseViewModel(private val mainRepository: MainRepository) : ViewMo
     public fun postRegisterAvatar(multipart: MultipartBody.Part) {
         postRegister.postValue(Resource.loading(null))
         compositeDisposable.add(
-            ServiceBuilder.buildService(PreferenceHelper.SharedPreferencesManager.getInstance().accessToken)
+            ServiceBuilder.buildService()
                 .postRegisterAvatar(multipart)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -208,7 +208,7 @@ class RegisterBaseViewModel(private val mainRepository: MainRepository) : ViewMo
     public fun postPetPhoto(multipart: List<MultipartBody.Part>) {
         postPetPhoto.postValue(Resource.loading(null))
         compositeDisposable.add(
-            ServiceBuilder.buildService(PreferenceHelper.SharedPreferencesManager.getInstance().accessToken)
+            ServiceBuilder.buildService()
                 .postPetPhoto(
                     PreferenceHelper.SharedPreferencesManager.getInstance().petId,
                     multipart
@@ -231,7 +231,7 @@ class RegisterBaseViewModel(private val mainRepository: MainRepository) : ViewMo
     public fun postPetAdd(petAdd: PetAdd) {
         postRegister.postValue(Resource.loading(null))
         compositeDisposable.add(
-            ServiceBuilder.buildService(accessToken).postPetAdd(petAdd)
+            ServiceBuilder.buildService().postPetAdd(petAdd)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(

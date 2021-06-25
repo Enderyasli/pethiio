@@ -1,8 +1,13 @@
 package com.pethiio.android.utils
 
+import java.text.SimpleDateFormat
+
 class Constants {
 
     companion object {
+
+        val datePickerFormat: SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd")
+
 
         const val BASE_URL: String = "http://api.pawtind.com/api/"
         const val registerTitle: String = "title"
@@ -32,7 +37,7 @@ class Constants {
         const val registerGenderTitle: String = "genderTitle"
         const val registerAboutMe: String = "aboutMe"
         const val registerAboutMePlaceholder: String = "aboutMePlaceholder"
-        const val registerAnimalInsertButtonTitle: String = "animalInsertButtonTitle"
+        const val registerAnimalInsertButtonTitle: String = "petInsertButtonTitle"
         const val registerSkipButtonTitle: String = "skipButtonTitle"
         const val registerCompleteButtonTitle: String = "completeButtonTitle"
         const val animalAddYearTitle: String = "yearTitle"

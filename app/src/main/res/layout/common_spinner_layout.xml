@@ -20,7 +20,7 @@
         tools:text="Ad *" />
 
 
-    <Spinner
+    <com.pethiio.android.ui.main.view.customViews.NoDefaultSpinner
         android:id="@+id/spinner"
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -30,8 +30,7 @@
         android:elevation="2dp"
         android:fontFamily="@font/poppins_medium"
         android:gravity="center_vertical"
-        android:hint="Gün"
-        android:paddingLeft="15dp"
+        android:paddingStart="15dp"
         android:spinnerMode="dropdown"
         android:textColor="@color/hint_text_color" />
 

@@ -39,10 +39,6 @@ object ServiceBuilder {
         .create(RetrofitServices::class.java)
 
     fun buildService(): RetrofitServices {
-        return retrofit
-    }
-
-    fun buildService(@Nullable accessToken: String): RetrofitServices {
         interceptor.accessToken =
             PreferenceHelper.SharedPreferencesManager.getInstance().accessToken
         return retrofit

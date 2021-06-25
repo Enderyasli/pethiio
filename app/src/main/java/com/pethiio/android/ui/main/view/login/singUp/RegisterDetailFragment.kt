@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import com.bigkoo.pickerview.builder.TimePickerBuilder
 import com.bumptech.glide.Glide
@@ -64,6 +65,8 @@ class RegisterDetailFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
                 getLocalizedString(Constants.registerDateOfBirthPlaceholder)
             binding.genderLy.titleTv.text =
                 getLocalizedString(Constants.registerGenderTitle)
+            binding.genderLy.spinner.prompt =
+                getLocalizedString(Constants.registerGenderTitle)
             binding.addAnimalBtn.text =
                 getLocalizedString(Constants.registerAnimalInsertButtonTitle)
             binding.goWithoutAnimalTv.text =
@@ -80,10 +83,10 @@ class RegisterDetailFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
                 ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, gender)
             genderAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
 
+
             with(binding.genderLy.spinner)
             {
                 adapter = genderAdapter
-                setSelection(0, false)
                 onItemSelectedListener = this@RegisterDetailFragment
                 gravity = Gravity.CENTER
 
@@ -196,15 +199,16 @@ class RegisterDetailFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
             val endDate = Calendar.getInstance()
             //TimePicker
             val pvTime = TimePickerBuilder(requireContext()) { date, v ->
-                val spf = SimpleDateFormat("yyyy-MM-dd")
-                val newDate = spf.format(date)
+                val newDate = Constants.datePickerFormat.format(date)
 
                 binding.birthPlaceholderTv.text = newDate.toString()
             }
                 .setRangDate(startDate, endDate)
                 .setDate(endDate)
-                .setCancelText("Vazgeç")
-                .setSubmitText("Onayla")
+                .setCancelText(getString(R.string.lcl_cancel_datepicker))
+                .setSubmitText(getString(R.string.lcl_apply_datepicker))
+                .setCancelColor(ContextCompat.getColor(requireContext(), R.color.orangeButton))
+                .setSubmitColor(ContextCompat.getColor(requireContext(), R.color.orangeButton))
                 .build()
 
             pvTime.show()

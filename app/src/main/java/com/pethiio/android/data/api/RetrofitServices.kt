@@ -12,7 +12,7 @@ import retrofit2.http.*
 
 interface RetrofitServices {
 
-    @GET("page/register/info")
+    @GET("page/register-detail/info")
     fun getRegisterInfoPageData(): Observable<Login>
 
     @POST("page/register-detail")
