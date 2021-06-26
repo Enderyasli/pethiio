@@ -48,13 +48,13 @@ class Constants {
         const val animalAddYearTitle: String = "yearTitle"
         const val animalAddYearPlaceholder: String = "yearPlaceholder"
         const val animalAddMonthTitle: String = "monthTitle"
-        const val animalAddMonthPlaceholder: String = "monthPlaceholder"
         const val animalAddGenderTitle: String = "genderTitle"
         const val animalAddTypeTitle: String = "typeTitle"
         const val animalAddBreedTitle: String = "breedTitle"
         const val animalAddColorTitle: String = "colorTitle"
         const val animalAddCharacterTitle: String = "characterTitle"
         const val animalAddNextButtonTitle: String = "nextButtonTitle"
+        const val animalAddMonthPlaceholder: String = "monthPlaceholder"
 
 
 

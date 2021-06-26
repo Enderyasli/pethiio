@@ -11,22 +11,41 @@ import kotlinx.android.synthetic.main.item_layout.view.*
 
 class CharacterAdapter(
     val context: Context,
-    private val users: ArrayList<String>
+    private val characterList: ArrayList<String>
 ) : RecyclerView.Adapter<CharacterAdapter.DataViewHolder>() {
 
-    class DataViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(context: Context, character: String) {
+    var selectedCharacters: ArrayList<String> = ArrayList()
+
+    class DataViewHolder(itemView: View) :
+        RecyclerView.ViewHolder(itemView) {
+        fun bind(context: Context, character: String, selectedCharacters: ArrayList<String>) {
+
             itemView.character_title_tv.text = character
 
             itemView.setOnClickListener {
-                if(!it.isSelected){
+                if (!it.isSelected) {
                     itemView.character_title_tv.setBackgroundResource(R.drawable.character_item_selected_bg)
-                    itemView.character_title_tv.setTextColor(ContextCompat.getColor(context,R.color.white))
-                    it.isSelected=true
-                }else{
+                    itemView.character_title_tv.setTextColor(
+                        ContextCompat.getColor(
+                            context,
+                            R.color.white
+                        )
+                    )
+                    selectedCharacters.add(character)
+
+                    it.isSelected = true
+                } else {
                     itemView.character_title_tv.setBackgroundResource(R.drawable.character_item_bg)
-                    itemView.character_title_tv.setTextColor(ContextCompat.getColor(context,R.color.grey))
-                    it.isSelected=false
+                    itemView.character_title_tv.setTextColor(
+                        ContextCompat.getColor(
+                            context,
+                            R.color.grey
+                        )
+                    )
+
+                    selectedCharacters.remove(character)
+
+                    it.isSelected = false
                 }
 
 
@@ -43,13 +62,16 @@ class CharacterAdapter(
             )
         )
 
-    override fun getItemCount(): Int = users.size
+    override fun getItemCount(): Int = characterList.size
 
     override fun onBindViewHolder(holder: DataViewHolder, position: Int) =
-        holder.bind(context, users[position])
+        holder.bind(context, characterList[position], selectedCharacters)
 
     fun addData(list: List<String>) {
-        users.addAll(list)
+        characterList.addAll(list)
     }
 
+    open fun getSelectedItems(): ArrayList<String> {
+        return selectedCharacters
+    }
 }

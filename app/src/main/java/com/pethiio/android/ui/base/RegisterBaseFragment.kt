@@ -89,6 +89,19 @@ abstract class RegisterBaseFragment<VModel : RegisterBaseViewModel> : Fragment()
         return arrayList
     }
 
+    fun getSelectedAnimalPersonality(value: ArrayList<String>): ArrayList<Int> {
+
+        val arrayList = arrayListOf<Int>()
+        animalDetailResponse?.personalities?.forEach { pawtind ->
+            value.forEach {
+                if (pawtind.value == it)
+                    arrayList.add(pawtind.key.toInt())
+            }
+
+        }
+        return arrayList
+    }
+
     fun getAnimalBreeds(): ArrayList<String> {
 
         val arrayList = arrayListOf<String>()
@@ -97,11 +110,12 @@ abstract class RegisterBaseFragment<VModel : RegisterBaseViewModel> : Fragment()
         }
         return arrayList
     }
-    fun getBreedsKey( value: String): String {
+
+    fun getBreedsKey(value: String): String {
 
         animalDetailResponse?.breeds?.forEach { it ->
-                    if (it.value == value)
-                        return it.key
+            if (it.value == value)
+                return it.key
 
         }
         return ""

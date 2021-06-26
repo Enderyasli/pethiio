@@ -19,7 +19,6 @@ import com.pethiio.android.utils.Constants
 import com.pethiio.android.utils.Status
 import kotlinx.android.synthetic.main.common_rounded_input_tv.view.*
 import kotlinx.android.synthetic.main.fragment_home.*
-import kotlin.properties.Delegates
 
 
 class AddAnimalFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
@@ -33,12 +32,12 @@ class AddAnimalFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
 
     lateinit var gender: List<String>
     lateinit var type: List<String>
-    var breed = arrayOf("Labrador", "Doberman")
     lateinit var color: List<String>
     private val GENDER_ID = 1
     private val TYPE_ID = 2
     private val BREED_ID = 3
     private val COLOR_ID = 4
+    lateinit var adapterCharacter: CharacterAdapter
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,12 +59,26 @@ class AddAnimalFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
 
 
             binding.yearLy.titleTv.text = getLocalizedSpan(Constants.animalAddYearTitle)
-            binding.monthLy.titleTv.text = getLocalizedString(Constants.animalAddMonthTitle)
+            binding.monthLy.titleTv.text = getLocalizedSpan(Constants.animalAddMonthPlaceholder)
             binding.genderLy.titleTv.text = getLocalizedSpan(Constants.animalAddGenderTitle)
             binding.typeLy.titleTv.text = getLocalizedSpan(Constants.animalAddTypeTitle)
             binding.breedLy.titleTv.text = getLocalizedSpan(Constants.animalAddBreedTitle)
             binding.colorLy.titleTv.text = getLocalizedSpan(Constants.animalAddColorTitle)
-            binding.characterTitleTv.text = getLocalizedString(Constants.animalAddCharacterTitle)
+            binding.characterTitleTv.text = getLocalizedSpan(Constants.animalAddCharacterTitle)
+
+            binding.genderLy.spinner.prompt =
+                getLocalizedString(Constants.registerGenderTitle)
+            binding.yearLy.spinner.prompt =
+                getLocalizedString(Constants.animalAddYearTitle)
+            binding.monthLy.spinner.prompt =
+                getLocalizedString(Constants.animalAddMonthPlaceholder)
+            binding.typeLy.spinner.prompt =
+                getLocalizedString(Constants.animalAddTypeTitle)
+            binding.breedLy.spinner.prompt =
+                getLocalizedString(Constants.animalAddBreedTitle)
+            binding.colorLy.spinner.prompt =
+                getLocalizedString(Constants.animalAddColorTitle)
+
 
 
         })
@@ -74,7 +87,7 @@ class AddAnimalFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
 
             binding.characterRc.layoutManager = GridLayoutManager(requireContext(), 3)
 
-            val adapterCharacter = CharacterAdapter(
+            adapterCharacter = CharacterAdapter(
                 requireContext(),
                 getAnimalPersonalities()
             )
@@ -91,7 +104,6 @@ class AddAnimalFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
             with(binding.breedLy.spinner)
             {
                 adapter = breedAdapter
-                setSelection(0, false)
                 onItemSelectedListener = this@AddAnimalFragment
                 gravity = Gravity.CENTER
 
@@ -153,7 +165,6 @@ class AddAnimalFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
             with(binding.genderLy.spinner)
             {
                 adapter = genderAdapter
-                setSelection(0, false)
                 onItemSelectedListener = this@AddAnimalFragment
                 gravity = Gravity.CENTER
 
@@ -162,7 +173,6 @@ class AddAnimalFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
             with(binding.typeLy.spinner)
             {
                 adapter = typeAdapter
-                setSelection(0, false)
                 onItemSelectedListener = this@AddAnimalFragment
                 gravity = Gravity.CENTER
 
@@ -172,7 +182,6 @@ class AddAnimalFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
             with(binding.colorLy.spinner)
             {
                 adapter = colorAdapter
-                setSelection(0, false)
                 onItemSelectedListener = this@AddAnimalFragment
                 gravity = Gravity.CENTER
 
@@ -181,7 +190,6 @@ class AddAnimalFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
             with(binding.yearLy.spinner)
             {
                 adapter = yearAdapter
-                setSelection(0, false)
                 onItemSelectedListener = this@AddAnimalFragment
                 gravity = Gravity.CENTER
 
@@ -220,28 +228,36 @@ class AddAnimalFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
                 binding.typeLy.spinner.selectedItem.toString()
             ).toIntOrNull()
 
-            if (breedId != null && animalId != null)
-                postPetAdd(
-                    PetAdd(
-                        about = "test",
-                        animalId =
-                        animalId,
-                        breedId = breedId,
-                        animalPersonalities = arrayListOf(1),
-                        color = getLookUpKey(
-                            Constants.lookUpColor,
-                            binding.colorLy.spinner.selectedItem.toString()
-                        ),
-                        gender = getLookUpKey(
-                            Constants.lookUpGender,
-                            binding.genderLy.spinner.selectedItem.toString()
-                        ),
-                        month = 1,
-                        name = "string",
-                        purpose = "ADOPTION",
-                        year = 20
+
+            var selectedPersonalities =
+                getSelectedAnimalPersonality(adapterCharacter.getSelectedItems())
+
+            if (breedId != null && animalId != null) {
+                if (selectedPersonalities.size > 0) {
+                    postPetAdd(
+                        PetAdd(
+                            about = "test",
+                            animalId =
+                            animalId,
+                            breedId = breedId,
+                            animalPersonalities = selectedPersonalities,
+                            color = getLookUpKey(
+                                Constants.lookUpColor,
+                                binding.colorLy.spinner.selectedItem.toString()
+                            ),
+                            gender = getLookUpKey(
+                                Constants.lookUpGender,
+                                binding.genderLy.spinner.selectedItem.toString()
+                            ),
+                            month = 1,
+                            name = binding.nameLy.placeholderTv.text.toString().trim(),
+                            purpose = "ADOPTION",
+                            year = binding.yearLy.spinner.selectedItem.toString().toInt()
+                        )
                     )
-                )
+                }
+            }
+
             viewModel.postPetAdd.observe(viewLifecycleOwner, {
                 when (it.status) {
                     Status.SUCCESS -> {
