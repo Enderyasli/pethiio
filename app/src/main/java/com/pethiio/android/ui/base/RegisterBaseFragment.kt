@@ -244,7 +244,7 @@ abstract class RegisterBaseFragment<VModel : RegisterBaseViewModel> : Fragment()
         viewModel.postRegisterAvatar(multipart)
     }
 
-    open fun postPetPhoto(multipart: List<MultipartBody.Part>) {
+    open fun postPetPhoto(multipart: MultipartBody.Part) {
         viewModel.postPetPhoto(multipart)
     }
 

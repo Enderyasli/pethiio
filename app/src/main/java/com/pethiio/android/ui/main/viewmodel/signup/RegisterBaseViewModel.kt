@@ -191,7 +191,7 @@ class RegisterBaseViewModel(private val mainRepository: MainRepository) : ViewMo
         )
     }
 
-    public fun postPetPhoto(multipart: List<MultipartBody.Part>) {
+    public fun postPetPhoto(multipart: MultipartBody.Part) {
         postPetPhoto.postValue(Resource.loading(null))
         compositeDisposable.add(
             ServiceBuilder.buildService()
@@ -203,9 +203,8 @@ class RegisterBaseViewModel(private val mainRepository: MainRepository) : ViewMo
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                     { registerData ->
-                        PreferenceHelper.SharedPreferencesManager.getInstance().accessToken =
-                            registerData.accessToken
-                        postPetPhoto.postValue(Resource.success(registerData))
+
+                        postPetPhoto.postValue(Resource.success(null))
                     },
                     {
                         postPetPhoto.postValue(Resource.error("Something went wrong", null))

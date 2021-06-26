@@ -250,7 +250,7 @@ class AddAnimalFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
                                 binding.genderLy.spinner.selectedItem.toString()
                             ),
                             month = 1,
-                            name = binding.nameLy.placeholderTv.text.toString().trim(),
+                            name = "test",
                             purpose = "ADOPTION",
                             year = binding.yearLy.spinner.selectedItem.toString().toInt()
                         )

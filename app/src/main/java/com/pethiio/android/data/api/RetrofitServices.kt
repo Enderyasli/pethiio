@@ -8,6 +8,7 @@ import com.pethiio.android.data.model.signup.Login
 import com.pethiio.android.data.model.signup.RegisterInfo
 import io.reactivex.Observable
 import okhttp3.MultipartBody
+import retrofit2.Response
 import retrofit2.http.*
 
 interface RetrofitServices {
@@ -28,8 +29,8 @@ interface RetrofitServices {
     @POST("page/pet-add-photo/{animalId}")
     fun postPetPhoto(
         @Path("animalId") animalId: Int,
-        @Part files: List<MultipartBody.Part>
-    ): Observable<AccessToken>
+        @Part files: MultipartBody.Part
+    ): Observable<Response<Void>>
 
     @POST("page/pet-add")
     fun postPetAdd(@Body petAdd: PetAdd): Observable<PetAddResponse>

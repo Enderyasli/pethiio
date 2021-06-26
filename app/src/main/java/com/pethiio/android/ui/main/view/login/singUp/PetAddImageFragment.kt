@@ -3,16 +3,17 @@ package com.pethiio.android.ui.main.view.login.singUp
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.pethiio.android.R
 import com.pethiio.android.databinding.FragmentAddImageBinding
+import com.pethiio.android.databinding.FragmentPetAddImageBinding
 import com.pethiio.android.ui.base.RegisterBaseFragment
 import com.pethiio.android.ui.main.viewmodel.signup.RegisterBaseViewModel
 import com.pethiio.android.utils.Constants
@@ -26,13 +27,14 @@ import okhttp3.RequestBody.Companion.asRequestBody
 import java.io.File
 
 
-class AddImageFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
+class PetAddImageFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
 
     override var bottomNavigationViewVisibility = View.GONE
-    private var _binding: FragmentAddImageBinding? = null
+    private var _binding: FragmentPetAddImageBinding? = null
 
     override var useSharedViewModel = true
     var uriList = arrayListOf<String>()
+    var uri1: String = ""
 
     private val binding get() = _binding!!
 
@@ -62,7 +64,7 @@ class AddImageFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentAddImageBinding.inflate(inflater, container, false)
+        _binding = FragmentPetAddImageBinding.inflate(inflater, container, false)
         val view = binding.root
 
         binding.imageView.setOnClickListener { openCropImage() }
@@ -96,19 +98,28 @@ class AddImageFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
                 val file = File(fileName)
                 val requestBody = file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
                 val filePart =
-                    MultipartBody.Part.createFormData("file$index", file.name, requestBody)
+                    MultipartBody.Part.createFormData("files", file.name, requestBody)
                 filePartList.add(filePart)
 
             }
-            if (filePartList.size > 0)
-                postPetPhoto(filePartList)
+//            if (filePartList.size > 0)
+//                postPetPhoto(filePartList.get(0))
+//
+            if (!TextUtils.isEmpty(uri1)) {
+                val file = File(uri1)
+                val requestBody = file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
+                val filePart = MultipartBody.Part.createFormData("file", file.name, requestBody)
+                postPetPhoto(filePart)
+
+            }
+
 
             viewModel.postPetPhoto.observe(viewLifecycleOwner, {
                 when (it.status) {
                     Status.SUCCESS -> {
                         activity?.runOnUiThread {
-                            if (findNavController().currentDestination?.id == R.id.navigation_photo)
-                                findNavController().navigate(R.id.action_navigation_photo_to_navigation_animal_list)
+                            if (findNavController().currentDestination?.id == R.id.navigation_pet_add_photo)
+                                findNavController().navigate(R.id.action_navigation_pet_add_image_to_navigation_animal_list)
 
                         }
 
@@ -138,7 +149,7 @@ class AddImageFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
                     .load(resultUri)
                     .into(binding.imageView)
                 when {
-                    image1.drawable == null -> {
+                    binding.image1.drawable == null -> {
                         Glide.with(requireContext())
                             .load(resultUri)
                             .into(binding.image1)
@@ -154,9 +165,10 @@ class AddImageFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
                             )
                         )
 
+                        uri1 = resultUri.path.toString()
                         uriList.add(resultUri.path.toString())
                     }
-                    image2.drawable == null -> {
+                    binding.image2.drawable == null -> {
                         Glide.with(requireContext())
                             .load(resultUri)
                             .into(binding.image2)
@@ -166,7 +178,7 @@ class AddImageFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
                         uriList.add(resultUri.path.toString())
 
                     }
-                    image3.drawable == null -> {
+                    binding.image3.drawable == null -> {
                         Glide.with(requireContext())
                             .load(resultUri)
                             .into(binding.image3)
