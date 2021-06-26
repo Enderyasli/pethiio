@@ -21,6 +21,7 @@ import kotlinx.android.synthetic.main.common_rounded_input_tv.view.*
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlin.properties.Delegates
 
+
 class AddAnimalFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
     AdapterView.OnItemSelectedListener {
 
@@ -34,11 +35,6 @@ class AddAnimalFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
     lateinit var type: List<String>
     var breed = arrayOf("Labrador", "Doberman")
     lateinit var color: List<String>
-    var selectedGender = ""
-    var selectedType = ""
-    var selectedBreed = ""
-    var selectedColor = ""
-    var animalId by Delegates.notNull<Int>()
     private val GENDER_ID = 1
     private val TYPE_ID = 2
     private val BREED_ID = 3
@@ -78,20 +74,36 @@ class AddAnimalFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
 
             binding.characterRc.layoutManager = GridLayoutManager(requireContext(), 3)
 
-            val adapter = CharacterAdapter(
+            val adapterCharacter = CharacterAdapter(
                 requireContext(),
                 getAnimalPersonalities()
             )
 
-            binding.characterRc.adapter = adapter
+            binding.characterRc.adapter = adapterCharacter
+
+            val breedAdapter = ArrayAdapter(
+                requireContext(),
+                android.R.layout.simple_spinner_item,
+                getAnimalBreeds()
+            )
+            breedAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+
+            with(binding.breedLy.spinner)
+            {
+                adapter = breedAdapter
+                setSelection(0, false)
+                onItemSelectedListener = this@AddAnimalFragment
+                gravity = Gravity.CENTER
+
+            }
         })
 
         viewModel.getAddAnimalLookUps().observe(this, {
 
             setLookUps(it)
-            gender = getLookUps("gender")
-            type = getLookUps("animals")
-            color = getLookUps("color")
+            gender = getLookUps(Constants.lookUpGender)
+            type = getLookUps(Constants.lookUpAnimals)
+            color = getLookUps(Constants.lookUpColor)
 
             val genderAdapter =
                 ArrayAdapter(
@@ -109,9 +121,6 @@ class AddAnimalFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
                 )
             typeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
 
-            val breedAdapter =
-                ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, getAnimalBreeds())
-            breedAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
 
             val colorAdapter =
                 ArrayAdapter(
@@ -138,6 +147,8 @@ class AddAnimalFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
             binding.genderLy.spinner.onItemSelectedListener = this
             binding.typeLy.spinner.onItemSelectedListener = this
 
+            binding.genderLy.spinner.onItemSelectedListener = this@AddAnimalFragment
+
 
             with(binding.genderLy.spinner)
             {
@@ -157,14 +168,6 @@ class AddAnimalFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
 
             }
 
-            with(binding.breedLy.spinner)
-            {
-                adapter = breedAdapter
-                setSelection(0, false)
-                onItemSelectedListener = this@AddAnimalFragment
-                gravity = Gravity.CENTER
-
-            }
 
             with(binding.colorLy.spinner)
             {
@@ -204,21 +207,41 @@ class AddAnimalFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
         _binding = FragmentAddAnimalBinding.inflate(inflater, container, false)
         val view = binding.root
 
+
+
         binding.skipBtn.setOnClickListener {
-            postPetAdd(
-                PetAdd(
-                    about = "test",
-                    animalId = 1,
-                    breedId = 1,
-                    animalPersonalities = arrayListOf(1),
-                    color = "BLACK",
-                    gender = "FEMALE",
-                    month = 1,
-                    name = "string",
-                    purpose = "ADOPTION",
-                    year = 20
+
+            val breedId = getBreedsKey(
+                binding.breedLy.spinner.selectedItem.toString()
+            ).toIntOrNull()
+
+            val animalId = getLookUpKey(
+                Constants.lookUpAnimals,
+                binding.typeLy.spinner.selectedItem.toString()
+            ).toIntOrNull()
+
+            if (breedId != null && animalId != null)
+                postPetAdd(
+                    PetAdd(
+                        about = "test",
+                        animalId =
+                        animalId,
+                        breedId = breedId,
+                        animalPersonalities = arrayListOf(1),
+                        color = getLookUpKey(
+                            Constants.lookUpColor,
+                            binding.colorLy.spinner.selectedItem.toString()
+                        ),
+                        gender = getLookUpKey(
+                            Constants.lookUpGender,
+                            binding.genderLy.spinner.selectedItem.toString()
+                        ),
+                        month = 1,
+                        name = "string",
+                        purpose = "ADOPTION",
+                        year = 20
+                    )
                 )
-            )
             viewModel.postPetAdd.observe(viewLifecycleOwner, {
                 when (it.status) {
                     Status.SUCCESS -> {
@@ -235,7 +258,6 @@ class AddAnimalFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
                 }
             })
         }
-
         return view
 
     }
@@ -257,14 +279,21 @@ class AddAnimalFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
 
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-        when (view?.id) {
+        when (parent?.id) {
             1 -> {
-                animalId = getLookUpKey("gender", selectedType).toInt()
-                selectedGender = gender[position]
             }
-            2 -> selectedType = type[position]
-            3 -> selectedBreed = breed[position]
-            4 -> selectedColor = color[position]
+            2 -> {
+                fetchAddAnimalDetail(
+                    getLookUpKey(
+                        Constants.lookUpAnimals,
+                        binding.typeLy.spinner.selectedItem.toString()
+                    )
+                )
+            }
+            3 -> {
+            }
+            4 -> {
+            }
         }
     }
 

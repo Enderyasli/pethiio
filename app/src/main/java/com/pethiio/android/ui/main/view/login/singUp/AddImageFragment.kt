@@ -96,7 +96,7 @@ class AddImageFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
                 val file = File(fileName)
                 val requestBody = file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
                 val filePart =
-                    MultipartBody.Part.createFormData("file$index", file.name + index, requestBody)
+                    MultipartBody.Part.createFormData("file$index", file.name, requestBody)
                 filePartList.add(filePart)
 
             }

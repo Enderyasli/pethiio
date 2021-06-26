@@ -1,7 +1,6 @@
 package com.pethiio.android.ui.main.view.login.singUp
 
 import android.content.Intent
-import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.text.TextUtils
@@ -11,7 +10,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
@@ -133,7 +131,7 @@ class RegisterDetailFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
                         when (it.status) {
                             Status.SUCCESS -> {
                                 activity?.runOnUiThread {
-                                    fetchAddAnimal()
+                                    fetchPetAddPageData()
                                     viewModel.getAddAnimalFields().observe(viewLifecycleOwner, {
                                         fetchAddAnimalDetail("1")
 
@@ -179,7 +177,7 @@ class RegisterDetailFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
                 when (it.status) {
                     Status.SUCCESS -> {
                         activity?.runOnUiThread {
-                            fetchAddAnimal()
+                            fetchPetAddPageData()
                             fetchAddAnimalDetail("1")
                             if (findNavController().currentDestination?.id == R.id.navigation_register_detail)
                                 findNavController().navigate(R.id.action_navigation_register_detail_to_navigation_add_animal)

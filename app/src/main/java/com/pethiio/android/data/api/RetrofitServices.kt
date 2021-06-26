@@ -34,6 +34,10 @@ interface RetrofitServices {
     @POST("page/pet-add")
     fun postPetAdd(@Body petAdd: PetAdd): Observable<PetAddResponse>
 
+
+    @GET("page/pet-add/info")
+    fun getPetInfoPageData(): Observable<Login>
+
     @GET("page/pet-add/animal-detail/{animalId}")
     fun getPetDetail(@Path("animalId") animalId: String): Observable<AnimalDetailResponse>
 

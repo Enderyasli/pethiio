@@ -100,10 +100,10 @@ class RegisterBaseViewModel(private val mainRepository: MainRepository) : ViewMo
         )
     }
 
-    public fun fetchAddAnimal() {
+    public fun fetchPetAddPageData() {
         register.postValue(Resource.loading(null))
         compositeDisposable.add(
-            mainRepository.getAnimalAdd()
+            ServiceBuilder.buildService().getPetInfoPageData()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ registerData ->

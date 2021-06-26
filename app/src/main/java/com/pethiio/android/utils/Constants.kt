@@ -6,8 +6,13 @@ class Constants {
 
     companion object {
 
-        val datePickerFormat: SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd")
+        const val lookUpAnimals: String = "animals"
+        const val lookUpGender: String = "gender"
+        const val lookUpColor: String = "color"
 
+
+
+        val datePickerFormat: SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd")
 
         const val BASE_URL: String = "http://api.pawtind.com/api/"
         const val registerTitle: String = "title"
@@ -50,6 +55,8 @@ class Constants {
         const val animalAddColorTitle: String = "colorTitle"
         const val animalAddCharacterTitle: String = "characterTitle"
         const val animalAddNextButtonTitle: String = "nextButtonTitle"
+
+
 
 
     }

@@ -24,7 +24,6 @@ import com.pethiio.android.ui.main.viewmodel.signup.RegisterBaseViewModel
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import okhttp3.MultipartBody
-import retrofit2.http.Multipart
 
 abstract class RegisterBaseFragment<VModel : RegisterBaseViewModel> : Fragment() {
 
@@ -97,6 +96,15 @@ abstract class RegisterBaseFragment<VModel : RegisterBaseViewModel> : Fragment()
             arrayList.add(it.value)
         }
         return arrayList
+    }
+    fun getBreedsKey( value: String): String {
+
+        animalDetailResponse?.breeds?.forEach { it ->
+                    if (it.value == value)
+                        return it.key
+
+        }
+        return ""
     }
 
     fun getLookUpKey(key: String, value: String): String {
@@ -201,8 +209,8 @@ abstract class RegisterBaseFragment<VModel : RegisterBaseViewModel> : Fragment()
         viewModel.fetchAnimalAddPhoto()
     }
 
-    open fun fetchAddAnimal() {
-        viewModel.fetchAddAnimal()
+    open fun fetchPetAddPageData() {
+        viewModel.fetchPetAddPageData()
     }
 
     open fun fetchAddAnimalDetail(animalId: String) {
