@@ -4,7 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.pethiio.android.data.api.ServiceBuilder
-import com.pethiio.android.data.model.LocationsRequest
+import com.pethiio.android.data.model.member.LocationsRequest
+import com.pethiio.android.data.model.member.MemberListResponse
 import com.pethiio.android.utils.Resource
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -14,6 +15,7 @@ import retrofit2.Response
 class DashBoardViewModel : ViewModel() {
 
     private val locations = MutableLiveData<Resource<Response<Void>>>()
+    private val memberList = MutableLiveData<Resource<MemberListResponse>>()
     private val compositeDisposable = CompositeDisposable()
 
 
@@ -32,6 +34,25 @@ class DashBoardViewModel : ViewModel() {
                     },
                     {
                         locations.postValue(Resource.error("Something went wrong", null))
+                    }
+                )
+        )
+    }
+
+    fun fetchMemberList() {
+
+        memberList.postValue(Resource.loading(null))
+        compositeDisposable.add(
+            ServiceBuilder.buildService()
+                .getMemberList()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                    { loginData ->
+                            memberList.postValue(Resource.success(loginData))
+                    },
+                    {
+                        memberList.postValue(Resource.error("Something went wrong", null))
                     }
                 )
         )

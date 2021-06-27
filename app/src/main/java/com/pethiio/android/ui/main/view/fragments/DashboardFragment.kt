@@ -11,10 +11,9 @@ import android.view.animation.AccelerateInterpolator
 import android.view.animation.DecelerateInterpolator
 import android.view.animation.LinearInterpolator
 import androidx.core.app.ActivityCompat
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DefaultItemAnimator
-import com.pethiio.android.data.model.LocationsRequest
+import com.pethiio.android.data.model.member.LocationsRequest
 import com.pethiio.android.data.model.Spot
 import com.pethiio.android.databinding.FragmentDashboardBinding
 import com.pethiio.android.ui.base.BaseFragment
@@ -121,6 +120,7 @@ class DashboardFragment : BaseFragment(), CardStackListener {
                 "41.37366053245295"
             )
         )
+        viewModel.fetchMemberList()
     }
 
     private fun setupButton() {

@@ -1,4 +1,4 @@
-package com.pethiio.android.data.model
+package com.pethiio.android.data.model.member
 
 import com.google.gson.annotations.SerializedName
 

@@ -2,6 +2,8 @@ package com.pethiio.android.data.api
 
 import com.pethiio.android.data.model.*
 import com.pethiio.android.data.model.login.LoginRequest
+import com.pethiio.android.data.model.member.LocationsRequest
+import com.pethiio.android.data.model.member.MemberListResponse
 import com.pethiio.android.data.model.signup.Login
 import com.pethiio.android.data.model.signup.Register
 import com.pethiio.android.data.model.signup.RegisterInfo
@@ -21,10 +23,13 @@ interface RetrofitServices {
 
     //endregion
 
-    //region Location
+    //region Member
 
     @POST("locations")
     fun postLocations(@Body locationsRequest: LocationsRequest): Observable<Response<Void>>
+
+    @GET("page/pet-search/members")
+    fun getMemberList(): Observable<MemberListResponse>
 
     //endregion
 
