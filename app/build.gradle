@@ -49,6 +49,11 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.multidex:multidex:2.0.1'
 
+    implementation "com.google.android.gms:play-services-location:18.0.0"
+    implementation 'com.yayandroid:LocationManager:2.4.1'
+
+
+
     // To use Kotlin annotation processing tool (kapt)
     kapt "androidx.room:room-compiler:$room_version"
 

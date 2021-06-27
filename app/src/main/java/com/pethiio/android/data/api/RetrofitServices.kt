@@ -19,9 +19,14 @@ interface RetrofitServices {
     @POST("page/login")
     fun postLogin(@Body loginRequest: LoginRequest): Observable<AccessToken>
 
-
     //endregion
 
+    //region Location
+
+    @POST("locations")
+    fun postLocations(@Body locationsRequest: LocationsRequest): Observable<Response<Void>>
+
+    //endregion
 
 
     //region Register

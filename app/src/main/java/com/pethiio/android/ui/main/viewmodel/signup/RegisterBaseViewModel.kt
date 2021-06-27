@@ -251,7 +251,7 @@ class RegisterBaseViewModel : ViewModel() {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                     {
-                        if (it.code() == 200)
+                        if (it.code().toString().startsWith("2"))
                             postPetPhoto.postValue(Resource.success(null))
                         else
                             postPetPhoto.postValue(Resource.error(it.message(), null))

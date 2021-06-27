@@ -3,6 +3,7 @@ package com.pethiio.android.ui.base
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.pethiio.android.data.repository.MainRepository
+import com.pethiio.android.ui.main.viewmodel.DashBoardViewModel
 import com.pethiio.android.ui.main.viewmodel.MainViewModel
 import com.pethiio.android.ui.main.viewmodel.signup.RegisterBaseViewModel
 import com.pethiio.android.ui.main.viewmodel.signup.WelcomeViewModel
@@ -15,6 +16,9 @@ class ViewModelFactory() : ViewModelProvider.Factory {
         }
         if (modelClass.isAssignableFrom(WelcomeViewModel::class.java)) {
             return WelcomeViewModel() as T
+        }
+        if (modelClass.isAssignableFrom(DashBoardViewModel::class.java)) {
+            return DashBoardViewModel() as T
         }
         if (modelClass.isAssignableFrom(RegisterBaseViewModel::class.java)) {
             return RegisterBaseViewModel() as T

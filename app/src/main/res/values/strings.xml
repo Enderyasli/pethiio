@@ -23,4 +23,5 @@
     <string name="my_animals_description">Super! İlk Hayvanını ekledin. Uygulamaya devam etmek için tamamlayı tıkla ya da yeni hayvan ekle</string>
     <string name="lcl_cancel_datepicker">Vazgeç</string>
     <string name="lcl_apply_datepicker">Onayla</string>
+    <string name="no_location_detected">No location detected. Make sure location is enabled on the device.</string>
 </resources>
