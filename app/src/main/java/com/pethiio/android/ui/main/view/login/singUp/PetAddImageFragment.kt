@@ -30,8 +30,10 @@ class PetAddImageFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
     private var _binding: FragmentPetAddImageBinding? = null
 
     override var useSharedViewModel = true
-    var uriList = arrayListOf<String>()
     var uri1: String = ""
+    var uri2: String = ""
+    var uri3: String = ""
+
 
     private val binding get() = _binding!!
 
@@ -81,7 +83,6 @@ class PetAddImageFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
                     R.color.white
                 )
             )
-            uriList.removeAt(0)
         }
 
 
@@ -89,26 +90,16 @@ class PetAddImageFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
 
         binding.completeBtn.setOnClickListener {
 
-            var filePartList = arrayListOf<MultipartBody.Part>()
+            val filePart1= getFilePart(uri1)
+            val filePart2= getFilePart(uri2)
+            val filePart3= getFilePart(uri3)
 
-            uriList.forEachIndexed { index, fileName ->
-                val file = File(fileName)
-                val requestBody = file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
-                val filePart =
-                    MultipartBody.Part.createFormData("files", file.name, requestBody)
-                filePartList.add(filePart)
+            val listOfFiles = listOf(filePart1,filePart2,filePart3)
 
-            }
-//            if (filePartList.size > 0)
-//                postPetPhoto(filePartList.get(0))
-//
-            if (!TextUtils.isEmpty(uri1)) {
-                val file = File(uri1)
-                val requestBody = file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
-                val filePart = MultipartBody.Part.createFormData("file", file.name, requestBody)
-                postPetPhoto(filePart)
 
-            }
+                postPetPhoto(listOfFiles)
+
+
 
 
             viewModel.postPetPhoto.observe(viewLifecycleOwner, { it1 ->
@@ -144,6 +135,10 @@ class PetAddImageFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
                                             })
                                         }
                                     }
+                                    Status.ERROR -> {
+                                    }
+                                    Status.LOADING -> {
+                                    }
                                 }
 
                             })
@@ -160,12 +155,20 @@ class PetAddImageFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
                     }
                 }
             })
-
         }
-
 
         return view
 
+    }
+
+    fun getFilePart(uri: String): MultipartBody.Part? {
+        if (!TextUtils.isEmpty(uri)) {
+            val file = File(uri)
+            val requestBody = file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
+            return MultipartBody.Part.createFormData("files", file.name, requestBody)
+        }
+
+        return null
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -194,7 +197,6 @@ class PetAddImageFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
                         )
 
                         uri1 = resultUri.path.toString()
-                        uriList.add(resultUri.path.toString())
                     }
                     binding.image2.drawable == null -> {
                         Glide.with(requireContext())
@@ -202,8 +204,7 @@ class PetAddImageFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
                             .into(binding.image2)
                         binding.image2Placeholder.visibility = View.GONE
                         binding.image2X.visibility = View.VISIBLE
-
-                        uriList.add(resultUri.path.toString())
+                        uri2 = resultUri.path.toString()
 
                     }
                     binding.image3.drawable == null -> {
@@ -213,13 +214,13 @@ class PetAddImageFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
                         binding.image3Placeholder.visibility = View.GONE
                         binding.image3X.visibility = View.VISIBLE
 
-                        uriList.add(resultUri.path.toString())
+                        uri3 = resultUri.path.toString()
 
                     }
                 }
 
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-                val error = result.error
+                result.error
             }
         }
     }

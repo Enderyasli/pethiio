@@ -1,6 +1,5 @@
 package com.pethiio.android.ui.main.view.fragments.animal
 
-import android.content.Context
 import android.os.Bundle
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -78,7 +77,6 @@ class AddAnimalFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
                 getLocalizedString(Constants.animalAddBreedTitle)
             binding.colorLy.spinner.prompt =
                 getLocalizedString(Constants.animalAddColorTitle)
-
 
 
         })
@@ -219,17 +217,26 @@ class AddAnimalFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
 
         binding.skipBtn.setOnClickListener {
 
-            val breedId = getBreedsKey(
+
+
+            var breedId: Int? = null
+
+            if (binding.breedLy.spinner.selectedItem != null)
+                breedId = getBreedsKey(
                 binding.breedLy.spinner.selectedItem.toString()
             ).toIntOrNull()
 
-            val animalId = getLookUpKey(
-                Constants.lookUpAnimals,
-                binding.typeLy.spinner.selectedItem.toString()
-            ).toIntOrNull()
+
+            var animalId: Int? = null
+
+            if (binding.typeLy.spinner.selectedItem != null)
+                animalId = getLookUpKey(
+                    Constants.lookUpAnimals,
+                    binding.typeLy.spinner.selectedItem.toString()
+                ).toIntOrNull()
 
 
-            var selectedPersonalities =
+            val selectedPersonalities =
                 getSelectedAnimalPersonality(adapterCharacter.getSelectedItems())
 
             if (breedId != null && animalId != null) {
@@ -284,14 +291,6 @@ class AddAnimalFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
     }
 
     override fun getViewModelClass() = RegisterBaseViewModel::class.java
-
-    private fun showToast(
-        context: Context = requireContext(),
-        message: String,
-        duration: Int = Toast.LENGTH_LONG
-    ) {
-        Toast.makeText(context, message, duration).show()
-    }
 
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {

@@ -29,7 +29,7 @@ interface RetrofitServices {
     @POST("page/pet-add-photo/{animalId}")
     fun postPetPhoto(
         @Path("animalId") animalId: Int,
-        @Part files: MultipartBody.Part
+        @Part files: List<MultipartBody.Part?>
     ): Observable<Response<Void>>
 
     @POST("page/pet-add")

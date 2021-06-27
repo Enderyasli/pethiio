@@ -1,5 +1,6 @@
 package com.pethiio.android.ui.main.viewmodel.signup
 
+import androidx.annotation.Nullable
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -207,7 +208,7 @@ class RegisterBaseViewModel(private val mainRepository: MainRepository) : ViewMo
         )
     }
 
-    public fun postPetPhoto(multipart: MultipartBody.Part) {
+    public fun postPetPhoto(@Nullable multipart: List<MultipartBody.Part?>) {
         postPetPhoto.postValue(Resource.loading(null))
         compositeDisposable.add(
             ServiceBuilder.buildService()
@@ -218,9 +219,13 @@ class RegisterBaseViewModel(private val mainRepository: MainRepository) : ViewMo
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                    { registerData ->
+                    {
+                        if (it.code() == 200)
+                            postPetPhoto.postValue(Resource.success(null))
+                        else
+                            postPetPhoto.postValue(Resource.error(it.message(), null))
 
-                        postPetPhoto.postValue(Resource.success(null))
+
                     },
                     {
                         postPetPhoto.postValue(Resource.error("Something went wrong", null))
