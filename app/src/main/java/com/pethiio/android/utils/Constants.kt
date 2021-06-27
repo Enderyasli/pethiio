@@ -56,6 +56,13 @@ class Constants {
         const val animalAddNextButtonTitle: String = "nextButtonTitle"
         const val animalAddMonthPlaceholder: String = "monthPlaceholder"
 
+        const val animalListAddNewTitle: String = "addNewTitle"
+        const val animalListCompleteButtonTitle: String = "completeButtonTitle"
+        const val animalListHeader: String = "header"
+        const val animalListSubTitle: String = "subTitle"
+        const val animalListTitle: String = "title"
+
+
 
 
 

@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -38,7 +37,7 @@ class RegisterFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
 
         viewModel.getRegisterFields().observe(this, {
 
-            setPawtindResponseList(it)
+            setPethiioResponseList(it)
             binding.signupTitle.text = getLocalizedString(Constants.registerTitle)
             binding.signupDescription.text = getLocalizedString(Constants.registerSubTitle)
 

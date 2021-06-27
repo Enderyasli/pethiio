@@ -29,7 +29,7 @@ class LoginFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
         super.setUpViews()
         viewModel.getFields().observe(this, Observer {
 
-            setPawtindResponseList(it)
+            setPethiioResponseList(it)
             binding.signupTitle.text = getLocalizedString(Constants.registerTitle)
             binding.emailLayout.titleTv.text =
                 getLocalizedString(Constants.registerEmailTitle)

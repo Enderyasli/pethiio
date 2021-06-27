@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.pethiio.android.R
-import kotlinx.android.synthetic.main.animal_item.view.*
+import kotlinx.android.synthetic.main.item_animal.view.*
 
 class AnimalAdapter(
     val context: Context,
@@ -23,7 +23,7 @@ class AnimalAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
         DataViewHolder(
             LayoutInflater.from(parent.context).inflate(
-                R.layout.animal_item, parent,
+                R.layout.item_animal, parent,
                 false
             )
         )

@@ -15,7 +15,7 @@ import com.pethiio.android.data.api.ApiHelper
 import com.pethiio.android.data.api.ApiServiceImpl
 import com.pethiio.android.data.model.AnimalDetailResponse
 import com.pethiio.android.data.model.LookUpsResponse
-import com.pethiio.android.data.model.PawtindResponse
+import com.pethiio.android.data.model.PethiioResponse
 import com.pethiio.android.data.model.PetAdd
 import com.pethiio.android.data.model.signup.Register
 import com.pethiio.android.data.model.signup.RegisterInfo
@@ -34,7 +34,7 @@ abstract class RegisterBaseFragment<VModel : RegisterBaseViewModel> : Fragment()
     protected lateinit var viewModel: VModel
     protected abstract fun getViewModelClass(): Class<VModel>
 
-    private var pawtindResponse: List<PawtindResponse>? = null
+    private var pethiioResponse: List<PethiioResponse>? = null
     private var lookUpsResponse: List<LookUpsResponse>? = null
     private var animalDetailResponse: AnimalDetailResponse? = null
 
@@ -45,7 +45,7 @@ abstract class RegisterBaseFragment<VModel : RegisterBaseViewModel> : Fragment()
         super.onActivityCreated(savedInstanceState)
         // get the reference of the parent activity and call the setBottomNavigationVisibility method.
         if (activity is MainActivity) {
-            var mainActivity = activity as MainActivity
+            val mainActivity = activity as MainActivity
             mainActivity.setBottomNavigationVisibility(bottomNavigationViewVisibility)
 
             init()
@@ -56,7 +56,7 @@ abstract class RegisterBaseFragment<VModel : RegisterBaseViewModel> : Fragment()
 
     fun getLocalizedString(key: String): String {
 
-        pawtindResponse?.forEach {
+        pethiioResponse?.forEach {
             if (it.key == key)
                 return it.value
         }
@@ -92,10 +92,10 @@ abstract class RegisterBaseFragment<VModel : RegisterBaseViewModel> : Fragment()
     fun getSelectedAnimalPersonality(value: ArrayList<String>): ArrayList<Int> {
 
         val arrayList = arrayListOf<Int>()
-        animalDetailResponse?.personalities?.forEach { pawtind ->
+        animalDetailResponse?.personalities?.forEach { pethiio ->
             value.forEach {
-                if (pawtind.value == it)
-                    arrayList.add(pawtind.key.toInt())
+                if (pethiio.value == it)
+                    arrayList.add(pethiio.key.toInt())
             }
 
         }
@@ -137,7 +137,7 @@ abstract class RegisterBaseFragment<VModel : RegisterBaseViewModel> : Fragment()
 
     fun getLocalizedSpan(key: String): SpannableString? {
 
-        pawtindResponse?.forEach {
+        pethiioResponse?.forEach {
             if (it.key == key)
                 return getSpannableString(it.value)
         }
@@ -155,9 +155,9 @@ abstract class RegisterBaseFragment<VModel : RegisterBaseViewModel> : Fragment()
         return valid
     }
 
-    fun getSpannableString(key: String): SpannableString {
+    private fun getSpannableString(key: String): SpannableString {
 
-        val spannable = SpannableString(key + " *")
+        val spannable = SpannableString("$key *")
         spannable.setSpan(
             ForegroundColorSpan(Color.RED),
             key.length,// start
@@ -167,8 +167,8 @@ abstract class RegisterBaseFragment<VModel : RegisterBaseViewModel> : Fragment()
         return spannable
     }
 
-    fun setPawtindResponseList(pawtindResponseList: List<PawtindResponse>) {
-        pawtindResponse = pawtindResponseList
+    fun setPethiioResponseList(pethiioResponseList: List<PethiioResponse>?) {
+        pethiioResponse = pethiioResponseList
     }
 
     fun setLookUps(lookUpsResponseList: List<LookUpsResponse>) {
@@ -182,7 +182,7 @@ abstract class RegisterBaseFragment<VModel : RegisterBaseViewModel> : Fragment()
     override fun onResume() {
         super.onResume()
         if (activity is MainActivity) {
-            var mainActivity = activity as MainActivity
+            val mainActivity = activity as MainActivity
             mainActivity.setBottomNavigationVisibility(bottomNavigationViewVisibility)
         }
     }
@@ -226,6 +226,9 @@ abstract class RegisterBaseFragment<VModel : RegisterBaseViewModel> : Fragment()
     open fun fetchPetAddPageData() {
         viewModel.fetchPetAddPageData()
     }
+    open fun fetchPetListPageData() {
+        viewModel.fetchPetListPageData()
+    }
 
     open fun fetchAddAnimalDetail(animalId: String) {
         viewModel.fetchAnimalDetail(animalId)
@@ -250,6 +253,10 @@ abstract class RegisterBaseFragment<VModel : RegisterBaseViewModel> : Fragment()
 
     open fun postPetAdd(petAdd: PetAdd) {
         viewModel.postPetAdd(petAdd)
+    }
+
+    open fun fetchPetList() {
+        viewModel.fetchPetList()
     }
 
     private fun init() {

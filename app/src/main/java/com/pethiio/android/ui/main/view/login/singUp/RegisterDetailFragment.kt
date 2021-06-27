@@ -23,7 +23,6 @@ import com.pethiio.android.ui.main.viewmodel.signup.RegisterBaseViewModel
 import com.pethiio.android.utils.Constants
 import com.pethiio.android.utils.Status
 import com.theartofdev.edmodo.cropper.CropImage
-import kotlinx.android.synthetic.main.fragment_add_image.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
@@ -53,7 +52,7 @@ class RegisterDetailFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
         super.setUpViews()
         viewModel.getRegisterDetailFields().observe(this, {
 
-            setPawtindResponseList(it)
+            setPethiioResponseList(it)
             binding.signupTitle.text = getLocalizedString(Constants.registerTitle)
             binding.signupDescription.text =
                 getLocalizedString(Constants.registerSubTitle)

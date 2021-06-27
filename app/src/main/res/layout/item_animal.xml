@@ -21,6 +21,13 @@
             android:layout_height="match_parent"
             android:src="@drawable/dog" />
 
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="27dp"
+            android:layout_gravity="bottom"
+            android:background="@color/pet_name_bg" />
+
         <TextView
             android:id="@+id/pet_name_tv"
             android:layout_width="wrap_content"
@@ -32,14 +39,6 @@
             android:text="Fluffy"
             android:textColor="@color/orangeButton"
             android:textSize="18sp" />
-
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="27dp"
-            android:layout_gravity="bottom"
-            android:alpha="0.11"
-            android:background="@color/signup_bg_color" />
 
     </androidx.cardview.widget.CardView>
 

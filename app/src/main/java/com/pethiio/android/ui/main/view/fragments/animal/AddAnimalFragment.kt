@@ -52,7 +52,7 @@ class AddAnimalFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
 
         viewModel.getAddAnimalFields().observe(this, {
 
-            setPawtindResponseList(it)
+            setPethiioResponseList(it)
             binding.nameLy.titleTv.text = getLocalizedSpan(Constants.registerNameTitle)
             binding.nameLy.placeholderTv.hint =
                 getLocalizedString(Constants.registerNamePlaceholder)

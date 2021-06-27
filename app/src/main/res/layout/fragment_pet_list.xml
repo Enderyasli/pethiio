@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.main.view.fragments.animal.PetListFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/petlist_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/default_margin"
+            android:layout_marginTop="@dimen/signup_title_top_margin"
+            android:layout_marginRight="@dimen/default_margin"
+            android:fontFamily="@font/poppins_semibold"
+            tools:text="@string/my_animals"
+            android:textColor="@color/orangeButton"
+            android:textSize="@dimen/signup_title_size" />
+
+        <TextView
+            android:id="@+id/petlist_subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/default_margin"
+            android:layout_marginRight="@dimen/default_margin"
+            android:fontFamily="@font/poppins_medium"
+            tools:text="@string/my_animals_description"
+            android:textColor="@color/grey"
+            android:textSize="22dp" />
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/petlist_rv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp" />
+
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/complete_btn"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/common_button_height"
+        android:layout_gravity="bottom"
+        android:layout_marginLeft="@dimen/default_margin"
+        android:layout_marginRight="@dimen/default_margin"
+        android:layout_marginBottom="120dp"
+        android:background="@drawable/orange_button_bg"
+        android:fontFamily="@font/poppins_semibold"
+        tools:text="@string/complete"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="@dimen/medium_size" />
+</FrameLayout>

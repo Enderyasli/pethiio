@@ -15,7 +15,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import okhttp3.MultipartBody
-import retrofit2.http.Multipart
 
 class RegisterBaseViewModel(private val mainRepository: MainRepository) : ViewModel() {
 
@@ -26,13 +25,16 @@ class RegisterBaseViewModel(private val mainRepository: MainRepository) : ViewMo
     val postRegisterAvatar = MutableLiveData<Resource<AccessToken>>()
     val postPetPhoto = MutableLiveData<Resource<AccessToken>>()
     val postPetAdd = MutableLiveData<Resource<PetAddResponse>>()
-    private val fields = MutableLiveData<List<PawtindResponse>>()
-    private val registerFields = MutableLiveData<List<PawtindResponse>>()
-    private val registerDetailFields = MutableLiveData<List<PawtindResponse>>()
+    val petList = MutableLiveData<Resource<List<PetListResponse>>>()
+    val petListPageData = MutableLiveData<Resource<List<PethiioResponse>>>()
+
+    private val fields = MutableLiveData<List<PethiioResponse>>()
+    private val registerFields = MutableLiveData<List<PethiioResponse>>()
+    private val registerDetailFields = MutableLiveData<List<PethiioResponse>>()
     private val registerDetailLookUps = MutableLiveData<List<LookUpsResponse>>()
     private val addAnimalLookUps = MutableLiveData<List<LookUpsResponse>>()
-    private val addAnimalImageFields = MutableLiveData<List<PawtindResponse>>()
-    private val addAnimalFields = MutableLiveData<List<PawtindResponse>>()
+    private val addAnimalImageFields = MutableLiveData<List<PethiioResponse>>()
+    private val addAnimalFields = MutableLiveData<List<PethiioResponse>>()
     private val petAddDetail = MutableLiveData<AnimalDetailResponse>()
     private val compositeDisposable = CompositeDisposable()
     private var accessToken: String = ""
@@ -112,6 +114,20 @@ class RegisterBaseViewModel(private val mainRepository: MainRepository) : ViewMo
                     addAnimalLookUps.postValue(registerData.lookups)
                 }, {
                     register.postValue(Resource.error("Something Went Wrong", null))
+                })
+        )
+    }
+
+    public fun fetchPetListPageData() {
+        register.postValue(Resource.loading(null))
+        compositeDisposable.add(
+            ServiceBuilder.buildService().getPetListInfoPageData()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ registerData ->
+                    petListPageData.postValue(Resource.success(registerData.fields))
+                }, {
+                    petListPageData.postValue(Resource.error("Something Went Wrong", null))
                 })
         )
     }
@@ -232,6 +248,24 @@ class RegisterBaseViewModel(private val mainRepository: MainRepository) : ViewMo
         )
     }
 
+    public fun fetchPetList() {
+        postRegister.postValue(Resource.loading(null))
+        compositeDisposable.add(
+            ServiceBuilder.buildService()
+                .getPetList()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                    { registerData ->
+                        petList.postValue(Resource.success(registerData))
+                    },
+                    {
+                        petList.postValue(Resource.error("Something went wrong", null))
+                    }
+                )
+        )
+    }
+
 
     override fun onCleared() {
         super.onCleared()
@@ -242,19 +276,19 @@ class RegisterBaseViewModel(private val mainRepository: MainRepository) : ViewMo
         return login
     }
 
-    fun setFields(pawtindResponse: List<PawtindResponse>) {
-        fields.value = pawtindResponse
+    fun setFields(pethiioResponse: List<PethiioResponse>) {
+        fields.value = pethiioResponse
     }
 
-    fun getFields(): LiveData<List<PawtindResponse>> {
+    fun getFields(): LiveData<List<PethiioResponse>> {
         return fields
     }
 
-    fun getRegisterFields(): LiveData<List<PawtindResponse>> {
+    fun getRegisterFields(): LiveData<List<PethiioResponse>> {
         return registerFields
     }
 
-    fun getRegisterDetailFields(): LiveData<List<PawtindResponse>> {
+    fun getRegisterDetailFields(): LiveData<List<PethiioResponse>> {
         return registerDetailFields
     }
 
@@ -262,11 +296,11 @@ class RegisterBaseViewModel(private val mainRepository: MainRepository) : ViewMo
         return registerDetailLookUps
     }
 
-    fun getAddImageFields(): LiveData<List<PawtindResponse>> {
+    fun getAddImageFields(): LiveData<List<PethiioResponse>> {
         return addAnimalImageFields
     }
 
-    fun getAddAnimalFields(): LiveData<List<PawtindResponse>> {
+    fun getAddAnimalFields(): LiveData<List<PethiioResponse>> {
         return addAnimalFields
     }
 
@@ -276,6 +310,10 @@ class RegisterBaseViewModel(private val mainRepository: MainRepository) : ViewMo
 
     fun getAddAnimalLookUps(): LiveData<List<LookUpsResponse>> {
         return addAnimalLookUps
+    }
+
+    fun getPetList(): LiveData<Resource<List<PetListResponse>>> {
+        return petList
     }
 
 

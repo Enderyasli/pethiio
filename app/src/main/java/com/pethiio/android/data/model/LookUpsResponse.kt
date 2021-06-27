@@ -7,6 +7,6 @@ data class LookUpsResponse(
     @SerializedName("key")
     val key: String = "",
     @SerializedName("value")
-    val value: List<PawtindResponse>
+    val value: List<PethiioResponse>
 
 )

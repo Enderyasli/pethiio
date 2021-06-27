@@ -12,15 +12,12 @@ import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.pethiio.android.R
-import com.pethiio.android.databinding.FragmentAddImageBinding
 import com.pethiio.android.databinding.FragmentPetAddImageBinding
 import com.pethiio.android.ui.base.RegisterBaseFragment
 import com.pethiio.android.ui.main.viewmodel.signup.RegisterBaseViewModel
 import com.pethiio.android.utils.Constants
 import com.pethiio.android.utils.Status
 import com.theartofdev.edmodo.cropper.CropImage
-import kotlinx.android.synthetic.main.fragment_add_image.*
-import kotlinx.android.synthetic.main.item_layout.view.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
@@ -42,7 +39,7 @@ class PetAddImageFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
         super.setUpViews()
         viewModel.getAddImageFields().observe(this, {
 
-            setPawtindResponseList(it)
+            setPethiioResponseList(it)
             binding.animalAddPhotoTitle.text = getLocalizedString(Constants.registerTitle)
             binding.completeBtn.text = getLocalizedString(Constants.registerCompleteButtonTitle)
 
@@ -114,18 +111,49 @@ class PetAddImageFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
             }
 
 
-            viewModel.postPetPhoto.observe(viewLifecycleOwner, {
-                when (it.status) {
+            viewModel.postPetPhoto.observe(viewLifecycleOwner, { it1 ->
+                when (it1.status) {
                     Status.SUCCESS -> {
                         activity?.runOnUiThread {
-                            if (findNavController().currentDestination?.id == R.id.navigation_pet_add_photo)
-                                findNavController().navigate(R.id.action_navigation_pet_add_image_to_navigation_animal_list)
+
+                            fetchPetList()
+                            fetchPetListPageData()
+                            viewModel.petListPageData.observe(viewLifecycleOwner, { it1 ->
+
+                                when (it1.status) {
+                                    Status.SUCCESS -> {
+                                        activity?.runOnUiThread {
+                                            viewModel.petList.observe(viewLifecycleOwner, {
+                                                when (it.status) {
+                                                    Status.SUCCESS -> {
+                                                        activity?.runOnUiThread {
+                                                            if (findNavController().currentDestination?.id == R.id.navigation_pet_add_photo)
+                                                                findNavController().navigate(R.id.action_navigation_pet_add_image_to_navigation_animal_list)
+                                                        }
+                                                    }
+                                                    Status.ERROR -> {
+                                                        Toast.makeText(
+                                                            requireContext(),
+                                                            it.message,
+                                                            Toast.LENGTH_LONG
+                                                        ).show()
+                                                    }
+                                                    Status.LOADING -> {
+                                                    }
+                                                }
+                                            })
+                                        }
+                                    }
+                                }
+
+                            })
+
 
                         }
 
                     }
                     Status.ERROR -> {
-                        Toast.makeText(requireContext(), it.message, Toast.LENGTH_LONG).show()
+                        Toast.makeText(requireContext(), it1.message, Toast.LENGTH_LONG).show()
 
                     }
                     Status.LOADING -> {
