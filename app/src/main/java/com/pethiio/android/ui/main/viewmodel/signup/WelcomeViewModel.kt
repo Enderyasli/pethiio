@@ -3,16 +3,16 @@ package com.pethiio.android.ui.main.viewmodel.signup
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.pethiio.android.data.api.ServiceBuilder
 import com.pethiio.android.data.model.signup.Login
-import com.pethiio.android.data.repository.MainRepository
 import com.pethiio.android.utils.Resource
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 
-class WelcomeViewModel(private val mainRepository: MainRepository) : ViewModel() {
+class WelcomeViewModel : ViewModel() {
 
-    private val users = MutableLiveData<Resource<Login>>()
+    private val loginPageData = MutableLiveData<Resource<Login>>()
     private val compositeDisposable = CompositeDisposable()
 
     init {
@@ -21,16 +21,21 @@ class WelcomeViewModel(private val mainRepository: MainRepository) : ViewModel()
 
 
     private fun fetchWelcome() {
-        users.postValue(Resource.loading(null))
+
+        loginPageData.postValue(Resource.loading(null))
         compositeDisposable.add(
-            mainRepository.getLogin()
+            ServiceBuilder.buildService()
+                .getLoginPageData()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ userList ->
-                    users.postValue(Resource.success(userList))
-                }, {
-                    users.postValue(Resource.error("Something Went Wrong", null))
-                })
+                .subscribe(
+                    { loginData ->
+                        loginPageData.postValue(Resource.success(loginData))
+                    },
+                    {
+                        loginPageData.postValue(Resource.error("Something went wrong", null))
+                    }
+                )
         )
     }
 
@@ -40,7 +45,7 @@ class WelcomeViewModel(private val mainRepository: MainRepository) : ViewModel()
     }
 
     fun getLogin(): LiveData<Resource<Login>> {
-        return users
+        return loginPageData
     }
 
 }

@@ -10,8 +10,6 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.pethiio.android.data.api.ApiHelper
-import com.pethiio.android.data.api.ApiServiceImpl
 import com.pethiio.android.data.model.User
 import com.pethiio.android.databinding.FragmentHomeBinding
 import com.pethiio.android.ui.base.BaseFragment
@@ -52,7 +50,7 @@ class HomeFragment : BaseFragment(), FilterItemClickListener {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val view = binding.root
@@ -78,7 +76,7 @@ class HomeFragment : BaseFragment(), FilterItemClickListener {
 
 
         binding.animalRv.layoutManager = GridLayoutManager(requireContext(), 3)
-        var adapter = FilterAdapter(
+        val adapter = FilterAdapter(
             requireContext(),
             arrayListOf("All", "Cat", "Dog"),
             this@HomeFragment
@@ -87,7 +85,7 @@ class HomeFragment : BaseFragment(), FilterItemClickListener {
 
 
         binding.animalListRv.layoutManager = GridLayoutManager(requireContext(), 2)
-        var animalAdapter = AnimalAdapter(
+        val animalAdapter = AnimalAdapter(
             requireContext(),
             arrayListOf("Lucky", "Kont", "Hera","Fluffy")
         )
@@ -123,7 +121,7 @@ class HomeFragment : BaseFragment(), FilterItemClickListener {
     private fun setupViewModel() {
         mainViewModel = ViewModelProviders.of(
             this,
-            ViewModelFactory(ApiHelper(ApiServiceImpl()))
+            ViewModelFactory()
         ).get(MainViewModel::class.java)
     }
 

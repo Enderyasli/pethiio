@@ -8,7 +8,7 @@ import com.pethiio.android.data.repository.MainRepository
 import com.pethiio.android.utils.Resource
 import io.reactivex.disposables.CompositeDisposable
 
-class MainViewModel(private val mainRepository: MainRepository) : ViewModel() {
+class MainViewModel() : ViewModel() {
 
     private val users = MutableLiveData<Resource<List<User>>>()
     private val compositeDisposable = CompositeDisposable()

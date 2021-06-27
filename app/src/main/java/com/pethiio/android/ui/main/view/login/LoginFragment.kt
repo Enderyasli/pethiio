@@ -4,13 +4,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.pethiio.android.R
+import com.pethiio.android.data.model.login.LoginRequest
 import com.pethiio.android.databinding.FragmentLoginBinding
 import com.pethiio.android.ui.base.RegisterBaseFragment
 import com.pethiio.android.ui.main.viewmodel.signup.RegisterBaseViewModel
 import com.pethiio.android.utils.Constants
+import com.pethiio.android.utils.Status
 
 
 class LoginFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
@@ -23,11 +27,9 @@ class LoginFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
     override var useSharedViewModel = true
 
 
-//    private lateinit var loginViewModel: LoginViewModel
-
     override fun setUpViews() {
         super.setUpViews()
-        viewModel.getFields().observe(this, Observer {
+        viewModel.getFields().observe(this, {
 
             setPethiioResponseList(it)
             binding.signupTitle.text = getLocalizedString(Constants.registerTitle)
@@ -42,51 +44,11 @@ class LoginFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
             binding.forgotPassword.text =
                 getLocalizedString(Constants.registerForgotPasswordButtonTitle)
             binding.parentLayout.visibility = View.VISIBLE
-            binding.progressBar.visibility = View.GONE
         })
     }
-//    override fun observeData() {
-//        super.observeData()
-//        viewModel.getLogin().observe(this, Observer { it ->
-//            when (it.status) {
-//                Status.SUCCESS -> {
-//                    it.data?.let { it ->
-//
-//                        binding.signupTitle.text = getLocaizedString(Constants.registerTitle)
-//                        binding.emailLayout.titleTv.text =
-//                            getLocaizedString(Constants.registerEmailTitle)
-//                        binding.emailLayout.placeholderTv.hint =
-//                            getLocaizedString(Constants.registerEmailPlaceholder)
-//                        binding.passwordTitleTv.text =
-//                            getLocaizedString(Constants.registerPasswordTitle)
-//                        binding.passwordPlaceholderTv.hint =
-//                            getLocaizedString(Constants.registerPasswordPlaceholder)
-//                        binding.forgotPassword.text =
-//                            getLocaizedString(Constants.registerForgotPasswordButtonTitle)
-//                        binding.parentLayout.visibility = View.VISIBLE
-//                        binding.progressBar.visibility = View.GONE
-//
-//
-//
-//                        Log.d("gelenresponse", it.toString())
-//                    }
-//                }
-//                Status.LOADING -> {
-//                    binding.progressBar.visibility = View.VISIBLE
-//                }
-//                Status.ERROR -> {
-//                    //Handle Error
-//                    Toast.makeText(context, it.message, Toast.LENGTH_LONG).show()
-//                }
-//            }
-//        })
-//
-//    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        setupViewModel()
-//        setupObserver()
 
     }
 
@@ -98,70 +60,42 @@ class LoginFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
         val view = binding.root
 
         binding.loginBtn.setOnClickListener {
-            findNavController().navigate(R.id.action_navigation_login_to_navigation_main)
+
+            var valid = getViewError(binding.emailLayout.placeholderTv, "Email cannot be empty")
+            valid = getViewError(binding.passwordPlaceholderTv, "Password cannot be empty")
+            if (valid)
+                postLogin(
+                    LoginRequest(
+                        binding.emailLayout.placeholderTv.text.trim().toString(),
+                        binding.passwordPlaceholderTv.text.trim().toString()
+                    )
+                )
+
+            viewModel.getPostLogin().observe(viewLifecycleOwner, {
+
+                when (it.status) {
+                    Status.SUCCESS -> {
+                        activity?.runOnUiThread {
+                            if (findNavController().currentDestination?.id == R.id.navigation_login)
+                                findNavController().navigate(R.id.action_navigation_login_to_navigation_main)
+                        }
+
+                    }
+                    Status.ERROR -> {
+                        Toast.makeText(requireContext(), it.message, Toast.LENGTH_LONG).show()
+
+                    }
+                    Status.LOADING -> {
+                    }
+                }
+            })
+
+
         }
 
         return view
 
     }
-
-//    private fun setupViewModel() {
-//        loginViewModel = ViewModelProviders.of(
-//            this,
-//            ViewModelFactory(ApiHelper(ApiServiceImpl()))
-//        ).get(LoginViewModel::class.java)
-//    }
-//
-//    private fun setupObserver() {
-//        loginViewModel.getLogin().observe(this, Observer { it ->
-//            when (it.status) {
-//                Status.SUCCESS -> {
-//                    it.data?.let { it ->
-//
-//
-//                        val pawtindResponse: List<PawtindResponse> = it.fields
-//                        var loginInfoMapper = LoginInfoMapper()
-//
-//                        pawtindResponse.forEach { pawtindResponse: PawtindResponse ->
-//
-//
-//                            loginInfoMapper.javaClass.declaredFields.forEach {
-//
-//                                if (pawtindResponse.key == it.name) {
-//                                    val field: Field =
-//                                        LoginInfoMapper::class.java.getDeclaredField(it.name)
-//                                    field.isAccessible = true
-//                                    field.set(loginInfoMapper, pawtindResponse.value)
-//                                }
-//                            }
-//
-//
-//                        }
-//
-//                        binding.signupTitle.text = loginInfoMapper.title
-//                        binding.emailLayout.titleTv.text = loginInfoMapper.emailTitle
-//                        binding.emailLayout.placeholderTv.hint = loginInfoMapper.emailPlaceholder
-//                        binding.passwordTitleTv.text = loginInfoMapper.passwordTitle
-//                        binding.passwordPlaceholderTv.hint = loginInfoMapper.title
-//                        binding.forgotPassword.text = loginInfoMapper.forgotPasswordButtonTitle
-//                        binding.parentLayout.visibility = View.VISIBLE
-//                        binding.progressBar.visibility = View.GONE
-//
-//
-//
-//                        Log.d("gelenresponse", it.toString())
-//                    }
-//                }
-//                Status.LOADING -> {
-//                    binding.progressBar.visibility = View.VISIBLE
-//                }
-//                Status.ERROR -> {
-//                    //Handle Error
-//                    Toast.makeText(context, it.message, Toast.LENGTH_LONG).show()
-//                }
-//            }
-//        })
-//    }
 
 
     override fun onDestroyView() {

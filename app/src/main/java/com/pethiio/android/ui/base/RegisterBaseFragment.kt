@@ -11,12 +11,11 @@ import android.widget.EditText
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
-import com.pethiio.android.data.api.ApiHelper
-import com.pethiio.android.data.api.ApiServiceImpl
 import com.pethiio.android.data.model.AnimalDetailResponse
 import com.pethiio.android.data.model.LookUpsResponse
 import com.pethiio.android.data.model.PethiioResponse
 import com.pethiio.android.data.model.PetAdd
+import com.pethiio.android.data.model.login.LoginRequest
 import com.pethiio.android.data.model.signup.Register
 import com.pethiio.android.data.model.signup.RegisterInfo
 import com.pethiio.android.ui.main.view.MainActivity
@@ -226,6 +225,7 @@ abstract class RegisterBaseFragment<VModel : RegisterBaseViewModel> : Fragment()
     open fun fetchPetAddPageData() {
         viewModel.fetchPetAddPageData()
     }
+
     open fun fetchPetListPageData() {
         viewModel.fetchPetListPageData()
     }
@@ -236,6 +236,10 @@ abstract class RegisterBaseFragment<VModel : RegisterBaseViewModel> : Fragment()
 
     open fun postRegister(register: Register) {
         viewModel.postRegister(register)
+    }
+
+    open fun postLogin(loginRequest: LoginRequest ) {
+        viewModel.postLogin(loginRequest)
     }
 
 
@@ -261,14 +265,13 @@ abstract class RegisterBaseFragment<VModel : RegisterBaseViewModel> : Fragment()
 
     private fun init() {
         viewModel = if (useSharedViewModel) {
-            ViewModelProviders.of(requireActivity(), ViewModelFactory(ApiHelper(ApiServiceImpl())))
-                .get(
-                    getViewModelClass()
-                )
+            ViewModelProviders.of(
+                requireActivity(),
+                ViewModelFactory()
+            ).get(getViewModelClass())
         } else {
             ViewModelProvider(this).get(getViewModelClass())
         }
-
 
     }
 

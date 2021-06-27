@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.pethiio.android.data.api.ServiceBuilder
 import com.pethiio.android.data.model.*
+import com.pethiio.android.data.model.login.LoginRequest
 import com.pethiio.android.data.model.signup.Login
 import com.pethiio.android.data.model.signup.Register
 import com.pethiio.android.data.model.signup.RegisterInfo
@@ -17,11 +18,12 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import okhttp3.MultipartBody
 
-class RegisterBaseViewModel(private val mainRepository: MainRepository) : ViewModel() {
+class RegisterBaseViewModel : ViewModel() {
 
-    private val login = MutableLiveData<Resource<Login>>()
+    private val loginPageData = MutableLiveData<Resource<Login>>()
     val register = MutableLiveData<Resource<Login>>()
     val postRegister = MutableLiveData<Resource<AccessToken>>()
+    val postLogin = MutableLiveData<Resource<AccessToken>>()
     val postRegisterInfo = MutableLiveData<Resource<AccessToken>>()
     val postRegisterAvatar = MutableLiveData<Resource<AccessToken>>()
     val postPetPhoto = MutableLiveData<Resource<AccessToken>>()
@@ -37,45 +39,71 @@ class RegisterBaseViewModel(private val mainRepository: MainRepository) : ViewMo
     private val addAnimalImageFields = MutableLiveData<List<PethiioResponse>>()
     private val addAnimalFields = MutableLiveData<List<PethiioResponse>>()
     private val petAddDetail = MutableLiveData<AnimalDetailResponse>()
+
     private val compositeDisposable = CompositeDisposable()
     private var accessToken: String = ""
 
+    //region Login
 
-    public fun fetchLogin() {
-        login.postValue(Resource.loading(null))
+    fun fetchLogin() {
+        loginPageData.postValue(Resource.loading(null))
         compositeDisposable.add(
-            mainRepository.getLogin()
+            ServiceBuilder.buildService()
+                .getLoginPageData()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ loginData ->
-                    login.postValue(Resource.success(loginData))
+                    loginPageData.postValue(Resource.success(loginData))
                     fields.postValue(loginData.fields)
                 }, {
-                    login.postValue(Resource.error("Something Went Wrong", null))
+                    loginPageData.postValue(Resource.error(it.message, null))
                 })
         )
     }
 
-    public fun fetchRegister() {
+    fun postLogin(loginRequest: LoginRequest) {
+        postLogin.postValue(Resource.loading(null))
+        compositeDisposable.add(
+            ServiceBuilder.buildService()
+                .postLogin(loginRequest)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                    { loginData ->
+                        PreferenceHelper.SharedPreferencesManager.getInstance().accessToken =
+                            loginData.accessToken
+                        postLogin.postValue(Resource.success(loginData))
+                    },
+                    {
+                        postLogin.postValue(Resource.error(it.message, null))
+                    }
+                )
+        )
+    }
+
+    //endregion
+
+    //region Register
+
+    fun fetchRegister() {
         register.postValue(Resource.loading(null))
         compositeDisposable.add(
-            mainRepository.getRegister()
+            ServiceBuilder.buildService().getRegisterPageData()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ registerData ->
                     register.postValue(Resource.success(registerData))
                     registerFields.postValue(registerData.fields)
                 }, {
-                    register.postValue(Resource.error("Something Went Wrong", null))
+                    register.postValue(Resource.error(it.message, null))
                 })
         )
     }
 
-
-    public fun fetchRegisterDetail() {
+    fun fetchRegisterDetail() {
         register.postValue(Resource.loading(null))
         compositeDisposable.add(
-            ServiceBuilder.buildService().getRegisterInfoPageData()
+            ServiceBuilder.buildService().getRegisterDetailPageData()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ registerData ->
@@ -83,74 +111,15 @@ class RegisterBaseViewModel(private val mainRepository: MainRepository) : ViewMo
                     registerDetailFields.postValue(registerData.fields)
                     registerDetailLookUps.postValue(registerData.lookups)
                 }, {
-                    register.postValue(Resource.error("Something Went Wrong", null))
+                    register.postValue(Resource.error(it.message, null))
                 })
         )
     }
 
-    public fun fetchAnimalAddPhoto() {
-        register.postValue(Resource.loading(null))
-        compositeDisposable.add(
-            mainRepository.getAnimalAddPhoto()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ registerData ->
-                    register.postValue(Resource.success(registerData))
-                    addAnimalImageFields.postValue(registerData.fields)
-                }, {
-                    register.postValue(Resource.error("Something Went Wrong", null))
-                })
-        )
-    }
-
-    public fun fetchPetAddPageData() {
-        register.postValue(Resource.loading(null))
-        compositeDisposable.add(
-            ServiceBuilder.buildService().getPetInfoPageData()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ registerData ->
-                    register.postValue(Resource.success(registerData))
-                    addAnimalFields.postValue(registerData.fields)
-                    addAnimalLookUps.postValue(registerData.lookups)
-                }, {
-                    register.postValue(Resource.error("Something Went Wrong", null))
-                })
-        )
-    }
-
-    public fun fetchPetListPageData() {
-        register.postValue(Resource.loading(null))
-        compositeDisposable.add(
-            ServiceBuilder.buildService().getPetListInfoPageData()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ registerData ->
-                    petListPageData.postValue(Resource.success(registerData.fields))
-                }, {
-                    petListPageData.postValue(Resource.error("Something Went Wrong", null))
-                })
-        )
-    }
-
-    public fun fetchAnimalDetail(animalId: String) {
-        register.postValue(Resource.loading(null))
-        compositeDisposable.add(
-            ServiceBuilder.buildService().getPetDetail(animalId)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(fun(registerData: AnimalDetailResponse) {
-                    petAddDetail.postValue(registerData)
-                }, {
-                    register.postValue(Resource.error("Something Went Wrong", null))
-                })
-        )
-    }
-
-    public fun postRegister(register: Register) {
+    fun postRegister(register: Register) {
         postRegister.postValue(Resource.loading(null))
         compositeDisposable.add(
-            mainRepository.postRegister(register)
+            ServiceBuilder.buildService().postRegister(register)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
@@ -162,13 +131,13 @@ class RegisterBaseViewModel(private val mainRepository: MainRepository) : ViewMo
 
                     },
                     {
-                        postRegister.postValue(Resource.error("Something went wrong", null))
+                        postRegister.postValue(Resource.error(it.message, null))
                     }
                 )
         )
     }
 
-    public fun postRegisterInfo(registerInfo: RegisterInfo) {
+    fun postRegisterInfo(registerInfo: RegisterInfo) {
         postRegister.postValue(Resource.loading(null))
         compositeDisposable.add(
             ServiceBuilder.buildService()
@@ -182,13 +151,13 @@ class RegisterBaseViewModel(private val mainRepository: MainRepository) : ViewMo
                         postRegisterInfo.postValue(Resource.success(registerData))
                     },
                     {
-                        postRegisterInfo.postValue(Resource.error("Something went wrong", null))
+                        postRegisterInfo.postValue(Resource.error(it.message, null))
                     }
                 )
         )
     }
 
-    public fun postRegisterAvatar(multipart: MultipartBody.Part) {
+    fun postRegisterAvatar(multipart: MultipartBody.Part) {
         postRegister.postValue(Resource.loading(null))
         compositeDisposable.add(
             ServiceBuilder.buildService()
@@ -202,13 +171,75 @@ class RegisterBaseViewModel(private val mainRepository: MainRepository) : ViewMo
                         postRegisterAvatar.postValue(Resource.success(registerData))
                     },
                     {
-                        postRegisterAvatar.postValue(Resource.error("Something went wrong", null))
+                        postRegisterAvatar.postValue(Resource.error(it.message, null))
                     }
                 )
         )
     }
 
-    public fun postPetPhoto(@Nullable multipart: List<MultipartBody.Part?>) {
+    //endregion
+
+    //region Pet
+    fun fetchAnimalAddPhoto() {
+        register.postValue(Resource.loading(null))
+        compositeDisposable.add(
+            ServiceBuilder.buildService().getPetAddPhotoPageData()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ registerData ->
+                    register.postValue(Resource.success(registerData))
+                    addAnimalImageFields.postValue(registerData.fields)
+                }, {
+                    register.postValue(Resource.error(it.message, null))
+                })
+        )
+    }
+
+    fun fetchPetAddPageData() {
+        register.postValue(Resource.loading(null))
+        compositeDisposable.add(
+            ServiceBuilder.buildService().getPetInfoPageData()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ registerData ->
+                    register.postValue(Resource.success(registerData))
+                    addAnimalFields.postValue(registerData.fields)
+                    addAnimalLookUps.postValue(registerData.lookups)
+                }, {
+                    register.postValue(Resource.error(it.message, null))
+                })
+        )
+    }
+
+    fun fetchPetListPageData() {
+        register.postValue(Resource.loading(null))
+        compositeDisposable.add(
+            ServiceBuilder.buildService().getPetListInfoPageData()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ registerData ->
+                    petListPageData.postValue(Resource.success(registerData.fields))
+                }, {
+                    petListPageData.postValue(Resource.error(it.message, null))
+                })
+        )
+    }
+
+    fun fetchAnimalDetail(animalId: String) {
+        register.postValue(Resource.loading(null))
+        compositeDisposable.add(
+            ServiceBuilder.buildService().getPetDetail(animalId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(fun(registerData: AnimalDetailResponse) {
+                    petAddDetail.postValue(registerData)
+                }, {
+                    register.postValue(Resource.error(it.message, null))
+                })
+        )
+    }
+
+    fun postPetPhoto(@Nullable multipart: List<MultipartBody.Part?>) {
         postPetPhoto.postValue(Resource.loading(null))
         compositeDisposable.add(
             ServiceBuilder.buildService()
@@ -228,13 +259,13 @@ class RegisterBaseViewModel(private val mainRepository: MainRepository) : ViewMo
 
                     },
                     {
-                        postPetPhoto.postValue(Resource.error("Something went wrong", null))
+                        postPetPhoto.postValue(Resource.error(it.message, null))
                     }
                 )
         )
     }
 
-    public fun postPetAdd(petAdd: PetAdd) {
+    fun postPetAdd(petAdd: PetAdd) {
         postRegister.postValue(Resource.loading(null))
         compositeDisposable.add(
             ServiceBuilder.buildService().postPetAdd(petAdd)
@@ -247,13 +278,13 @@ class RegisterBaseViewModel(private val mainRepository: MainRepository) : ViewMo
                         postPetAdd.postValue(Resource.success(registerData))
                     },
                     {
-                        postPetAdd.postValue(Resource.error("Something went wrong", null))
+                        postPetAdd.postValue(Resource.error(it.message, null))
                     }
                 )
         )
     }
 
-    public fun fetchPetList() {
+    fun fetchPetList() {
         postRegister.postValue(Resource.loading(null))
         compositeDisposable.add(
             ServiceBuilder.buildService()
@@ -265,24 +296,23 @@ class RegisterBaseViewModel(private val mainRepository: MainRepository) : ViewMo
                         petList.postValue(Resource.success(registerData))
                     },
                     {
-                        petList.postValue(Resource.error("Something went wrong", null))
+                        petList.postValue(Resource.error(it.message, null))
                     }
                 )
         )
     }
 
 
-    override fun onCleared() {
-        super.onCleared()
-        compositeDisposable.dispose()
+    //endregion
+
+    //region LiveData getter
+
+    fun getLoginPageData(): LiveData<Resource<Login>> {
+        return loginPageData
     }
 
-    fun getLogin(): LiveData<Resource<Login>> {
-        return login
-    }
-
-    fun setFields(pethiioResponse: List<PethiioResponse>) {
-        fields.value = pethiioResponse
+    fun getPostLogin(): LiveData<Resource<AccessToken>> {
+        return postLogin
     }
 
     fun getFields(): LiveData<List<PethiioResponse>> {
@@ -319,6 +349,13 @@ class RegisterBaseViewModel(private val mainRepository: MainRepository) : ViewMo
 
     fun getPetList(): LiveData<Resource<List<PetListResponse>>> {
         return petList
+    }
+
+    //endregion
+
+    override fun onCleared() {
+        super.onCleared()
+        compositeDisposable.dispose()
     }
 
 

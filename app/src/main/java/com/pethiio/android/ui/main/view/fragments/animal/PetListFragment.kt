@@ -58,7 +58,7 @@ class PetListFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
             binding.completeBtn.text = getLocalizedString(Constants.animalListCompleteButtonTitle)
 
 
-            viewModel.petList.observe(viewLifecycleOwner, {
+            viewModel.getPetList().observe(viewLifecycleOwner, {
 
                 val list2 = ArrayList<PetListResponse>(it.data)
 

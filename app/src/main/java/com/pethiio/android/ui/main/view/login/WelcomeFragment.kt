@@ -63,7 +63,26 @@ class WelcomeFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
         }
         binding.loginBtn.setOnClickListener {
             fetchLogin()
-            findNavController().navigate(R.id.action_navigation_welcome_to_navigation_login)
+
+            viewModel.getLoginPageData().observe(viewLifecycleOwner, {
+                when (it.status) {
+                    Status.SUCCESS -> {
+                        activity?.runOnUiThread {
+                            if (findNavController().currentDestination?.id == R.id.navigation_welcome)
+                                findNavController().navigate(R.id.action_navigation_welcome_to_navigation_login)
+                        }
+
+                    }
+                    Status.ERROR -> {
+                        Toast.makeText(requireContext(), it.message, Toast.LENGTH_LONG).show()
+
+                    }
+                    Status.LOADING -> {
+                    }
+                }
+            })
+
+
         }
 
         return view

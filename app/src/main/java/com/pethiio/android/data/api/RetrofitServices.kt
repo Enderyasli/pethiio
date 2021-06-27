@@ -1,7 +1,9 @@
 package com.pethiio.android.data.api
 
 import com.pethiio.android.data.model.*
+import com.pethiio.android.data.model.login.LoginRequest
 import com.pethiio.android.data.model.signup.Login
+import com.pethiio.android.data.model.signup.Register
 import com.pethiio.android.data.model.signup.RegisterInfo
 import io.reactivex.Observable
 import okhttp3.MultipartBody
@@ -10,9 +12,28 @@ import retrofit2.http.*
 
 interface RetrofitServices {
 
-    //region RegisterInfo
+    //region login
+    @GET("page/login/info")
+    fun getLoginPageData(): Observable<Login>
+
+    @POST("page/login")
+    fun postLogin(@Body loginRequest: LoginRequest): Observable<AccessToken>
+
+
+    //endregion
+
+
+
+    //region Register
+
+    @POST("page/register")
+    fun postRegister(@Body register: Register): Observable<AccessToken>
+
+    @GET("page/register/info")
+    fun getRegisterPageData(): Observable<Login>
+
     @GET("page/register-detail/info")
-    fun getRegisterInfoPageData(): Observable<Login>
+    fun getRegisterDetailPageData(): Observable<Login>
 
     @POST("page/register-detail")
     fun postRegisterInfo(@Body registerInfo: RegisterInfo): Observable<AccessToken>
@@ -37,6 +58,9 @@ interface RetrofitServices {
 
     @GET("page/pet-add/info")
     fun getPetInfoPageData(): Observable<Login>
+
+    @GET("page/pet-add-photo/info")
+    fun getPetAddPhotoPageData(): Observable<Login>
 
     @GET("page/pet-list/info")
     fun getPetListInfoPageData(): Observable<Login>
