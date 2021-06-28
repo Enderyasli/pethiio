@@ -17,7 +17,7 @@ import com.bigkoo.pickerview.builder.TimePickerBuilder
 import com.bumptech.glide.Glide
 import com.pethiio.android.R
 import com.pethiio.android.data.model.signup.RegisterInfo
-import com.pethiio.android.databinding.FragmentSaveInfoBinding
+import com.pethiio.android.databinding.FragmentRegisterDetailBinding
 import com.pethiio.android.ui.base.RegisterBaseFragment
 import com.pethiio.android.ui.main.viewmodel.signup.RegisterBaseViewModel
 import com.pethiio.android.utils.Constants
@@ -34,7 +34,7 @@ class RegisterDetailFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
     AdapterView.OnItemSelectedListener {
 
     override var bottomNavigationViewVisibility = View.GONE
-    private var _binding: FragmentSaveInfoBinding? = null
+    private var _binding: FragmentRegisterDetailBinding? = null
 
     override var useSharedViewModel = true
 
@@ -270,7 +270,7 @@ class RegisterDetailFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentSaveInfoBinding.inflate(inflater, container, false)
+        _binding = FragmentRegisterDetailBinding.inflate(inflater, container, false)
         val view = binding.root
 
         binding.imagelY.setOnClickListener {

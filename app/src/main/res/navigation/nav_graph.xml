@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/appStarterNavGraph"
-    app:startDestination="@id/navigation_pet_add_photo">
+    app:startDestination="@id/navigation_welcome">
 
     <fragment
         android:id="@+id/navigation_onboarding"
@@ -71,7 +71,7 @@
         android:name="com.pethiio.android.ui.main.view.login.singUp.RegisterDetailFragment"
         android:label="RegisterDetail"
         app:launchSingleTop="true"
-        tools:layout="@layout/fragment_save_info">
+        tools:layout="@layout/fragment_register_detail">
         <action
             android:id="@+id/action_navigation_register_detail_to_navigation_add_animal"
             app:destination="@id/navigation_add_animal" />

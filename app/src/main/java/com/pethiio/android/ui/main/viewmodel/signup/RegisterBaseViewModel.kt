@@ -33,6 +33,7 @@ class RegisterBaseViewModel : ViewModel() {
 
     private val fields = MutableLiveData<List<PethiioResponse>>()
     private val registerFields = MutableLiveData<List<PethiioResponse>>()
+    private val registerLookUps = MutableLiveData<List<LookUpsResponse>>()
     private val registerDetailFields = MutableLiveData<List<PethiioResponse>>()
     private val registerDetailLookUps = MutableLiveData<List<LookUpsResponse>>()
     private val addAnimalLookUps = MutableLiveData<List<LookUpsResponse>>()
@@ -97,6 +98,7 @@ class RegisterBaseViewModel : ViewModel() {
                 .subscribe({ registerData ->
                     register.postValue(Resource.success(registerData))
                     registerFields.postValue(registerData.fields)
+                    registerLookUps.postValue(registerData.lookups)
                 }, {
                     register.postValue(Resource.error(it.message, null))
                 })
@@ -324,6 +326,9 @@ class RegisterBaseViewModel : ViewModel() {
 
     fun getRegisterFields(): LiveData<List<PethiioResponse>> {
         return registerFields
+    }
+    fun getRegisterLookUps(): LiveData<List<LookUpsResponse>> {
+        return registerLookUps
     }
 
     fun getRegisterDetailFields(): LiveData<List<PethiioResponse>> {
