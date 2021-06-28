@@ -23,7 +23,7 @@ class PawtindInputLabel @JvmOverloads constructor(
         titleTv = findViewById(R.id.titleTv)
         inputTv = findViewById(R.id.placeholder_tv)
 
-        val semiBold = ResourcesCompat.getFont(context, R.font.poppins_semibold)
+        val semiBold = ResourcesCompat.getFont(context, R.font.typo_round_bold)
         val medium = ResourcesCompat.getFont(context, R.font.poppins_medium)
         titleTv.typeface = semiBold
         inputTv.typeface = medium

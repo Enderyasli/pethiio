@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/margin_minimum"
         android:layout_marginRight="@dimen/margin_minimum"
-        android:fontFamily="@font/poppins_semibold"
+        android:fontFamily="@font/typo_round_bold"
         android:text="Ad *"
         android:textColor="@color/input_text_color"
         android:textSize="14sp" />

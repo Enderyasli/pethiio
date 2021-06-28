@@ -18,7 +18,7 @@
             android:layout_marginLeft="@dimen/default_margin"
             android:layout_marginTop="@dimen/signup_title_top_margin"
             android:layout_marginRight="@dimen/default_margin"
-            android:fontFamily="@font/poppins_semibold"
+            android:fontFamily="@font/typo_round_bold"
             android:text="Hayvan Ekle"
             android:textColor="@color/orangeButton"
             android:textSize="40dp" />
@@ -119,7 +119,7 @@
                 android:layout_marginLeft="@dimen/margin_minimum"
                 android:layout_marginTop="@dimen/default_margin"
                 android:layout_marginRight="@dimen/margin_minimum"
-                android:fontFamily="@font/poppins_semibold"
+                android:fontFamily="@font/typo_round_bold"
                 android:text="Kişilik"
                 android:textColor="@color/input_text_color"
                 android:textSize="14sp" />
@@ -141,7 +141,7 @@
             android:layout_marginRight="@dimen/default_margin"
             android:layout_marginBottom="50dp"
             android:background="@drawable/orange_button_bg"
-            android:fontFamily="@font/poppins_semibold"
+            android:fontFamily="@font/typo_round_bold"
             android:text="İlerle"
             android:textAllCaps="false"
             android:textColor="@color/white"

@@ -40,7 +40,7 @@
                 android:layout_marginLeft="@dimen/default_margin"
                 android:layout_marginRight="@dimen/default_margin"
                 android:layout_marginBottom="3dp"
-                android:fontFamily="@font/poppins_semibold"
+                android:fontFamily="@font/typo_round_bold"
                 android:text="@string/sign_up"
                 android:textColor="@color/orangeButton"
                 android:textSize="40dp" />
@@ -93,7 +93,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/margin_minimum"
                     android:layout_marginRight="@dimen/margin_minimum"
-                    android:fontFamily="@font/poppins_semibold"
+                    android:fontFamily="@font/typo_round_bold"
                     android:text="Ad *"
                     android:textColor="@color/input_text_color"
                     android:textSize="14sp" />
@@ -141,7 +141,7 @@
                         android:layout_marginLeft="@dimen/margin_minimum"
                         android:layout_marginTop="@dimen/default_margin"
                         android:layout_marginRight="@dimen/margin_minimum"
-                        android:fontFamily="@font/poppins_semibold"
+                        android:fontFamily="@font/typo_round_bold"
                         android:text="Şifre"
                         android:textColor="@color/input_text_color"
                         android:textSize="14sp" />
@@ -158,7 +158,7 @@
                         android:layout_marginLeft="@dimen/margin_minimum"
                         android:layout_marginTop="@dimen/default_margin"
                         android:layout_marginRight="@dimen/margin_minimum"
-                        android:fontFamily="@font/poppins_semibold"
+                        android:fontFamily="@font/typo_round_bold"
                         android:text="Şifre 1'i büyük 8 karakterden oluşmalı"
                         android:textColor="@color/input_text_color"
                         android:textSize="10sp" />
@@ -201,7 +201,7 @@
                     android:layout_marginLeft="@dimen/margin_minimum"
                     android:layout_marginTop="@dimen/default_margin"
                     android:layout_marginRight="@dimen/margin_minimum"
-                    android:fontFamily="@font/poppins_semibold"
+                    android:fontFamily="@font/typo_round_bold"
                     android:gravity="right"
                     android:text="@string/forgot_password"
                     android:textColor="@color/input_text_color"
@@ -260,7 +260,7 @@
                 android:layout_marginTop="48dp"
                 android:layout_marginBottom="50dp"
                 android:background="@drawable/orange_button_bg"
-                android:fontFamily="@font/poppins_semibold"
+                android:fontFamily="@font/typo_round_bold"
                 android:text="@string/sign_up"
                 android:textAllCaps="false"
                 android:textColor="@color/white"

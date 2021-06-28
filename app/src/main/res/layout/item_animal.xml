@@ -35,7 +35,7 @@
             android:layout_gravity="bottom"
             android:layout_marginLeft="11dp"
             android:layout_marginRight="11dp"
-            android:fontFamily="@font/poppins_semibold"
+            android:fontFamily="@font/typo_round_bold"
             android:text="Fluffy"
             android:textColor="@color/orangeButton"
             android:textSize="18sp" />

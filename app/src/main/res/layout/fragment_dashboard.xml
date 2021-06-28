@@ -15,6 +15,7 @@
         android:layout_marginTop="@dimen/signup_title_top_margin"
         android:layout_marginBottom="3dp"
         android:text="Bul"
+        android:fontFamily="@font/typo_round_bold"
         android:textColor="@color/orangeButton"
         android:textSize="@dimen/signup_title_size" />
 
