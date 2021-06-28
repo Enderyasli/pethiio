@@ -6,6 +6,7 @@
     tools:context=".ui.main.view.fragments.animal.AddAnimalFragment">
 
     <LinearLayout
+        android:id="@+id/main_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
@@ -32,12 +33,16 @@
             android:layout_marginRight="20dp"
             android:orientation="vertical">
 
-            <include
-                android:id="@+id/nameLy"
-                layout="@layout/common_rounded_input_tv"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content">
 
+                <include
+                    android:id="@+id/nameLy"
+                    layout="@layout/common_rounded_input_tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -53,13 +58,22 @@
                     android:layout_marginEnd="6dp"
                     android:layout_weight="1" />
 
-                <include
-                    android:id="@+id/monthLy"
-                    layout="@layout/common_spinner_layout"
+
+                <com.pethiio.android.ui.main.view.customViews.NoDefaultSpinner
+                    android:id="@+id/month_spinner"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="50dp"
+                    android:layout_gravity="bottom"
+                    android:layout_margin="3dp"
                     android:layout_marginStart="6dp"
-                    android:layout_weight="1" />
+                    android:layout_weight="1"
+                    android:background="@drawable/common_input_btn_bg"
+                    android:elevation="2dp"
+                    android:fontFamily="@font/poppins_medium"
+                    android:gravity="center_vertical"
+                    android:paddingStart="15dp"
+                    android:spinnerMode="dropdown"
+                    android:textColor="@color/hint_text_color" />
 
             </LinearLayout>
 

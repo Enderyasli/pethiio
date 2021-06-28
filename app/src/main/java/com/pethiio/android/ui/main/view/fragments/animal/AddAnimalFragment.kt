@@ -1,10 +1,13 @@
 package com.pethiio.android.ui.main.view.fragments.animal
 
+import android.content.Context
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
@@ -44,6 +47,7 @@ class AddAnimalFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
 
     }
 
+
     override fun setUpViews() {
         super.setUpViews()
 
@@ -58,7 +62,6 @@ class AddAnimalFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
 
 
             binding.yearLy.titleTv.text = getLocalizedSpan(Constants.animalAddYearTitle)
-            binding.monthLy.titleTv.text = getLocalizedSpan(Constants.animalAddMonthPlaceholder)
             binding.genderLy.titleTv.text = getLocalizedSpan(Constants.animalAddGenderTitle)
             binding.typeLy.titleTv.text = getLocalizedSpan(Constants.animalAddTypeTitle)
             binding.breedLy.titleTv.text = getLocalizedSpan(Constants.animalAddBreedTitle)
@@ -69,7 +72,7 @@ class AddAnimalFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
                 getLocalizedString(Constants.registerGenderTitle)
             binding.yearLy.spinner.prompt =
                 getLocalizedString(Constants.animalAddYearTitle)
-            binding.monthLy.spinner.prompt =
+            binding.monthSpinner.prompt =
                 getLocalizedString(Constants.animalAddMonthPlaceholder)
             binding.typeLy.spinner.prompt =
                 getLocalizedString(Constants.animalAddTypeTitle)
@@ -138,15 +141,26 @@ class AddAnimalFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
                     android.R.layout.simple_spinner_item,
                     color
                 )
-            val array = arrayListOf<String>()
+            val arrayYear = arrayListOf<String>()
             for (i in 0..20) {
-                array.add(i.toString())
+                arrayYear.add(i.toString())
+            }
+            val arrayMonth = arrayListOf<String>()
+            for (i in 1..12) {
+                arrayMonth.add(i.toString())
             }
             val yearAdapter =
                 ArrayAdapter(
                     requireContext(),
                     android.R.layout.simple_spinner_item,
-                    array
+                    arrayYear
+
+                )
+            val monthAdapter =
+                ArrayAdapter(
+                    requireContext(),
+                    android.R.layout.simple_spinner_item,
+                    arrayMonth
 
                 )
             colorAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
@@ -192,8 +206,14 @@ class AddAnimalFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
                 gravity = Gravity.CENTER
 
             }
+            with(binding.monthSpinner)
+            {
+                adapter = monthAdapter
+                onItemSelectedListener = this@AddAnimalFragment
+                gravity = Gravity.CENTER
 
-            binding.genderLy.spinner
+            }
+
 
         })
 
@@ -218,13 +238,12 @@ class AddAnimalFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
         binding.skipBtn.setOnClickListener {
 
 
-
             var breedId: Int? = null
 
             if (binding.breedLy.spinner.selectedItem != null)
                 breedId = getBreedsKey(
-                binding.breedLy.spinner.selectedItem.toString()
-            ).toIntOrNull()
+                    binding.breedLy.spinner.selectedItem.toString()
+                ).toIntOrNull()
 
 
             var animalId: Int? = null
@@ -239,7 +258,10 @@ class AddAnimalFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
             val selectedPersonalities =
                 getSelectedAnimalPersonality(adapterCharacter.getSelectedItems())
 
-            if (breedId != null && animalId != null) {
+            if (breedId != null && animalId != null && binding.monthSpinner.selectedItem != null
+                && binding.genderLy.spinner.selectedItem != null && binding.yearLy.spinner.selectedItem != null
+                && !TextUtils.isEmpty(binding.nameLy.placeholderTv.text)
+            ) {
                 if (selectedPersonalities.size > 0) {
                     postPetAdd(
                         PetAdd(
@@ -256,13 +278,16 @@ class AddAnimalFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
                                 Constants.lookUpGender,
                                 binding.genderLy.spinner.selectedItem.toString()
                             ),
-                            month = 1,
-                            name = "test",
+                            month = binding.monthSpinner.selectedItem.toString().toInt(),
+                            name = binding.nameLy.placeholderTv.text.toString(),
                             purpose = "ADOPTION",
                             year = binding.yearLy.spinner.selectedItem.toString().toInt()
                         )
                     )
                 }
+            } else {
+                Toast.makeText(requireContext(), "Tüm alanları doldurunuz!", Toast.LENGTH_LONG)
+                    .show()
             }
 
             viewModel.postPetAdd.observe(viewLifecycleOwner, {
@@ -314,6 +339,10 @@ class AddAnimalFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
 
     override fun onNothingSelected(parent: AdapterView<*>?) {
 
+    }
+    private fun hideKeyBoard(v: View) {
+        val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(v.windowToken, 0)
     }
 
 

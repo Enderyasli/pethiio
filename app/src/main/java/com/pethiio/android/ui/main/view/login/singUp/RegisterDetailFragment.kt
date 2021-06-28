@@ -38,10 +38,10 @@ class RegisterDetailFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
 
     override var useSharedViewModel = true
 
-    var hasImage = false
 
     private val binding get() = _binding!!
 
+    var profileUri: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -103,11 +103,12 @@ class RegisterDetailFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
             if (TextUtils.isEmpty(binding.birthPlaceholderTv.text.trim())) {
                 binding.birthPlaceholderTv.error = "Birthday cannot be empty"
                 return@setOnClickListener
-            }
+            } else
+                binding.birthPlaceholderTv.error = null
 
             val valid = getViewError(binding.aboutPlaceholderTv, "About me cannot be empty")
 
-            if (!validSpinner) {
+            if (valid && !validSpinner) {
                 Toast.makeText(requireContext(), "Gender cannot be empty", Toast.LENGTH_LONG).show()
                 return@setOnClickListener
 
@@ -115,50 +116,87 @@ class RegisterDetailFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
 
             if (validSpinner && valid) {
 
-                if (hasImage) {
-                    postRegisterInfo(
-                        RegisterInfo(
-                            aboutMe = binding.aboutPlaceholderTv.text.trim().toString(),
-                            dateOfBirth = binding.birthPlaceholderTv.text.trim().toString(),
-                            gender = getLookUpKey(
-                                "gender",
-                                binding.genderLy.spinner.selectedItem.toString()
-                            )
+                postRegisterInfo(
+                    RegisterInfo(
+                        aboutMe = binding.aboutPlaceholderTv.text.trim().toString(),
+                        dateOfBirth = binding.birthPlaceholderTv.text.trim().toString(),
+                        gender = getLookUpKey(
+                            Constants.lookUpGender,
+                            binding.genderLy.spinner.selectedItem.toString()
                         )
                     )
+                )
 
-                    viewModel.postRegisterInfo.observe(viewLifecycleOwner, {
-                        when (it.status) {
-                            Status.SUCCESS -> {
-                                activity?.runOnUiThread {
-                                    fetchPetAddPageData()
-                                    viewModel.getAddAnimalFields().observe(viewLifecycleOwner, {
-                                        fetchAddAnimalDetail("1")
+                viewModel.postRegisterInfo.observe(viewLifecycleOwner, {
+                    when (it.status) {
+                        Status.SUCCESS -> {
+                            activity?.runOnUiThread {
 
-                                        viewModel.getAddAnimalDetails()
-                                            .observe(viewLifecycleOwner, {
-                                                if (findNavController().currentDestination?.id == R.id.navigation_register_detail)
-                                                    findNavController().navigate(R.id.action_navigation_register_detail_to_navigation_add_animal)
-                                            })
+                                if (!TextUtils.isEmpty(profileUri)) {
+
+                                    val file = File(profileUri)
+                                    val requestBody =
+                                        file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
+                                    val filePart =
+                                        MultipartBody.Part.createFormData(
+                                            "file",
+                                            file.name,
+                                            requestBody
+                                        )
+                                    postRegisterAvatar(filePart)
+
+                                    viewModel.postRegisterAvatar.observe(viewLifecycleOwner, { it1 ->
+                                        when (it1.status) {
+                                            Status.SUCCESS -> {
+                                                activity?.runOnUiThread {
+                                                    fetchPetAddPageData()
+                                                    fetchAddAnimalDetail("1")
+                                                    viewModel.getAddAnimalDetails()
+                                                        .observe(viewLifecycleOwner, {
+                                                            if (findNavController().currentDestination?.id == R.id.navigation_register_detail)
+                                                                findNavController().navigate(R.id.action_navigation_register_detail_to_navigation_add_animal)
+                                                        })
+
+                                                }
+
+                                            }
+                                            Status.ERROR -> {
+                                                Toast.makeText(
+                                                    requireContext(),
+                                                    it1.message,
+                                                    Toast.LENGTH_LONG
+                                                ).show()
+
+                                            }
+                                            Status.LOADING -> {
+                                            }
+                                        }
                                     })
+
+                                }
+                                else{
+                                    Toast.makeText(
+                                        requireContext(),
+                                        "Image Cannot be empty!",
+                                        Toast.LENGTH_LONG
+                                    ).show()
+                                    binding.imagePlaceholder.requestFocus()
 
                                 }
 
                             }
-                            Status.ERROR -> {
-                                Toast.makeText(requireContext(), it.message, Toast.LENGTH_LONG)
-                                    .show()
 
-                            }
-                            Status.LOADING -> {
-                            }
                         }
-                    })
-                } else {
-                    binding.imageProfile.requestFocus()
-                    Toast.makeText(requireContext(), "Lütfen Resim ekleyiniz.", Toast.LENGTH_LONG)
-                        .show()
-                }
+                        Status.ERROR -> {
+                            Toast.makeText(requireContext(), it.message, Toast.LENGTH_LONG)
+                                .show()
+
+                        }
+                        Status.LOADING -> {
+                        }
+                    }
+                })
+
             }
 
 
@@ -179,6 +217,8 @@ class RegisterDetailFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
                         activity?.runOnUiThread {
                             fetchPetAddPageData()
                             fetchAddAnimalDetail("1")
+
+
                             if (findNavController().currentDestination?.id == R.id.navigation_register_detail)
                                 findNavController().navigate(R.id.action_navigation_register_detail_to_navigation_add_animal)
 
@@ -205,6 +245,8 @@ class RegisterDetailFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
                 val newDate = Constants.datePickerFormat.format(date)
 
                 binding.birthPlaceholderTv.text = newDate.toString()
+                binding.birthPlaceholderTv.error = null
+
             }
                 .setRangDate(startDate, endDate)
                 .setDate(endDate)
@@ -216,6 +258,10 @@ class RegisterDetailFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
 
             pvTime.show()
         }
+
+    }
+
+    fun postRegisterDetail() {
 
     }
 
@@ -246,34 +292,15 @@ class RegisterDetailFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
             if (resultCode == -1) {
                 val resultUri: Uri = result.uri
 
+                profileUri = resultUri.path.toString()
 
-                val file = File(resultUri.path.toString())
-                val requestBody = file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
-                val filePart = MultipartBody.Part.createFormData("file", file.name, requestBody)
-                postRegisterAvatar(filePart)
+                Glide.with(requireContext())
+                    .load(resultUri)
+                    .into(binding.imageProfile)
 
-                viewModel.postRegisterAvatar.observe(viewLifecycleOwner, {
-                    when (it.status) {
-                        Status.SUCCESS -> {
-                            activity?.runOnUiThread {
-                                Glide.with(requireContext())
-                                    .load(resultUri)
-                                    .into(binding.imageProfile)
 
-                                hasImage = true
+                binding.imagePlaceholder.visibility = View.GONE
 
-                                binding.imagePlaceholder.visibility = View.GONE
-                            }
-
-                        }
-                        Status.ERROR -> {
-                            Toast.makeText(requireContext(), it.message, Toast.LENGTH_LONG).show()
-
-                        }
-                        Status.LOADING -> {
-                        }
-                    }
-                })
 
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 val error = result.error

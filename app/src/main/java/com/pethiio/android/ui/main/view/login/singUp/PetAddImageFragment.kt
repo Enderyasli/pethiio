@@ -7,6 +7,7 @@ import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
@@ -59,6 +60,14 @@ class PetAddImageFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
             .start(requireContext(), this)
     }
 
+    fun clearImage(placeholder: ImageView, xImage: ImageView, imageView: ImageView) {
+        placeholder.visibility = View.VISIBLE
+        xImage.visibility = View.GONE
+        imageView.setImageResource(0)
+
+
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -72,17 +81,50 @@ class PetAddImageFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
         binding.img3Ly.setOnClickListener { openCropImage() }
         binding.image1X.setOnClickListener {
 
-            binding.image1Placeholder.visibility = View.GONE
-            binding.image1X.visibility = View.VISIBLE
 
-            binding.completeBtn.isEnabled = true
-            binding.completeBtn.setBackgroundResource(R.drawable.orange_button_bg)
-            binding.completeBtn.setTextColor(
-                ContextCompat.getColor(
-                    requireContext(),
-                    R.color.white
+            if (!TextUtils.isEmpty(uri3)) {
+                uri2 = uri3
+                Glide.with(requireContext())
+                    .load(uri3)
+                    .into(binding.image2)
+                clearImage(
+                    binding.image3Placeholder,
+                    binding.image3X,
+                    binding.image3
                 )
-            )
+                uri3 = ""
+            }
+            if (!TextUtils.isEmpty(uri2)) {
+                uri1 = uri2
+                Glide.with(requireContext())
+                    .load(uri2)
+                    .into(binding.image1)
+                uri2 = ""
+                binding.image2.setImageResource(0)
+                clearImage(
+                    binding.image2Placeholder,
+                    binding.image2X,
+                    binding.image2
+                )
+            } else {
+                clearImage(
+                    binding.image1Placeholder,
+                    binding.image1X,
+                    binding.image1
+                )
+                uri1 = ""
+
+                binding.completeBtn.isEnabled = false
+                binding.completeBtn.setBackgroundResource(R.drawable.disabled_button_bg)
+                binding.completeBtn.setTextColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.disabled_button_color
+                    )
+                )
+            }
+
+
         }
 
 
@@ -90,14 +132,14 @@ class PetAddImageFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
 
         binding.completeBtn.setOnClickListener {
 
-            val filePart1= getFilePart(uri1)
-            val filePart2= getFilePart(uri2)
-            val filePart3= getFilePart(uri3)
+            val filePart1 = getFilePart(uri1)
+            val filePart2 = getFilePart(uri2)
+            val filePart3 = getFilePart(uri3)
 
-            val listOfFiles = listOf(filePart1,filePart2,filePart3)
+            val listOfFiles = listOf(filePart1, filePart2, filePart3)
 
 
-                postPetPhoto(listOfFiles)
+            postPetPhoto(listOfFiles)
 
 
 
