@@ -37,8 +37,14 @@ class WelcomeFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
         _binding = FragmentWelcomeBinding.inflate(inflater, container, false)
         val view = binding.root
 
+        //Check Onboarding
         if (PreferenceHelper.SharedPreferencesManager.getInstance().isFirstDownload == true)
-            findNavController().navigate(R.id.action_navigation_welcome_to_navigation_onboarding)
+            if (findNavController().currentDestination?.id == R.id.navigation_welcome)
+                findNavController().navigate(R.id.action_navigation_welcome_to_navigation_onboarding)
+        //Check Logged in
+        if (PreferenceHelper.SharedPreferencesManager.getInstance().isLoggedIn == true)
+            if (findNavController().currentDestination?.id == R.id.navigation_welcome)
+                findNavController().navigate(R.id.action_navigation_start_to_navigation_main)
 
         binding.signupBtn.setOnClickListener {
             fetchRegister()

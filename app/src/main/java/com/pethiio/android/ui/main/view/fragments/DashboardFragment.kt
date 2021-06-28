@@ -152,11 +152,11 @@ class DashboardFragment : BaseFragment(), CardStackListener,
 
         with(binding.memberlistSpinner)
         {
+            id = 1
             adapter = customAdapter
             onItemSelectedListener = this@DashboardFragment
             gravity = Gravity.CENTER
         }
-        binding.memberlistSpinner.id = 1
         if (memberListResponse.isNotEmpty())
             binding.memberlistSpinner.setSelection(0)
 
@@ -315,11 +315,14 @@ class DashboardFragment : BaseFragment(), CardStackListener,
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         when (parent?.id) {
             1 -> {
-                Log.d("secilen", memberListResponse?.get(position)?.id.toString())
+                memberListResponse?.get(position)?.id?.let {
+                    viewModel.fetchPetSearch(it)
+                }
 
             }
 
         }
+
     }
 
     override fun onNothingSelected(parent: AdapterView<*>?) {

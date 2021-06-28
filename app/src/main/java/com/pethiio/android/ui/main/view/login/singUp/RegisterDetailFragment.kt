@@ -52,6 +52,7 @@ class RegisterDetailFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
         super.setUpViews()
         viewModel.getRegisterDetailFields().observe(this, {
 
+
             setPethiioResponseList(it)
             binding.signupTitle.text = getLocalizedString(Constants.registerTitle)
             binding.signupDescription.text =

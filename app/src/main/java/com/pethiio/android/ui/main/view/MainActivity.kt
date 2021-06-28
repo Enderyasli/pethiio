@@ -2,6 +2,7 @@ package com.pethiio.android.ui.main.view
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
@@ -18,7 +19,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var mainViewModel: MainViewModel
     private lateinit var adapter: MainAdapter
-    lateinit var navView:BottomNavigationView
+    lateinit var navView: BottomNavigationView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,7 +28,7 @@ class MainActivity : AppCompatActivity() {
 //        setupViewModel()
 //        setupObserver()
 
-         navView = findViewById<BottomNavigationView>(R.id.bottomNav_view)
+        navView = findViewById<BottomNavigationView>(R.id.bottomNav_view)
 
         //Pass the ID's of Different destinations
 
@@ -36,7 +37,8 @@ class MainActivity : AppCompatActivity() {
             R.id.navigation_dashboard,
         ).build()
 
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.navHostFragment) as NavHostFragment
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.navHostFragment) as NavHostFragment
         val navController = navHostFragment.navController
         findViewById<BottomNavigationView>(R.id.bottomNav_view)
             .setupWithNavController(navController)
@@ -56,6 +58,7 @@ class MainActivity : AppCompatActivity() {
 
 
     }
+
     fun setBottomNavigationVisibility(visibility: Int) {
         // get the reference of the bottomNavigationView and set the visibility.
         navView.visibility = visibility

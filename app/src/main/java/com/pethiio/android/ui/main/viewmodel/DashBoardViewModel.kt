@@ -16,6 +16,7 @@ class DashBoardViewModel : ViewModel() {
 
     private val locations = MutableLiveData<Resource<Response<Void>>>()
     private val memberList = MutableLiveData<Resource<List<MemberListResponse>>>()
+    private val petSearchResult = MutableLiveData<Resource<Response<Void>>>()
     private val compositeDisposable = CompositeDisposable()
 
 
@@ -53,6 +54,25 @@ class DashBoardViewModel : ViewModel() {
                     },
                     {
                         memberList.postValue(Resource.error("Something went wrong", null))
+                    }
+                )
+        )
+    }
+
+    fun fetchPetSearch(animalId:Int) {
+
+        memberList.postValue(Resource.loading(null))
+        compositeDisposable.add(
+            ServiceBuilder.buildService()
+                .getPetSearch(animalId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                    { loginData ->
+                        petSearchResult.postValue(Resource.success(loginData))
+                    },
+                    {
+                        petSearchResult.postValue(Resource.error("Something went wrong", null))
                     }
                 )
         )

@@ -72,6 +72,9 @@ class RegisterBaseViewModel : ViewModel() {
                     { loginData ->
                         PreferenceHelper.SharedPreferencesManager.getInstance().accessToken =
                             loginData.accessToken
+                        PreferenceHelper.SharedPreferencesManager.getInstance().isLoggedIn =
+                            true
+
                         postLogin.postValue(Resource.success(loginData))
                     },
                     {

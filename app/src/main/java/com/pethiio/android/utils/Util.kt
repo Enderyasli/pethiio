@@ -39,11 +39,16 @@ public object PreferenceHelper {
             get() = sharedPreferences.getInt(PET_ID, 0)
             set(value) = sharedPreferences.edit().putInt(PET_ID, value).apply()
 
+        public var isLoggedIn: Boolean?
+            get() = sharedPreferences.getBoolean(IS_LOGGED_IN, false)
+            set(value) = sharedPreferences.edit().putBoolean(IS_LOGGED_IN, value == true).apply()
+
 
         companion object {
             private const val MY_APP_PREFERENCES = "Pawtind-Android"
             private const val IS_FIRST = "isFirstDownload"
             private const val ACCESS_TOKEN = "accessToken"
+            private const val IS_LOGGED_IN = "loginState"
             private const val PET_ID = "pet_id"
             private var instance: SharedPreferencesManager? = null
 
