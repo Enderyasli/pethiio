@@ -1,30 +1,38 @@
 package com.pethiio.android.ui.main.view.fragments
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.DecelerateInterpolator
 import android.view.animation.LinearInterpolator
+import android.widget.AdapterView
+import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DefaultItemAnimator
-import com.pethiio.android.data.model.member.LocationsRequest
 import com.pethiio.android.data.model.Spot
+import com.pethiio.android.data.model.member.LocationsRequest
+import com.pethiio.android.data.model.member.MemberListResponse
 import com.pethiio.android.databinding.FragmentDashboardBinding
 import com.pethiio.android.ui.base.BaseFragment
 import com.pethiio.android.ui.base.ViewModelFactory
 import com.pethiio.android.ui.main.adapter.CardStackAdapter
+import com.pethiio.android.ui.main.view.customViews.MemberListSpinner
 import com.pethiio.android.ui.main.viewmodel.DashBoardViewModel
+import com.pethiio.android.utils.Constants
 import com.yuyakaido.android.cardstackview.*
 import java.util.*
 
 
-class DashboardFragment : BaseFragment(), CardStackListener {
+class DashboardFragment : BaseFragment(), CardStackListener,
+    AdapterView.OnItemSelectedListener {
 
     private val manager get() = CardStackLayoutManager(requireContext(), this)
     private val adapter get() = CardStackAdapter(createSpots())
@@ -33,8 +41,11 @@ class DashboardFragment : BaseFragment(), CardStackListener {
     private val binding get() = _binding!!
     override var bottomNavigationViewVisibility = View.VISIBLE
 
-
     private lateinit var viewModel: DashBoardViewModel
+
+    var countryNames = arrayOf("India", "China", "Australia", "Portugle", "America", "New Zealand")
+    var flags = intArrayOf()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -121,6 +132,28 @@ class DashboardFragment : BaseFragment(), CardStackListener {
             )
         )
         viewModel.fetchMemberList()
+
+        viewModel.getMemberList().observe(viewLifecycleOwner, {
+            it.data?.let { it1 -> setMembeListSpinner(it1) }
+
+        })
+    }
+
+    @SuppressLint("ResourceType")
+    fun setMembeListSpinner(memberListResponse: List<MemberListResponse>) {
+        val customAdapter = MemberListSpinner(requireContext(), memberListResponse)
+
+        with(binding.memberlistSpinner)
+        {
+            adapter = customAdapter
+            onItemSelectedListener = this@DashboardFragment
+            gravity = Gravity.CENTER
+        }
+        binding.memberlistSpinner.id = 1
+        if (memberListResponse.isNotEmpty())
+            binding.memberlistSpinner.setSelection(0)
+
+
     }
 
     private fun setupButton() {
@@ -270,6 +303,17 @@ class DashboardFragment : BaseFragment(), CardStackListener {
     }
 
     override fun onCardDisappeared(view: View?, position: Int) {
+    }
+
+    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+        when (parent?.id) {
+            1 -> {
+            }
+
+        }
+    }
+
+    override fun onNothingSelected(parent: AdapterView<*>?) {
     }
 
 

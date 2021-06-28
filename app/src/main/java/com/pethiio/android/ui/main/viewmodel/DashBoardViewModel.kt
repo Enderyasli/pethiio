@@ -15,7 +15,7 @@ import retrofit2.Response
 class DashBoardViewModel : ViewModel() {
 
     private val locations = MutableLiveData<Resource<Response<Void>>>()
-    private val memberList = MutableLiveData<Resource<MemberListResponse>>()
+    private val memberList = MutableLiveData<Resource<List<MemberListResponse>>>()
     private val compositeDisposable = CompositeDisposable()
 
 
@@ -49,7 +49,7 @@ class DashBoardViewModel : ViewModel() {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                     { loginData ->
-                            memberList.postValue(Resource.success(loginData))
+                        memberList.postValue(Resource.success(loginData))
                     },
                     {
                         memberList.postValue(Resource.error("Something went wrong", null))
@@ -65,6 +65,10 @@ class DashBoardViewModel : ViewModel() {
 
     fun getLocations(): LiveData<Resource<Response<Void>>> {
         return locations
+    }
+
+    fun getMemberList(): LiveData<Resource<List<MemberListResponse>>> {
+        return memberList
     }
 
 }

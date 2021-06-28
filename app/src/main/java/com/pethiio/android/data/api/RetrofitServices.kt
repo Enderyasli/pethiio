@@ -29,7 +29,7 @@ interface RetrofitServices {
     fun postLocations(@Body locationsRequest: LocationsRequest): Observable<Response<Void>>
 
     @GET("page/pet-search/members")
-    fun getMemberList(): Observable<MemberListResponse>
+    fun getMemberList(): Observable<List<MemberListResponse>>
 
     //endregion
 
