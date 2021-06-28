@@ -11,4 +11,7 @@ class MemberListResponse {
     val name: String = ""
     @SerializedName("avatar")
     val avatar: String = ""
+
+
+
 }

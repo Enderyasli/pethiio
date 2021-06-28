@@ -1,6 +1,5 @@
 package com.pethiio.android.data.api
 
-import androidx.annotation.Nullable
 import com.pethiio.android.utils.Constants
 import com.pethiio.android.utils.PreferenceHelper
 import okhttp3.OkHttpClient
@@ -36,9 +35,9 @@ object ServiceBuilder {
         .addConverterFactory(GsonConverterFactory.create())
         .client(client)
         .build()
-        .create(RetrofitServices::class.java)
+        .create(PethiioServices::class.java)
 
-    fun buildService(): RetrofitServices {
+    fun buildService(): PethiioServices {
         interceptor.accessToken =
             PreferenceHelper.SharedPreferencesManager.getInstance().accessToken
         return retrofit

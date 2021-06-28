@@ -5,6 +5,7 @@ import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -42,6 +43,9 @@ class DashboardFragment : BaseFragment(), CardStackListener,
     override var bottomNavigationViewVisibility = View.VISIBLE
 
     private lateinit var viewModel: DashBoardViewModel
+
+    private var memberListResponse: List<MemberListResponse>? = null
+
 
     var countryNames = arrayOf("India", "China", "Australia", "Portugle", "America", "New Zealand")
     var flags = intArrayOf()
@@ -134,7 +138,10 @@ class DashboardFragment : BaseFragment(), CardStackListener,
         viewModel.fetchMemberList()
 
         viewModel.getMemberList().observe(viewLifecycleOwner, {
-            it.data?.let { it1 -> setMembeListSpinner(it1) }
+            memberListResponse = it.data
+            memberListResponse?.let { it1 ->
+                setMembeListSpinner(it1)
+            }
 
         })
     }
@@ -308,6 +315,8 @@ class DashboardFragment : BaseFragment(), CardStackListener,
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         when (parent?.id) {
             1 -> {
+                Log.d("secilen", memberListResponse?.get(position)?.id.toString())
+
             }
 
         }

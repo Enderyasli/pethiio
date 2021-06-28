@@ -12,7 +12,7 @@ import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.http.*
 
-interface RetrofitServices {
+interface PethiioServices {
 
     //region login
     @GET("page/login/info")
@@ -22,17 +22,6 @@ interface RetrofitServices {
     fun postLogin(@Body loginRequest: LoginRequest): Observable<AccessToken>
 
     //endregion
-
-    //region Member
-
-    @POST("locations")
-    fun postLocations(@Body locationsRequest: LocationsRequest): Observable<Response<Void>>
-
-    @GET("page/pet-search/members")
-    fun getMemberList(): Observable<List<MemberListResponse>>
-
-    //endregion
-
 
     //region Register
 
@@ -84,5 +73,22 @@ interface RetrofitServices {
 
     //endregion
 
+    //region Member
+
+    @POST("locations")
+    fun postLocations(@Body locationsRequest: LocationsRequest): Observable<Response<Void>>
+
+    @GET("page/pet-search/members")
+    fun getMemberList(): Observable<List<MemberListResponse>>
+
+    //endregion
+
+    //region Pet Search
+
+    @GET("page/pet-search/{animalId}")
+    fun getPetSearch(@Path("animalId") animalId: Int): Observable<Response<Void>>
+
+
+    //endregion
 
 }
