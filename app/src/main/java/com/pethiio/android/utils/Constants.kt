@@ -9,6 +9,8 @@ class Constants {
         const val lookUpAnimals: String = "animals"
         const val lookUpGender: String = "gender"
         const val lookUpColor: String = "color"
+        const val lookUpLanguage: String = "language"
+
 
 
 

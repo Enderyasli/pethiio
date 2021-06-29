@@ -22,9 +22,10 @@
 
     <com.pethiio.android.ui.main.view.customViews.NoDefaultSpinner
         android:id="@+id/spinner"
-        android:background="@drawable/bg_spinner_xml"
+
+        android:background="@drawable/bg_spinner"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="@dimen/default_spinner_height"
         android:layout_margin="3dp"
         android:layout_weight="1"
         android:elevation="2dp"

@@ -9,16 +9,17 @@
 
             <item>
                 <shape>
-                    <gradient android:angle="90" android:endColor="@color/whitegrey" android:startColor="@color/whitegrey" android:type="linear" />
+                    <gradient android:angle="90" android:endColor="@android:color/transparent" android:startColor="@android:color/transparent" android:type="linear" />
 
 
                     <corners android:radius="@dimen/commonButtonRadius" />
 
-                    <padding android:bottom="3dp" android:left="3dp" android:right="3dp" android:top="3dp" />
+                    <padding android:bottom="3dp" android:left="30dp" android:right="3dp" android:top="3dp" />
                 </shape>
             </item>
 
-            <item android:right="5dp">
+            <item android:right="5dp"
+                android:left="5dp">
 
                 <bitmap  android:gravity="center_vertical|right" android:src="@drawable/caretdown" />
 

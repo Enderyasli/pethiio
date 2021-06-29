@@ -4,9 +4,12 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import com.pethiio.android.R
@@ -18,7 +21,8 @@ import com.pethiio.android.utils.Constants
 import com.pethiio.android.utils.Status
 
 
-class RegisterFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
+class RegisterFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
+    AdapterView.OnItemSelectedListener {
 
     override var bottomNavigationViewVisibility = View.GONE
     private var _binding: FragmentRegisterBinding? = null
@@ -31,7 +35,7 @@ class RegisterFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
         super.onCreate(savedInstanceState)
     }
 
-    @SuppressLint("SetTextI18n")
+    @SuppressLint("SetTextI18n", "ResourceType")
     override fun setUpViews() {
         super.setUpViews()
 
@@ -84,6 +88,27 @@ class RegisterFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
                 startActivity(intent)
             }
 
+
+        })
+        viewModel.getRegisterLookUps().observe(viewLifecycleOwner, {
+
+            setLookUps(it)
+
+            val language = getLookUps(Constants.lookUpLanguage)
+            val languageAdapter =
+                ArrayAdapter(requireContext(),R.layout.spinner_item_register, language)
+            languageAdapter.setDropDownViewResource(R.layout.spinner_item_register)
+
+
+            with(binding.spinner)
+            {
+                id = 1
+                adapter = languageAdapter
+                onItemSelectedListener = this@RegisterFragment
+                gravity = Gravity.CENTER
+                setSelection(0)
+
+            }
 
         })
 
@@ -148,5 +173,16 @@ class RegisterFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
     }
 
     override fun getViewModelClass() = RegisterBaseViewModel::class.java
+
+    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+        when (parent?.id) {
+            1 -> {
+
+            }
+        }
+    }
+
+    override fun onNothingSelected(parent: AdapterView<*>?) {
+    }
 
 }
