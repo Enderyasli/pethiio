@@ -2,11 +2,11 @@
 
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="50dp"
     android:fontFamily="@font/poppins_medium"
     android:paddingEnd="15dp"
     style="?android:attr/spinnerDropDownItemStyle"
-    android:gravity="center"
     android:singleLine="true"
-    android:textColor="@color/grey"
-    android:textSize="@dimen/spinner_item_size" />
+    android:ellipsize="marquee"
+    android:textColor="@color/black"
+    android:textSize="@dimen/default_spinner_item_size" />

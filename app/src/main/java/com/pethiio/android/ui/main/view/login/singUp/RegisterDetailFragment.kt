@@ -82,8 +82,8 @@ class RegisterDetailFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
 
             val gender = getLookUps("gender")
             val genderAdapter =
-                ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, gender)
-            genderAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                ArrayAdapter(requireContext(), R.layout.spinner_item_default_selected, gender)
+            genderAdapter.setDropDownViewResource(R.layout.spinner_item_default)
 
 
             with(binding.genderLy.spinner)
@@ -145,36 +145,37 @@ class RegisterDetailFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
                                         )
                                     postRegisterAvatar(filePart)
 
-                                    viewModel.postRegisterAvatar.observe(viewLifecycleOwner, { it1 ->
-                                        when (it1.status) {
-                                            Status.SUCCESS -> {
-                                                activity?.runOnUiThread {
-                                                    fetchPetAddPageData()
-                                                    fetchAddAnimalDetail("1")
-                                                    viewModel.getAddAnimalDetails()
-                                                        .observe(viewLifecycleOwner, {
-                                                            if (findNavController().currentDestination?.id == R.id.navigation_register_detail)
-                                                                findNavController().navigate(R.id.action_navigation_register_detail_to_navigation_add_animal)
-                                                        })
+                                    viewModel.postRegisterAvatar.observe(
+                                        viewLifecycleOwner,
+                                        { it1 ->
+                                            when (it1.status) {
+                                                Status.SUCCESS -> {
+                                                    activity?.runOnUiThread {
+                                                        fetchPetAddPageData()
+                                                        fetchAddAnimalDetail("1")
+                                                        viewModel.getAddAnimalDetails()
+                                                            .observe(viewLifecycleOwner, {
+                                                                if (findNavController().currentDestination?.id == R.id.navigation_register_detail)
+                                                                    findNavController().navigate(R.id.action_navigation_register_detail_to_navigation_add_animal)
+                                                            })
+
+                                                    }
 
                                                 }
+                                                Status.ERROR -> {
+                                                    Toast.makeText(
+                                                        requireContext(),
+                                                        it1.message,
+                                                        Toast.LENGTH_LONG
+                                                    ).show()
 
+                                                }
+                                                Status.LOADING -> {
+                                                }
                                             }
-                                            Status.ERROR -> {
-                                                Toast.makeText(
-                                                    requireContext(),
-                                                    it1.message,
-                                                    Toast.LENGTH_LONG
-                                                ).show()
+                                        })
 
-                                            }
-                                            Status.LOADING -> {
-                                            }
-                                        }
-                                    })
-
-                                }
-                                else{
+                                } else {
                                     Toast.makeText(
                                         requireContext(),
                                         "Image Cannot be empty!",
