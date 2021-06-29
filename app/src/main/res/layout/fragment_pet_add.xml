@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.main.view.fragments.animal.AddAnimalFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.main.view.fragments.animal.PetAddFragment">
 
     <LinearLayout
         android:id="@+id/main_layout"
@@ -142,6 +143,52 @@
                 android:id="@+id/character_rc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:orientation="vertical">
+
+
+                <TextView
+                    android:id="@+id/about_title_tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_minimum"
+                    android:layout_marginRight="@dimen/margin_minimum"
+                    android:fontFamily="@font/typo_round_bold"
+                    tools:text="Hakkında"
+                    android:textColor="@color/input_text_color"
+                    android:textSize="14sp" />
+
+
+                <androidx.cardview.widget.CardView
+                    android:layout_marginTop="8dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_minimum"
+                    android:layout_marginRight="@dimen/margin_minimum"
+                    android:layout_marginBottom="5dp"
+                    app:cardBackgroundColor="@color/whitegrey"
+                    app:cardCornerRadius="@dimen/commonButtonRadius"
+                    app:cardElevation="2dp">
+
+                    <EditText
+                        android:id="@+id/about_placeholder_tv"
+                        android:layout_width="match_parent"
+                        android:layout_height="120dp"
+                        android:background="@drawable/common_input_btn_bg"
+                        android:fontFamily="@font/poppins_medium"
+                        android:gravity="left"
+                        android:paddingStart="15dp"
+                        android:paddingTop="5dp"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/hint_text_color"
+                        android:textSize="14sp"
+                        tools:hint="Doğum tarihi" />
+                </androidx.cardview.widget.CardView>
+            </LinearLayout>
 
         </LinearLayout>
 

@@ -64,6 +64,9 @@ class Constants {
         const val animalListSubTitle: String = "subTitle"
         const val animalListTitle: String = "title"
 
+        const val petaboutTitle: String = "aboutTitle"
+        const val petaboutPlaceholder: String = "aboutPlaceholder"
+
 
 
 

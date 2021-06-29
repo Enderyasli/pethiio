@@ -13,7 +13,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.pethiio.android.R
 import com.pethiio.android.data.model.PetAdd
-import com.pethiio.android.databinding.FragmentAddAnimalBinding
+import com.pethiio.android.databinding.FragmentPetAddBinding
 import com.pethiio.android.ui.base.RegisterBaseFragment
 import com.pethiio.android.ui.main.adapter.CharacterAdapter
 import com.pethiio.android.ui.main.viewmodel.signup.RegisterBaseViewModel
@@ -23,11 +23,11 @@ import kotlinx.android.synthetic.main.common_rounded_input_tv.view.*
 import kotlinx.android.synthetic.main.fragment_home.*
 
 
-class AddAnimalFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
+class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
     AdapterView.OnItemSelectedListener {
 
     override var bottomNavigationViewVisibility = View.GONE
-    private var _binding: FragmentAddAnimalBinding? = null
+    private var _binding: FragmentPetAddBinding? = null
 
     private val binding get() = _binding!!
     override var useSharedViewModel = true
@@ -67,6 +67,10 @@ class AddAnimalFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
             binding.breedLy.titleTv.text = getLocalizedSpan(Constants.animalAddBreedTitle)
             binding.colorLy.titleTv.text = getLocalizedSpan(Constants.animalAddColorTitle)
             binding.characterTitleTv.text = getLocalizedSpan(Constants.animalAddCharacterTitle)
+            binding.aboutTitleTv.text = getLocalizedSpan(Constants.petaboutTitle)
+            binding.aboutPlaceholderTv.hint =
+                getLocalizedString(Constants.petaboutPlaceholder)
+
 
             binding.genderLy.spinner.prompt =
                 getLocalizedString(Constants.registerGenderTitle)
@@ -105,7 +109,7 @@ class AddAnimalFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
             with(binding.breedLy.spinner)
             {
                 adapter = breedAdapter
-                onItemSelectedListener = this@AddAnimalFragment
+                onItemSelectedListener = this@PetAddFragment
                 gravity = Gravity.CENTER
 
             }
@@ -171,13 +175,13 @@ class AddAnimalFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
             binding.genderLy.spinner.onItemSelectedListener = this
             binding.typeLy.spinner.onItemSelectedListener = this
 
-            binding.genderLy.spinner.onItemSelectedListener = this@AddAnimalFragment
+            binding.genderLy.spinner.onItemSelectedListener = this@PetAddFragment
 
 
             with(binding.genderLy.spinner)
             {
                 adapter = genderAdapter
-                onItemSelectedListener = this@AddAnimalFragment
+                onItemSelectedListener = this@PetAddFragment
                 gravity = Gravity.CENTER
 
             }
@@ -185,7 +189,7 @@ class AddAnimalFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
             with(binding.typeLy.spinner)
             {
                 adapter = typeAdapter
-                onItemSelectedListener = this@AddAnimalFragment
+                onItemSelectedListener = this@PetAddFragment
                 gravity = Gravity.CENTER
 
             }
@@ -194,7 +198,7 @@ class AddAnimalFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
             with(binding.colorLy.spinner)
             {
                 adapter = colorAdapter
-                onItemSelectedListener = this@AddAnimalFragment
+                onItemSelectedListener = this@PetAddFragment
                 gravity = Gravity.CENTER
 
             }
@@ -202,14 +206,14 @@ class AddAnimalFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
             with(binding.yearLy.spinner)
             {
                 adapter = yearAdapter
-                onItemSelectedListener = this@AddAnimalFragment
+                onItemSelectedListener = this@PetAddFragment
                 gravity = Gravity.CENTER
 
             }
             with(binding.monthSpinner)
             {
                 adapter = monthAdapter
-                onItemSelectedListener = this@AddAnimalFragment
+                onItemSelectedListener = this@PetAddFragment
                 gravity = Gravity.CENTER
 
             }
@@ -230,7 +234,7 @@ class AddAnimalFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentAddAnimalBinding.inflate(inflater, container, false)
+        _binding = FragmentPetAddBinding.inflate(inflater, container, false)
         val view = binding.root
 
 
@@ -260,12 +264,14 @@ class AddAnimalFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
 
             if (breedId != null && animalId != null && binding.monthSpinner.selectedItem != null
                 && binding.genderLy.spinner.selectedItem != null && binding.yearLy.spinner.selectedItem != null
-                && !TextUtils.isEmpty(binding.nameLy.placeholderTv.text)
+                && !TextUtils.isEmpty(binding.nameLy.placeholderTv.text) && !TextUtils.isEmpty(
+                    binding.aboutPlaceholderTv.text
+                )
             ) {
                 if (selectedPersonalities.size > 0) {
                     postPetAdd(
                         PetAdd(
-                            about = "test",
+                            about = binding.aboutPlaceholderTv.text.toString(),
                             animalId =
                             animalId,
                             breedId = breedId,
@@ -340,6 +346,7 @@ class AddAnimalFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
     override fun onNothingSelected(parent: AdapterView<*>?) {
 
     }
+
     private fun hideKeyBoard(v: View) {
         val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(v.windowToken, 0)

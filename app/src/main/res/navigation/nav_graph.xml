@@ -78,10 +78,10 @@
     </fragment>
     <fragment
         android:id="@+id/navigation_add_animal"
-        android:name="com.pethiio.android.ui.main.view.fragments.animal.AddAnimalFragment"
+        android:name="com.pethiio.android.ui.main.view.fragments.animal.PetAddFragment"
         android:label="AddAnimal"
         app:launchSingleTop="true"
-        tools:layout="@layout/fragment_add_animal">
+        tools:layout="@layout/fragment_pet_add">
         <action
             android:id="@+id/action_navigation_add_animal_to_navigation_photo"
             app:destination="@id/navigation_pet_add_photo" />
