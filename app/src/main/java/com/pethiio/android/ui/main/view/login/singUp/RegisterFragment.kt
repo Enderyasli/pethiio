@@ -33,6 +33,7 @@ class RegisterFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
     override var useSharedViewModel = true
     var isSelectedFirstTime = true
 
+    var languageAdapter: ArrayAdapter<String>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -93,6 +94,8 @@ class RegisterFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
 
 
         })
+//        binding.spinner.prompt = PreferenceHelper.SharedPreferencesManager.getInstance().appLanguage
+
         viewModel.getRegisterLookUps().observe(viewLifecycleOwner, { it ->
 
             setLookUps(it)
@@ -108,28 +111,23 @@ class RegisterFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
                 if (!upperLanguage.contains(languageString))
                     languageString = "EN"
 
-
-
                 PreferenceHelper.SharedPreferencesManager.getInstance().isApplanguageSelected = true
             }
-            val languageAdapter =
+            languageAdapter =
                 ArrayAdapter(requireContext(), R.layout.spinner_item_register, language)
-            languageAdapter.setDropDownViewResource(R.layout.spinner_item_register)
+            languageAdapter?.setDropDownViewResource(R.layout.spinner_item_register)
 
-            with(binding.spinner)
-            {
-                id = 1
-                adapter = languageAdapter
-                onItemSelectedListener = this@RegisterFragment
-                gravity = Gravity.CENTER
-                if (isSelectedFirstTime) {
-                    setSelection(upperLanguage.indexOf(languageString))
+            if (isSelectedFirstTime)
+                with(binding.spinner)
+                {
+                    id = 1
+                    adapter = languageAdapter
+                    onItemSelectedListener = this@RegisterFragment
+                    gravity = Gravity.CENTER
                     isSelectedFirstTime = false
                 }
 
-            }
         })
-
 
     }
 
