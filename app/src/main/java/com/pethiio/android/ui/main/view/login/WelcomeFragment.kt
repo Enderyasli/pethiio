@@ -41,8 +41,9 @@ class WelcomeFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
         if (PreferenceHelper.SharedPreferencesManager.getInstance().isFirstDownload == true)
             if (findNavController().currentDestination?.id == R.id.navigation_welcome)
                 findNavController().navigate(R.id.action_navigation_welcome_to_navigation_onboarding)
+            
         //Check Logged in
-        if (PreferenceHelper.SharedPreferencesManager.getInstance().isLoggedIn == false)
+       else if (PreferenceHelper.SharedPreferencesManager.getInstance().isLoggedIn == false)
             if (findNavController().currentDestination?.id == R.id.navigation_welcome)
                 findNavController().navigate(R.id.action_navigation_start_to_navigation_main)
 

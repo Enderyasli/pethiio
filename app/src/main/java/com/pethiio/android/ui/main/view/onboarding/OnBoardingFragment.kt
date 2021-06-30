@@ -42,13 +42,16 @@ class OnBoardingFragment : BaseFragment() {
         textSkip = view.findViewById(R.id.text_skip) as TextView
         textSkip.setOnClickListener {
             PreferenceHelper.SharedPreferencesManager.getInstance().isFirstDownload = false
+            if (findNavController().currentDestination?.id == R.id.navigation_onboarding)
             findNavController().navigate(R.id.action_navigation_onboarding_to_navigation_welcome)
         }
         textNextStep = view.findViewById(R.id.txt_next_step) as TextView
 
         textNextStep.setOnClickListener {
             if (getItem(+1) > mViewPager.childCount - 1) {
-                findNavController().navigate(R.id.action_navigation_start_to_navigation_main)
+                PreferenceHelper.SharedPreferencesManager.getInstance().isFirstDownload = false
+                if (findNavController().currentDestination?.id == R.id.navigation_onboarding)
+                findNavController().navigate(R.id.action_navigation_onboarding_to_navigation_welcome)
             } else {
                 mViewPager.setCurrentItem(getItem(+1), true)
             }

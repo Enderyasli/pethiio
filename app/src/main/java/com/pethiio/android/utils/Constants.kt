@@ -9,9 +9,8 @@ class Constants {
         const val lookUpAnimals: String = "animals"
         const val lookUpGender: String = "gender"
         const val lookUpColor: String = "color"
+        const val lookUpPurpose: String = "purpose"
         const val lookUpLanguage: String = "language"
-
-
 
 
         val datePickerFormat: SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd")
@@ -66,9 +65,6 @@ class Constants {
 
         const val petaboutTitle: String = "aboutTitle"
         const val petaboutPlaceholder: String = "aboutPlaceholder"
-
-
-
 
 
     }

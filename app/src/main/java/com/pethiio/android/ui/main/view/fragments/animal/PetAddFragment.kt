@@ -1,6 +1,9 @@
 package com.pethiio.android.ui.main.view.fragments.animal
 
 import android.content.Context
+import android.content.res.ColorStateList
+import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.Gravity
@@ -9,6 +12,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
+import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.pethiio.android.R
@@ -35,6 +40,7 @@ class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
     lateinit var gender: List<String>
     lateinit var type: List<String>
     lateinit var color: List<String>
+    lateinit var purposeList: List<String>
     private val GENDER_ID = 1
     private val TYPE_ID = 2
     private val BREED_ID = 3
@@ -51,17 +57,20 @@ class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
     override fun setUpViews() {
         super.setUpViews()
 
-
-
         viewModel.getAddAnimalFields().observe(this, {
 
+
             setPethiioResponseList(it)
+            binding.petAddTitle.text = getLocalizedString(Constants.petaboutTitle)
+
+            binding.skipBtn.text = getLocalizedString(Constants.animalAddNextButtonTitle)
             binding.nameLy.titleTv.text = getLocalizedSpan(Constants.registerNameTitle)
             binding.nameLy.placeholderTv.hint =
                 getLocalizedString(Constants.registerNamePlaceholder)
 
 
             binding.yearLy.titleTv.text = getLocalizedSpan(Constants.animalAddYearTitle)
+            binding.monthLy.titleTv.visibility = View.INVISIBLE
             binding.genderLy.titleTv.text = getLocalizedSpan(Constants.animalAddGenderTitle)
             binding.typeLy.titleTv.text = getLocalizedSpan(Constants.animalAddTypeTitle)
             binding.breedLy.titleTv.text = getLocalizedSpan(Constants.animalAddBreedTitle)
@@ -71,12 +80,14 @@ class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
             binding.aboutPlaceholderTv.hint =
                 getLocalizedString(Constants.petaboutPlaceholder)
 
+            binding.purposeTitleTv.text = getLocalizedSpan(Constants.animalAddCharacterTitle)
+
 
             binding.genderLy.spinner.prompt =
                 getLocalizedString(Constants.registerGenderTitle)
             binding.yearLy.spinner.prompt =
                 getLocalizedString(Constants.animalAddYearTitle)
-            binding.monthSpinner.prompt =
+            binding.monthLy.spinner.prompt =
                 getLocalizedString(Constants.animalAddMonthPlaceholder)
             binding.typeLy.spinner.prompt =
                 getLocalizedString(Constants.animalAddTypeTitle)
@@ -115,12 +126,17 @@ class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
             }
         })
 
-        viewModel.getAddAnimalLookUps().observe(this, {
+        viewModel.getAddAnimalLookUps().observe(this, { it ->
 
             setLookUps(it)
             gender = getLookUps(Constants.lookUpGender)
             type = getLookUps(Constants.lookUpAnimals)
             color = getLookUps(Constants.lookUpColor)
+            purposeList = getLookUps(Constants.lookUpPurpose)
+
+            purposeList.forEach {
+                addRadioButton(it)
+            }
 
             val genderAdapter =
                 ArrayAdapter(
@@ -158,8 +174,9 @@ class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
                     requireContext(),
                     android.R.layout.simple_spinner_item,
                     arrayYear
-
                 )
+            yearAdapter.setDropDownViewResource(R.layout.spinner_item_default)
+
             val monthAdapter =
                 ArrayAdapter(
                     requireContext(),
@@ -167,6 +184,8 @@ class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
                     arrayMonth
 
                 )
+            monthAdapter.setDropDownViewResource(R.layout.spinner_item_default)
+
             colorAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             binding.genderLy.spinner.id = GENDER_ID
             binding.typeLy.spinner.id = TYPE_ID
@@ -210,7 +229,7 @@ class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
                 gravity = Gravity.CENTER
 
             }
-            with(binding.monthSpinner)
+            with(binding.monthLy.spinner)
             {
                 adapter = monthAdapter
                 onItemSelectedListener = this@PetAddFragment
@@ -221,6 +240,37 @@ class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
 
         })
 
+    }
+
+    fun addRadioButton(string: String) {
+
+        val radioButton = RadioButton(requireContext())
+
+        radioButton.text = string
+        val typeface = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            resources.getFont(R.font.typo_round_regular)
+        } else {
+            ResourcesCompat.getFont(requireContext(), R.font.typo_round_regular)
+        }
+
+
+        val colorStateList = ColorStateList(
+            arrayOf(
+                intArrayOf(-android.R.attr.state_checked),
+                intArrayOf(android.R.attr.state_enabled)
+            ), intArrayOf(
+                ContextCompat.getColor(requireContext(), R.color.grey),  //disabled
+                ContextCompat.getColor(requireContext(), R.color.orangeButton) //enabled
+            )
+        )
+
+        radioButton.buttonTintList = colorStateList
+
+        radioButton.textSize = 14F
+        radioButton.typeface = typeface
+        radioButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.grey))
+
+        binding.radioGroup.addView(radioButton)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -262,7 +312,7 @@ class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
             val selectedPersonalities =
                 getSelectedAnimalPersonality(adapterCharacter.getSelectedItems())
 
-            if (breedId != null && animalId != null && binding.monthSpinner.selectedItem != null
+            if (breedId != null && animalId != null && binding.monthLy.spinner.selectedItem != null
                 && binding.genderLy.spinner.selectedItem != null && binding.yearLy.spinner.selectedItem != null
                 && !TextUtils.isEmpty(binding.nameLy.placeholderTv.text) && !TextUtils.isEmpty(
                     binding.aboutPlaceholderTv.text
@@ -284,7 +334,7 @@ class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
                                 Constants.lookUpGender,
                                 binding.genderLy.spinner.selectedItem.toString()
                             ),
-                            month = binding.monthSpinner.selectedItem.toString().toInt(),
+                            month = binding.monthLy.spinner.selectedItem.toString().toInt(),
                             name = binding.nameLy.placeholderTv.text.toString(),
                             purpose = "ADOPTION",
                             year = binding.yearLy.spinner.selectedItem.toString().toInt()

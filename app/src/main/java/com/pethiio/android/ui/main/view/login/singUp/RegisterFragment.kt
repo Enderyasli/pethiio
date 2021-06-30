@@ -2,6 +2,7 @@ package com.pethiio.android.ui.main.view.login.singUp
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.res.Resources
 import android.net.Uri
 import android.os.Bundle
 import android.view.Gravity
@@ -18,6 +19,7 @@ import com.pethiio.android.databinding.FragmentRegisterBinding
 import com.pethiio.android.ui.base.RegisterBaseFragment
 import com.pethiio.android.ui.main.viewmodel.signup.RegisterBaseViewModel
 import com.pethiio.android.utils.Constants
+import com.pethiio.android.utils.PreferenceHelper
 import com.pethiio.android.utils.Status
 
 
@@ -29,6 +31,7 @@ class RegisterFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
 
     private val binding get() = _binding!!
     override var useSharedViewModel = true
+    var isSelectedFirstTime = true
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -90,15 +93,28 @@ class RegisterFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
 
 
         })
-        viewModel.getRegisterLookUps().observe(viewLifecycleOwner, {
+        viewModel.getRegisterLookUps().observe(viewLifecycleOwner, { it ->
 
             setLookUps(it)
 
             val language = getLookUps(Constants.lookUpLanguage)
-            val languageAdapter =
-                ArrayAdapter(requireContext(),R.layout.spinner_item_register, language)
-            languageAdapter.setDropDownViewResource(R.layout.spinner_item_register)
+            val upperLanguage = language.map { it.uppercase() }
+            var languageString =
+                PreferenceHelper.SharedPreferencesManager.getInstance().appLanguage
 
+
+            if (!PreferenceHelper.SharedPreferencesManager.getInstance().isApplanguageSelected) {
+
+                if (!upperLanguage.contains(languageString))
+                    languageString = "EN"
+
+
+
+                PreferenceHelper.SharedPreferencesManager.getInstance().isApplanguageSelected = true
+            }
+            val languageAdapter =
+                ArrayAdapter(requireContext(), R.layout.spinner_item_register, language)
+            languageAdapter.setDropDownViewResource(R.layout.spinner_item_register)
 
             with(binding.spinner)
             {
@@ -106,14 +122,17 @@ class RegisterFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
                 adapter = languageAdapter
                 onItemSelectedListener = this@RegisterFragment
                 gravity = Gravity.CENTER
-                setSelection(0)
+                if (isSelectedFirstTime) {
+                    setSelection(upperLanguage.indexOf(languageString))
+                    isSelectedFirstTime = false
+                }
 
             }
-
         })
 
 
     }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -177,6 +196,10 @@ class RegisterFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         when (parent?.id) {
             1 -> {
+
+                PreferenceHelper.SharedPreferencesManager.getInstance().appLanguage =
+                    binding.spinner.selectedItem.toString()
+                fetchRegister()
 
             }
         }

@@ -2,6 +2,7 @@ package com.pethiio.android.utils
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.content.res.Resources
 import android.preference.PreferenceManager
 import com.pethiio.android.PethiioApplication
 
@@ -27,9 +28,20 @@ public object PreferenceHelper {
                 Context.MODE_PRIVATE
             )
 
+        public var appLanguage: String
+            get() = sharedPreferences.getString(
+                APP_LANGUAGE,
+                Resources.getSystem().configuration.locale.language.toString().lowercase()
+            ).toString()
+            set(value) = sharedPreferences.edit().putString(APP_LANGUAGE, value).apply()
+
         public var isFirstDownload: Boolean?
             get() = sharedPreferences.getBoolean(IS_FIRST, true)
             set(value) = sharedPreferences.edit().putBoolean(IS_FIRST, value == true).apply()
+
+        public var isApplanguageSelected: Boolean
+            get() = sharedPreferences.getBoolean(IS_APP_LANGUAGE_SELECTED, false)
+            set(value) = sharedPreferences.edit().putBoolean(IS_APP_LANGUAGE_SELECTED, value).apply()
 
         public var accessToken: String
             get() = sharedPreferences.getString(ACCESS_TOKEN, "").toString()
@@ -45,6 +57,8 @@ public object PreferenceHelper {
 
 
         companion object {
+            private const val APP_LANGUAGE = "app_lang"
+            private const val IS_APP_LANGUAGE_SELECTED = "app_lang_selected"
             private const val MY_APP_PREFERENCES = "Pawtind-Android"
             private const val IS_FIRST = "isFirstDownload"
             private const val ACCESS_TOKEN = "accessToken"

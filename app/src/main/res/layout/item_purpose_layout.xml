@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <RadioButton
+        android:id="@+id/purpose_rb"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    </RadioGroup>
+
+
+    <TextView
+        android:layout_marginLeft="5dp"
+        android:id="@+id/purpose_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/typo_round_bold"
+        android:textColor="@color/grey"
+        android:textSize="14sp"
+        tools:text="Adoption" />
+</LinearLayout>
