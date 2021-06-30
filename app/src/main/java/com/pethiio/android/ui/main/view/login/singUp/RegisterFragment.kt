@@ -108,13 +108,13 @@ class RegisterFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
 
             if (!PreferenceHelper.SharedPreferencesManager.getInstance().isApplanguageSelected) {
 
-                if (!upperLanguage.contains(languageString))
+                if (!upperLanguage.contains(languageString.uppercase()))
                     languageString = "EN"
 
                 PreferenceHelper.SharedPreferencesManager.getInstance().isApplanguageSelected = true
             }
             languageAdapter =
-                ArrayAdapter(requireContext(), R.layout.spinner_item_register, language)
+                ArrayAdapter(requireContext(), R.layout.spinner_item_register, upperLanguage)
             languageAdapter?.setDropDownViewResource(R.layout.spinner_item_register)
 
             if (isSelectedFirstTime)
@@ -124,6 +124,7 @@ class RegisterFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
                     adapter = languageAdapter
                     onItemSelectedListener = this@RegisterFragment
                     gravity = Gravity.CENTER
+                    setSelection(upperLanguage.indexOf(languageString.uppercase()))
                     isSelectedFirstTime = false
                 }
 
@@ -196,7 +197,7 @@ class RegisterFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
             1 -> {
 
                 PreferenceHelper.SharedPreferencesManager.getInstance().appLanguage =
-                    binding.spinner.selectedItem.toString()
+                    binding.spinner.selectedItem.toString().lowercase()
                 fetchRegister()
 
             }
