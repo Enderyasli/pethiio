@@ -80,7 +80,7 @@ class RegisterDetailFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
 
             setLookUps(it)
 
-            val gender = getLookUps("gender")
+            val gender = getLookUps(Constants.lookUpGender)
             val genderAdapter =
                 ArrayAdapter(requireContext(), R.layout.spinner_item_default_selected, gender)
             genderAdapter.setDropDownViewResource(R.layout.spinner_item_default)

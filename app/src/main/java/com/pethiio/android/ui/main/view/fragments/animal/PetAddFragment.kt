@@ -134,6 +134,7 @@ class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
             color = getLookUps(Constants.lookUpColor)
             purposeList = getLookUps(Constants.lookUpPurpose)
 
+            binding.radioGroup.removeAllViews()
             purposeList.forEach {
                 addRadioButton(it)
             }

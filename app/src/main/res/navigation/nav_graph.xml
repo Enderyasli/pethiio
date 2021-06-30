@@ -111,7 +111,7 @@
     </fragment>
     <navigation
         android:id="@+id/navigation_main"
-        app:startDestination="@+id/navigation_home">
+        app:startDestination="@+id/navigation_dashboard">
 
         <fragment
             android:id="@+id/navigation_home"
