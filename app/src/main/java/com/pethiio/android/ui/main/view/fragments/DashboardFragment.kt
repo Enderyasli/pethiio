@@ -45,7 +45,8 @@ class DashboardFragment : BaseFragment(), CardStackListener,
 
     private lateinit var viewModel: DashBoardViewModel
 
-    private var memberListResponse: List<MemberListResponse>? = null
+    private var memberListResponse = emptyList<MemberListResponse>()
+    private var isSelectedMemberFirstTime = true
 
     var searchList: List<PetSearchResponse>? = null
     var memberId: Int = 0
@@ -137,11 +138,9 @@ class DashboardFragment : BaseFragment(), CardStackListener,
         viewModel.fetchMemberList()
 
         viewModel.getMemberList().observe(viewLifecycleOwner, {
-            memberListResponse = it.data
-            memberListResponse?.let { it1 ->
-                setMembeListSpinner(it1)
-
-            }
+            if (it.data != null)
+                memberListResponse = it.data
+            setMembeListSpinner(memberListResponse)
 
         })
 
@@ -152,7 +151,16 @@ class DashboardFragment : BaseFragment(), CardStackListener,
             }
 
         })
+        viewModel.getSearchList().observe(viewLifecycleOwner, { it ->
+
+            it.data?.let {
+                adapter = CardStackAdapter(it)
+                searchList = it
+                initialize()
+            }
+        })
     }
+
     private fun removeFirst() {
         if (adapter.getPetSearchList().isEmpty()) {
             return
@@ -162,7 +170,7 @@ class DashboardFragment : BaseFragment(), CardStackListener,
         val new = mutableListOf<PetSearchResponse>().apply {
             addAll(old)
 
-                removeAt(manager.topPosition)
+            removeAt(manager.topPosition)
 
         }
         val callback = CardSackDiffCallback(old, new)
@@ -175,23 +183,19 @@ class DashboardFragment : BaseFragment(), CardStackListener,
     fun setMembeListSpinner(memberListResponse: List<MemberListResponse>) {
         val customAdapter = MemberListSpinner(requireContext(), memberListResponse)
 
-        viewModel.getSearchList().observe(viewLifecycleOwner, { it ->
-
-            it.data?.let {
-                adapter = CardStackAdapter(it)
-                searchList = it
-                initialize()
+        if (isSelectedMemberFirstTime)
+            with(binding.memberlistSpinner)
+            {
+                id = 1
+                adapter = customAdapter
+                onItemSelectedListener = this@DashboardFragment
+                gravity = Gravity.CENTER
+                if (memberListResponse.isNotEmpty() && isSelectedMemberFirstTime) {
+                    binding.memberlistSpinner.setSelection(0)
+                    isSelectedMemberFirstTime = false
+                }
             }
-        })
-        with(binding.memberlistSpinner)
-        {
-            id = 1
-            adapter = customAdapter
-            onItemSelectedListener = this@DashboardFragment
-            gravity = Gravity.CENTER
-        }
-        if (memberListResponse.isNotEmpty())
-            binding.memberlistSpinner.setSelection(0)
+
 
     }
 
@@ -289,7 +293,7 @@ class DashboardFragment : BaseFragment(), CardStackListener,
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         when (parent?.id) {
             1 -> {
-                memberListResponse?.get(position)?.id?.let {
+                memberListResponse[position].id.let {
                     viewModel.fetchPetSearch(it)
                     memberId = it
                 }

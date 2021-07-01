@@ -31,9 +31,9 @@ class RegisterFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
 
     private val binding get() = _binding!!
     override var useSharedViewModel = true
-    var isSelectedFirstTime = true
+    private var isSelectedFirstTime = true
 
-    var languageAdapter: ArrayAdapter<String>? = null
+    private var languageAdapter: ArrayAdapter<String>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
