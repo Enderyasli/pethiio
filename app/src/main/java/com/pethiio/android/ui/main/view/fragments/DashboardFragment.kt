@@ -5,7 +5,6 @@ import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -14,20 +13,22 @@ import android.view.animation.AccelerateInterpolator
 import android.view.animation.DecelerateInterpolator
 import android.view.animation.LinearInterpolator
 import android.widget.AdapterView
-import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DefaultItemAnimator
-import com.pethiio.android.data.model.Spot
+import androidx.recyclerview.widget.DiffUtil
 import com.pethiio.android.data.model.member.LocationsRequest
 import com.pethiio.android.data.model.member.MemberListResponse
+import com.pethiio.android.data.model.member.PetSearchRequest
+import com.pethiio.android.data.model.member.PetSearchResponse
 import com.pethiio.android.databinding.FragmentDashboardBinding
 import com.pethiio.android.ui.base.BaseFragment
 import com.pethiio.android.ui.base.ViewModelFactory
-import com.pethiio.android.ui.main.adapter.CardStackAdapter
+import com.pethiio.android.ui.main.adapter.CardStack.CardSackDiffCallback
+import com.pethiio.android.ui.main.adapter.CardStack.CardStackAdapter
 import com.pethiio.android.ui.main.view.customViews.MemberListSpinner
 import com.pethiio.android.ui.main.viewmodel.DashBoardViewModel
-import com.pethiio.android.utils.Constants
+import com.pethiio.android.utils.Status
 import com.yuyakaido.android.cardstackview.*
 import java.util.*
 
@@ -36,7 +37,7 @@ class DashboardFragment : BaseFragment(), CardStackListener,
     AdapterView.OnItemSelectedListener {
 
     private val manager get() = CardStackLayoutManager(requireContext(), this)
-    private var adapter: CardStackAdapter? = null
+    private var adapter: CardStackAdapter = CardStackAdapter(emptyList())
 
     private var _binding: FragmentDashboardBinding? = null
     private val binding get() = _binding!!
@@ -45,6 +46,9 @@ class DashboardFragment : BaseFragment(), CardStackListener,
     private lateinit var viewModel: DashBoardViewModel
 
     private var memberListResponse: List<MemberListResponse>? = null
+
+    var searchList: List<PetSearchResponse>? = null
+    var memberId: Int = 0
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -140,6 +144,31 @@ class DashboardFragment : BaseFragment(), CardStackListener,
             }
 
         })
+
+        viewModel.postSearchResponse().observe(viewLifecycleOwner, {
+            when (it.status) {
+                Status.SUCCESS -> {
+                }
+            }
+
+        })
+    }
+    private fun removeFirst() {
+        if (adapter.getPetSearchList().isEmpty()) {
+            return
+        }
+
+        val old = adapter.getPetSearchList()
+        val new = mutableListOf<PetSearchResponse>().apply {
+            addAll(old)
+
+                removeAt(manager.topPosition)
+
+        }
+        val callback = CardSackDiffCallback(old, new)
+        val result = DiffUtil.calculateDiff(callback)
+        adapter.setPetSearchList(new)
+        result.dispatchUpdatesTo(adapter)
     }
 
     @SuppressLint("ResourceType")
@@ -150,6 +179,7 @@ class DashboardFragment : BaseFragment(), CardStackListener,
 
             it.data?.let {
                 adapter = CardStackAdapter(it)
+                searchList = it
                 initialize()
             }
         })
@@ -162,7 +192,6 @@ class DashboardFragment : BaseFragment(), CardStackListener,
         }
         if (memberListResponse.isNotEmpty())
             binding.memberlistSpinner.setSelection(0)
-
 
     }
 
@@ -222,85 +251,27 @@ class DashboardFragment : BaseFragment(), CardStackListener,
         }
     }
 
-    private fun createSpots(): List<Spot> {
-        val spots = ArrayList<Spot>()
-        spots.add(
-            Spot(
-                name = "Yasaka Shrine",
-                city = "Kyoto",
-                url = "https://source.unsplash.com/Xq1ntWruZQI/600x800"
-            )
-        )
-        spots.add(
-            Spot(
-                name = "Fushimi Inari Shrine",
-                city = "Kyoto",
-                url = "https://source.unsplash.com/NYyCqdBOKwc/600x800"
-            )
-        )
-        spots.add(
-            Spot(
-                name = "Bamboo Forest",
-                city = "Kyoto",
-                url = "https://source.unsplash.com/buF62ewDLcQ/600x800"
-            )
-        )
-        spots.add(
-            Spot(
-                name = "Brooklyn Bridge",
-                city = "New York",
-                url = "https://source.unsplash.com/THozNzxEP3g/600x800"
-            )
-        )
-        spots.add(
-            Spot(
-                name = "Empire State Building",
-                city = "New York",
-                url = "https://source.unsplash.com/USrZRcRS2Lw/600x800"
-            )
-        )
-        spots.add(
-            Spot(
-                name = "The statue of Liberty",
-                city = "New York",
-                url = "https://source.unsplash.com/PeFk7fzxTdk/600x800"
-            )
-        )
-        spots.add(
-            Spot(
-                name = "Louvre Museum",
-                city = "Paris",
-                url = "https://source.unsplash.com/LrMWHKqilUw/600x800"
-            )
-        )
-        spots.add(
-            Spot(
-                name = "Eiffel Tower",
-                city = "Paris",
-                url = "https://source.unsplash.com/HN-5Z6AmxrM/600x800"
-            )
-        )
-        spots.add(
-            Spot(
-                name = "Big Ben",
-                city = "London",
-                url = "https://source.unsplash.com/CdVAUADdqEc/600x800"
-            )
-        )
-        spots.add(
-            Spot(
-                name = "Great Wall of China",
-                city = "China",
-                url = "https://source.unsplash.com/AWh9C-QjhE4/600x800"
-            )
-        )
-        return spots
-    }
-
     override fun onCardDragging(direction: Direction?, ratio: Float) {
     }
 
+
     override fun onCardSwiped(direction: Direction?) {
+
+        removeFirst()
+        val petSearch = adapter.getPetSearchList()[manager.topPosition]
+
+        if (direction != null && memberId > 0) {
+            viewModel.postPetSearch(
+                PetSearchRequest(
+                    memberId,
+                    petSearch.petId,
+                    direction == Direction.Right,
+                    "DATING"
+                )
+            )
+
+        }
+
     }
 
     override fun onCardRewound() {
@@ -320,6 +291,7 @@ class DashboardFragment : BaseFragment(), CardStackListener,
             1 -> {
                 memberListResponse?.get(position)?.id?.let {
                     viewModel.fetchPetSearch(it)
+                    memberId = it
                 }
 
             }

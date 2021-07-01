@@ -4,6 +4,7 @@ import com.pethiio.android.data.model.*
 import com.pethiio.android.data.model.login.LoginRequest
 import com.pethiio.android.data.model.member.LocationsRequest
 import com.pethiio.android.data.model.member.MemberListResponse
+import com.pethiio.android.data.model.member.PetSearchRequest
 import com.pethiio.android.data.model.member.PetSearchResponse
 import com.pethiio.android.data.model.signup.Login
 import com.pethiio.android.data.model.signup.Register
@@ -81,6 +82,9 @@ interface PethiioServices {
 
     @GET("page/pet-search/members")
     fun getMemberList(): Observable<List<MemberListResponse>>
+
+    @POST("page/pet-search")
+    fun postPetSearch(@Body petSearchRequest: PetSearchRequest): Observable<Response<Void>>
 
     //endregion
 

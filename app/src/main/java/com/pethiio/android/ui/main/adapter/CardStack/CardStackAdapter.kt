@@ -1,4 +1,4 @@
-package com.pethiio.android.ui.main.adapter
+package com.pethiio.android.ui.main.adapter.CardStack
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
@@ -9,7 +9,6 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.pethiio.android.R
 import com.pethiio.android.data.model.member.PetSearchResponse
@@ -32,7 +31,7 @@ class CardStackAdapter(
 
         Glide.with(holder.petImage)
             .load(searchResponse.avatar)
-            .apply(RequestOptions().override(1080,1920))
+            .apply(RequestOptions().override(1080, 1920))
             .into(holder.petImage)
 
         Glide.with(holder.ownerImage)
@@ -49,14 +48,14 @@ class CardStackAdapter(
         return petSearchList.size
     }
 
-    fun setSearchList(searchList: List<PetSearchResponse>) {
+    fun setPetSearchList(searchList: List<PetSearchResponse>) {
         this.petSearchList = searchList
         notifyDataSetChanged()
     }
-//
-//    fun getSpots(): List<Spot> {
-//        return spots
-//    }
+
+    fun getPetSearchList(): List<PetSearchResponse> {
+        return petSearchList
+    }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val petName: TextView = view.findViewById(R.id.item_pet_name)

@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.pethiio.android.data.api.ServiceBuilder
 import com.pethiio.android.data.model.member.LocationsRequest
 import com.pethiio.android.data.model.member.MemberListResponse
+import com.pethiio.android.data.model.member.PetSearchRequest
 import com.pethiio.android.data.model.member.PetSearchResponse
 import com.pethiio.android.utils.Resource
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -18,8 +19,8 @@ class DashBoardViewModel : ViewModel() {
     private val locations = MutableLiveData<Resource<Response<Void>>>()
     private val memberList = MutableLiveData<Resource<List<MemberListResponse>>>()
     private val petSearchResult = MutableLiveData<Resource<List<PetSearchResponse>>>()
+    private val postPetSearchResult = MutableLiveData<Resource<Response<Void>>>()
     private val compositeDisposable = CompositeDisposable()
-
 
     fun fetchLocations(locationRequest: LocationsRequest) {
 
@@ -60,7 +61,7 @@ class DashBoardViewModel : ViewModel() {
         )
     }
 
-    fun fetchPetSearch(animalId:Int) {
+    fun fetchPetSearch(animalId: Int) {
 
         memberList.postValue(Resource.loading(null))
         compositeDisposable.add(
@@ -79,6 +80,28 @@ class DashBoardViewModel : ViewModel() {
         )
     }
 
+    fun postPetSearch(petSearchRequest: PetSearchRequest) {
+
+        memberList.postValue(Resource.loading(null))
+        compositeDisposable.add(
+            ServiceBuilder.buildService()
+                .postPetSearch(petSearchRequest)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                    {
+                        if (it.code().toString().startsWith("2"))
+                            postPetSearchResult.postValue(Resource.success(null))
+                        else
+                            postPetSearchResult.postValue(Resource.error(it.message(), null))
+                    },
+                    {
+                        postPetSearchResult.postValue(Resource.error(it.message, null))
+                    }
+                )
+        )
+    }
+
     override fun onCleared() {
         super.onCleared()
         compositeDisposable.dispose()
@@ -91,8 +114,13 @@ class DashBoardViewModel : ViewModel() {
     fun getMemberList(): LiveData<Resource<List<MemberListResponse>>> {
         return memberList
     }
+
     fun getSearchList(): LiveData<Resource<List<PetSearchResponse>>> {
         return petSearchResult
+    }
+
+    fun postSearchResponse(): LiveData<Resource<Response<Void>>> {
+        return postPetSearchResult
     }
 
 }
