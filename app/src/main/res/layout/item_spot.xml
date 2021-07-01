@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<!-- https://qiita.com/ntsk/items/dac92596742e18470a55 -->
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="?attr/selectableItemBackground"
     android:foreground="?attr/selectableItemBackground"
     app:cardBackgroundColor="@android:color/white"
@@ -13,37 +12,104 @@
     app:cardUseCompatPadding="true">
 
     <com.makeramen.roundedimageview.RoundedImageView
-        android:id="@+id/item_image"
+        android:id="@+id/item_pet_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
         app:riv_corner_radius="20dp" />
 
-    <LinearLayout
+    <RelativeLayout
+        android:layout_width="120dp"
+        android:layout_height="40dp"
+        android:layout_gravity="end"
+        android:layout_marginStart="@dimen/default_margin"
+        android:layout_marginTop="@dimen/default_margin"
+        android:layout_marginEnd="@dimen/default_margin"
+        android:layout_marginBottom="@dimen/default_margin"
+        android:orientation="vertical">
+
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:id="@+id/owner_ly"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@color/white"
+            app:riv_corner_radius="8dp" />
+
+        <LinearLayout
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/owner_image"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginStart="10dp" />
+
+            <TextView
+                android:id="@+id/item_owner_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:fontFamily="@font/typo_round_bold"
+                android:maxLines="1"
+                tools:text="B"
+                android:textColor="@color/black"
+                android:textSize="@dimen/medium_size" />
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="75dp"
         android:layout_gravity="bottom"
-        android:background="@drawable/gradation_black"
-        android:orientation="vertical"
-        android:padding="16dp">
+        android:layout_marginStart="@dimen/default_margin"
+        android:layout_marginEnd="@dimen/default_margin"
+        android:layout_marginBottom="@dimen/default_margin"
+        android:orientation="vertical">
+
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:id="@+id/name_ly_bg"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@color/white"
+            app:riv_corner_radius="8dp" />
 
         <TextView
-            android:id="@+id/item_name"
+            android:id="@+id/item_pet_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@android:color/white"
-            android:textSize="26sp"
-            android:textStyle="bold" />
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="15dp"
+            android:ellipsize="end"
+            android:fontFamily="@font/typo_round_bold"
+            android:maxLines="1"
+            android:textColor="@color/black"
+            android:textSize="@dimen/large_size" />
 
         <TextView
-            android:id="@+id/item_city"
+            android:id="@+id/item_breed"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@android:color/white"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            android:layout_below="@id/item_pet_name"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="-2dp"
+            android:layout_marginBottom="10dp"
+            android:ellipsize="end"
+            android:fontFamily="@font/typo_round_regular"
+            android:maxLines="1"
+            android:textColor="@color/grey"
+            android:textSize="@dimen/medium_size" />
 
-    </LinearLayout>
+    </RelativeLayout>
 
     <FrameLayout
         android:id="@+id/left_overlay"

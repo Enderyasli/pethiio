@@ -38,6 +38,7 @@ class PetAddImageFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
 
     private val binding get() = _binding!!
 
+
     override fun setUpViews() {
         super.setUpViews()
         viewModel.getAddImageFields().observe(this, {
@@ -51,6 +52,7 @@ class PetAddImageFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
 
     }
 

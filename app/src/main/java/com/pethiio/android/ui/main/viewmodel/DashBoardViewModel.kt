@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.pethiio.android.data.api.ServiceBuilder
 import com.pethiio.android.data.model.member.LocationsRequest
 import com.pethiio.android.data.model.member.MemberListResponse
+import com.pethiio.android.data.model.member.PetSearchResponse
 import com.pethiio.android.utils.Resource
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -16,7 +17,7 @@ class DashBoardViewModel : ViewModel() {
 
     private val locations = MutableLiveData<Resource<Response<Void>>>()
     private val memberList = MutableLiveData<Resource<List<MemberListResponse>>>()
-    private val petSearchResult = MutableLiveData<Resource<Response<Void>>>()
+    private val petSearchResult = MutableLiveData<Resource<List<PetSearchResponse>>>()
     private val compositeDisposable = CompositeDisposable()
 
 
@@ -72,7 +73,7 @@ class DashBoardViewModel : ViewModel() {
                         petSearchResult.postValue(Resource.success(loginData))
                     },
                     {
-                        petSearchResult.postValue(Resource.error("Something went wrong", null))
+                        petSearchResult.postValue(Resource.error(it.message, null))
                     }
                 )
         )
@@ -89,6 +90,9 @@ class DashBoardViewModel : ViewModel() {
 
     fun getMemberList(): LiveData<Resource<List<MemberListResponse>>> {
         return memberList
+    }
+    fun getSearchList(): LiveData<Resource<List<PetSearchResponse>>> {
+        return petSearchResult
     }
 
 }

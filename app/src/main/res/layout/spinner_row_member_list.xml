@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
@@ -12,19 +13,26 @@
 
 
     <TextView
-        android:ellipsize="end"
-        android:layout_marginEnd="5dp"
+
         android:id="@+id/name_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
         android:layout_marginStart="10dp"
         android:layout_marginTop="5dp"
-        android:layout_toEndOf="@+id/iv_profile"
+        android:layout_marginEnd="5dp"
+        android:ellipsize="end"
         android:fontFamily="@font/typo_round_bold"
         android:maxLines="1"
         android:textColor="@color/black"
         android:textSize="16sp"
         tools:text="TextView" />
 
-</RelativeLayout>
+    <ImageView
+        android:id="@+id/down_arrow"
+        android:layout_width="10dp"
+        android:layout_height="10dp"
+        android:layout_gravity="center"
+        android:src="@drawable/caretdown"
+        app:tint="@color/black" />
+
+</LinearLayout>

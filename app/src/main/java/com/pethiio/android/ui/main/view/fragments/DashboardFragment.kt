@@ -36,7 +36,7 @@ class DashboardFragment : BaseFragment(), CardStackListener,
     AdapterView.OnItemSelectedListener {
 
     private val manager get() = CardStackLayoutManager(requireContext(), this)
-    private val adapter get() = CardStackAdapter(createSpots())
+    private var adapter: CardStackAdapter? = null
 
     private var _binding: FragmentDashboardBinding? = null
     private val binding get() = _binding!!
@@ -45,10 +45,6 @@ class DashboardFragment : BaseFragment(), CardStackListener,
     private lateinit var viewModel: DashBoardViewModel
 
     private var memberListResponse: List<MemberListResponse>? = null
-
-
-    var countryNames = arrayOf("India", "China", "Australia", "Portugle", "America", "New Zealand")
-    var flags = intArrayOf()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -126,7 +122,6 @@ class DashboardFragment : BaseFragment(), CardStackListener,
     }
 
     private fun setupUI() {
-        initialize()
         setupButton()
 
         viewModel.fetchLocations(
@@ -141,6 +136,7 @@ class DashboardFragment : BaseFragment(), CardStackListener,
             memberListResponse = it.data
             memberListResponse?.let { it1 ->
                 setMembeListSpinner(it1)
+
             }
 
         })
@@ -150,6 +146,13 @@ class DashboardFragment : BaseFragment(), CardStackListener,
     fun setMembeListSpinner(memberListResponse: List<MemberListResponse>) {
         val customAdapter = MemberListSpinner(requireContext(), memberListResponse)
 
+        viewModel.getSearchList().observe(viewLifecycleOwner, { it ->
+
+            it.data?.let {
+                adapter = CardStackAdapter(it)
+                initialize()
+            }
+        })
         with(binding.memberlistSpinner)
         {
             id = 1

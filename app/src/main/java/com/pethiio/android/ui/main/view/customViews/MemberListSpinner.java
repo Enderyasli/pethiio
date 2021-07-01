@@ -3,6 +3,7 @@ package com.pethiio.android.ui.main.view.customViews;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,12 +52,14 @@ public class MemberListSpinner extends BaseAdapter {
         view = inflter.inflate(R.layout.spinner_row_member_list, null);
         ImageView icon = (ImageView) view.findViewById(R.id.iv_profile);
         TextView names = (TextView) view.findViewById(R.id.name_tv);
+        ImageView arrow = (ImageView) view.findViewById(R.id.down_arrow);
 
-        if (memberListResponse.get(i).getAvatar() != null)
-            Glide.with(context)
-                    .load(memberListResponse.get(i).getAvatar())
-                    .apply(new RequestOptions().override(100, 100))
-                    .into(icon);
+            arrow.setVisibility(View.GONE);
+
+        Glide.with(context)
+                .load(memberListResponse.get(i).getAvatar())
+                .apply(new RequestOptions().override(100, 100))
+                .into(icon);
         names.setText(memberListResponse.get(i).getName());
         return view;
     }
