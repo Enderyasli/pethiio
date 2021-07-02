@@ -29,20 +29,13 @@ public class FilterBottomSheet extends BottomSheetDialogFragment {
 
     FilterBottomSheet instance;
 
-    Button test;
     @Override
     public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ((View) getView().getParent()).setBackgroundColor(Color.TRANSPARENT);
 
 
-        test.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                EventBus.getDefault().post(new FilterEvent());
 
-            }
-        });
 
     }
 
@@ -61,7 +54,6 @@ public class FilterBottomSheet extends BottomSheetDialogFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.filter_bottom_sheet, container, false);
         init(root);
-        test = root.findViewById(R.id.testbtn);
         return root;
     }
 

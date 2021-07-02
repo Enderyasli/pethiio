@@ -10,7 +10,6 @@ import com.pethiio.android.data.model.login.LoginRequest
 import com.pethiio.android.data.model.signup.Login
 import com.pethiio.android.data.model.signup.Register
 import com.pethiio.android.data.model.signup.RegisterInfo
-import com.pethiio.android.data.repository.MainRepository
 import com.pethiio.android.utils.PreferenceHelper
 import com.pethiio.android.utils.Resource
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -233,7 +232,7 @@ class RegisterBaseViewModel : ViewModel() {
     fun fetchAnimalDetail(animalId: String) {
         register.postValue(Resource.loading(null))
         compositeDisposable.add(
-            ServiceBuilder.buildService().getPetDetail(animalId)
+            ServiceBuilder.buildService().getAnimalDetail(animalId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(fun(registerData: AnimalDetailResponse) {

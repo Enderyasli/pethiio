@@ -16,10 +16,10 @@ abstract class BaseFragment : Fragment() {
             val mainActivity = activity as MainActivity
             mainActivity.setBottomNavigationVisibility(bottomNavigationViewVisibility)
 
-
             setUpViews()
         }
     }
+
     open fun setUpViews() {}
 
     override fun onResume() {

@@ -147,4 +147,13 @@
 
 
     </navigation>
+
+    <fragment
+        android:id="@+id/navigation_pet_detail"
+        android:name="com.pethiio.android.ui.main.view.fragments.PetDetailFragment"
+        android:label="PetDetail"
+        tools:layout="@layout/fragment_pet_detail" />
+
+
+
 </navigation>

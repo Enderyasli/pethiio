@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/marineButton"
+    tools:context=".ui.main.view.fragments.PetDetailFragment">
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/image_pager"
+        android:layout_width="match_parent"
+        android:layout_height="350dp"
+        android:background="@android:color/white" />
+
+    <com.rd.PageIndicatorView
+        android:id="@+id/pageIndicatorView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="300dp"
+        app:piv_animationType="scale"
+        app:piv_dynamicCount="true"
+        app:piv_interactiveAnimation="true"
+        app:piv_padding="20dp"
+        app:piv_radius="4dp"
+        app:piv_selectedColor="@color/white"
+        app:piv_unselectedColor="@color/md_grey_300"
+        app:piv_viewPager="@id/image_pager" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/pageIndicatorView"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/pet_detail_bg"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/default_margin"
+            android:layout_marginTop="24dp"
+            android:layout_marginRight="@dimen/default_margin">
+
+            <TextView
+                android:id="@+id/pet_name_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_minimum"
+                android:layout_marginRight="@dimen/margin_minimum"
+                android:fontFamily="@font/typo_round_bold"
+                android:text="Kont"
+                android:textColor="@color/black"
+                android:textSize="24dp" />
+
+            <TextView
+                android:id="@+id/pet_breed_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/pet_name_tv"
+                android:layout_marginLeft="@dimen/margin_minimum"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="@dimen/margin_minimum"
+                android:fontFamily="@font/typo_round_bold"
+                android:text="Doberman"
+                android:textColor="@color/grey"
+                android:textSize="16dp" />
+
+
+        </RelativeLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/character_rv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/default_margin"
+            android:layout_marginTop="20dp" />
+
+        <include
+            android:id="@+id/colorLy"
+            layout="@layout/pet_detail_titles_layout" />
+
+        <include
+            android:id="@+id/listLy"
+            layout="@layout/pet_detail_titles_layout" />
+
+        <include
+            android:id="@+id/detailLy"
+            layout="@layout/pet_detail_titles_layout" />
+    </LinearLayout>
+
+
+</RelativeLayout>

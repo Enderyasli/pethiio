@@ -14,6 +14,7 @@ import android.view.animation.LinearInterpolator
 import android.widget.AdapterView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
+import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
@@ -229,13 +230,17 @@ class DashboardFragment : BaseFragment(), CardStackListener,
 
         binding.sliderHorizontal.setOnClickListener {
 
+            val bundle = bundleOf("amount" to 1)
+
+            findNavController().navigate(R.id.navigation_pet_detail, bundle)
+
 //            val checkoutPaymentOptionBottomSheetFragment =
 //                FilterBottomSheet.newInstance()
 //            checkoutPaymentOptionBottomSheetFragment.isCancelable = true
 //            checkoutPaymentOptionBottomSheetFragment.show(requireFragmentManager(), "sad")
 //            checkoutPaymentOptionBottomSheetFragment.ge
 
-            findNavController().navigate(R.id.action_navigation_dashboard_to_bottomSheetDialog)
+//            findNavController().navigate(R.id.action_navigation_dashboard_to_bottomSheetDialog)
 
 
         }

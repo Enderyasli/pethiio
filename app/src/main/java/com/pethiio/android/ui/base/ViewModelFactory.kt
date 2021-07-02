@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.pethiio.android.data.repository.MainRepository
 import com.pethiio.android.ui.main.viewmodel.DashBoardViewModel
 import com.pethiio.android.ui.main.viewmodel.MainViewModel
+import com.pethiio.android.ui.main.viewmodel.PetDetailViewModel
 import com.pethiio.android.ui.main.viewmodel.signup.RegisterBaseViewModel
 import com.pethiio.android.ui.main.viewmodel.signup.WelcomeViewModel
 
@@ -22,6 +23,9 @@ class ViewModelFactory() : ViewModelProvider.Factory {
         }
         if (modelClass.isAssignableFrom(RegisterBaseViewModel::class.java)) {
             return RegisterBaseViewModel() as T
+        }
+        if (modelClass.isAssignableFrom(PetDetailViewModel::class.java)) {
+            return PetDetailViewModel() as T
         }
         throw IllegalArgumentException("Unknown class name")
     }

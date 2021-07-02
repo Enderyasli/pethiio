@@ -43,10 +43,10 @@ class WelcomeFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
                 findNavController().navigate(R.id.action_navigation_welcome_to_navigation_onboarding)
 
         }
-//        else if (PreferenceHelper.SharedPreferencesManager.getInstance().isLoggedIn == true) {//Check Logged in
-//            if (findNavController().currentDestination?.id == R.id.navigation_welcome)
-//                findNavController().navigate(R.id.action_navigation_start_to_navigation_main)
-//        }
+        else if (PreferenceHelper.SharedPreferencesManager.getInstance().isLoggedIn == true) {//Check Logged in
+            if (findNavController().currentDestination?.id == R.id.navigation_welcome)
+                findNavController().navigate(R.id.action_navigation_start_to_navigation_main)
+        }
 
         binding.signupBtn.setOnClickListener {
             fetchRegister()

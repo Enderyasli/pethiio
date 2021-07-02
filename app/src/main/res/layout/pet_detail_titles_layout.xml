@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="@dimen/default_margin"
+    android:layout_marginTop="15dp"
+    android:layout_marginRight="@dimen/default_margin">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_minimum"
+        android:layout_marginRight="@dimen/margin_minimum"
+        android:fontFamily="@font/typo_round_bold"
+        android:text="Kont"
+        android:textColor="@color/black"
+        android:textSize="18dp" />
+
+    <TextView
+        android:id="@+id/value"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/title"
+        android:layout_marginLeft="@dimen/margin_minimum"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="@dimen/margin_minimum"
+        android:fontFamily="@font/poppins_medium"
+        android:text="Doberman"
+        android:textColor="@color/grey"
+        android:textSize="14dp" />
+
+
+</RelativeLayout>
+
