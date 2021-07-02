@@ -8,10 +8,12 @@ import com.pethiio.android.data.model.member.LocationsRequest
 import com.pethiio.android.data.model.member.MemberListResponse
 import com.pethiio.android.data.model.member.PetSearchRequest
 import com.pethiio.android.data.model.member.PetSearchResponse
+import com.pethiio.android.utils.CommonFunctions
 import com.pethiio.android.utils.Resource
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import retrofit2.HttpException
 import retrofit2.Response
 
 class DashBoardViewModel : ViewModel() {
@@ -55,7 +57,8 @@ class DashBoardViewModel : ViewModel() {
                         memberList.postValue(Resource.success(loginData))
                     },
                     {
-                        memberList.postValue(Resource.error("Something went wrong", null))
+                        if((it as HttpException).code()==403)
+                        memberList.postValue(Resource.error("Something went wrong", 403))
                     }
                 )
         )

@@ -1,5 +1,6 @@
 package com.pethiio.android.ui.main.view.fragments.animal
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
@@ -24,6 +25,7 @@ import com.pethiio.android.ui.main.adapter.CharacterAdapter
 import com.pethiio.android.ui.main.viewmodel.signup.RegisterBaseViewModel
 import com.pethiio.android.utils.Constants
 import com.pethiio.android.utils.Status
+import kotlinx.android.synthetic.*
 import kotlinx.android.synthetic.main.common_rounded_input_tv.view.*
 import kotlinx.android.synthetic.main.fragment_home.*
 
@@ -54,6 +56,7 @@ class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
     }
 
 
+    @SuppressLint("ResourceType")
     override fun setUpViews() {
         super.setUpViews()
 
@@ -138,6 +141,8 @@ class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
             purposeList.forEach {
                 addRadioButton(it)
             }
+            if (purposeList.isNotEmpty())
+                binding.radioGroup.check(1)
 
             val genderAdapter =
                 ArrayAdapter(
@@ -313,11 +318,25 @@ class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
             val selectedPersonalities =
                 getSelectedAnimalPersonality(adapterCharacter.getSelectedItems())
 
+            var purpose: String = ""
+            val purposeId = binding.radioGroup.checkedRadioButtonId
+            if (purposeId != -1) {
+                val selectedRadioButton = binding.radioGroup.findViewById<RadioButton>(purposeId)
+
+                purpose = getLookUpKey(
+                    Constants.lookUpPurpose,
+                    selectedRadioButton.text.toString()
+                )
+            }
+
+
+
             if (breedId != null && animalId != null && binding.monthLy.spinner.selectedItem != null
                 && binding.genderLy.spinner.selectedItem != null && binding.yearLy.spinner.selectedItem != null
                 && !TextUtils.isEmpty(binding.nameLy.placeholderTv.text) && !TextUtils.isEmpty(
                     binding.aboutPlaceholderTv.text
                 )
+                && !TextUtils.isEmpty(purpose)
             ) {
                 if (selectedPersonalities.size > 0) {
                     postPetAdd(
@@ -337,7 +356,7 @@ class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
                             ),
                             month = binding.monthLy.spinner.selectedItem.toString().toInt(),
                             name = binding.nameLy.placeholderTv.text.toString(),
-                            purpose = "ADOPTION",
+                            purpose = purpose,
                             year = binding.yearLy.spinner.selectedItem.toString().toInt()
                         )
                     )

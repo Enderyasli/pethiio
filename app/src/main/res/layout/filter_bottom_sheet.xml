@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/quickAddToCartLy"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent"
+    android:orientation="vertical"
+    android:paddingTop="10dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="bottom"
+        android:background="@drawable/top_rounded_bottom_sheet"
+        android:orientation="vertical">
+
+
+        <SeekBar
+
+
+            android:minHeight="30dp"
+            android:maxHeight="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:max="100"
+            android:progress="90"
+            android:progressTint="@color/orangeButton"
+            android:thumbTint="@color/orangeButton" />
+
+        <Button
+            android:id="@+id/testbtn"
+            android:layout_width="100dp"
+            android:layout_height="100dp"/>
+        <TextView
+            android:id="@+id/pay_with_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:gravity="center_vertical"
+            android:text="sadasdsadasdasdasdasdasdas"
+            android:textSize="16sp" />
+
+
+    </LinearLayout>
+</FrameLayout>

@@ -10,13 +10,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AccelerateInterpolator
-import android.view.animation.DecelerateInterpolator
 import android.view.animation.LinearInterpolator
 import android.widget.AdapterView
+import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.NavOptions
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.DiffUtil
+import com.pethiio.android.R
+import com.pethiio.android.data.EventBus.FilterEvent
 import com.pethiio.android.data.model.member.LocationsRequest
 import com.pethiio.android.data.model.member.MemberListResponse
 import com.pethiio.android.data.model.member.PetSearchRequest
@@ -28,8 +32,12 @@ import com.pethiio.android.ui.main.adapter.CardStack.CardSackDiffCallback
 import com.pethiio.android.ui.main.adapter.CardStack.CardStackAdapter
 import com.pethiio.android.ui.main.view.customViews.MemberListSpinner
 import com.pethiio.android.ui.main.viewmodel.DashBoardViewModel
+import com.pethiio.android.utils.CommonFunctions
 import com.pethiio.android.utils.Status
 import com.yuyakaido.android.cardstackview.*
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import java.util.*
 
 
@@ -54,6 +62,8 @@ class DashboardFragment : BaseFragment(), CardStackListener,
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        EventBus.getDefault().register(this)
 
         checkLocationPermission()
     }
@@ -138,6 +148,11 @@ class DashboardFragment : BaseFragment(), CardStackListener,
         viewModel.fetchMemberList()
 
         viewModel.getMemberList().observe(viewLifecycleOwner, {
+            CommonFunctions.checkLogin(it.errorCode, findNavController())
+
+
+
+
             if (it.data != null)
                 memberListResponse = it.data
             setMembeListSpinner(memberListResponse)
@@ -213,14 +228,18 @@ class DashboardFragment : BaseFragment(), CardStackListener,
 
 
         binding.sliderHorizontal.setOnClickListener {
-            val setting = RewindAnimationSetting.Builder()
-                .setDirection(Direction.Bottom)
-                .setDuration(Duration.Normal.duration)
-                .setInterpolator(DecelerateInterpolator())
-                .build()
-            manager.setRewindAnimationSetting(setting)
-            binding.cardStackView.rewind()
+
+//            val checkoutPaymentOptionBottomSheetFragment =
+//                FilterBottomSheet.newInstance()
+//            checkoutPaymentOptionBottomSheetFragment.isCancelable = true
+//            checkoutPaymentOptionBottomSheetFragment.show(requireFragmentManager(), "sad")
+//            checkoutPaymentOptionBottomSheetFragment.ge
+
+            findNavController().navigate(R.id.action_navigation_dashboard_to_bottomSheetDialog)
+
+
         }
+
 
 
         binding.likeButton.setOnClickListener {
@@ -255,13 +274,34 @@ class DashboardFragment : BaseFragment(), CardStackListener,
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: FilterEvent?) {
+
+//        CommonFunctions.goWelcome(findNavController())
+//        findNavController().navigate(R.id.navigation_welcome, null)
+//        Toast.makeText(context, "event", Toast.LENGTH_LONG).show()
+    }
+
+    override fun onDestroy() {
+        //unregister event bus
+        EventBus.getDefault().unregister(this)
+        super.onDestroy()
+    }
+
+
     override fun onCardDragging(direction: Direction?, ratio: Float) {
     }
 
 
     override fun onCardSwiped(direction: Direction?) {
 
+
         removeFirst()
+
+        if (adapter.getPetSearchList().isEmpty()) {
+            return
+        }
+
         val petSearch = adapter.getPetSearchList()[manager.topPosition]
 
         if (direction != null && memberId > 0) {
@@ -275,6 +315,9 @@ class DashboardFragment : BaseFragment(), CardStackListener,
             )
 
         }
+
+//        Log.d("petsize",adapter.getPetSearchList().size.toString())
+
 
     }
 

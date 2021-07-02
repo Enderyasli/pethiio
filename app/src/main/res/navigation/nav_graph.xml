@@ -23,7 +23,7 @@
     <fragment
         android:id="@+id/navigation_welcome"
         android:name="com.pethiio.android.ui.main.view.login.WelcomeFragment"
-        android:label="Onboarding"
+        android:label="Welcome"
         app:launchSingleTop="true"
         tools:layout="@layout/fragment_welcome">
         <action
@@ -121,11 +121,23 @@
             android:label="Home"
             tools:layout="@layout/fragment_home" />
 
+        <dialog
+            android:id="@+id/bottomSheetDialog"
+            android:name="com.pethiio.android.ui.main.view.fragments.FilterBottomSheet"
+            android:label="bottom_sheet"
+            tools:layout="@layout/filter_bottom_sheet">
+
+        </dialog>
+
         <fragment
             android:id="@+id/navigation_dashboard"
             android:name="com.pethiio.android.ui.main.view.fragments.DashboardFragment"
             android:label="Favori"
-            tools:layout="@layout/fragment_dashboard" />
+            tools:layout="@layout/fragment_dashboard" >
+            <action
+                android:id="@+id/action_navigation_dashboard_to_bottomSheetDialog"
+                app:destination="@id/bottomSheetDialog" />
+        </fragment>
 
         <fragment
             android:id="@+id/navigation_search"

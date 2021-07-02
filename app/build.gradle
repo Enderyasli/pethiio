@@ -92,5 +92,10 @@ dependencies {
     //tinder swipe
     implementation "com.yuyakaido.android:card-stack-view:2.3.4"
 
+    //seekbar
+    implementation 'com.github.warkiz.widget:indicatorseekbar:2.1.2'
+
+    implementation 'org.greenrobot:eventbus:3.2.0'
+
 
 }
