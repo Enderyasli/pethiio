@@ -37,6 +37,9 @@ class PetDetailFragment : BaseFragment() {
     private var userId: String = ""
     private var ownerAgeTitle: String = ""
 
+    private var hasOwnerInfo: Boolean = false
+    private var ownerSelected: Boolean = false
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -150,6 +153,7 @@ class PetDetailFragment : BaseFragment() {
 
         viewModel.fetchPetOwnerDetail(userId)
 
+
         viewModel.getPetOwnerDetail().observe(viewLifecycleOwner, {
 
             val petOwnerDetail: PetSearchOwnerDetailResponse? = it.data
@@ -157,6 +161,7 @@ class PetDetailFragment : BaseFragment() {
             when (it.status) {
 
                 Status.SUCCESS -> {
+                    hasOwnerInfo = true
 
                     Glide.with(binding.ownerImage)
                         .load(petOwnerDetail?.avatar)
@@ -167,10 +172,9 @@ class PetDetailFragment : BaseFragment() {
                     binding.ownerAboutValueTv.text = petOwnerDetail?.about
                     binding.ownerAgeTv.text = petOwnerDetail?.age + ownerAgeTitle
 
+                    changeUserType(true)
                 }
             }
-
-
         })
 
     }
@@ -187,7 +191,15 @@ class PetDetailFragment : BaseFragment() {
             popUpMenu.setOnMenuItemClickListener { item ->
                 when (item.itemId) {
                     R.id.owner ->
-                        getOwnerDetail()
+                        if (!ownerSelected) {
+                            if (!hasOwnerInfo)
+                                getOwnerDetail()
+                            else
+                                changeUserType(true)
+                        } else {
+                            changeUserType(false)
+                        }
+
                     R.id.report ->
                         Toast.makeText(
                             requireContext(),
@@ -229,6 +241,19 @@ class PetDetailFragment : BaseFragment() {
         }
 
     }
+
+    private fun changeUserType(isUser: Boolean) {
+        if (isUser) {
+            ownerSelected = true
+            binding.petLayout.visibility = View.GONE
+            binding.ownerLayout.visibility = View.VISIBLE
+        } else {
+            ownerSelected = false
+            binding.petLayout.visibility = View.VISIBLE
+            binding.ownerLayout.visibility = View.GONE
+        }
+    }
+
 
     override fun onPrepareOptionsMenu(menu: Menu) {
         val item: MenuItem = menu.findItem(R.id.owner)

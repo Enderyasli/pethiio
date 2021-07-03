@@ -43,7 +43,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -151,12 +151,12 @@
 
 
         <LinearLayout
-            android:layout_marginTop="28dp"
             android:id="@+id/owner_layout"
-            android:visibility="visible"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_marginTop="28dp"
+            android:orientation="vertical"
+            android:visibility="gone">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -172,7 +172,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginLeft="20dp"
+                    android:layout_marginStart="20dp"
                     android:orientation="vertical">
 
                     <TextView
@@ -190,7 +190,6 @@
                         android:id="@+id/owner_age_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/pet_name_tv"
                         android:layout_marginLeft="@dimen/margin_minimum"
                         android:layout_marginTop="5dp"
                         android:layout_marginRight="@dimen/margin_minimum"
@@ -215,17 +214,15 @@
                 tools:text="Hakkında" />
 
             <TextView
-
                 android:id="@+id/owner_about_value_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/pet_name_tv"
                 android:layout_marginLeft="26dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginRight="26dp"
                 android:fontFamily="@font/typo_round_bold"
                 android:textColor="@color/grey"
-                android:textSize="16dp"
+                android:textSize="@dimen/medium_size"
                 tools:text="Lorem ipsum dolor sit amet, consectetur
 adipiscing elit. Dictumst sed dignissim duis vitae.  Diam pharetra, mauris." />
 
