@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_marginLeft="@dimen/default_margin"
     android:layout_marginTop="15dp"
     android:layout_marginRight="@dimen/default_margin">
@@ -13,7 +14,7 @@
         android:layout_marginLeft="@dimen/margin_minimum"
         android:layout_marginRight="@dimen/margin_minimum"
         android:fontFamily="@font/typo_round_bold"
-        android:text="Kont"
+        tools:text="Kont"
         android:textColor="@color/black"
         android:textSize="18dp" />
 
@@ -26,7 +27,7 @@
         android:layout_marginTop="5dp"
         android:layout_marginRight="@dimen/margin_minimum"
         android:fontFamily="@font/poppins_medium"
-        android:text="Doberman"
+        tools:text="Doberman"
         android:textColor="@color/grey"
         android:textSize="14dp" />
 

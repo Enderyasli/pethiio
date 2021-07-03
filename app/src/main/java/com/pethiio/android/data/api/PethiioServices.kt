@@ -6,7 +6,7 @@ import com.pethiio.android.data.model.member.LocationsRequest
 import com.pethiio.android.data.model.member.MemberListResponse
 import com.pethiio.android.data.model.member.PetSearchRequest
 import com.pethiio.android.data.model.member.PetSearchResponse
-import com.pethiio.android.data.model.petDetail.PetDetailResponse
+import com.pethiio.android.data.model.petDetail.PetSearchDetailResponse
 import com.pethiio.android.data.model.signup.Login
 import com.pethiio.android.data.model.signup.Register
 import com.pethiio.android.data.model.signup.RegisterInfo
@@ -79,15 +79,15 @@ interface PethiioServices {
 
     //region Pet Detail
 
-    @GET("page/pet-detail/info")
-    fun getPetDetailPageData(): Observable<Login>
+    @GET("page/pet-search-detail/info")
+    fun getPetSearchDetailPageData(): Observable<Login>
 
 
     @GET("page/pet-search-detail/{animalId}")
     fun getPetDetail(
         @Path("animalId") animalId: String,
         @Query("sourceMemberId") sourceMemberId: Int
-    ): Observable<PetDetailResponse>
+    ): Observable<PetSearchDetailResponse>
 
     //endregion
 

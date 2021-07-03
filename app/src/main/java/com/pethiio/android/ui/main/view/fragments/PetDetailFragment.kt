@@ -1,19 +1,24 @@
 package com.pethiio.android.ui.main.view.fragments
 
+import android.annotation.SuppressLint
+import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProviders
-import androidx.viewpager.widget.ViewPager
-import com.pethiio.android.R
-import com.pethiio.android.data.model.petDetail.PetDetailResponse
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.pethiio.android.data.model.petDetail.PetSearchDetailResponse
 import com.pethiio.android.databinding.FragmentPetDetailBinding
 import com.pethiio.android.ui.base.BaseFragment
 import com.pethiio.android.ui.base.ViewModelFactory
+import com.pethiio.android.ui.main.adapter.CharacterAdapter
+import com.pethiio.android.ui.main.adapter.PetSearchDetailCharacterAdapter
 import com.pethiio.android.ui.main.adapter.ViewPagerAdapter
-import com.pethiio.android.ui.main.viewmodel.DashBoardViewModel
 import com.pethiio.android.ui.main.viewmodel.PetDetailViewModel
+import com.pethiio.android.utils.Constants
 import com.pethiio.android.utils.Status
 
 
@@ -49,14 +54,30 @@ class PetDetailFragment : BaseFragment() {
         return view
     }
 
+    @SuppressLint("SetTextI18n")
     override fun setUpViews() {
         super.setUpViews()
 
         viewModel.fetchPetDetailPageData()
         viewModel.fetchPetDetail()
+
+        viewModel.getPetDetailPageData().observe(viewLifecycleOwner, {
+
+
+            val fields = it.data?.fields
+
+            binding.colorLy.title.text =
+                getLocalizedString(Constants.petSearchDetailAboutColorTitle, fields)
+            binding.listLy.title.text =
+                getLocalizedString(Constants.petSearchDetailListTypeTitle, fields)
+            binding.detailLy.title.text =
+                getLocalizedString(Constants.petSearchDetailDetailTitle, fields)
+
+        })
+
         viewModel.getPetDetail().observe(viewLifecycleOwner, {
 
-            val petDetail: PetDetailResponse? = it.data
+            val petDetail: PetSearchDetailResponse? = it.data
             when (it.status) {
 
                 Status.SUCCESS -> {
@@ -65,12 +86,30 @@ class PetDetailFragment : BaseFragment() {
                         val mViewPagerAdapter = ViewPagerAdapter(requireContext(), it1)
                         binding.imagePager.adapter = mViewPagerAdapter
                     }
+
+                    binding.characterRv.layoutManager =
+                        LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+
+                    val adapterCharacter = petDetail?.personalities?.let { it1 ->
+                        PetSearchDetailCharacterAdapter(
+                            requireContext(),
+                            it1
+                        )
+                    }
+
+                    binding.characterRv.adapter = adapterCharacter
+
                     binding.petNameTv.text = petDetail?.name
                     binding.petBreedTv.text = petDetail?.breed
+
+                    binding.genderTv.text = petDetail?.gender
 
                     binding.colorLy.value.text = petDetail?.color
                     binding.listLy.value.text = petDetail?.purpose
                     binding.detailLy.value.text = petDetail?.about
+
+                    binding.ageTv.text = petDetail?.age
+                    binding.distanceTv.text = petDetail?.distance.toString() + " km"
 
 
                 }

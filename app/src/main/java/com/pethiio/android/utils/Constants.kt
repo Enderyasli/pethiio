@@ -67,6 +67,18 @@ class Constants {
         const val petaboutPlaceholder: String = "aboutPlaceholder"
 
 
+        const val petSearchDetailAboutOwnerTitle: String = "aboutOwnerTitle"
+        const val petSearchDetailAboutColorTitle: String = "colorTitle"
+        const val petSearchDetailDelete: String = "delete"
+        const val petSearchDetailDetailTitle: String = "detailTitle"
+        const val petSearchDetailListTypeTitle: String = "listTypeTitle"
+        const val petSearchDetailOwner: String = "owner"
+        const val petSearchDetailReport: String = "report"
+        const val petSearchDetailUpdate: String = "update"
+
+
+
+
     }
 
 }

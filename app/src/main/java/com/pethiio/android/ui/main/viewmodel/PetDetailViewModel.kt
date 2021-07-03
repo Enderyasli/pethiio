@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.pethiio.android.data.api.ServiceBuilder
-import com.pethiio.android.data.model.petDetail.PetDetailResponse
+import com.pethiio.android.data.model.petDetail.PetSearchDetailResponse
 import com.pethiio.android.data.model.signup.Login
 import com.pethiio.android.utils.Resource
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -14,7 +14,7 @@ import retrofit2.HttpException
 
 class PetDetailViewModel : ViewModel() {
 
-    private val petDetailResponse = MutableLiveData<Resource<PetDetailResponse>>()
+    private val petDetailResponse = MutableLiveData<Resource<PetSearchDetailResponse>>()
     private val petDetailResponsePageData = MutableLiveData<Resource<Login>>()
     private val compositeDisposable = CompositeDisposable()
 
@@ -44,7 +44,7 @@ class PetDetailViewModel : ViewModel() {
         petDetailResponse.postValue(Resource.loading(null))
         compositeDisposable.add(
             ServiceBuilder.buildService()
-                .getPetDetailPageData()
+                .getPetSearchDetailPageData()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
@@ -64,7 +64,7 @@ class PetDetailViewModel : ViewModel() {
         compositeDisposable.dispose()
     }
 
-    fun getPetDetail(): LiveData<Resource<PetDetailResponse>> {
+    fun getPetDetail(): LiveData<Resource<PetSearchDetailResponse>> {
         return petDetailResponse
     }
     fun getPetDetailPageData(): LiveData<Resource<Login>> {
