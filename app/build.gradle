@@ -95,7 +95,11 @@ dependencies {
     //seekbar
     implementation 'com.github.warkiz.widget:indicatorseekbar:2.1.2'
 
+    implementation 'com.github.warkiz.tickseekbar:tickseekbar:0.1.4'
+
+
     implementation 'org.greenrobot:eventbus:3.2.0'
+
 
 
 }

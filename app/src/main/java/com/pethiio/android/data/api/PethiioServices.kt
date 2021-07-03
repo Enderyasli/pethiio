@@ -1,12 +1,14 @@
 package com.pethiio.android.data.api
 
 import com.pethiio.android.data.model.*
+import com.pethiio.android.data.model.filter.PetSearchFilterResponse
 import com.pethiio.android.data.model.login.LoginRequest
 import com.pethiio.android.data.model.member.LocationsRequest
 import com.pethiio.android.data.model.member.MemberListResponse
 import com.pethiio.android.data.model.member.PetSearchRequest
 import com.pethiio.android.data.model.member.PetSearchResponse
 import com.pethiio.android.data.model.petDetail.PetSearchDetailResponse
+import com.pethiio.android.data.model.petDetail.PetSearchOwnerDetailResponse
 import com.pethiio.android.data.model.signup.Login
 import com.pethiio.android.data.model.signup.Register
 import com.pethiio.android.data.model.signup.RegisterInfo
@@ -48,6 +50,7 @@ interface PethiioServices {
     //endregion
 
     //region Pet
+
     @Multipart
     @POST("page/pet-add-photo/{animalId}")
     fun postPetPhoto(
@@ -76,7 +79,6 @@ interface PethiioServices {
 
     //endregion
 
-
     //region Pet Detail
 
     @GET("page/pet-search-detail/info")
@@ -89,8 +91,23 @@ interface PethiioServices {
         @Query("sourceMemberId") sourceMemberId: Int
     ): Observable<PetSearchDetailResponse>
 
+    @GET("page/pet-search-detail/owner/{userId}")
+    fun getPetOwnerDetail(
+        @Path("userId") userId: String
+    ): Observable<PetSearchOwnerDetailResponse>
+
     //endregion
 
+    //region Filter
+
+    @GET("page/pet-search-filter")
+    fun getPetSearchList(): Observable<PetSearchFilterResponse>
+
+    @GET("page/pet-search-filter/info")
+    fun getPetSearchListPageData(): Observable<Login>
+
+
+    //endregion
 
     //region Member
 

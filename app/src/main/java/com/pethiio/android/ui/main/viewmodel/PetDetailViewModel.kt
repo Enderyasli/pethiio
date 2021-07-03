@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.pethiio.android.data.api.ServiceBuilder
 import com.pethiio.android.data.model.petDetail.PetSearchDetailResponse
+import com.pethiio.android.data.model.petDetail.PetSearchOwnerDetailResponse
 import com.pethiio.android.data.model.signup.Login
 import com.pethiio.android.utils.Resource
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -15,6 +16,7 @@ import retrofit2.HttpException
 class PetDetailViewModel : ViewModel() {
 
     private val petDetailResponse = MutableLiveData<Resource<PetSearchDetailResponse>>()
+    private val petOwnerDetailResponse = MutableLiveData<Resource<PetSearchOwnerDetailResponse>>()
     private val petDetailResponsePageData = MutableLiveData<Resource<Login>>()
     private val compositeDisposable = CompositeDisposable()
 
@@ -34,6 +36,26 @@ class PetDetailViewModel : ViewModel() {
                     {
                         if ((it as HttpException).code() == 403)
                             petDetailResponse.postValue(Resource.error("Something went wrong", 403))
+                    }
+                )
+        )
+    }
+
+    fun fetchPetOwnerDetail(userId:String) {
+
+        petDetailResponse.postValue(Resource.loading(null))
+        compositeDisposable.add(
+            ServiceBuilder.buildService()
+                .getPetOwnerDetail( userId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                    { loginData ->
+                        petOwnerDetailResponse.postValue(Resource.success(loginData))
+                    },
+                    {
+                        if ((it as HttpException).code() == 403)
+                            petOwnerDetailResponse.postValue(Resource.error("Something went wrong", 403))
                     }
                 )
         )
@@ -66,6 +88,10 @@ class PetDetailViewModel : ViewModel() {
 
     fun getPetDetail(): LiveData<Resource<PetSearchDetailResponse>> {
         return petDetailResponse
+    }
+
+    fun getPetOwnerDetail(): LiveData<Resource<PetSearchOwnerDetailResponse>> {
+        return petOwnerDetailResponse
     }
     fun getPetDetailPageData(): LiveData<Resource<Login>> {
         return petDetailResponsePageData

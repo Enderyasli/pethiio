@@ -68,6 +68,7 @@ class Constants {
 
 
         const val petSearchDetailAboutOwnerTitle: String = "aboutOwnerTitle"
+        const val petSearchDetailAboutOwnerAgeTitle: String = "ownerAgeTitle"
         const val petSearchDetailAboutColorTitle: String = "colorTitle"
         const val petSearchDetailDelete: String = "delete"
         const val petSearchDetailDetailTitle: String = "detailTitle"
@@ -76,7 +77,13 @@ class Constants {
         const val petSearchDetailReport: String = "report"
         const val petSearchDetailUpdate: String = "update"
 
-
+        const val petSearchFilterDistanceTitle: String = "distanceTitle"
+        const val petSearchFilterAgeTitle: String = "ageTitle"
+        const val petSearchFilterGenderTitle: String = "genderTitle"
+        const val petSearchFilterPurposeTitle: String = "purposeTitle"
+        const val petSearchFilterAnimalTitle: String = "animalTitle"
+        const val petSearchFilterButton: String = "filterButton"
+        const val petSearchFilterCleanButton: String = "cleanButton"
 
 
     }

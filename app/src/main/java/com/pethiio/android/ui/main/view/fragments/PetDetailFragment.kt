@@ -1,25 +1,27 @@
 package com.pethiio.android.ui.main.view.fragments
 
 import android.annotation.SuppressLint
-import android.graphics.drawable.GradientDrawable
+import android.os.Build
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import android.widget.PopupMenu
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProviders
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
+import com.pethiio.android.R
 import com.pethiio.android.data.model.petDetail.PetSearchDetailResponse
+import com.pethiio.android.data.model.petDetail.PetSearchOwnerDetailResponse
 import com.pethiio.android.databinding.FragmentPetDetailBinding
 import com.pethiio.android.ui.base.BaseFragment
 import com.pethiio.android.ui.base.ViewModelFactory
-import com.pethiio.android.ui.main.adapter.CharacterAdapter
 import com.pethiio.android.ui.main.adapter.PetSearchDetailCharacterAdapter
 import com.pethiio.android.ui.main.adapter.ViewPagerAdapter
 import com.pethiio.android.ui.main.viewmodel.PetDetailViewModel
 import com.pethiio.android.utils.Constants
 import com.pethiio.android.utils.Status
+import java.lang.reflect.Method
 
 
 class PetDetailFragment : BaseFragment() {
@@ -29,6 +31,11 @@ class PetDetailFragment : BaseFragment() {
     override var bottomNavigationViewVisibility = View.GONE
 
     private lateinit var viewModel: PetDetailViewModel
+
+    private var owner: String = ""
+    private var report: String = ""
+    private var userId: String = ""
+    private var ownerAgeTitle: String = ""
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -61,6 +68,10 @@ class PetDetailFragment : BaseFragment() {
         viewModel.fetchPetDetailPageData()
         viewModel.fetchPetDetail()
 
+        binding.popupMenu.setOnClickListener {
+            openPopUpMenu()
+        }
+
         viewModel.getPetDetailPageData().observe(viewLifecycleOwner, {
 
 
@@ -72,6 +83,14 @@ class PetDetailFragment : BaseFragment() {
                 getLocalizedString(Constants.petSearchDetailListTypeTitle, fields)
             binding.detailLy.title.text =
                 getLocalizedString(Constants.petSearchDetailDetailTitle, fields)
+            owner = getLocalizedString(Constants.petSearchDetailOwner, fields)
+            report = getLocalizedString(Constants.petSearchDetailReport, fields)
+
+            binding.ownerAboutTv.text =
+                getLocalizedString(Constants.petSearchDetailAboutOwnerTitle, fields)
+            ownerAgeTitle =
+                " " + getLocalizedString(Constants.petSearchDetailAboutOwnerAgeTitle, fields)
+
 
         })
 
@@ -111,6 +130,8 @@ class PetDetailFragment : BaseFragment() {
                     binding.ageTv.text = petDetail?.age
                     binding.distanceTv.text = petDetail?.distance.toString() + " km"
 
+                    userId = petDetail?.userId.toString()
+
 
                 }
                 Status.ERROR -> {
@@ -122,6 +143,98 @@ class PetDetailFragment : BaseFragment() {
         })
 
 
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun getOwnerDetail() {
+
+        viewModel.fetchPetOwnerDetail(userId)
+
+        viewModel.getPetOwnerDetail().observe(viewLifecycleOwner, {
+
+            val petOwnerDetail: PetSearchOwnerDetailResponse? = it.data
+
+            when (it.status) {
+
+                Status.SUCCESS -> {
+
+                    Glide.with(binding.ownerImage)
+                        .load(petOwnerDetail?.avatar)
+                        .apply(RequestOptions().override(200, 200))
+                        .into(binding.ownerImage)
+
+                    binding.ownerNameTv.text = petOwnerDetail?.fullName
+                    binding.ownerAboutValueTv.text = petOwnerDetail?.about
+                    binding.ownerAgeTv.text = petOwnerDetail?.age + ownerAgeTitle
+
+                }
+            }
+
+
+        })
+
+    }
+
+    private fun openPopUpMenu() {
+        val popUpMenu = PopupMenu(requireContext(), binding.popupMenu)
+        popUpMenu.inflate(R.menu.pop_up_menu)
+
+        popUpMenu.menu.getItem(0).title = owner
+        popUpMenu.menu.getItem(1).title = report
+
+        popUpMenu.apply {
+
+            popUpMenu.setOnMenuItemClickListener { item ->
+                when (item.itemId) {
+                    R.id.owner ->
+                        getOwnerDetail()
+                    R.id.report ->
+                        Toast.makeText(
+                            requireContext(),
+                            "You Clicked : " + item.title,
+                            Toast.LENGTH_SHORT
+                        ).show()
+
+                }
+                true
+            }
+
+            // show icons on popup menu
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                popUpMenu.setForceShowIcon(true)
+            } else {
+                try {
+                    val fields = popUpMenu.javaClass.declaredFields
+                    for (field in fields) {
+                        if ("mPopup" == field.name) {
+                            field.isAccessible = true
+                            val menuPopupHelper = field[popUpMenu]
+                            val classPopupHelper =
+                                Class.forName(menuPopupHelper.javaClass.name)
+                            val setForceIcons: Method = classPopupHelper.getMethod(
+                                "setForceShowIcon",
+                                Boolean::class.javaPrimitiveType
+                            )
+                            setForceIcons.invoke(menuPopupHelper, true)
+                            break
+                        }
+                    }
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
+
+            popUpMenu.show()
+        }
+
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu) {
+        val item: MenuItem = menu.findItem(R.id.owner)
+        item.title = "Set to 'Out of bed'"
+
+        return super.onPrepareOptionsMenu(menu)
     }
 
 

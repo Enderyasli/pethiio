@@ -4,6 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.pethiio.android.data.api.ServiceBuilder
+import com.pethiio.android.data.model.LookUpsResponse
+import com.pethiio.android.data.model.PethiioResponse
+import com.pethiio.android.data.model.filter.PetSearchFilterResponse
 import com.pethiio.android.data.model.member.LocationsRequest
 import com.pethiio.android.data.model.member.MemberListResponse
 import com.pethiio.android.data.model.member.PetSearchRequest
@@ -22,6 +25,11 @@ class DashBoardViewModel : ViewModel() {
     private val memberList = MutableLiveData<Resource<List<MemberListResponse>>>()
     private val petSearchResult = MutableLiveData<Resource<List<PetSearchResponse>>>()
     private val postPetSearchResult = MutableLiveData<Resource<Response<Void>>>()
+    private val petSearchFilter = MutableLiveData<Resource<PetSearchFilterResponse>>()
+    private val petSearchFilterPageData = MutableLiveData<Resource<List<PethiioResponse>>>()
+    private val petSearchFilterPageDataLookUps = MutableLiveData<Resource<List<LookUpsResponse>>>()
+
+
     private val compositeDisposable = CompositeDisposable()
 
     fun fetchLocations(locationRequest: LocationsRequest) {
@@ -57,8 +65,56 @@ class DashBoardViewModel : ViewModel() {
                         memberList.postValue(Resource.success(loginData))
                     },
                     {
-                        if((it as HttpException).code()==403)
-                        memberList.postValue(Resource.error("Something went wrong", 403))
+                        memberList.postValue(
+                            Resource.error(
+                                "Something went wrong",
+                                (it as HttpException).code()
+                            )
+                        )
+                    }
+                )
+        )
+    }
+
+    fun fetchSearchFilterListPageData() {
+
+        memberList.postValue(Resource.loading(null))
+        compositeDisposable.add(
+            ServiceBuilder.buildService()
+                .getPetSearchListPageData()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                    { loginData ->
+                        petSearchFilterPageData.postValue(Resource.success(loginData.fields))
+                        petSearchFilterPageDataLookUps.postValue(Resource.success(loginData.lookups))
+                    },
+                    {
+                        petSearchFilterPageData.postValue(
+                            Resource.error(
+                                "Something went wrong",
+                                null
+                            )
+                        )
+                    }
+                )
+        )
+    }
+
+    fun fetchFilterList() {
+
+        memberList.postValue(Resource.loading(null))
+        compositeDisposable.add(
+            ServiceBuilder.buildService()
+                .getPetSearchList()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                    { loginData ->
+                        petSearchFilter.postValue(Resource.success(loginData))
+                    },
+                    {
+                        petSearchFilter.postValue(Resource.error("Something went wrong", 403))
                     }
                 )
         )
@@ -125,5 +181,18 @@ class DashBoardViewModel : ViewModel() {
     fun postSearchResponse(): LiveData<Resource<Response<Void>>> {
         return postPetSearchResult
     }
+
+    fun getSearchFilterList(): LiveData<Resource<PetSearchFilterResponse>> {
+        return petSearchFilter
+    }
+
+    fun getSearchFilterListFields(): LiveData<Resource<List<PethiioResponse>>> {
+        return petSearchFilterPageData
+    }
+
+    fun getSearchFilterListLookUps(): LiveData<Resource<List<LookUpsResponse>>> {
+        return petSearchFilterPageDataLookUps
+    }
+
 
 }

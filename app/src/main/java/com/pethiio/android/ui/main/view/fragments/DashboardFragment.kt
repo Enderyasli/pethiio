@@ -13,10 +13,10 @@ import android.view.animation.AccelerateInterpolator
 import android.view.animation.LinearInterpolator
 import android.widget.AdapterView
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.core.app.ActivityCompat
 import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.DiffUtil
@@ -90,6 +90,15 @@ class DashboardFragment : BaseFragment(), CardStackListener,
             ViewModelProviders.of(this, ViewModelFactory()).get(DashBoardViewModel::class.java)
 
         setupUI()
+
+        val callback: OnBackPressedCallback =
+            object : OnBackPressedCallback(false) {
+                override fun handleOnBackPressed() {
+                    Toast.makeText(requireContext(), "back", Toast.LENGTH_LONG).show()
+                    // Handle the back button event
+                }
+            }
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
 
         return view
     }
@@ -231,6 +240,8 @@ class DashboardFragment : BaseFragment(), CardStackListener,
         binding.sliderHorizontal.setOnClickListener {
 
             val bundle = bundleOf("amount" to 1)
+
+//            findNavController().navigate(R.id.action_navigation_dashboard_to_bottomSheetDialog)
 
             findNavController().navigate(R.id.navigation_pet_detail, bundle)
 
