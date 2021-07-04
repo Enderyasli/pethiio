@@ -9,6 +9,7 @@ import com.pethiio.android.data.model.member.PetSearchRequest
 import com.pethiio.android.data.model.member.PetSearchResponse
 import com.pethiio.android.data.model.petDetail.PetSearchDetailResponse
 import com.pethiio.android.data.model.petDetail.PetSearchOwnerDetailResponse
+import com.pethiio.android.data.model.report.ReportRequest
 import com.pethiio.android.data.model.signup.PageData
 import com.pethiio.android.data.model.signup.Register
 import com.pethiio.android.data.model.signup.RegisterInfo
@@ -133,6 +134,9 @@ interface PethiioServices {
 
     @GET("page/report/info")
     fun getReportPageData(): Observable<PageData>
+
+    @POST("page/report")
+    fun postReport(@Body reportRequest: ReportRequest): Observable<Response<Void>>
 
     //endregion
 

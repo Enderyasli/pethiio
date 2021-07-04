@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.lifecycle.ViewModelProviders
+import com.pethiio.android.data.model.report.ReportRequest
 import com.pethiio.android.databinding.FragmentReportBinding
 import com.pethiio.android.ui.base.BaseFragment
 import com.pethiio.android.ui.main.viewmodel.ReportViewModel
@@ -21,6 +22,9 @@ class ReportFragment : BaseFragment() {
 
     private lateinit var viewModel: ReportViewModel
 
+
+    var userId: Int? = 0
+    var detailEmtpyError: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,18 +41,48 @@ class ReportFragment : BaseFragment() {
         viewModel =
             ViewModelProviders.of(this).get(ReportViewModel::class.java)
 
+        userId = arguments?.getInt("userId")
+        binding.reportBtn.setOnClickListener {
+            postReport()
+        }
 
         return view
+    }
+
+    private fun postReport() {
+
+
+        if (binding.detailPlaceholderTv.text.trim().toString() == "") {
+            binding.detailPlaceholderTv.error = detailEmtpyError
+            return
+        }
+        if (userId != null && userId!! > 0 && binding.reasonLy.spinner.selectedItem != null) {
+
+            val type = getLookUpKey(
+                Constants.lookUpType,
+                binding.reasonLy.spinner.selectedItem.toString()
+            )
+            if (type.isNotEmpty())
+                viewModel.postReport(
+                    ReportRequest(
+                        binding.detailPlaceholderTv.text.toString(),
+                        userId!!,
+                        type
+                    )
+                )
+        }
+
+
     }
 
     override fun setUpViews() {
         super.setUpViews()
         viewModel.fetchReportPageData()
-
         viewModel.getReportPageData().observe(viewLifecycleOwner, {
 
             val pageDataFields = it.data?.fields
             val pageDataLookUps = it.data?.lookups
+            pageDataLookUps?.let { it1 -> setLookUps(it1) }
 
             binding.reportTitle.text = getLocalizedString(Constants.reportTitle, pageDataFields)
             binding.reportSubtitle.text =
@@ -60,6 +94,8 @@ class ReportFragment : BaseFragment() {
             binding.detailPlaceholderTv.hint =
                 getLocalizedString(Constants.reportDetailPlaceholder, pageDataFields)
             binding.reportBtn.text = getLocalizedString(Constants.reportButton, pageDataFields)
+
+            detailEmtpyError = getLocalizedString(Constants.reportDetailEmptyError, pageDataFields)
 
 
             val typeAdapter = ArrayAdapter(

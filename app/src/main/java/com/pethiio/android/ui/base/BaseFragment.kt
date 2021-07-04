@@ -14,6 +14,8 @@ import com.pethiio.android.ui.main.view.MainActivity
 abstract class BaseFragment : Fragment() {
 
     protected open var bottomNavigationViewVisibility = View.VISIBLE
+    private var lookUpsResponse: List<LookUpsResponse>? = null
+
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -82,6 +84,24 @@ abstract class BaseFragment : Fragment() {
             }
         }
         return emptyList()
+    }
+
+    fun setLookUps(lookUpsResponseList: List<LookUpsResponse>) {
+        lookUpsResponse = lookUpsResponseList
+    }
+
+    fun getLookUpKey(key: String, value: String): String {
+
+        lookUpsResponse?.forEach { it ->
+            if (it.key == key) {
+
+                it.value.forEach {
+                    if (it.value == value)
+                        return it.key
+                }
+            }
+        }
+        return ""
     }
 
 

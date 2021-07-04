@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.*
 import android.widget.PopupMenu
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -35,7 +36,7 @@ class PetDetailFragment : BaseFragment() {
 
     private var owner: String = ""
     private var report: String = ""
-    private var userId: String = ""
+    private var userId: Int? = 0
     private var ownerAgeTitle: String = ""
 
     private var hasOwnerInfo: Boolean = false
@@ -134,7 +135,7 @@ class PetDetailFragment : BaseFragment() {
                     binding.ageTv.text = petDetail?.age
                     binding.distanceTv.text = petDetail?.distance.toString() + " km"
 
-                    userId = petDetail?.userId.toString()
+                    userId = petDetail?.userId
 
 
                 }
@@ -152,7 +153,7 @@ class PetDetailFragment : BaseFragment() {
     @SuppressLint("SetTextI18n")
     private fun getOwnerDetail() {
 
-        viewModel.fetchPetOwnerDetail(userId)
+        viewModel.fetchPetOwnerDetail(userId.toString())
 
 
         viewModel.getPetOwnerDetail().observe(viewLifecycleOwner, {
@@ -201,8 +202,11 @@ class PetDetailFragment : BaseFragment() {
                             changeUserType(false)
                         }
 
-                    R.id.report ->
-                       findNavController().navigate(R.id.navigation_report)
+                    R.id.report -> {
+                        val bundle = bundleOf("userId" to userId)
+                        findNavController().navigate(R.id.navigation_report, bundle)
+                    }
+
 
                 }
                 true
