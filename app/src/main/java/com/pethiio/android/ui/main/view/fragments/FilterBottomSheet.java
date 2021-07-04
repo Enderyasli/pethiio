@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -116,13 +117,9 @@ public class FilterBottomSheet extends BottomSheetDialogFragment {
 
                 }
 
-                filterButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
+                filterButton.setOnClickListener(v -> filterUpdate(root));
 
-                        filterUpdate(root);
-                    }
-                });
+                filterClearButton.setOnClickListener(v -> viewModel.fetchFilterList());
 
 
             }
@@ -213,6 +210,8 @@ public class FilterBottomSheet extends BottomSheetDialogFragment {
             viewModel.postSearhFilter(searchFilterRequest);
 
         }
+
+        new Handler().postDelayed(FilterBottomSheet.this::dismiss, 300);
 
 
     }
