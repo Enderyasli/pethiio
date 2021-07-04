@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.os.bundleOf
+import androidx.navigation.NavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -14,6 +16,7 @@ import com.pethiio.android.R
 import com.pethiio.android.data.model.member.PetSearchResponse
 
 class CardStackAdapter(
+    private var navController: NavController,
     private var petSearchList: List<PetSearchResponse>
 ) : RecyclerView.Adapter<CardStackAdapter.ViewHolder>() {
 
@@ -40,6 +43,12 @@ class CardStackAdapter(
             .into(holder.ownerImage)
 
         holder.itemView.setOnClickListener { v ->
+
+            val bundle =
+                bundleOf("memberId" to searchResponse.ownerId, "animalId" to searchResponse.petId.toString())
+
+            navController.navigate(R.id.navigation_pet_detail, bundle)
+
             Toast.makeText(v.context, searchResponse.name, Toast.LENGTH_SHORT).show()
         }
     }

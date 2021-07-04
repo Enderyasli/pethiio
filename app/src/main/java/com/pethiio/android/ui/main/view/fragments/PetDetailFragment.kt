@@ -37,6 +37,8 @@ class PetDetailFragment : BaseFragment() {
     private var owner: String = ""
     private var report: String = ""
     private var userId: Int? = 0
+    private var memberId: Int = 0
+    private var animalId: String = ""
     private var ownerAgeTitle: String = ""
 
     private var hasOwnerInfo: Boolean = false
@@ -68,8 +70,12 @@ class PetDetailFragment : BaseFragment() {
     override fun setUpViews() {
         super.setUpViews()
 
+
+        memberId = arguments?.getInt("memberId", 0)!!
+        animalId = arguments?.getString("animalId", "")!!
+
         viewModel.fetchPetDetailPageData()
-        viewModel.fetchPetDetail()
+        viewModel.fetchPetDetail(animalId, memberId)
 
         binding.popupMenu.setOnClickListener {
             openPopUpMenu()

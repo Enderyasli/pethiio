@@ -86,6 +86,13 @@ class Constants {
         const val petSearchFilterButton: String = "filterButton"
         const val petSearchFilterCleanButton: String = "cleanButton"
 
+        //region Pet Search
+
+        const val petSearchEmptyMessageTitle: String = "emptyMessageTitle"
+        const val petSearchTitle: String = "title"
+
+
+        //endregion
 
         //region Report
         const val reportDetailEmptyError: String = "detailEmtpyError"

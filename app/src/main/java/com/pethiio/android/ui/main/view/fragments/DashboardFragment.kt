@@ -34,6 +34,7 @@ import com.pethiio.android.ui.main.adapter.CardStack.CardStackAdapter
 import com.pethiio.android.ui.main.view.customViews.MemberListSpinner
 import com.pethiio.android.ui.main.viewmodel.DashBoardViewModel
 import com.pethiio.android.utils.CommonFunctions
+import com.pethiio.android.utils.Constants
 import com.pethiio.android.utils.Status
 import com.yuyakaido.android.cardstackview.*
 import org.greenrobot.eventbus.EventBus
@@ -46,7 +47,7 @@ class DashboardFragment : BaseFragment(), CardStackListener,
     AdapterView.OnItemSelectedListener {
 
     private val manager get() = CardStackLayoutManager(requireContext(), this)
-    private var adapter: CardStackAdapter = CardStackAdapter(emptyList())
+    private var adapter: CardStackAdapter? = null
 
     private var _binding: FragmentDashboardBinding? = null
     private val binding get() = _binding!!
@@ -153,6 +154,7 @@ class DashboardFragment : BaseFragment(), CardStackListener,
 
     private fun setupUI() {
         setupButton()
+        viewModel.fetchPetSearchPageData()
 
         viewModel.fetchLocations(
             LocationsRequest(
@@ -162,16 +164,40 @@ class DashboardFragment : BaseFragment(), CardStackListener,
         )
         viewModel.fetchMemberList()
 
+        viewModel.getPetSearchPageData().observe(viewLifecycleOwner, {
+
+            when (it.status) {
+                Status.LOADING -> {
+                    binding.progressBar.visibility = View.VISIBLE
+                }
+
+                Status.SUCCESS -> {
+                    val fields = it.data?.fields
+                    binding.titleTv.text = getLocalizedString(Constants.petSearchTitle, fields)
+                    binding.petEmptyErrorTv.text =
+                        getLocalizedString(Constants.petSearchEmptyMessageTitle, fields)
+
+                    binding.progressBar.visibility = View.GONE
+
+                }
+
+            }
+
+        })
+
         viewModel.getMemberList().observe(viewLifecycleOwner, {
             CommonFunctions.checkLogin(it.errorCode, findNavController())
 
             when (it.status) {
+                Status.LOADING -> {
+                    binding.progressBar.visibility = View.VISIBLE
+                }
+
                 Status.SUCCESS -> {
                     if (it.data != null)
                         memberListResponse = it.data
                     setMembeListSpinner(memberListResponse)
-
-
+                    binding.progressBar.visibility = View.GONE
                 }
                 Status.ERROR -> {
                     CommonFunctions.checkLogin(it.errorCode, findNavController())
@@ -190,30 +216,47 @@ class DashboardFragment : BaseFragment(), CardStackListener,
         })
         viewModel.getSearchList().observe(viewLifecycleOwner, { it ->
 
-            it.data?.let {
-                adapter = CardStackAdapter(it)
-                searchList = it
-                initialize()
+            when (it.status) {
+//                Status.LOADING -> { binding.progressBar.visibility = View.VISIBLE }
+
+                Status.SUCCESS -> {
+
+                    it.data?.let {
+                        adapter = CardStackAdapter(findNavController(),it)
+                        searchList = it
+                        initialize()
+                    }
+                    if (it.data?.size == 0)
+                        binding.emptyLayout.visibility = View.VISIBLE
+                    else
+                        binding.emptyLayout.visibility = View.GONE
+
+
+                    binding.progressBar.visibility = View.GONE
+
+                }
             }
+
+
         })
     }
 
     private fun removeFirst() {
-        if (adapter.getPetSearchList().isEmpty()) {
+        if (adapter?.getPetSearchList()?.isEmpty() == true) {
             return
         }
 
-        val old = adapter.getPetSearchList()
+        val old = adapter?.getPetSearchList()
         val new = mutableListOf<PetSearchResponse>().apply {
-            addAll(old)
+            old?.let { addAll(it) }
 
             removeAt(manager.topPosition)
 
         }
-        val callback = CardSackDiffCallback(old, new)
-        val result = DiffUtil.calculateDiff(callback)
-        adapter.setPetSearchList(new)
-        result.dispatchUpdatesTo(adapter)
+        val callback = old?.let { CardSackDiffCallback(it, new) }
+        val result = callback?.let { DiffUtil.calculateDiff(it) }
+        adapter?.setPetSearchList(new)
+        adapter?.let { result?.dispatchUpdatesTo(it) }
     }
 
     @SuppressLint("ResourceType")
@@ -255,13 +298,6 @@ class DashboardFragment : BaseFragment(), CardStackListener,
 
 //            findNavController().navigate(R.id.action_navigation_dashboard_to_bottomSheetDialog)
 
-            findNavController().navigate(R.id.navigation_pet_detail, bundle)
-
-//            val checkoutPaymentOptionBottomSheetFragment =
-//                FilterBottomSheet.newInstance()
-//            checkoutPaymentOptionBottomSheetFragment.isCancelable = true
-//            checkoutPaymentOptionBottomSheetFragment.show(requireFragmentManager(), "sad")
-//            checkoutPaymentOptionBottomSheetFragment.ge
 
 //            findNavController().navigate(R.id.action_navigation_dashboard_to_bottomSheetDialog)
 
@@ -326,21 +362,25 @@ class DashboardFragment : BaseFragment(), CardStackListener,
 
         removeFirst()
 
-        if (adapter.getPetSearchList().isEmpty()) {
+        if (adapter?.getPetSearchList()?.isEmpty() == true) {
             return
         }
 
-        val petSearch = adapter.getPetSearchList()[manager.topPosition]
+        val petSearch = adapter?.getPetSearchList()?.get(manager.topPosition)
 
         if (direction != null && memberId > 0) {
-            viewModel.postPetSearch(
+            petSearch?.petId?.let {
                 PetSearchRequest(
                     memberId,
-                    petSearch.petId,
+                    it,
                     direction == Direction.Right,
                     "DATING"
                 )
-            )
+            }?.let {
+                viewModel.postPetSearch(
+                    it
+                )
+            }
 
         }
 

@@ -2,7 +2,7 @@ package com.pethiio.android.data.model.filter
 
 import com.google.gson.annotations.SerializedName
 
-class PetSearchFilterResponse(
+data class SearchFilterRequest(
     @SerializedName("animalId")
     val animalId: Int,
     @SerializedName("purpose")

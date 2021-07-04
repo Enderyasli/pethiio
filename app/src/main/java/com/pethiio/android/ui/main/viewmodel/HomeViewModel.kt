@@ -12,7 +12,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 
-class MainViewModel() : ViewModel() {
+class HomeViewModel() : ViewModel() {
 
     val petList = MutableLiveData<Resource<List<PetListResponse>>>()
 

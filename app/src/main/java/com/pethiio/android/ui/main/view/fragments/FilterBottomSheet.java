@@ -151,7 +151,7 @@ public class FilterBottomSheet extends BottomSheetDialogFragment {
                     ageSeekBar.setProgress(petSearchFilterResponse.getMaximumAge());
                     ageValueTv.setText(String.valueOf(petSearchFilterResponse.getMaximumAge()));
 
-                    breedRadioGroup.check(breedKeys.indexOf(String.valueOf(petSearchFilterResponse.getBreedId())));
+//                    breedRadioGroup.check(breedKeys.indexOf(String.valueOf(petSearchFilterResponse.getBreedId())));
                     purposeRadioGroup.check(0);
 
                 }
@@ -162,6 +162,10 @@ public class FilterBottomSheet extends BottomSheetDialogFragment {
 
 
         return root;
+    }
+
+    private void filterUpdate(){
+
     }
 
 

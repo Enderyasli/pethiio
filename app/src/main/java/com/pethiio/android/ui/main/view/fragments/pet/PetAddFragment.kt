@@ -1,9 +1,8 @@
-package com.pethiio.android.ui.main.view.fragments.animal
+package com.pethiio.android.ui.main.view.fragments.pet
 
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.ColorStateList
-import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.text.TextUtils
@@ -47,7 +46,7 @@ class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
     private val TYPE_ID = 2
     private val BREED_ID = 3
     private val COLOR_ID = 4
-    lateinit var adapterCharacter: CharacterAdapter
+     var adapterCharacter: CharacterAdapter? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -99,6 +98,7 @@ class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
             binding.colorLy.spinner.prompt =
                 getLocalizedString(Constants.animalAddColorTitle)
 
+            binding.mainLayout.visibility=View.VISIBLE
 
         })
         viewModel.getAddAnimalDetails().observe(this, {
@@ -315,8 +315,14 @@ class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
                 ).toIntOrNull()
 
 
-            val selectedPersonalities =
-                getSelectedAnimalPersonality(adapterCharacter.getSelectedItems())
+            var selectedPersonalities: ArrayList<Int>? = null
+                selectedPersonalities =
+                    adapterCharacter?.getSelectedItems()?.let { it1 ->
+                        getSelectedAnimalPersonality(
+                            it1
+                        )
+                    }
+
 
             var purpose: String = ""
             val purposeId = binding.radioGroup.checkedRadioButtonId
@@ -338,28 +344,30 @@ class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
                 )
                 && !TextUtils.isEmpty(purpose)
             ) {
-                if (selectedPersonalities.size > 0) {
-                    postPetAdd(
-                        PetAdd(
-                            about = binding.aboutPlaceholderTv.text.toString(),
-                            animalId =
-                            animalId,
-                            breedId = breedId,
-                            animalPersonalities = selectedPersonalities,
-                            color = getLookUpKey(
-                                Constants.lookUpColor,
-                                binding.colorLy.spinner.selectedItem.toString()
-                            ),
-                            gender = getLookUpKey(
-                                Constants.lookUpGender,
-                                binding.genderLy.spinner.selectedItem.toString()
-                            ),
-                            month = binding.monthLy.spinner.selectedItem.toString().toInt(),
-                            name = binding.nameLy.placeholderTv.text.toString(),
-                            purpose = purpose,
-                            year = binding.yearLy.spinner.selectedItem.toString().toInt()
+                if (selectedPersonalities?.size!! > 0) {
+                    PetAdd(
+                        about = binding.aboutPlaceholderTv.text.toString(),
+                        animalId =
+                        animalId,
+                        breedId = breedId,
+                        animalPersonalities = selectedPersonalities!!,
+                        color = getLookUpKey(
+                            Constants.lookUpColor,
+                            binding.colorLy.spinner.selectedItem.toString()
+                        ),
+                        gender = getLookUpKey(
+                            Constants.lookUpGender,
+                            binding.genderLy.spinner.selectedItem.toString()
+                        ),
+                        month = binding.monthLy.spinner.selectedItem.toString().toInt(),
+                        name = binding.nameLy.placeholderTv.text.toString(),
+                        purpose = purpose,
+                        year = binding.yearLy.spinner.selectedItem.toString().toInt()
+                    ).let { it2 ->
+                        postPetAdd(
+                            it2
                         )
-                    )
+                    }
                 }
             } else {
                 Toast.makeText(requireContext(), "Tüm alanları doldurunuz!", Toast.LENGTH_LONG)
@@ -370,8 +378,8 @@ class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
                 when (it.status) {
                     Status.SUCCESS -> {
                         activity?.runOnUiThread {
-                            if (findNavController().currentDestination?.id == R.id.navigation_add_animal)
-                                findNavController().navigate(R.id.action_navigation_add_animal_to_navigation_photo)
+                            if (findNavController().currentDestination?.id == R.id.navigation_pet_add)
+                                findNavController().navigate(R.id.action_navigation_pet_add_to_navigation_photo)
                         }
                     }
                     Status.ERROR -> {

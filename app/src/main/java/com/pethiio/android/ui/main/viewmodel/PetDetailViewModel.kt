@@ -21,12 +21,12 @@ class PetDetailViewModel : ViewModel() {
     private val compositeDisposable = CompositeDisposable()
 
 
-    fun fetchPetDetail() {
+    fun fetchPetDetail(animalId: String, memberId: Int) {
 
         petDetailResponse.postValue(Resource.loading(null))
         compositeDisposable.add(
             ServiceBuilder.buildService()
-                .getPetDetail( "62",382)
+                .getPetDetail(animalId, memberId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
@@ -41,12 +41,12 @@ class PetDetailViewModel : ViewModel() {
         )
     }
 
-    fun fetchPetOwnerDetail(userId:String) {
+    fun fetchPetOwnerDetail(userId: String) {
 
         petOwnerDetailResponse.postValue(Resource.loading(null))
         compositeDisposable.add(
             ServiceBuilder.buildService()
-                .getPetOwnerDetail( userId)
+                .getPetOwnerDetail(userId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
@@ -55,7 +55,12 @@ class PetDetailViewModel : ViewModel() {
                     },
                     {
                         if ((it as HttpException).code() == 403)
-                            petOwnerDetailResponse.postValue(Resource.error("Something went wrong", 403))
+                            petOwnerDetailResponse.postValue(
+                                Resource.error(
+                                    "Something went wrong",
+                                    403
+                                )
+                            )
                     }
                 )
         )
@@ -74,7 +79,12 @@ class PetDetailViewModel : ViewModel() {
                         petDetailResponsePageData.postValue(Resource.success(loginData))
                     },
                     {
-                            petDetailResponsePageData.postValue(Resource.error("Something went wrong", 403))
+                        petDetailResponsePageData.postValue(
+                            Resource.error(
+                                "Something went wrong",
+                                403
+                            )
+                        )
                     }
                 )
         )
@@ -93,6 +103,7 @@ class PetDetailViewModel : ViewModel() {
     fun getPetOwnerDetail(): LiveData<Resource<PetSearchOwnerDetailResponse>> {
         return petOwnerDetailResponse
     }
+
     fun getPetDetailPageData(): LiveData<Resource<PageData>> {
         return petDetailResponsePageData
     }

@@ -5,19 +5,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProviders
-import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.pethiio.android.data.model.PetListResponse
+import com.pethiio.android.R
 import com.pethiio.android.data.model.User
 import com.pethiio.android.databinding.FragmentHomeBinding
 import com.pethiio.android.ui.base.BaseFragment
 import com.pethiio.android.ui.base.ViewModelFactory
 import com.pethiio.android.ui.main.adapter.*
-import com.pethiio.android.ui.main.viewmodel.MainViewModel
-import com.pethiio.android.utils.Constants
+import com.pethiio.android.ui.main.viewmodel.HomeViewModel
 import com.pethiio.android.utils.Status
-import kotlinx.android.synthetic.main.fragment_home.*
 
 
 class HomeFragment : BaseFragment(), FilterItemClickListener {
@@ -28,7 +25,7 @@ class HomeFragment : BaseFragment(), FilterItemClickListener {
     private val binding get() = _binding!!
 
     private lateinit var adapter: MainAdapter
-    private lateinit var viewModel: MainViewModel
+    private lateinit var viewModel: HomeViewModel
 
     override var bottomNavigationViewVisibility = View.VISIBLE
     override var dashboardClicked: Boolean = false
@@ -64,6 +61,10 @@ class HomeFragment : BaseFragment(), FilterItemClickListener {
 
     private fun setupUI() {
 
+        binding.addAnimal.setOnClickListener {
+            findNavController().navigate(R.id.navigation_pet_add)
+        }
+
 
 //        recyclerView.layoutManager = LinearLayoutManager(requireContext())
 //        adapter = MainAdapter(arrayListOf())
@@ -88,7 +89,7 @@ class HomeFragment : BaseFragment(), FilterItemClickListener {
 
             when (it.status) {
                 Status.LOADING -> {
-                    binding.progressBar.visibility=View.VISIBLE
+                    binding.progressBar.visibility = View.VISIBLE
 
                 }
                 Status.SUCCESS -> {
@@ -100,7 +101,7 @@ class HomeFragment : BaseFragment(), FilterItemClickListener {
                     }
 
 
-                    binding.progressBar.visibility=View.GONE
+                    binding.progressBar.visibility = View.GONE
 
                 }
             }
@@ -125,7 +126,7 @@ class HomeFragment : BaseFragment(), FilterItemClickListener {
         viewModel = ViewModelProviders.of(
             this,
             ViewModelFactory()
-        ).get(MainViewModel::class.java)
+        ).get(HomeViewModel::class.java)
     }
 
     override fun onFilterItemClick(item: String?) {

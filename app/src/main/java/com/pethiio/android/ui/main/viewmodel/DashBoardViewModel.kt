@@ -11,6 +11,7 @@ import com.pethiio.android.data.model.member.LocationsRequest
 import com.pethiio.android.data.model.member.MemberListResponse
 import com.pethiio.android.data.model.member.PetSearchRequest
 import com.pethiio.android.data.model.member.PetSearchResponse
+import com.pethiio.android.data.model.signup.PageData
 import com.pethiio.android.utils.CommonFunctions
 import com.pethiio.android.utils.Resource
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -20,6 +21,8 @@ import retrofit2.HttpException
 import retrofit2.Response
 
 class DashBoardViewModel : ViewModel() {
+
+    private val petSearchPageData = MutableLiveData<Resource<PageData>>()
 
     private val locations = MutableLiveData<Resource<Response<Void>>>()
     private val memberList = MutableLiveData<Resource<List<MemberListResponse>>>()
@@ -31,6 +34,29 @@ class DashBoardViewModel : ViewModel() {
 
 
     private val compositeDisposable = CompositeDisposable()
+
+    fun fetchPetSearchPageData() {
+        petSearchPageData.postValue(Resource.loading(null))
+        compositeDisposable.add(
+            ServiceBuilder.buildService()
+                .getPetSearchPageData()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                    { loginData ->
+                        petSearchPageData.postValue(Resource.success(loginData))
+                    },
+                    {
+                        petSearchPageData.postValue(
+                            Resource.error(
+                                "Something went wrong",
+                                null
+                            )
+                        )
+                    }
+                )
+        )
+    }
 
     fun fetchLocations(locationRequest: LocationsRequest) {
 
@@ -78,7 +104,7 @@ class DashBoardViewModel : ViewModel() {
 
     fun fetchSearchFilterListPageData() {
 
-        memberList.postValue(Resource.loading(null))
+        petSearchFilterPageData.postValue(Resource.loading(null))
         compositeDisposable.add(
             ServiceBuilder.buildService()
                 .getPetSearchListPageData()
@@ -103,7 +129,7 @@ class DashBoardViewModel : ViewModel() {
 
     fun fetchFilterList() {
 
-        memberList.postValue(Resource.loading(null))
+        petSearchFilter.postValue(Resource.loading(null))
         compositeDisposable.add(
             ServiceBuilder.buildService()
                 .getPetSearchList()
@@ -122,7 +148,7 @@ class DashBoardViewModel : ViewModel() {
 
     fun fetchPetSearch(animalId: Int) {
 
-        memberList.postValue(Resource.loading(null))
+        petSearchResult.postValue(Resource.loading(null))
         compositeDisposable.add(
             ServiceBuilder.buildService()
                 .getPetSearch(animalId)
@@ -130,7 +156,7 @@ class DashBoardViewModel : ViewModel() {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                     { loginData ->
-                        petSearchResult.postValue(Resource.success(loginData))
+                        petSearchResult.postValue(Resource.success(loginData.content))
                     },
                     {
                         petSearchResult.postValue(Resource.error(it.message, null))
@@ -141,7 +167,7 @@ class DashBoardViewModel : ViewModel() {
 
     fun postPetSearch(petSearchRequest: PetSearchRequest) {
 
-        memberList.postValue(Resource.loading(null))
+        postPetSearchResult.postValue(Resource.loading(null))
         compositeDisposable.add(
             ServiceBuilder.buildService()
                 .postPetSearch(petSearchRequest)
@@ -164,6 +190,9 @@ class DashBoardViewModel : ViewModel() {
     override fun onCleared() {
         super.onCleared()
         compositeDisposable.dispose()
+    }
+    fun getPetSearchPageData(): LiveData<Resource<PageData>> {
+        return petSearchPageData
     }
 
     fun getLocations(): LiveData<Resource<Response<Void>>> {

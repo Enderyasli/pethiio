@@ -1,33 +1,25 @@
 package com.pethiio.android.ui.main.view
 
 import android.annotation.SuppressLint
-import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.core.view.get
-import androidx.core.widget.ImageViewCompat
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
-import androidx.room.Room
 import com.google.android.material.bottomnavigation.BottomNavigationItemView
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.pethiio.android.R
-import com.pethiio.android.data.local.AppDatabase
-import com.pethiio.android.data.local.User
 import com.pethiio.android.ui.main.adapter.MainAdapter
-import com.pethiio.android.ui.main.viewmodel.MainViewModel
+import com.pethiio.android.ui.main.viewmodel.HomeViewModel
 
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var mainViewModel: MainViewModel
+    private lateinit var mainViewModel: HomeViewModel
     private lateinit var adapter: MainAdapter
     lateinit var navView: BottomNavigationView
     lateinit var viewCustom: View

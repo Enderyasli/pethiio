@@ -107,6 +107,9 @@ interface PethiioServices {
     @GET("page/pet-search-filter/info")
     fun getPetSearchListPageData(): Observable<PageData>
 
+    @POST("api/page/pet-search-filter")
+    fun postSearchFilter(@Body locationsRequest: LocationsRequest): Observable<Response<Void>>
+
 
     //endregion
 
@@ -126,7 +129,10 @@ interface PethiioServices {
     //region Pet Search
 
     @GET("page/pet-search/{animalId}")
-    fun getPetSearch(@Path("animalId") animalId: Int): Observable<List<PetSearchResponse>>
+    fun getPetSearch(@Path("animalId") animalId: Int): Observable<Content>
+
+    @GET("page/pet-search/info")
+    fun getPetSearchPageData(): Observable<PageData>
 
     //endregion
 

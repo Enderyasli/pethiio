@@ -7,9 +7,7 @@ import android.view.WindowManager;
 
 import androidx.annotation.Nullable;
 import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 
-import com.pethiio.android.PethiioApplication;
 import com.pethiio.android.R;
 
 public class CommonFunctions {
@@ -27,7 +25,7 @@ public class CommonFunctions {
 
     public static void checkLogin(@Nullable Integer errorCode, NavController navController) {
         if (errorCode!=null && errorCode == 403)
-            navController.navigate(R.id.navigation_add_animal);
+            navController.navigate(R.id.navigation_pet_add);
     }
 
 

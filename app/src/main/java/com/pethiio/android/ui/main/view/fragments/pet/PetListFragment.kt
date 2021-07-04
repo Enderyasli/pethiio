@@ -1,4 +1,4 @@
-package com.pethiio.android.ui.main.view.fragments.animal
+package com.pethiio.android.ui.main.view.fragments.pet
 
 import android.os.Bundle
 import android.view.LayoutInflater
