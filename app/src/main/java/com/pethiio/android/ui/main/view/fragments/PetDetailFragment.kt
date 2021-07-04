@@ -7,6 +7,7 @@ import android.view.*
 import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -201,11 +202,7 @@ class PetDetailFragment : BaseFragment() {
                         }
 
                     R.id.report ->
-                        Toast.makeText(
-                            requireContext(),
-                            "You Clicked : " + item.title,
-                            Toast.LENGTH_SHORT
-                        ).show()
+                       findNavController().navigate(R.id.navigation_report)
 
                 }
                 true

@@ -11,6 +11,7 @@ class Constants {
         const val lookUpColor: String = "color"
         const val lookUpPurpose: String = "purpose"
         const val lookUpLanguage: String = "language"
+        const val lookUpType: String = "type"
 
 
         val datePickerFormat: SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd")
@@ -84,6 +85,18 @@ class Constants {
         const val petSearchFilterAnimalTitle: String = "animalTitle"
         const val petSearchFilterButton: String = "filterButton"
         const val petSearchFilterCleanButton: String = "cleanButton"
+
+
+        //region Report
+        const val reportDetailEmptyError: String = "detailEmtpyError"
+        const val reportDetailPlaceholder: String = "detailPlaceholder"
+        const val reportDetailTitle: String = "detailTitle"
+        const val reportButton: String = "reportButton"
+        const val reportSubTitle: String = "subTitle"
+        const val reportTitle: String = "title"
+        const val reportTypeTitle: String = "typeTitle"
+
+        //endregion
 
 
     }

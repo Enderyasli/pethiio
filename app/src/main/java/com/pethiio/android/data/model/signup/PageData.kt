@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 import com.pethiio.android.data.model.LookUpsResponse
 import com.pethiio.android.data.model.PethiioResponse
 
-data class Login(
+data class PageData(
 
     @SerializedName("path")
     val path: String = "",

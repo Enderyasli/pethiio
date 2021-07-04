@@ -60,7 +60,7 @@
                     android:layout_marginRight="@dimen/margin_minimum"
                     android:fontFamily="@font/typo_round_bold"
                     android:textColor="@color/black"
-                    android:textSize="24dp"
+                    android:textSize="24sp"
                     tools:text="Kont" />
 
                 <TextView
@@ -73,7 +73,7 @@
                     android:layout_marginRight="@dimen/margin_minimum"
                     android:fontFamily="@font/typo_round_bold"
                     android:textColor="@color/grey"
-                    android:textSize="16dp"
+                    android:textSize="@dimen/medium_size"
                     tools:text="Doberman" />
 
                 <de.hdodenhof.circleimageview.CircleImageView
@@ -81,9 +81,9 @@
                     android:layout_width="5dp"
                     android:layout_height="5dp"
                     android:layout_below="@+id/pet_name_tv"
-                    android:layout_marginLeft="@dimen/medium_size"
+                    android:layout_marginStart="@dimen/medium_size"
                     android:layout_marginTop="12dp"
-                    android:layout_toRightOf="@+id/pet_breed_tv"
+                    android:layout_toEndOf="@+id/pet_breed_tv"
                     android:src="@color/grey" />
 
                 <TextView
@@ -91,25 +91,25 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/pet_name_tv"
-                    android:layout_marginLeft="@dimen/medium_size"
+                    android:layout_marginStart="@dimen/medium_size"
                     android:layout_marginTop="5dp"
-                    android:layout_marginRight="@dimen/margin_minimum"
-                    android:layout_toRightOf="@+id/dot"
+                    android:layout_marginEnd="@dimen/margin_minimum"
+                    android:layout_toEndOf="@+id/dot"
                     android:fontFamily="@font/typo_round_bold"
                     android:textColor="@color/grey"
-                    android:textSize="16dp"
+                    android:textSize="@dimen/medium_size"
                     tools:text="Dişi" />
 
                 <TextView
                     android:id="@+id/age_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_marginLeft="@dimen/margin_minimum"
                     android:layout_marginRight="@dimen/margin_minimum"
                     android:fontFamily="@font/typo_round_bold"
                     android:textColor="@color/grey"
-                    android:textSize="16dp"
+                    android:textSize="@dimen/medium_size"
                     tools:text="3 Aylık" />
 
                 <TextView
@@ -117,13 +117,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/age_tv"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_marginLeft="@dimen/margin_minimum"
                     android:layout_marginTop="5dp"
                     android:layout_marginRight="@dimen/margin_minimum"
                     android:fontFamily="@font/typo_round_bold"
                     android:textColor="@color/grey"
-                    android:textSize="16dp"
+                    android:textSize="@dimen/medium_size"
                     tools:text="2.5 km" />
 
 
@@ -133,7 +133,7 @@
                 android:id="@+id/character_rv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/default_margin"
+                android:layout_marginStart="@dimen/default_margin"
                 android:layout_marginTop="20dp" />
 
             <include
@@ -183,7 +183,7 @@
                         android:layout_marginRight="@dimen/margin_minimum"
                         android:fontFamily="@font/typo_round_bold"
                         android:textColor="@color/black"
-                        android:textSize="24dp"
+                        android:textSize="24sp"
                         tools:text="Kont" />
 
                     <TextView
@@ -195,7 +195,7 @@
                         android:layout_marginRight="@dimen/margin_minimum"
                         android:fontFamily="@font/typo_round_bold"
                         android:textColor="@color/grey"
-                        android:textSize="16dp"
+                        android:textSize="@dimen/medium_size"
                         tools:text="25 yaşında" />
 
                 </LinearLayout>
@@ -210,7 +210,7 @@
                 android:layout_marginRight="26dp"
                 android:fontFamily="@font/typo_round_bold"
                 android:textColor="@color/black"
-                android:textSize="18dp"
+                android:textSize="18sp"
                 tools:text="Hakkında" />
 
             <TextView
@@ -234,9 +234,9 @@ adipiscing elit. Dictumst sed dignissim duis vitae.  Diam pharetra, mauris." />
         android:id="@+id/popup_menu"
         android:layout_width="32dp"
         android:layout_height="32dp"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:layout_marginTop="50dp"
-        android:layout_marginRight="20dp">
+        android:layout_marginEnd="20dp">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:layout_width="32dp"

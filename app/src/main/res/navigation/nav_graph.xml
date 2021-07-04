@@ -154,6 +154,12 @@
         android:label="PetDetail"
         tools:layout="@layout/fragment_pet_detail" />
 
+    <fragment
+        android:id="@+id/navigation_report"
+        android:name="com.pethiio.android.ui.main.view.fragments.ReportFragment"
+        android:label="Report"
+        tools:layout="@layout/fragment_report" />
+
 
 
 </navigation>

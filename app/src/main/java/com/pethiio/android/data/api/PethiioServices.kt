@@ -9,7 +9,7 @@ import com.pethiio.android.data.model.member.PetSearchRequest
 import com.pethiio.android.data.model.member.PetSearchResponse
 import com.pethiio.android.data.model.petDetail.PetSearchDetailResponse
 import com.pethiio.android.data.model.petDetail.PetSearchOwnerDetailResponse
-import com.pethiio.android.data.model.signup.Login
+import com.pethiio.android.data.model.signup.PageData
 import com.pethiio.android.data.model.signup.Register
 import com.pethiio.android.data.model.signup.RegisterInfo
 import io.reactivex.Observable
@@ -21,7 +21,7 @@ interface PethiioServices {
 
     //region login
     @GET("page/login/info")
-    fun getLoginPageData(): Observable<Login>
+    fun getLoginPageData(): Observable<PageData>
 
     @POST("page/login")
     fun postLogin(@Body loginRequest: LoginRequest): Observable<AccessToken>
@@ -34,10 +34,10 @@ interface PethiioServices {
     fun postRegister(@Body register: Register): Observable<AccessToken>
 
     @GET("page/register/info")
-    fun getRegisterPageData(): Observable<Login>
+    fun getRegisterPageData(): Observable<PageData>
 
     @GET("page/register-detail/info")
-    fun getRegisterDetailPageData(): Observable<Login>
+    fun getRegisterDetailPageData(): Observable<PageData>
 
     @POST("page/register-detail")
     fun postRegisterInfo(@Body registerInfo: RegisterInfo): Observable<AccessToken>
@@ -62,13 +62,13 @@ interface PethiioServices {
     fun postPetAdd(@Body petAdd: PetAdd): Observable<PetAddResponse>
 
     @GET("page/pet-add/info")
-    fun getPetInfoPageData(): Observable<Login>
+    fun getPetInfoPageData(): Observable<PageData>
 
     @GET("page/pet-add-photo/info")
-    fun getPetAddPhotoPageData(): Observable<Login>
+    fun getPetAddPhotoPageData(): Observable<PageData>
 
     @GET("page/pet-list/info")
-    fun getPetListInfoPageData(): Observable<Login>
+    fun getPetListInfoPageData(): Observable<PageData>
 
     @GET("page/pet-add/animal-detail/{animalId}")
     fun getAnimalDetail(@Path("animalId") animalId: String): Observable<AnimalDetailResponse>
@@ -82,7 +82,7 @@ interface PethiioServices {
     //region Pet Detail
 
     @GET("page/pet-search-detail/info")
-    fun getPetSearchDetailPageData(): Observable<Login>
+    fun getPetSearchDetailPageData(): Observable<PageData>
 
 
     @GET("page/pet-search-detail/{animalId}")
@@ -104,7 +104,7 @@ interface PethiioServices {
     fun getPetSearchList(): Observable<PetSearchFilterResponse>
 
     @GET("page/pet-search-filter/info")
-    fun getPetSearchListPageData(): Observable<Login>
+    fun getPetSearchListPageData(): Observable<PageData>
 
 
     //endregion
@@ -127,6 +127,12 @@ interface PethiioServices {
     @GET("page/pet-search/{animalId}")
     fun getPetSearch(@Path("animalId") animalId: Int): Observable<List<PetSearchResponse>>
 
+    //endregion
+
+    //region Report
+
+    @GET("page/report/info")
+    fun getReportPageData(): Observable<PageData>
 
     //endregion
 

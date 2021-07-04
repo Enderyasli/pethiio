@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.pethiio.android.data.api.ServiceBuilder
-import com.pethiio.android.data.model.signup.Login
+import com.pethiio.android.data.model.signup.PageData
 import com.pethiio.android.utils.Resource
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -12,7 +12,7 @@ import io.reactivex.schedulers.Schedulers
 
 class WelcomeViewModel : ViewModel() {
 
-    private val loginPageData = MutableLiveData<Resource<Login>>()
+    private val loginPageData = MutableLiveData<Resource<PageData>>()
     private val compositeDisposable = CompositeDisposable()
 
     init {
@@ -44,7 +44,7 @@ class WelcomeViewModel : ViewModel() {
         compositeDisposable.dispose()
     }
 
-    fun getLogin(): LiveData<Resource<Login>> {
+    fun getLogin(): LiveData<Resource<PageData>> {
         return loginPageData
     }
 

@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import com.pethiio.android.data.api.ServiceBuilder
 import com.pethiio.android.data.model.*
 import com.pethiio.android.data.model.login.LoginRequest
-import com.pethiio.android.data.model.signup.Login
+import com.pethiio.android.data.model.signup.PageData
 import com.pethiio.android.data.model.signup.Register
 import com.pethiio.android.data.model.signup.RegisterInfo
 import com.pethiio.android.utils.PreferenceHelper
@@ -19,8 +19,8 @@ import okhttp3.MultipartBody
 
 class RegisterBaseViewModel : ViewModel() {
 
-    private val loginPageData = MutableLiveData<Resource<Login>>()
-    val register = MutableLiveData<Resource<Login>>()
+    private val loginPageData = MutableLiveData<Resource<PageData>>()
+    val register = MutableLiveData<Resource<PageData>>()
     val postRegister = MutableLiveData<Resource<AccessToken>>()
     val postLogin = MutableLiveData<Resource<AccessToken>>()
     val postRegisterInfo = MutableLiveData<Resource<AccessToken>>()
@@ -311,7 +311,7 @@ class RegisterBaseViewModel : ViewModel() {
 
     //region LiveData getter
 
-    fun getLoginPageData(): LiveData<Resource<Login>> {
+    fun getLoginPageData(): LiveData<Resource<PageData>> {
         return loginPageData
     }
 

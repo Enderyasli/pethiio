@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.pethiio.android.data.api.ServiceBuilder
 import com.pethiio.android.data.model.petDetail.PetSearchDetailResponse
 import com.pethiio.android.data.model.petDetail.PetSearchOwnerDetailResponse
-import com.pethiio.android.data.model.signup.Login
+import com.pethiio.android.data.model.signup.PageData
 import com.pethiio.android.utils.Resource
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -17,7 +17,7 @@ class PetDetailViewModel : ViewModel() {
 
     private val petDetailResponse = MutableLiveData<Resource<PetSearchDetailResponse>>()
     private val petOwnerDetailResponse = MutableLiveData<Resource<PetSearchOwnerDetailResponse>>()
-    private val petDetailResponsePageData = MutableLiveData<Resource<Login>>()
+    private val petDetailResponsePageData = MutableLiveData<Resource<PageData>>()
     private val compositeDisposable = CompositeDisposable()
 
 
@@ -93,7 +93,7 @@ class PetDetailViewModel : ViewModel() {
     fun getPetOwnerDetail(): LiveData<Resource<PetSearchOwnerDetailResponse>> {
         return petOwnerDetailResponse
     }
-    fun getPetDetailPageData(): LiveData<Resource<Login>> {
+    fun getPetDetailPageData(): LiveData<Resource<PageData>> {
         return petDetailResponsePageData
     }
 
