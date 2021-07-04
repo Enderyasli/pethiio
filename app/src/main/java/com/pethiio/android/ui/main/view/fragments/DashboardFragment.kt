@@ -222,7 +222,7 @@ class DashboardFragment : BaseFragment(), CardStackListener,
                 Status.SUCCESS -> {
 
                     it.data?.let {
-                        adapter = CardStackAdapter(findNavController(),it)
+                        adapter = CardStackAdapter(findNavController(), it)
                         searchList = it
                         initialize()
                     }
@@ -292,16 +292,8 @@ class DashboardFragment : BaseFragment(), CardStackListener,
         }
 
 
-        binding.sliderHorizontal.setOnClickListener {
-
-            val bundle = bundleOf("amount" to 1)
-
-//            findNavController().navigate(R.id.action_navigation_dashboard_to_bottomSheetDialog)
-
-
-//            findNavController().navigate(R.id.action_navigation_dashboard_to_bottomSheetDialog)
-
-
+        binding.searchFilterButton.setOnClickListener {
+            findNavController().navigate(R.id.action_navigation_dashboard_to_bottomSheetDialog)
         }
 
 

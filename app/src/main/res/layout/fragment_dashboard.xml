@@ -127,7 +127,7 @@
 
 
                 <androidx.cardview.widget.CardView
-                    android:id="@+id/slider_horizontal"
+                    android:id="@+id/search_filter_button"
                     android:layout_width="45dp"
                     android:layout_height="45dp"
                     android:layout_centerHorizontal="true"
