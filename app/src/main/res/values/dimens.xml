@@ -12,4 +12,5 @@
     <dimen name="default_spinner_height">50dp</dimen>
     <dimen name="spinner_item_size">22sp</dimen>
     <dimen name="default_spinner_item_size">14sp</dimen>
+    <dimen name="pet_detail_character_recycler_size">62dp</dimen>
 </resources>

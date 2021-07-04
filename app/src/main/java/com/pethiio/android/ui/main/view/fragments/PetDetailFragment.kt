@@ -57,11 +57,9 @@ class PetDetailFragment : BaseFragment() {
 
         viewModel =
             ViewModelProviders.of(this, ViewModelFactory()).get(PetDetailViewModel::class.java)
-
-
-
-
-
+        binding.backButton.setOnClickListener {
+            findNavController().navigateUp()
+        }
 
         return view
     }
@@ -78,23 +76,35 @@ class PetDetailFragment : BaseFragment() {
         }
 
         viewModel.getPetDetailPageData().observe(viewLifecycleOwner, {
+            when (it.status) {
+                Status.SUCCESS -> {
 
+                    val fields = it.data?.fields
 
-            val fields = it.data?.fields
+                    binding.colorLy.title.text =
+                        getLocalizedString(Constants.petSearchDetailAboutColorTitle, fields)
+                    binding.listLy.title.text =
+                        getLocalizedString(Constants.petSearchDetailListTypeTitle, fields)
+                    binding.detailLy.title.text =
+                        getLocalizedString(Constants.petSearchDetailDetailTitle, fields)
+                    owner = getLocalizedString(Constants.petSearchDetailOwner, fields)
+                    report = getLocalizedString(Constants.petSearchDetailReport, fields)
 
-            binding.colorLy.title.text =
-                getLocalizedString(Constants.petSearchDetailAboutColorTitle, fields)
-            binding.listLy.title.text =
-                getLocalizedString(Constants.petSearchDetailListTypeTitle, fields)
-            binding.detailLy.title.text =
-                getLocalizedString(Constants.petSearchDetailDetailTitle, fields)
-            owner = getLocalizedString(Constants.petSearchDetailOwner, fields)
-            report = getLocalizedString(Constants.petSearchDetailReport, fields)
+                    binding.ownerAboutTv.text =
+                        getLocalizedString(Constants.petSearchDetailAboutOwnerTitle, fields)
+                    ownerAgeTitle =
+                        " " + getLocalizedString(
+                            Constants.petSearchDetailAboutOwnerAgeTitle,
+                            fields
+                        )
 
-            binding.ownerAboutTv.text =
-                getLocalizedString(Constants.petSearchDetailAboutOwnerTitle, fields)
-            ownerAgeTitle =
-                " " + getLocalizedString(Constants.petSearchDetailAboutOwnerAgeTitle, fields)
+                    binding.progressBar.visibility = View.GONE
+
+                }
+                Status.LOADING -> {
+                    binding.progressBar.visibility = View.VISIBLE
+                }
+            }
 
 
         })
@@ -138,8 +148,11 @@ class PetDetailFragment : BaseFragment() {
                     userId = petDetail?.userId
 
 
+                    binding.progressBar.visibility = View.GONE
+
                 }
                 Status.ERROR -> {
+                    binding.progressBar.visibility = View.VISIBLE
 
                 }
             }
@@ -175,6 +188,14 @@ class PetDetailFragment : BaseFragment() {
                     binding.ownerAgeTv.text = petOwnerDetail?.age + ownerAgeTitle
 
                     changeUserType(true)
+
+                    binding.progressBar.visibility = View.GONE
+
+                }
+                Status.ERROR -> {
+                    binding.progressBar.visibility = View.VISIBLE
+
+
                 }
             }
         })

@@ -43,7 +43,7 @@ class PetDetailViewModel : ViewModel() {
 
     fun fetchPetOwnerDetail(userId:String) {
 
-        petDetailResponse.postValue(Resource.loading(null))
+        petOwnerDetailResponse.postValue(Resource.loading(null))
         compositeDisposable.add(
             ServiceBuilder.buildService()
                 .getPetOwnerDetail( userId)
@@ -63,7 +63,7 @@ class PetDetailViewModel : ViewModel() {
 
     fun fetchPetDetailPageData() {
 
-        petDetailResponse.postValue(Resource.loading(null))
+        petDetailResponsePageData.postValue(Resource.loading(null))
         compositeDisposable.add(
             ServiceBuilder.buildService()
                 .getPetSearchDetailPageData()

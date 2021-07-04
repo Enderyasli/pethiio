@@ -1,17 +1,18 @@
 package com.pethiio.android.ui.main.view.fragments
 
-import android.R
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import com.pethiio.android.data.model.report.ReportRequest
 import com.pethiio.android.databinding.FragmentReportBinding
 import com.pethiio.android.ui.base.BaseFragment
 import com.pethiio.android.ui.main.viewmodel.ReportViewModel
 import com.pethiio.android.utils.Constants
+import com.pethiio.android.utils.Status
 
 
 class ReportFragment : BaseFragment() {
@@ -46,11 +47,12 @@ class ReportFragment : BaseFragment() {
             postReport()
         }
 
+
         return view
     }
 
-    private fun postReport() {
 
+    private fun postReport() {
 
         if (binding.detailPlaceholderTv.text.trim().toString() == "") {
             binding.detailPlaceholderTv.error = detailEmtpyError
@@ -79,39 +81,60 @@ class ReportFragment : BaseFragment() {
         super.setUpViews()
         viewModel.fetchReportPageData()
         viewModel.getReportPageData().observe(viewLifecycleOwner, {
-
-            val pageDataFields = it.data?.fields
-            val pageDataLookUps = it.data?.lookups
-            pageDataLookUps?.let { it1 -> setLookUps(it1) }
-
-            binding.reportTitle.text = getLocalizedString(Constants.reportTitle, pageDataFields)
-            binding.reportSubtitle.text =
-                getLocalizedString(Constants.reportSubTitle, pageDataFields)
-            binding.reasonLy.titleTv.text =
-                getLocalizedSpan(Constants.reportTypeTitle, pageDataFields)
-            binding.detailTitleTv.text =
-                getLocalizedSpan(Constants.reportDetailTitle, pageDataFields)
-            binding.detailPlaceholderTv.hint =
-                getLocalizedString(Constants.reportDetailPlaceholder, pageDataFields)
-            binding.reportBtn.text = getLocalizedString(Constants.reportButton, pageDataFields)
-
-            detailEmtpyError = getLocalizedString(Constants.reportDetailEmptyError, pageDataFields)
+            when(it.status){
+                Status.LOADING->{
+                    binding.progressBar.visibility=View.VISIBLE
+                }
+                Status.SUCCESS->{
 
 
-            val typeAdapter = ArrayAdapter(
-                requireContext(),
-                R.layout.simple_spinner_item,
-                getLookUps(Constants.lookUpType, pageDataLookUps)
-            )
-            typeAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
+                    val pageDataFields = it.data?.fields
+                    val pageDataLookUps = it.data?.lookups
+                    pageDataLookUps?.let { it1 -> setLookUps(it1) }
 
-            with(binding.reasonLy.spinner)
-            {
-                adapter = typeAdapter
-                gravity = android.view.Gravity.CENTER
-                setSelection(0)
+                    binding.reportTitle.text = getLocalizedString(Constants.reportTitle, pageDataFields)
+                    binding.reportSubtitle.text =
+                        getLocalizedString(Constants.reportSubTitle, pageDataFields)
+                    binding.reasonLy.titleTv.text =
+                        getLocalizedSpan(Constants.reportTypeTitle, pageDataFields)
+                    binding.detailTitleTv.text =
+                        getLocalizedSpan(Constants.reportDetailTitle, pageDataFields)
+                    binding.detailPlaceholderTv.hint =
+                        getLocalizedString(Constants.reportDetailPlaceholder, pageDataFields)
+                    binding.reportBtn.text = getLocalizedString(Constants.reportButton, pageDataFields)
+
+                    detailEmtpyError = getLocalizedString(Constants.reportDetailEmptyError, pageDataFields)
+
+
+                    val typeAdapter = ArrayAdapter(
+                        requireContext(),
+                        android.R.layout.simple_spinner_item,
+                        getLookUps(Constants.lookUpType, pageDataLookUps)
+                    )
+                    typeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+
+                    with(binding.reasonLy.spinner)
+                    {
+                        adapter = typeAdapter
+                        gravity = android.view.Gravity.CENTER
+                        setSelection(0)
+                    }
+
+                    binding.progressBar.visibility = View.GONE
+                }
+
+
             }
 
+        })
+
+        viewModel.getReportResponse().observe(viewLifecycleOwner, {
+            when (it.status) {
+
+                Status.SUCCESS -> {
+                    findNavController().navigateUp()
+                }
+            }
         })
     }
 }

@@ -51,6 +51,8 @@ class DashboardFragment : BaseFragment(), CardStackListener,
     private var _binding: FragmentDashboardBinding? = null
     private val binding get() = _binding!!
     override var bottomNavigationViewVisibility = View.VISIBLE
+    override var dashboardClicked: Boolean = true
+
 
     private lateinit var viewModel: DashBoardViewModel
 
@@ -88,6 +90,7 @@ class DashboardFragment : BaseFragment(), CardStackListener,
 
         viewModel =
             ViewModelProviders.of(this, ViewModelFactory()).get(DashBoardViewModel::class.java)
+          isSelectedMemberFirstTime = true
 
         setupUI()
 
@@ -99,6 +102,8 @@ class DashboardFragment : BaseFragment(), CardStackListener,
                 }
             }
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
+
+
 
         return view
     }
@@ -160,12 +165,19 @@ class DashboardFragment : BaseFragment(), CardStackListener,
         viewModel.getMemberList().observe(viewLifecycleOwner, {
             CommonFunctions.checkLogin(it.errorCode, findNavController())
 
+            when (it.status) {
+                Status.SUCCESS -> {
+                    if (it.data != null)
+                        memberListResponse = it.data
+                    setMembeListSpinner(memberListResponse)
 
 
+                }
+                Status.ERROR -> {
+                    CommonFunctions.checkLogin(it.errorCode, findNavController())
 
-            if (it.data != null)
-                memberListResponse = it.data
-            setMembeListSpinner(memberListResponse)
+                }
+            }
 
         })
 

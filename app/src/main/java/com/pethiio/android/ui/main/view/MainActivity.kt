@@ -1,12 +1,22 @@
 package com.pethiio.android.ui.main.view
 
+import android.annotation.SuppressLint
+import android.content.res.ColorStateList
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.core.view.get
+import androidx.core.widget.ImageViewCompat
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import androidx.room.Room
+import com.google.android.material.bottomnavigation.BottomNavigationItemView
+import com.google.android.material.bottomnavigation.BottomNavigationMenuView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.pethiio.android.R
 import com.pethiio.android.data.local.AppDatabase
@@ -20,6 +30,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var mainViewModel: MainViewModel
     private lateinit var adapter: MainAdapter
     lateinit var navView: BottomNavigationView
+    lateinit var viewCustom: View
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,6 +38,7 @@ class MainActivity : AppCompatActivity() {
 //        setupUI()
 //        setupViewModel()
 //        setupObserver()
+
 
         navView = findViewById<BottomNavigationView>(R.id.bottomNav_view)
 
@@ -44,72 +56,60 @@ class MainActivity : AppCompatActivity() {
             .setupWithNavController(navController)
 
 
-        try {
-            val db = Room.databaseBuilder(
-                this,
-                AppDatabase::class.java, "user.db"
-            ).build()
+        //Add custom tab menu
+        val bottomMenuView = navView.getChildAt(0) as BottomNavigationMenuView
+        val view = bottomMenuView.getChildAt(1)
 
-            val userDao = db.userDao()
-            val users: List<User> = userDao.getAll()
-        } catch (e: Exception) {
-
+        val itemView = view as BottomNavigationItemView
+        viewCustom =
+            LayoutInflater.from(this).inflate(R.layout.button_custom, bottomMenuView, false)
+//        viewCustom.setOnClickListener {
+//            navController.navigate(R.id.navigation_dashboard)
+//        }
+        itemView[1].setOnClickListener {
+            navController.navigate(R.id.navigation_dashboard)
         }
+        itemView.addView(viewCustom)
 
+
+//        try {
+//            val db = Room.databaseBuilder(
+//                this,
+//                AppDatabase::class.java, "user.db"
+//            ).build()
+//
+//            val userDao = db.userDao()
+//            val users: List<User> = userDao.getAll()
+//        } catch (e: Exception) {
+//        }
+
+
+    }
+
+    @SuppressLint("ResourceAsColor")
+    fun setDashboardClickListener(dashboardClicked: Boolean) {
+
+        // TODO: 4.07.2021 logo gelince aç
+//        if (dashboardClicked)
+//            ImageViewCompat.setImageTintList(
+//                viewCustom.findViewById<ImageView>(R.id.dashboard_icon_img),
+//                ContextCompat.getColorStateList(this, R.color.orangeButton)
+//            )
+//        else
+//            ImageViewCompat.setImageTintList(
+//                viewCustom.findViewById<ImageView>(R.id.dashboard_icon_img),
+//                ContextCompat.getColorStateList(this, R.color.grey)
+//            )
 
     }
 
     override fun onBackPressed() {
         super.onBackPressed()
     }
+
     fun setBottomNavigationVisibility(visibility: Int) {
         // get the reference of the bottomNavigationView and set the visibility.
         navView.visibility = visibility
     }
 
-//    private fun setupUI() {
-//        recyclerView.layoutManager = LinearLayoutManager(this)
-//        adapter = MainAdapter(arrayListOf())
-//        recyclerView.addItemDecoration(
-//            DividerItemDecoration(
-//                recyclerView.context,
-//                (recyclerView.layoutManager as LinearLayoutManager).orientation
-//            )
-//        )
-//        recyclerView.adapter = adapter
-//    }
-//
-//    private fun setupObserver() {
-//        mainViewModel.getUsers().observe(this, Observer {
-//            when (it.status) {
-//                Status.SUCCESS -> {
-//                    progressBar.visibility = View.GONE
-//                    it.data?.let { users -> renderList(users) }
-//                    recyclerView.visibility = View.VISIBLE
-//                }
-//                Status.LOADING -> {
-//                    progressBar.visibility = View.VISIBLE
-//                    recyclerView.visibility = View.GONE
-//                }
-//                Status.ERROR -> {
-//                    //Handle Error
-//                    progressBar.visibility = View.GONE
-//                    Toast.makeText(this, it.message, Toast.LENGTH_LONG).show()
-//                }
-//            }
-//        })
-//    }
-
-
-//    private fun renderList(users: List<com.pawtind.android.data.model.User>) {
-//        adapter.addData(users)
-//        adapter.notifyDataSetChanged()
-//    }
-//
-//    private fun setupViewModel() {
-//        mainViewModel = ViewModelProviders.of(
-//            this,
-//            ViewModelFactory(ApiHelper(ApiServiceImpl()))
-//        ).get(MainViewModel::class.java)
-//    }
 }

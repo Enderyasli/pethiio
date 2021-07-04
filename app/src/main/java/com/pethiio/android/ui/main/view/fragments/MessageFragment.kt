@@ -17,6 +17,8 @@ class MessageFragment : BaseFragment() {
     private val binding get() = _binding!!
 
     override var bottomNavigationViewVisibility = View.VISIBLE
+    override var dashboardClicked: Boolean = false
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

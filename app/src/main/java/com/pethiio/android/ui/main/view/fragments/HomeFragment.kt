@@ -31,6 +31,8 @@ class HomeFragment : BaseFragment(), FilterItemClickListener {
     private lateinit var mainViewModel: MainViewModel
 
     override var bottomNavigationViewVisibility = View.VISIBLE
+    override var dashboardClicked: Boolean = false
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

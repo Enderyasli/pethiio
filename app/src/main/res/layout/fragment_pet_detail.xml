@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,176 +7,59 @@
     android:background="@color/marineButton"
     tools:context=".ui.main.view.fragments.PetDetailFragment">
 
-    <androidx.viewpager.widget.ViewPager
-        android:id="@+id/image_pager"
-        android:layout_width="match_parent"
-        android:layout_height="350dp"
-        android:background="@android:color/white" />
-
-    <com.rd.PageIndicatorView
-        android:id="@+id/pageIndicatorView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="300dp"
-        app:piv_animationType="scale"
-        app:piv_dynamicCount="true"
-        app:piv_interactiveAnimation="true"
-        app:piv_padding="20dp"
-        app:piv_radius="4dp"
-        app:piv_selectedColor="@color/white"
-        app:piv_unselectedColor="@color/md_grey_300"
-        app:piv_viewPager="@id/image_pager" />
-
-
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/pageIndicatorView"
-        android:layout_marginTop="16dp"
-        android:background="@drawable/pet_detail_bg"
-        android:orientation="vertical"
-        android:paddingBottom="24dp">
+        android:background="@color/marineButton">
 
-        <LinearLayout
-            android:id="@+id/pet_layout"
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/image_pager"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:visibility="visible">
+            android:layout_height="350dp"
+            android:background="@android:color/white" />
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/default_margin"
-                android:layout_marginTop="24dp"
-                android:layout_marginRight="@dimen/default_margin">
-
-                <TextView
-                    android:id="@+id/pet_name_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/margin_minimum"
-                    android:layout_marginRight="@dimen/margin_minimum"
-                    android:fontFamily="@font/typo_round_bold"
-                    android:textColor="@color/black"
-                    android:textSize="24sp"
-                    tools:text="Kont" />
-
-                <TextView
-                    android:id="@+id/pet_breed_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/pet_name_tv"
-                    android:layout_marginLeft="@dimen/margin_minimum"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginRight="@dimen/margin_minimum"
-                    android:fontFamily="@font/typo_round_bold"
-                    android:textColor="@color/grey"
-                    android:textSize="@dimen/medium_size"
-                    tools:text="Doberman" />
-
-                <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/dot"
-                    android:layout_width="5dp"
-                    android:layout_height="5dp"
-                    android:layout_below="@+id/pet_name_tv"
-                    android:layout_marginStart="@dimen/medium_size"
-                    android:layout_marginTop="12dp"
-                    android:layout_toEndOf="@+id/pet_breed_tv"
-                    android:src="@color/grey" />
-
-                <TextView
-                    android:id="@+id/gender_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/pet_name_tv"
-                    android:layout_marginStart="@dimen/medium_size"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginEnd="@dimen/margin_minimum"
-                    android:layout_toEndOf="@+id/dot"
-                    android:fontFamily="@font/typo_round_bold"
-                    android:textColor="@color/grey"
-                    android:textSize="@dimen/medium_size"
-                    tools:text="Dişi" />
-
-                <TextView
-                    android:id="@+id/age_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginLeft="@dimen/margin_minimum"
-                    android:layout_marginRight="@dimen/margin_minimum"
-                    android:fontFamily="@font/typo_round_bold"
-                    android:textColor="@color/grey"
-                    android:textSize="@dimen/medium_size"
-                    tools:text="3 Aylık" />
-
-                <TextView
-                    android:id="@+id/distance_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/age_tv"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginLeft="@dimen/margin_minimum"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginRight="@dimen/margin_minimum"
-                    android:fontFamily="@font/typo_round_bold"
-                    android:textColor="@color/grey"
-                    android:textSize="@dimen/medium_size"
-                    tools:text="2.5 km" />
-
-
-            </RelativeLayout>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/character_rv"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/default_margin"
-                android:layout_marginTop="20dp" />
-
-            <include
-                android:id="@+id/colorLy"
-                layout="@layout/pet_detail_titles_layout" />
-
-            <include
-                android:id="@+id/listLy"
-                layout="@layout/pet_detail_titles_layout" />
-
-            <include
-                android:id="@+id/detailLy"
-                layout="@layout/pet_detail_titles_layout" />
-        </LinearLayout>
+        <com.rd.PageIndicatorView
+            android:id="@+id/pageIndicatorView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="300dp"
+            app:piv_animationType="scale"
+            app:piv_dynamicCount="true"
+            app:piv_interactiveAnimation="true"
+            app:piv_padding="20dp"
+            app:piv_radius="4dp"
+            app:piv_selectedColor="@color/white"
+            app:piv_unselectedColor="@color/md_grey_300"
+            app:piv_viewPager="@id/image_pager" />
 
 
         <LinearLayout
-            android:id="@+id/owner_layout"
+            android:id="@+id/rounded_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="28dp"
+            android:layout_below="@+id/pageIndicatorView"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/pet_detail_bg"
             android:orientation="vertical"
-            android:visibility="gone">
+            android:paddingBottom="24dp">
 
             <LinearLayout
+                android:id="@+id/pet_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:orientation="vertical"
+                android:visibility="visible">
 
-                <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/owner_image"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:layout_marginStart="18dp" />
-
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="20dp"
-                    android:orientation="vertical">
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/default_margin"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginRight="@dimen/default_margin">
 
                     <TextView
-                        android:id="@+id/owner_name_tv"
+                        android:id="@+id/pet_name_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/margin_minimum"
@@ -187,66 +70,265 @@
                         tools:text="Kont" />
 
                     <TextView
-                        android:id="@+id/owner_age_tv"
+                        android:id="@+id/pet_breed_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_below="@+id/pet_name_tv"
                         android:layout_marginLeft="@dimen/margin_minimum"
                         android:layout_marginTop="5dp"
                         android:layout_marginRight="@dimen/margin_minimum"
                         android:fontFamily="@font/typo_round_bold"
                         android:textColor="@color/grey"
                         android:textSize="@dimen/medium_size"
-                        tools:text="25 yaşında" />
+                        tools:text="Doberman" />
 
-                </LinearLayout>
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/dot"
+                        android:layout_width="5dp"
+                        android:layout_height="5dp"
+                        android:layout_below="@+id/pet_name_tv"
+                        android:layout_marginStart="@dimen/medium_size"
+                        android:layout_marginTop="12dp"
+                        android:layout_toEndOf="@+id/pet_breed_tv"
+                        android:src="@color/grey" />
+
+                    <TextView
+                        android:id="@+id/gender_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/pet_name_tv"
+                        android:layout_marginStart="@dimen/medium_size"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginEnd="@dimen/margin_minimum"
+                        android:layout_toEndOf="@+id/dot"
+                        android:fontFamily="@font/typo_round_bold"
+                        android:textColor="@color/grey"
+                        android:textSize="@dimen/medium_size"
+                        tools:text="Dişi" />
+
+                    <TextView
+                        android:id="@+id/age_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginLeft="@dimen/margin_minimum"
+                        android:layout_marginRight="@dimen/margin_minimum"
+                        android:fontFamily="@font/typo_round_bold"
+                        android:textColor="@color/grey"
+                        android:textSize="@dimen/medium_size"
+                        tools:text="3 Aylık" />
+
+                    <TextView
+                        android:id="@+id/distance_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/age_tv"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginLeft="@dimen/margin_minimum"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginRight="@dimen/margin_minimum"
+                        android:fontFamily="@font/typo_round_bold"
+                        android:textColor="@color/grey"
+                        android:textSize="@dimen/medium_size"
+                        tools:text="2.5 km" />
+
+
+                </RelativeLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/character_rv"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/pet_detail_character_recycler_size"
+                    android:layout_marginStart="@dimen/default_margin"
+                    android:layout_marginTop="20dp" />
+
+                <include
+                    android:id="@+id/colorLy"
+                    layout="@layout/pet_detail_titles_layout" />
+
+                <include
+                    android:id="@+id/listLy"
+                    layout="@layout/pet_detail_titles_layout" />
+
+                <include
+                    android:id="@+id/detailLy"
+                    layout="@layout/pet_detail_titles_layout" />
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/owner_about_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="26dp"
-                android:layout_marginTop="30dp"
-                android:layout_marginRight="26dp"
-                android:fontFamily="@font/typo_round_bold"
-                android:textColor="@color/black"
-                android:textSize="18sp"
-                tools:text="Hakkında" />
 
-            <TextView
-                android:id="@+id/owner_about_value_tv"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/owner_layout"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="26dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginRight="26dp"
-                android:fontFamily="@font/typo_round_bold"
-                android:textColor="@color/grey"
-                android:textSize="@dimen/medium_size"
-                tools:text="Lorem ipsum dolor sit amet, consectetur
+                android:layout_marginTop="28dp"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/owner_image"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_marginStart="18dp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="20dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/owner_name_tv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/margin_minimum"
+                            android:layout_marginRight="@dimen/margin_minimum"
+                            android:fontFamily="@font/typo_round_bold"
+                            android:textColor="@color/black"
+                            android:textSize="24sp"
+                            tools:text="Kont" />
+
+                        <TextView
+                            android:id="@+id/owner_age_tv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/margin_minimum"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginRight="@dimen/margin_minimum"
+                            android:fontFamily="@font/typo_round_bold"
+                            android:textColor="@color/grey"
+                            android:textSize="@dimen/medium_size"
+                            tools:text="25 yaşında" />
+
+                    </LinearLayout>
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/owner_about_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="26dp"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginRight="26dp"
+                    android:fontFamily="@font/typo_round_bold"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
+                    tools:text="Hakkında" />
+
+                <TextView
+                    android:id="@+id/owner_about_value_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="26dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginRight="26dp"
+                    android:fontFamily="@font/typo_round_bold"
+                    android:textColor="@color/grey"
+                    android:textSize="@dimen/medium_size"
+                    tools:text="Lorem ipsum dolor sit amet, consectetur
 adipiscing elit. Dictumst sed dignissim duis vitae.  Diam pharetra, mauris." />
 
 
+            </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
 
-    <FrameLayout
-        android:id="@+id/popup_menu"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="50dp"
-        android:layout_marginEnd="20dp">
-
-        <de.hdodenhof.circleimageview.CircleImageView
+        <FrameLayout
+            android:id="@+id/popup_menu"
             android:layout_width="32dp"
             android:layout_height="32dp"
-            android:src="@color/white" />
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="50dp"
+            android:layout_marginEnd="20dp">
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:src="@drawable/x" />
-    </FrameLayout>
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@color/white" />
 
-</RelativeLayout>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/x" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/back_button"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginStart="@dimen/default_margin"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="50dp">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@color/white" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/x" />
+        </FrameLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/button_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rounded_layout"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="26dp"
+            android:clipChildren="false"
+            android:orientation="horizontal">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/skip_button"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_marginEnd="90dp"
+                android:layout_marginBottom="5dp"
+                app:cardBackgroundColor="@color/tinder_btn_color"
+                app:cardCornerRadius="25dp">
+
+                <ImageView
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/x_btn" />
+            </androidx.cardview.widget.CardView>
+
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/like_button"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_toEndOf="@id/skip_button"
+                app:cardBackgroundColor="@color/tinder_btn_color"
+                app:cardCornerRadius="25dp">
+
+                <ImageView
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/heart" />
+            </androidx.cardview.widget.CardView>
+
+
+        </RelativeLayout>
+
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:alpha="0.9"
+            android:indeterminateTint="@color/orangeButton"
+            android:visibility="gone" />
+    </RelativeLayout>
+</ScrollView>

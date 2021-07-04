@@ -14,6 +14,7 @@ import com.pethiio.android.ui.main.view.MainActivity
 abstract class BaseFragment : Fragment() {
 
     protected open var bottomNavigationViewVisibility = View.VISIBLE
+    protected open var dashboardClicked = true
     private var lookUpsResponse: List<LookUpsResponse>? = null
 
 
@@ -23,7 +24,7 @@ abstract class BaseFragment : Fragment() {
         if (activity is MainActivity) {
             val mainActivity = activity as MainActivity
             mainActivity.setBottomNavigationVisibility(bottomNavigationViewVisibility)
-
+            mainActivity.setDashboardClickListener(dashboardClicked)
             setUpViews()
         }
     }
@@ -35,6 +36,7 @@ abstract class BaseFragment : Fragment() {
         if (activity is MainActivity) {
             val mainActivity = activity as MainActivity
             mainActivity.setBottomNavigationVisibility(bottomNavigationViewVisibility)
+            mainActivity.setDashboardClickListener(dashboardClicked)
         }
     }
 
