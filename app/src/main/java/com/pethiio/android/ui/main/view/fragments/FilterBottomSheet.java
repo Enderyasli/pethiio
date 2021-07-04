@@ -22,6 +22,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.pethiio.android.R;
+import com.pethiio.android.data.EventBus.FilterEvent;
 import com.pethiio.android.data.model.LookUpsResponse;
 import com.pethiio.android.data.model.PethiioResponse;
 import com.pethiio.android.data.model.filter.PetSearchFilterResponse;
@@ -40,6 +41,8 @@ import org.greenrobot.eventbus.EventBus;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+
+import retrofit2.Response;
 
 
 public class FilterBottomSheet extends BottomSheetDialogFragment {
@@ -209,6 +212,16 @@ public class FilterBottomSheet extends BottomSheetDialogFragment {
 
             viewModel.postSearhFilter(searchFilterRequest);
 
+            viewModel.getPostSearchFilter().observe(getViewLifecycleOwner(), new Observer<Resource<Response<Void>>>() {
+                @Override
+                public void onChanged(Resource<Response<Void>> responseResource) {
+                    EventBus.getDefault().post(new FilterEvent());
+
+
+                }
+            });
+
+
         }
 
         new Handler().postDelayed(FilterBottomSheet.this::dismiss, 300);
@@ -241,6 +254,8 @@ public class FilterBottomSheet extends BottomSheetDialogFragment {
 
 
         distanceTv.setText(distanceSeekBar.getProgress() + " km");
+        distance = distanceSeekBar.getProgress();
+
 
         distanceSeekBar.setOnSeekChangeListener(new OnSeekChangeListener() {
             @SuppressLint("SetTextI18n")
@@ -261,6 +276,8 @@ public class FilterBottomSheet extends BottomSheetDialogFragment {
 
 
         ageValueTv.setText(String.valueOf(ageSeekBar.getProgress()));
+        age = ageSeekBar.getProgress();
+
 
         ageSeekBar.setOnSeekChangeListener(new OnSeekChangeListener() {
             @SuppressLint("SetTextI18n")

@@ -247,5 +247,9 @@ class DashBoardViewModel : ViewModel() {
         return petSearchFilterPageDataLookUps
     }
 
+    fun getPostSearchFilter(): LiveData<Resource<Response<Void>>> {
+        return postSearchFilter
+    }
+
 
 }

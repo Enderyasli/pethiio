@@ -166,6 +166,14 @@ class DashboardFragment : BaseFragment(), CardStackListener,
         )
         viewModel.fetchMemberList()
 
+        viewModel.getPostSearchFilter().observe(viewLifecycleOwner, {
+            when (it.status) {
+                Status.SUCCESS -> {
+                    viewModel.fetchMemberList()
+                }
+            }
+        })
+
         viewModel.getPetSearchPageData().observe(viewLifecycleOwner, {
 
             when (it.status) {
@@ -295,7 +303,8 @@ class DashboardFragment : BaseFragment(), CardStackListener,
 
 
         binding.searchFilterButton.setOnClickListener {
-            findNavController().navigate(R.id.action_navigation_dashboard_to_bottomSheetDialog)
+            if (findNavController().currentDestination?.id == R.id.navigation_dashboard)
+                findNavController().navigate(R.id.action_navigation_dashboard_to_bottomSheetDialog)
         }
 
 
@@ -334,6 +343,8 @@ class DashboardFragment : BaseFragment(), CardStackListener,
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: FilterEvent?) {
+        viewModel.fetchPetSearch(memberId)
+
 
 //        CommonFunctions.goWelcome(findNavController())
 //        findNavController().navigate(R.id.navigation_welcome, null)
