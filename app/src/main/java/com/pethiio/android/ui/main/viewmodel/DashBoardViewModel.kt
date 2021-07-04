@@ -7,6 +7,7 @@ import com.pethiio.android.data.api.ServiceBuilder
 import com.pethiio.android.data.model.LookUpsResponse
 import com.pethiio.android.data.model.PethiioResponse
 import com.pethiio.android.data.model.filter.PetSearchFilterResponse
+import com.pethiio.android.data.model.filter.SearchFilterRequest
 import com.pethiio.android.data.model.member.LocationsRequest
 import com.pethiio.android.data.model.member.MemberListResponse
 import com.pethiio.android.data.model.member.PetSearchRequest
@@ -28,6 +29,7 @@ class DashBoardViewModel : ViewModel() {
     private val memberList = MutableLiveData<Resource<List<MemberListResponse>>>()
     private val petSearchResult = MutableLiveData<Resource<List<PetSearchResponse>>>()
     private val postPetSearchResult = MutableLiveData<Resource<Response<Void>>>()
+    private val postSearchFilter = MutableLiveData<Resource<Response<Void>>>()
     private val petSearchFilter = MutableLiveData<Resource<PetSearchFilterResponse>>()
     private val petSearchFilterPageData = MutableLiveData<Resource<List<PethiioResponse>>>()
     private val petSearchFilterPageDataLookUps = MutableLiveData<Resource<List<LookUpsResponse>>>()
@@ -182,6 +184,28 @@ class DashBoardViewModel : ViewModel() {
                     },
                     {
                         postPetSearchResult.postValue(Resource.error(it.message, null))
+                    }
+                )
+        )
+    }
+
+    fun postSearhFilter(filterRequest: SearchFilterRequest) {
+
+        postSearchFilter.postValue(Resource.loading(null))
+        compositeDisposable.add(
+            ServiceBuilder.buildService()
+                .postSearchFilter(filterRequest)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                    {
+                        if (it.code().toString().startsWith("2"))
+                            postSearchFilter.postValue(Resource.success(null))
+                        else
+                            postSearchFilter.postValue(Resource.error(it.message(), null))
+                    },
+                    {
+                        postSearchFilter.postValue(Resource.error(it.message, null))
                     }
                 )
         )

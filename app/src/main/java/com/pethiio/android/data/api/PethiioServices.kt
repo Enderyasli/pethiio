@@ -2,6 +2,7 @@ package com.pethiio.android.data.api
 
 import com.pethiio.android.data.model.*
 import com.pethiio.android.data.model.filter.PetSearchFilterResponse
+import com.pethiio.android.data.model.filter.SearchFilterRequest
 import com.pethiio.android.data.model.login.LoginRequest
 import com.pethiio.android.data.model.member.LocationsRequest
 import com.pethiio.android.data.model.member.MemberListResponse
@@ -107,8 +108,8 @@ interface PethiioServices {
     @GET("page/pet-search-filter/info")
     fun getPetSearchListPageData(): Observable<PageData>
 
-    @POST("api/page/pet-search-filter")
-    fun postSearchFilter(@Body locationsRequest: LocationsRequest): Observable<Response<Void>>
+    @POST("page/pet-search-filter")
+    fun postSearchFilter(@Body filterRequest: SearchFilterRequest): Observable<Response<Void>>
 
 
     //endregion

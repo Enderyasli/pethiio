@@ -4,11 +4,13 @@ import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
@@ -22,6 +24,7 @@ import com.pethiio.android.R;
 import com.pethiio.android.data.model.LookUpsResponse;
 import com.pethiio.android.data.model.PethiioResponse;
 import com.pethiio.android.data.model.filter.PetSearchFilterResponse;
+import com.pethiio.android.data.model.filter.SearchFilterRequest;
 import com.pethiio.android.ui.base.ViewModelFactory;
 import com.pethiio.android.ui.main.view.customViews.NoDefaultSpinner;
 import com.pethiio.android.ui.main.viewmodel.DashBoardViewModel;
@@ -40,22 +43,25 @@ import java.util.List;
 
 public class FilterBottomSheet extends BottomSheetDialogFragment {
 
-    FilterBottomSheet instance;
     DashBoardViewModel viewModel;
 
-    TextView distanceTitleTv, ageTv, ageValueTv, genderTitle, purposeTitle, breedTitle, filterClearButton, distanceTv;
+    TextView distanceTitleTv, ageTv, ageValueTv, genderTitle, purposeTitle, animalTitle, filterClearButton, distanceTv;
 
-    RadioGroup purposeRadioGroup, breedRadioGroup;
+    int distance = 1, age = 1;
+    RadioGroup purposeRadioGroup, animalRadioGroup;
     NoDefaultSpinner genderSpinner;
     Button filterButton;
 
     TickSeekBar distanceSeekBar, ageSeekBar;
-    List<String> gender, genderKeys, breed, breedKeys, purpose, purposeKeys;
+    List<String> gender, genderKeys, animal, animalKeys, purpose, purposeKeys;
+    PetSearchFilterResponse petSearchFilterResponse;
+    List<LookUpsResponse> lookUpsResponses;
+
 
     @Override
     public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ((View) getView().getParent()).setBackgroundColor(Color.TRANSPARENT);
+        ((View) requireView().getParent()).setBackgroundColor(Color.TRANSPARENT);
 
 
     }
@@ -102,7 +108,7 @@ public class FilterBottomSheet extends BottomSheetDialogFragment {
                     ageTv.setText(getLocalizedString(Constants.petSearchFilterAgeTitle, pethiioResponse));
                     genderTitle.setText(getLocalizedString(Constants.petSearchFilterGenderTitle, pethiioResponse));
                     purposeTitle.setText(getLocalizedString(Constants.petSearchFilterPurposeTitle, pethiioResponse));
-                    breedTitle.setText(getLocalizedString(Constants.petSearchFilterAnimalTitle, pethiioResponse));
+                    animalTitle.setText(getLocalizedString(Constants.petSearchFilterAnimalTitle, pethiioResponse));
                     distanceTitleTv.setText(getLocalizedString(Constants.petSearchFilterDistanceTitle, pethiioResponse));
                     filterButton.setText(getLocalizedString(Constants.petSearchFilterButton, pethiioResponse));
                     filterClearButton.setText(getLocalizedString(Constants.petSearchFilterCleanButton, pethiioResponse));
@@ -110,26 +116,34 @@ public class FilterBottomSheet extends BottomSheetDialogFragment {
 
                 }
 
+                filterButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        filterUpdate(root);
+                    }
+                });
+
 
             }
         });
 
         viewModel.getSearchFilterListLookUps().observe(getViewLifecycleOwner(), listResource -> {
 
-            List<LookUpsResponse> lookUpsResponses = listResource.getData();
+            lookUpsResponses = listResource.getData();
 
             gender = CommonMethods.getLookUps(Constants.lookUpGender, lookUpsResponses);
             genderKeys = CommonMethods.getLookUpKeys(Constants.lookUpGender, lookUpsResponses);
-            breed = CommonMethods.getLookUps(Constants.lookUpAnimals, lookUpsResponses);
-            breedKeys = CommonMethods.getLookUpKeys(Constants.lookUpAnimals, lookUpsResponses);
+            animal = CommonMethods.getLookUps(Constants.lookUpAnimals, lookUpsResponses);
+            animalKeys = CommonMethods.getLookUpKeys(Constants.lookUpAnimals, lookUpsResponses);
             purpose = CommonMethods.getLookUps(Constants.lookUpPurpose, lookUpsResponses);
             purposeKeys = CommonMethods.getLookUpKeys(Constants.lookUpPurpose, lookUpsResponses);
 
-            for (String str : breed) {
-                CommonMethods.addRadioButton(str, breedRadioGroup, getContext());
+            for (String str : animal) {
+                CommonMethods.addRadioButton(str, animalRadioGroup, requireContext());
             }
             for (String str : purpose) {
-                CommonMethods.addRadioButton(str, purposeRadioGroup, getContext());
+                CommonMethods.addRadioButton(str, purposeRadioGroup, requireContext());
             }
 
 
@@ -140,19 +154,29 @@ public class FilterBottomSheet extends BottomSheetDialogFragment {
 
             viewModel.getSearchFilterList().observe(this, petSearchFilterResponseResource -> {
 
-                PetSearchFilterResponse petSearchFilterResponse = petSearchFilterResponseResource.getData();
+                petSearchFilterResponse = petSearchFilterResponseResource.getData();
 
                 if (petSearchFilterResponse != null) {
 
                     genderSpinner.setSelection(genderKeys.indexOf(petSearchFilterResponse.getGender()));
+                    distanceSeekBar.setMax(10000);
                     distanceSeekBar.setProgress(petSearchFilterResponse.getMaximumDistance());
                     distanceTv.setText(String.valueOf(petSearchFilterResponse.getMaximumDistance()));
 
+                    ageSeekBar.setMax(20);
                     ageSeekBar.setProgress(petSearchFilterResponse.getMaximumAge());
                     ageValueTv.setText(String.valueOf(petSearchFilterResponse.getMaximumAge()));
 
-//                    breedRadioGroup.check(breedKeys.indexOf(String.valueOf(petSearchFilterResponse.getBreedId())));
-                    purposeRadioGroup.check(0);
+
+                    if (purposeKeys.size() >= purposeKeys.indexOf(petSearchFilterResponse.getPurpose())) {
+                        RadioButton purposeRadioButton = (RadioButton) purposeRadioGroup.getChildAt(purposeKeys.indexOf(petSearchFilterResponse.getPurpose()));
+                        purposeRadioButton.setChecked(true);
+                    }
+                    if (animalKeys.size() >= animalKeys.indexOf(petSearchFilterResponse.getAnimalId())) {
+                        RadioButton typeRadioButton = (RadioButton) animalRadioGroup.getChildAt(animalKeys.indexOf(String.valueOf(petSearchFilterResponse.getAnimalId())));
+                        typeRadioButton.setChecked(true);
+                    }
+
 
                 }
 
@@ -164,7 +188,32 @@ public class FilterBottomSheet extends BottomSheetDialogFragment {
         return root;
     }
 
-    private void filterUpdate(){
+    private void filterUpdate(View view) {
+        int purposeSelectedId = purposeRadioGroup.getCheckedRadioButtonId();
+        RadioButton purposeRadioButton = (RadioButton) view.findViewById(purposeSelectedId);
+
+        int animalSelectedId = animalRadioGroup.getCheckedRadioButtonId();
+        RadioButton animalRadioButton = (RadioButton) view.findViewById(animalSelectedId);
+
+        String purpose = CommonMethods.getLookUpKey(Constants.lookUpPurpose, purposeRadioButton.getText().toString(), lookUpsResponses);
+        String animal = CommonMethods.getLookUpKey(Constants.lookUpAnimals, animalRadioButton.getText().toString(), lookUpsResponses);
+        String gender = CommonMethods.getLookUpKey(Constants.lookUpGender, genderSpinner.getSelectedItem().toString(), lookUpsResponses);
+
+
+        if (!TextUtils.isEmpty(purpose) && !TextUtils.isEmpty(animal) && !TextUtils.isEmpty(gender)) {
+            int animalId = Integer.parseInt(animal);
+
+            SearchFilterRequest searchFilterRequest = new SearchFilterRequest(
+                    animalId,
+                    purpose,
+                    gender,
+                    0, age, 0, distance
+            );
+
+            viewModel.postSearhFilter(searchFilterRequest);
+
+        }
+
 
     }
 
@@ -182,10 +231,10 @@ public class FilterBottomSheet extends BottomSheetDialogFragment {
         ageTv = root.findViewById(R.id.age_tv);
         ageValueTv = root.findViewById(R.id.age_value_tv);
         purposeTitle = root.findViewById(R.id.purpose_tv);
-        breedTitle = root.findViewById(R.id.breed_tv);
+        animalTitle = root.findViewById(R.id.breed_tv);
         genderTitle = root.findViewById(R.id.genderLy).findViewById(R.id.title_tv);
         purposeRadioGroup = root.findViewById(R.id.radio_group_purpose);
-        breedRadioGroup = root.findViewById(R.id.radio_group_breed);
+        animalRadioGroup = root.findViewById(R.id.radio_group_breed);
         genderSpinner = root.findViewById(R.id.genderLy).findViewById(R.id.spinner);
         filterButton = root.findViewById(R.id.filter_button);
         filterClearButton = root.findViewById(R.id.filter_clear_button);
@@ -199,6 +248,7 @@ public class FilterBottomSheet extends BottomSheetDialogFragment {
             @Override
             public void onSeeking(SeekParams seekParams) {
                 distanceTv.setText(seekParams.progress + " km");
+                distance = seekParams.progress;
             }
 
             @Override
@@ -218,6 +268,7 @@ public class FilterBottomSheet extends BottomSheetDialogFragment {
             @Override
             public void onSeeking(SeekParams seekParams) {
                 ageValueTv.setText(String.valueOf(seekParams.progress));
+                age = seekParams.progress;
             }
 
             @Override
@@ -232,6 +283,7 @@ public class FilterBottomSheet extends BottomSheetDialogFragment {
 
     }
 
+    @SuppressLint("RestrictedApi")
     @Override
     public void setupDialog(@NonNull @NotNull Dialog dialog, int style) {
         super.setupDialog(dialog, style);

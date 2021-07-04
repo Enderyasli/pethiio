@@ -59,6 +59,8 @@ class DashboardFragment : BaseFragment(), CardStackListener,
 
     private var memberListResponse = emptyList<MemberListResponse>()
     private var isSelectedMemberFirstTime = true
+    private var selectedMemberId = 0
+
 
     var searchList: List<PetSearchResponse>? = null
     var memberId: Int = 0
@@ -271,7 +273,7 @@ class DashboardFragment : BaseFragment(), CardStackListener,
                 onItemSelectedListener = this@DashboardFragment
                 gravity = Gravity.CENTER
                 if (memberListResponse.isNotEmpty() && isSelectedMemberFirstTime) {
-                    binding.memberlistSpinner.setSelection(0)
+                    binding.memberlistSpinner.setSelection(selectedMemberId)
                     isSelectedMemberFirstTime = false
                 }
             }
@@ -399,6 +401,7 @@ class DashboardFragment : BaseFragment(), CardStackListener,
                 memberListResponse[position].id.let {
                     viewModel.fetchPetSearch(it)
                     memberId = it
+                    selectedMemberId = position
                 }
 
             }

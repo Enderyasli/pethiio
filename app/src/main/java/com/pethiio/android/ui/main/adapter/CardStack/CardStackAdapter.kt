@@ -49,7 +49,6 @@ class CardStackAdapter(
 
             navController.navigate(R.id.navigation_pet_detail, bundle)
 
-            Toast.makeText(v.context, searchResponse.name, Toast.LENGTH_SHORT).show()
         }
     }
 
