@@ -90,7 +90,7 @@ class DashboardFragment : BaseFragment(), CardStackListener,
 
         viewModel =
             ViewModelProviders.of(this, ViewModelFactory()).get(DashBoardViewModel::class.java)
-          isSelectedMemberFirstTime = true
+        isSelectedMemberFirstTime = true
 
         setupUI()
 

@@ -289,7 +289,7 @@ class RegisterBaseViewModel : ViewModel() {
     }
 
     fun fetchPetList() {
-        postRegister.postValue(Resource.loading(null))
+        petList.postValue(Resource.loading(null))
         compositeDisposable.add(
             ServiceBuilder.buildService()
                 .getPetList()

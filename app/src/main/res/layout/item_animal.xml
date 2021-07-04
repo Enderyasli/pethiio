@@ -16,7 +16,7 @@
         app:cardElevation="2dp">
 
         <ImageView
-            android:id="@+id/imageView"
+            android:id="@+id/home_pet_image"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:src="@drawable/dog" />
