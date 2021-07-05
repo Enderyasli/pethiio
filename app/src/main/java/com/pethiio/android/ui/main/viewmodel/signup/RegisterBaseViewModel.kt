@@ -271,7 +271,7 @@ class RegisterBaseViewModel : ViewModel() {
     }
 
     fun postPetAdd(petAdd: PetAdd) {
-        postRegister.postValue(Resource.loading(null))
+        postPetAdd.postValue(Resource.loading(null))
         compositeDisposable.add(
             ServiceBuilder.buildService().postPetAdd(petAdd)
                 .subscribeOn(Schedulers.io())

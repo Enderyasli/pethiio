@@ -1,6 +1,7 @@
 package com.pethiio.android.ui.main.view.fragments
 
 import android.annotation.SuppressLint
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.view.*
@@ -40,6 +41,7 @@ class PetDetailFragment : BaseFragment() {
     private var memberId: Int = 0
     private var animalId: String = ""
     private var ownerAgeTitle: String = ""
+    private var isOwner: Boolean = false
 
     private var hasOwnerInfo: Boolean = false
     private var ownerSelected: Boolean = false
@@ -73,7 +75,14 @@ class PetDetailFragment : BaseFragment() {
 
         memberId = arguments?.getInt("memberId", 0)!!
         animalId = arguments?.getString("animalId", "")!!
+        isOwner = arguments?.getBoolean("isOwner", false)!!
 
+        if(isOwner)
+        {
+            binding.scrollView.setBackgroundColor(Color.WHITE)
+            binding.mainLayout.setBackgroundColor(Color.WHITE)
+            binding.buttonContainer.visibility=View.GONE
+        }
         viewModel.fetchPetDetailPageData()
         viewModel.fetchPetDetail(animalId, memberId)
 

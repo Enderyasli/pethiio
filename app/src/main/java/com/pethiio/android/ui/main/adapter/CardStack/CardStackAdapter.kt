@@ -42,14 +42,10 @@ class CardStackAdapter(
             .apply(RequestOptions().override(100, 100))
             .into(holder.ownerImage)
 
-        holder.itemView.setOnClickListener { v ->
-
+        holder.itemView.setOnClickListener {
             val bundle =
-                bundleOf("memberId" to searchResponse.ownerId, "animalId" to searchResponse.petId.toString())
-
-            navController.navigate(R.id.navigation_pet_detail, bundle)
-
-        }
+                bundleOf("memberId" to searchResponse.ownerId, "animalId" to searchResponse.petId.toString(),"isOwner" to false)
+            navController.navigate(R.id.navigation_pet_detail, bundle) }
     }
 
     override fun getItemCount(): Int {

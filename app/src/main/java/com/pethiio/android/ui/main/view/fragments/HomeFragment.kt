@@ -96,9 +96,15 @@ class HomeFragment : BaseFragment(), FilterItemClickListener {
 
                     if (it.data != null) {
                         binding.animalListRv.layoutManager = GridLayoutManager(requireContext(), 2)
-                        val adapter = HomePetListAdapter(requireContext(), it.data)
+                        val adapter = HomePetListAdapter(findNavController(),requireContext(), it.data)
                         binding.animalListRv.adapter = adapter
                     }
+                    if (it.data?.size == 0) {
+                        binding.emptyLayout.visibility = View.VISIBLE
+                    } else {
+                        binding.emptyLayout.visibility = View.GONE
+                    }
+
 
 
                     binding.progressBar.visibility = View.GONE

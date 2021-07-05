@@ -35,6 +35,7 @@ import com.pethiio.android.ui.main.view.customViews.MemberListSpinner
 import com.pethiio.android.ui.main.viewmodel.DashBoardViewModel
 import com.pethiio.android.utils.CommonFunctions
 import com.pethiio.android.utils.Constants
+import com.pethiio.android.utils.PreferenceHelper
 import com.pethiio.android.utils.Status
 import com.yuyakaido.android.cardstackview.*
 import org.greenrobot.eventbus.EventBus
@@ -386,7 +387,7 @@ class DashboardFragment : BaseFragment(), CardStackListener,
                     memberId,
                     it,
                     direction == Direction.Right,
-                    "DATING"
+                    "DATING" // TODO: 5.07.2021 düzelt
                 )
             }?.let {
                 viewModel.postPetSearch(
@@ -419,6 +420,7 @@ class DashboardFragment : BaseFragment(), CardStackListener,
                 memberListResponse[position].id.let {
                     viewModel.fetchPetSearch(it)
                     memberId = it
+                    PreferenceHelper.SharedPreferencesManager.getInstance().memberId = it
                     selectedMemberId = position
                 }
 
