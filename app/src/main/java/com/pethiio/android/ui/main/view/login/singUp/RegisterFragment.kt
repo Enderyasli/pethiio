@@ -2,7 +2,6 @@ package com.pethiio.android.ui.main.view.login.singUp
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.content.res.Resources
 import android.net.Uri
 import android.os.Bundle
 import android.view.Gravity
@@ -22,6 +21,7 @@ import com.pethiio.android.ui.main.viewmodel.signup.RegisterBaseViewModel
 import com.pethiio.android.utils.Constants
 import com.pethiio.android.utils.PreferenceHelper
 import com.pethiio.android.utils.Status
+import java.util.regex.Pattern
 
 
 class RegisterFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
@@ -166,40 +166,50 @@ class RegisterFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
 
         binding.signupBtn.setOnClickListener {
 
-            var valid = false
-            valid = getViewError(
+            var validName = getViewError(
                 binding.nameLy.placeholderTv,
                 getLocalizedString(Constants.nameEmptyEror)
             )
-            valid = getViewError(
+            var validSur = getViewError(
                 binding.surnameLy.placeholderTv,
                 getLocalizedString(Constants.surnameEmtpyError)
             )
-            valid = getViewError(
+            var validEmail = getViewError(
                 binding.emailPlaceholderTv,
                 getLocalizedString(Constants.emailEmtpyError)
             )
-            valid = getViewError(
+            var validPass = getViewError(
                 binding.passwordPlaceholderTv,
                 getLocalizedString(Constants.passwordEmtpyError)
             )
 
-            if (valid) {
-                if (!binding.registerCb.isChecked) {
+            if (validName && validSur && validEmail && validPass) {
 
-                    Toast.makeText(requireContext(), "", Toast.LENGTH_LONG).show()
+                val upperCasePattern = Pattern.compile("[A-Z ]")
 
-                    return@setOnClickListener
+                val password = binding.passwordPlaceholderTv.text.toString().trim()
+
+
+                val validRegex: Boolean =
+                    upperCasePattern.matcher(password)
+                        .find()
+
+
+                if (validRegex && password.length >= 8) {
+                    postRegister(
+                        Register(
+                            binding.emailPlaceholderTv.text.toString().trim(),
+                            binding.nameLy.placeholderTv.text.toString().trim(),
+                            binding.surnameLy.placeholderTv.text.toString().trim(),
+                            binding.passwordPlaceholderTv.text.toString().trim(),
+                        )
+                    )
+                } else {
+                    binding.passwordPlaceholderTv.error =
+                        getLocalizedString(Constants.registerPasswordDetail)
+                    binding.passwordPlaceholderTv.requestFocus()
                 }
 
-                postRegister(
-                    Register(
-                        binding.emailPlaceholderTv.text.toString().trim(),
-                        binding.nameLy.placeholderTv.text.toString().trim(),
-                        binding.surnameLy.placeholderTv.text.toString().trim(),
-                        binding.passwordPlaceholderTv.text.toString().trim(),
-                    )
-                )
                 viewModel.postRegister.observe(viewLifecycleOwner, {
                     when (it.status) {
                         Status.SUCCESS -> {
