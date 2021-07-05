@@ -61,22 +61,160 @@ class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
     override fun setUpViews() {
         super.setUpViews()
 
+        setUpObserver()
         fetchPetAddPageData()
         fetchAddAnimalDetail("1")
 
+
+        val callback: OnBackPressedCallback =
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+
+                    if (PreferenceHelper.SharedPreferencesManager.getInstance().isLoggedIn == true)
+                        if (findNavController().currentDestination?.id == R.id.navigation_pet_add)
+                            findNavController().navigate(R.id.navigation_welcome)
+                }
+            }
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
+
+
+    }
+
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+
+    }
+
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentPetAddBinding.inflate(inflater, container, false)
+        val view = binding.root
+
+
+
+        binding.skipBtn.setOnClickListener {
+
+
+            var breedId: Int? = null
+
+            if (binding.breedLy.spinner.selectedItem != null)
+                breedId = getBreedsKey(
+                    binding.breedLy.spinner.selectedItem.toString()
+                ).toIntOrNull()
+
+
+            var animalId: Int? = null
+
+            if (binding.typeLy.spinner.selectedItem != null)
+                animalId = getLookUpKey(
+                    Constants.lookUpAnimals,
+                    binding.typeLy.spinner.selectedItem.toString()
+                ).toIntOrNull()
+
+
+            var selectedPersonalities: ArrayList<Int>? = null
+            selectedPersonalities =
+                adapterCharacter?.getSelectedItems()?.let { it1 ->
+                    getSelectedAnimalPersonality(
+                        it1
+                    )
+                }
+
+
+            var purpose: String = ""
+            val purposeId = binding.radioGroup.checkedRadioButtonId
+            if (purposeId != -1) {
+                val selectedRadioButton = binding.radioGroup.findViewById<RadioButton>(purposeId)
+
+                purpose = getLookUpKey(
+                    Constants.lookUpPurpose,
+                    selectedRadioButton.text.toString()
+                )
+            }
+
+
+
+            if (breedId != null && animalId != null && binding.monthLy.spinner.selectedItem != null
+                && binding.genderLy.spinner.selectedItem != null && binding.yearLy.spinner.selectedItem != null
+                && !TextUtils.isEmpty(binding.nameLy.placeholderTv.text) && !TextUtils.isEmpty(
+                    binding.aboutPlaceholderTv.text
+                )
+                && !TextUtils.isEmpty(purpose)
+            ) {
+                if (selectedPersonalities?.size!! > 0) {
+                    PetAdd(
+                        about = binding.aboutPlaceholderTv.text.toString(),
+                        animalId =
+                        animalId,
+                        breedId = breedId,
+                        animalPersonalities = selectedPersonalities,
+                        color = getLookUpKey(
+                            Constants.lookUpColor,
+                            binding.colorLy.spinner.selectedItem.toString()
+                        ),
+                        gender = getLookUpKey(
+                            Constants.lookUpGender,
+                            binding.genderLy.spinner.selectedItem.toString()
+                        ),
+                        month = binding.monthLy.spinner.selectedItem.toString().toInt(),
+                        name = binding.nameLy.placeholderTv.text.toString(),
+                        purpose = purpose,
+                        year = binding.yearLy.spinner.selectedItem.toString().toInt()
+                    ).let { it2 ->
+                        postPetAdd(
+                            it2
+                        )
+                    }
+                }
+            } else {
+                Toast.makeText(requireContext(), "Tüm alanları doldurunuz!", Toast.LENGTH_LONG)
+                    .show()
+            }
+
+
+        }
+        return view
+
+    }
+
+
+    @SuppressLint("ResourceType")
+    fun setUpObserver() {
+
+        viewModel.postPetAdd.observe(viewLifecycleOwner, {
+            when (it.status) {
+                Status.SUCCESS -> {
+                    activity?.runOnUiThread {
+                        if (findNavController().currentDestination?.id == R.id.navigation_pet_add)
+                            findNavController().navigate(R.id.action_navigation_pet_add_to_navigation_photo)
+                    }
+                }
+                Status.ERROR -> {
+                    Toast.makeText(requireContext(), it.message, Toast.LENGTH_LONG).show()
+                }
+                Status.LOADING -> {
+                }
+            }
+        })
+
+
         viewModel.getPetAddPageData().observe(viewLifecycleOwner, {
 
-            when(it.status){
-                Status.LOADING->{
-                    binding.progressBar.visibility=View.VISIBLE
+            when (it.status) {
+                Status.LOADING -> {
+                    binding.progressBar.visibility = View.VISIBLE
 
                 }
-                Status.SUCCESS->
-                {
+                Status.SUCCESS -> {
 
                     setPethiioResponseList(it.data?.fields)
                     it.data?.lookups?.let { it1 -> setLookUps(it1) }
-                    binding.progressBar.visibility=View.GONE
+                    binding.progressBar.visibility = View.GONE
 
 
                     binding.petAddTitle.text = getLocalizedString(Constants.petaboutTitle)
@@ -93,12 +231,14 @@ class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
                     binding.typeLy.titleTv.text = getLocalizedSpan(Constants.animalAddTypeTitle)
                     binding.breedLy.titleTv.text = getLocalizedSpan(Constants.animalAddBreedTitle)
                     binding.colorLy.titleTv.text = getLocalizedSpan(Constants.animalAddColorTitle)
-                    binding.characterTitleTv.text = getLocalizedSpan(Constants.animalAddCharacterTitle)
+                    binding.characterTitleTv.text =
+                        getLocalizedSpan(Constants.animalAddCharacterTitle)
                     binding.aboutTitleTv.text = getLocalizedSpan(Constants.petaboutTitle)
                     binding.aboutPlaceholderTv.hint =
                         getLocalizedString(Constants.petaboutPlaceholder)
 
-                    binding.purposeTitleTv.text = getLocalizedSpan(Constants.animalAddCharacterTitle)
+                    binding.purposeTitleTv.text =
+                        getLocalizedSpan(Constants.animalAddCharacterTitle)
 
 
                     binding.genderLy.spinner.prompt =
@@ -265,166 +405,6 @@ class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
 
                 }
             })
-
-        val callback: OnBackPressedCallback =
-            object : OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
-
-                    if (PreferenceHelper.SharedPreferencesManager.getInstance().isLoggedIn == true)
-                        if (findNavController().currentDestination?.id == R.id.navigation_pet_add)
-                    findNavController().navigate(R.id.navigation_welcome)
-                }
-            }
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
-
-
-
-    }
-
-    fun addRadioButton(string: String) {
-
-        val radioButton = RadioButton(requireContext())
-
-        radioButton.text = string
-        val typeface = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            resources.getFont(R.font.typo_round_regular)
-        } else {
-            ResourcesCompat.getFont(requireContext(), R.font.typo_round_regular)
-        }
-
-
-        val colorStateList = ColorStateList(
-            arrayOf(
-                intArrayOf(-android.R.attr.state_checked),
-                intArrayOf(android.R.attr.state_enabled)
-            ), intArrayOf(
-                ContextCompat.getColor(requireContext(), R.color.grey),  //disabled
-                ContextCompat.getColor(requireContext(), R.color.orangeButton) //enabled
-            )
-        )
-
-        radioButton.buttonTintList = colorStateList
-
-        radioButton.textSize = 14F
-        radioButton.typeface = typeface
-        radioButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.grey))
-
-        binding.radioGroup.addView(radioButton)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-
-    }
-
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentPetAddBinding.inflate(inflater, container, false)
-        val view = binding.root
-
-
-
-        binding.skipBtn.setOnClickListener {
-
-
-            var breedId: Int? = null
-
-            if (binding.breedLy.spinner.selectedItem != null)
-                breedId = getBreedsKey(
-                    binding.breedLy.spinner.selectedItem.toString()
-                ).toIntOrNull()
-
-
-            var animalId: Int? = null
-
-            if (binding.typeLy.spinner.selectedItem != null)
-                animalId = getLookUpKey(
-                    Constants.lookUpAnimals,
-                    binding.typeLy.spinner.selectedItem.toString()
-                ).toIntOrNull()
-
-
-            var selectedPersonalities: ArrayList<Int>? = null
-            selectedPersonalities =
-                adapterCharacter?.getSelectedItems()?.let { it1 ->
-                    getSelectedAnimalPersonality(
-                        it1
-                    )
-                }
-
-
-            var purpose: String = ""
-            val purposeId = binding.radioGroup.checkedRadioButtonId
-            if (purposeId != -1) {
-                val selectedRadioButton = binding.radioGroup.findViewById<RadioButton>(purposeId)
-
-                purpose = getLookUpKey(
-                    Constants.lookUpPurpose,
-                    selectedRadioButton.text.toString()
-                )
-            }
-
-
-
-            if (breedId != null && animalId != null && binding.monthLy.spinner.selectedItem != null
-                && binding.genderLy.spinner.selectedItem != null && binding.yearLy.spinner.selectedItem != null
-                && !TextUtils.isEmpty(binding.nameLy.placeholderTv.text) && !TextUtils.isEmpty(
-                    binding.aboutPlaceholderTv.text
-                )
-                && !TextUtils.isEmpty(purpose)
-            ) {
-                if (selectedPersonalities?.size!! > 0) {
-                    PetAdd(
-                        about = binding.aboutPlaceholderTv.text.toString(),
-                        animalId =
-                        animalId,
-                        breedId = breedId,
-                        animalPersonalities = selectedPersonalities!!,
-                        color = getLookUpKey(
-                            Constants.lookUpColor,
-                            binding.colorLy.spinner.selectedItem.toString()
-                        ),
-                        gender = getLookUpKey(
-                            Constants.lookUpGender,
-                            binding.genderLy.spinner.selectedItem.toString()
-                        ),
-                        month = binding.monthLy.spinner.selectedItem.toString().toInt(),
-                        name = binding.nameLy.placeholderTv.text.toString(),
-                        purpose = purpose,
-                        year = binding.yearLy.spinner.selectedItem.toString().toInt()
-                    ).let { it2 ->
-                        postPetAdd(
-                            it2
-                        )
-                    }
-                }
-            } else {
-                Toast.makeText(requireContext(), "Tüm alanları doldurunuz!", Toast.LENGTH_LONG)
-                    .show()
-            }
-
-            viewModel.postPetAdd.observe(viewLifecycleOwner, {
-                when (it.status) {
-                    Status.SUCCESS -> {
-                        activity?.runOnUiThread {
-                            if (findNavController().currentDestination?.id == R.id.navigation_pet_add)
-                                findNavController().navigate(R.id.action_navigation_pet_add_to_navigation_photo)
-                        }
-                    }
-                    Status.ERROR -> {
-                        Toast.makeText(requireContext(), it.message, Toast.LENGTH_LONG).show()
-                    }
-                    Status.LOADING -> {
-                    }
-                }
-            })
-        }
-        return view
-
     }
 
     override fun onDestroyView() {
@@ -458,9 +438,35 @@ class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
 
     }
 
-    private fun hideKeyBoard(v: View) {
-        val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(v.windowToken, 0)
+    fun addRadioButton(string: String) {
+
+        val radioButton = RadioButton(requireContext())
+
+        radioButton.text = string
+        val typeface = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            resources.getFont(R.font.typo_round_regular)
+        } else {
+            ResourcesCompat.getFont(requireContext(), R.font.typo_round_regular)
+        }
+
+
+        val colorStateList = ColorStateList(
+            arrayOf(
+                intArrayOf(-android.R.attr.state_checked),
+                intArrayOf(android.R.attr.state_enabled)
+            ), intArrayOf(
+                ContextCompat.getColor(requireContext(), R.color.grey),  //disabled
+                ContextCompat.getColor(requireContext(), R.color.orangeButton) //enabled
+            )
+        )
+
+        radioButton.buttonTintList = colorStateList
+
+        radioButton.textSize = 14F
+        radioButton.typeface = typeface
+        radioButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.grey))
+
+        binding.radioGroup.addView(radioButton)
     }
 
 

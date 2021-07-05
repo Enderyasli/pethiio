@@ -2,11 +2,15 @@ package com.pethiio.android.utils
 
 import android.content.Context
 import android.content.res.ColorStateList
+import android.graphics.Color
 import android.os.Build
+import android.view.View
 import android.widget.RadioButton
 import android.widget.RadioGroup
+import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
+import com.google.android.material.snackbar.Snackbar
 import com.pethiio.android.R
 import com.pethiio.android.data.model.LookUpsResponse
 
@@ -97,6 +101,20 @@ class CommonMethods {
             }
             return ""
         }
+    }
+
+    fun onSNACK(view: View,snackText:String){
+        //Snackbar(view)
+        val snackbar = Snackbar.make(view, snackText,
+            Snackbar.LENGTH_LONG)
+        snackbar.setActionTextColor(Color.BLUE)
+        val snackbarView = snackbar.view
+        snackbarView.setBackgroundColor(Color.LTGRAY)
+        val textView =
+            snackbarView.findViewById(com.google.android.material.R.id.snackbar_text) as TextView
+        textView.setTextColor(Color.BLUE)
+        textView.textSize = 28f
+        snackbar.show()
     }
 
 
