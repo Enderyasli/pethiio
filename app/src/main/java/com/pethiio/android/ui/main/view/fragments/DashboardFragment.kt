@@ -55,6 +55,7 @@ class DashboardFragment : BaseFragment(), CardStackListener,
     override var bottomNavigationViewVisibility = View.VISIBLE
     override var dashboardClicked: Boolean = true
 
+    private var purposeFilter: String = "DATING"
 
     private lateinit var viewModel: DashBoardViewModel
 
@@ -166,6 +167,8 @@ class DashboardFragment : BaseFragment(), CardStackListener,
             )
         )
         viewModel.fetchMemberList()
+        viewModel.fetchFilterList()
+
 
         viewModel.getPostSearchFilter().observe(viewLifecycleOwner, {
             when (it.status) {
@@ -256,6 +259,16 @@ class DashboardFragment : BaseFragment(), CardStackListener,
             }
 
 
+        })
+
+        viewModel.getSearchFilterList().observe(viewLifecycleOwner,{
+            when(it.status){
+                Status.SUCCESS->{
+
+                    purposeFilter = it.data?.purpose.toString()
+
+                }
+            }
         })
     }
 
@@ -351,7 +364,9 @@ class DashboardFragment : BaseFragment(), CardStackListener,
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: FilterEvent?) {
+        viewModel.fetchFilterList()
         viewModel.fetchPetSearch(memberId)
+
 
 
 //        CommonFunctions.goWelcome(findNavController())
@@ -373,7 +388,6 @@ class DashboardFragment : BaseFragment(), CardStackListener,
     override fun onCardSwiped(direction: Direction?) {
 
 
-        removeFirst()
 
         if (adapter?.getPetSearchList()?.isEmpty() == true) {
             return
@@ -387,7 +401,7 @@ class DashboardFragment : BaseFragment(), CardStackListener,
                     memberId,
                     it,
                     direction == Direction.Right,
-                    "DATING" // TODO: 5.07.2021 düzelt
+                    purposeFilter
                 )
             }?.let {
                 viewModel.postPetSearch(
@@ -396,6 +410,8 @@ class DashboardFragment : BaseFragment(), CardStackListener,
             }
 
         }
+        removeFirst()
+
 
 //        Log.d("petsize",adapter.getPetSearchList().size.toString())
 
