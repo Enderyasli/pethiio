@@ -77,6 +77,11 @@
             app:destination="@id/navigation_pet_add"
             app:popUpToInclusive="true"
             app:launchSingleTop="true" />
+        <action
+            app:popUpToInclusive="true"
+            app:launchSingleTop="true"
+            android:id="@+id/action_navigation_register_detail_to_navigation_welcome"
+            app:destination="@id/navigation_welcome" />
     </fragment>
     <fragment
         android:id="@+id/navigation_pet_add"

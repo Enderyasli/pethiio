@@ -15,6 +15,7 @@ import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import com.bigkoo.pickerview.builder.TimePickerBuilder
 import com.bumptech.glide.Glide
+import com.google.android.material.snackbar.Snackbar
 import com.pethiio.android.R
 import com.pethiio.android.data.model.signup.RegisterInfo
 import com.pethiio.android.databinding.FragmentRegisterDetailBinding
@@ -51,8 +52,8 @@ class RegisterDetailFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
 
     override fun setUpViews() {
         super.setUpViews()
-        viewModel.getRegisterDetailFields().observe(this, {
 
+        viewModel.getRegisterDetailFields().observe(this, {
 
             setPethiioResponseList(it)
             binding.signupTitle.text = getLocalizedString(Constants.registerTitle)
@@ -102,15 +103,23 @@ class RegisterDetailFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
             val validSpinner = binding.genderLy.spinner.selectedItem != null
 
             if (TextUtils.isEmpty(binding.birthPlaceholderTv.text.trim())) {
-                binding.birthPlaceholderTv.error = "Birthday cannot be empty"
+                binding.birthPlaceholderTv.error =
+                    getLocalizedString(Constants.dateOfBirthEmtpyError)
                 return@setOnClickListener
             } else
                 binding.birthPlaceholderTv.error = null
 
-            val valid = getViewError(binding.aboutPlaceholderTv, "About me cannot be empty")
+            val valid = getViewError(
+                binding.aboutPlaceholderTv,
+                getLocalizedString(Constants.aboutMeEmtpyError)
+            )
 
             if (valid && !validSpinner) {
-                Toast.makeText(requireContext(), "Gender cannot be empty", Toast.LENGTH_LONG).show()
+                Toast.makeText(
+                    requireContext(),
+                    getLocalizedString(Constants.genderEmtpyError),
+                    Toast.LENGTH_LONG
+                ).show()
                 return@setOnClickListener
 
             }
@@ -177,13 +186,12 @@ class RegisterDetailFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
                                         })
 
                                 } else {
-                                    Toast.makeText(
-                                        requireContext(),
-                                        "Image Cannot be empty!",
-                                        Toast.LENGTH_LONG
+                                    Snackbar.make(
+                                        binding.root,
+                                        getLocalizedString(Constants.imageEmtpyError),
+                                        Snackbar.LENGTH_LONG
                                     ).show()
                                     binding.imagePlaceholder.requestFocus()
-
                                 }
 
                             }
@@ -201,23 +209,31 @@ class RegisterDetailFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
 
             }
 
-
         }
 
         binding.goWithoutAnimalTv.setOnClickListener {
 
+
             val validSpinner = binding.genderLy.spinner.selectedItem != null
 
             if (TextUtils.isEmpty(binding.birthPlaceholderTv.text.trim())) {
-                binding.birthPlaceholderTv.error = "Birthday cannot be empty"
+                binding.birthPlaceholderTv.error =
+                    getLocalizedString(Constants.dateOfBirthEmtpyError)
                 return@setOnClickListener
             } else
                 binding.birthPlaceholderTv.error = null
 
-            val valid = getViewError(binding.aboutPlaceholderTv, "About me cannot be empty")
+            val valid = getViewError(
+                binding.aboutPlaceholderTv,
+                getLocalizedString(Constants.aboutMeEmtpyError)
+            )
 
             if (valid && !validSpinner) {
-                Toast.makeText(requireContext(), "Gender cannot be empty", Toast.LENGTH_LONG).show()
+                Toast.makeText(
+                    requireContext(),
+                    getLocalizedString(Constants.genderEmtpyError),
+                    Toast.LENGTH_LONG
+                ).show()
                 return@setOnClickListener
 
             }
@@ -257,16 +273,13 @@ class RegisterDetailFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
                                         viewLifecycleOwner,
                                         { it1 ->
                                             when (it1.status) {
+
                                                 Status.SUCCESS -> {
-                                                    activity?.runOnUiThread {
-
-                                                        if (PreferenceHelper.SharedPreferencesManager.getInstance().isLoggedIn == true)
-                                                            if (findNavController().currentDestination?.id == R.id.navigation_pet_add)
-                                                                findNavController().navigate(R.id.navigation_welcome)
-
-                                                    }
-
+                                                    if (findNavController().currentDestination?.id == R.id.navigation_register_detail)
+                                                        findNavController().navigate(R.id.action_navigation_register_detail_to_navigation_welcome)
                                                 }
+
+
                                                 Status.ERROR -> {
                                                     Toast.makeText(
                                                         requireContext(),
@@ -281,13 +294,12 @@ class RegisterDetailFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
                                         })
 
                                 } else {
-                                    Toast.makeText(
-                                        requireContext(),
-                                        "Image Cannot be empty!",
-                                        Toast.LENGTH_LONG
+                                    Snackbar.make(
+                                        binding.root,
+                                        getLocalizedString(Constants.imageEmtpyError),
+                                        Snackbar.LENGTH_LONG
                                     ).show()
                                     binding.imagePlaceholder.requestFocus()
-
                                 }
 
                             }
