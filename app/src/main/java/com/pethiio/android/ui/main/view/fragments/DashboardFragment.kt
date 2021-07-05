@@ -100,7 +100,7 @@ class DashboardFragment : BaseFragment(), CardStackListener,
         val callback: OnBackPressedCallback =
             object : OnBackPressedCallback(false) {
                 override fun handleOnBackPressed() {
-                    Toast.makeText(requireContext(), "back", Toast.LENGTH_LONG).show()
+
                     // Handle the back button event
                 }
             }
@@ -236,10 +236,17 @@ class DashboardFragment : BaseFragment(), CardStackListener,
                         searchList = it
                         initialize()
                     }
-                    if (it.data?.size == 0)
+                    if (it.data?.size == 0){
                         binding.emptyLayout.visibility = View.VISIBLE
-                    else
+                        binding.skipButton.visibility = View.GONE
+                        binding.likeButton.visibility = View.GONE
+                    }
+
+                    else{
                         binding.emptyLayout.visibility = View.GONE
+                        binding.skipButton.visibility = View.VISIBLE
+                        binding.likeButton.visibility = View.VISIBLE
+                    }
 
 
                     binding.progressBar.visibility = View.GONE

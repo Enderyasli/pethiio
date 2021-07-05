@@ -21,6 +21,7 @@ import com.pethiio.android.databinding.FragmentRegisterDetailBinding
 import com.pethiio.android.ui.base.RegisterBaseFragment
 import com.pethiio.android.ui.main.viewmodel.signup.RegisterBaseViewModel
 import com.pethiio.android.utils.Constants
+import com.pethiio.android.utils.PreferenceHelper
 import com.pethiio.android.utils.Status
 import com.theartofdev.edmodo.cropper.CropImage
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -204,36 +205,106 @@ class RegisterDetailFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
         }
 
         binding.goWithoutAnimalTv.setOnClickListener {
-            postRegisterInfo(
-                RegisterInfo(
-                    aboutMe = "test",
-                    dateOfBirth = "2021-06-16",
-                    gender = "FEMALE"
+
+            val validSpinner = binding.genderLy.spinner.selectedItem != null
+
+            if (TextUtils.isEmpty(binding.birthPlaceholderTv.text.trim())) {
+                binding.birthPlaceholderTv.error = "Birthday cannot be empty"
+                return@setOnClickListener
+            } else
+                binding.birthPlaceholderTv.error = null
+
+            val valid = getViewError(binding.aboutPlaceholderTv, "About me cannot be empty")
+
+            if (valid && !validSpinner) {
+                Toast.makeText(requireContext(), "Gender cannot be empty", Toast.LENGTH_LONG).show()
+                return@setOnClickListener
+
+            }
+
+            if (validSpinner && valid) {
+
+                postRegisterInfo(
+                    RegisterInfo(
+                        aboutMe = binding.aboutPlaceholderTv.text.trim().toString(),
+                        dateOfBirth = binding.birthPlaceholderTv.text.trim().toString(),
+                        gender = getLookUpKey(
+                            Constants.lookUpGender,
+                            binding.genderLy.spinner.selectedItem.toString()
+                        )
+                    )
                 )
-            )
 
-            viewModel.postRegisterInfo.observe(viewLifecycleOwner, {
-                when (it.status) {
-                    Status.SUCCESS -> {
-                        activity?.runOnUiThread {
-                            fetchPetAddPageData()
-                            fetchAddAnimalDetail("1")
+                viewModel.postRegisterInfo.observe(viewLifecycleOwner, {
+                    when (it.status) {
+                        Status.SUCCESS -> {
+                            activity?.runOnUiThread {
 
+                                if (!TextUtils.isEmpty(profileUri)) {
 
-                            if (findNavController().currentDestination?.id == R.id.navigation_register_detail)
-                                findNavController().navigate(R.id.action_navigation_register_detail_to_navigation_add_animal)
+                                    val file = File(profileUri)
+                                    val requestBody =
+                                        file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
+                                    val filePart =
+                                        MultipartBody.Part.createFormData(
+                                            "file",
+                                            file.name,
+                                            requestBody
+                                        )
+                                    postRegisterAvatar(filePart)
+
+                                    viewModel.postRegisterAvatar.observe(
+                                        viewLifecycleOwner,
+                                        { it1 ->
+                                            when (it1.status) {
+                                                Status.SUCCESS -> {
+                                                    activity?.runOnUiThread {
+
+                                                        if (PreferenceHelper.SharedPreferencesManager.getInstance().isLoggedIn == true)
+                                                            if (findNavController().currentDestination?.id == R.id.navigation_pet_add)
+                                                                findNavController().navigate(R.id.navigation_welcome)
+
+                                                    }
+
+                                                }
+                                                Status.ERROR -> {
+                                                    Toast.makeText(
+                                                        requireContext(),
+                                                        it1.message,
+                                                        Toast.LENGTH_LONG
+                                                    ).show()
+
+                                                }
+                                                Status.LOADING -> {
+                                                }
+                                            }
+                                        })
+
+                                } else {
+                                    Toast.makeText(
+                                        requireContext(),
+                                        "Image Cannot be empty!",
+                                        Toast.LENGTH_LONG
+                                    ).show()
+                                    binding.imagePlaceholder.requestFocus()
+
+                                }
+
+                            }
 
                         }
+                        Status.ERROR -> {
+                            Toast.makeText(requireContext(), it.message, Toast.LENGTH_LONG)
+                                .show()
 
+                        }
+                        Status.LOADING -> {
+                        }
                     }
-                    Status.ERROR -> {
-                        Toast.makeText(requireContext(), it.message, Toast.LENGTH_LONG).show()
+                })
 
-                    }
-                    Status.LOADING -> {
-                    }
-                }
-            })
+            }
+
         }
 
         binding.birthPlaceholderTv.setOnClickListener {

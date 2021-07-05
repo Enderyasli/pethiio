@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -165,10 +165,39 @@
                 tools:ignore="RtlSymmetry" />
 
         </RelativeLayout>
+        <LinearLayout
+            android:id="@+id/empty_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_marginLeft="50dp"
+                android:layout_marginRight="50dp"
+                android:src="@drawable/no_pet" />
+
+            <TextView
+                android:id="@+id/pet_empty_error_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/default_margin"
+                android:layout_marginLeft="@dimen/margin_minimum"
+                android:layout_marginTop="50dp"
+                android:layout_marginEnd="@dimen/default_margin"
+                android:layout_marginRight="@dimen/margin_minimum"
+                android:fontFamily="@font/typo_round_bold"
+                android:gravity="center"
+                android:textColor="@color/grey"
+                android:textSize="22sp"
+                android:text="Hayvan Yok" />
+        </LinearLayout>
 
         <ProgressBar
-            android:layout_centerHorizontal="true"
-            android:layout_alignParentBottom="true"
+            android:layout_centerInParent="true"
             android:id="@+id/progressBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -178,4 +207,4 @@
             android:visibility="gone" />
     </RelativeLayout>
 
-</ScrollView>
+</RelativeLayout>

@@ -35,9 +35,9 @@ class RegisterBaseViewModel : ViewModel() {
     private val registerLookUps = MutableLiveData<List<LookUpsResponse>>()
     private val registerDetailFields = MutableLiveData<List<PethiioResponse>>()
     private val registerDetailLookUps = MutableLiveData<List<LookUpsResponse>>()
-    private val addAnimalLookUps = MutableLiveData<List<LookUpsResponse>>()
     private val addAnimalImageFields = MutableLiveData<List<PethiioResponse>>()
-    private val addAnimalFields = MutableLiveData<List<PethiioResponse>>()
+    private val addAnimalResponse = MutableLiveData<Resource<PageData>>()
+
     private val petAddDetail = MutableLiveData<AnimalDetailResponse>()
 
     private val compositeDisposable = CompositeDisposable()
@@ -142,7 +142,7 @@ class RegisterBaseViewModel : ViewModel() {
     }
 
     fun postRegisterInfo(registerInfo: RegisterInfo) {
-        postRegister.postValue(Resource.loading(null))
+        postRegisterInfo.postValue(Resource.loading(null))
         compositeDisposable.add(
             ServiceBuilder.buildService()
                 .postRegisterInfo(registerInfo)
@@ -152,6 +152,7 @@ class RegisterBaseViewModel : ViewModel() {
                     { registerData ->
                         PreferenceHelper.SharedPreferencesManager.getInstance().accessToken =
                             registerData.accessToken
+
                         postRegisterInfo.postValue(Resource.success(registerData))
                     },
                     {
@@ -162,7 +163,7 @@ class RegisterBaseViewModel : ViewModel() {
     }
 
     fun postRegisterAvatar(multipart: MultipartBody.Part) {
-        postRegister.postValue(Resource.loading(null))
+        postRegisterAvatar.postValue(Resource.loading(null))
         compositeDisposable.add(
             ServiceBuilder.buildService()
                 .postRegisterAvatar(multipart)
@@ -172,6 +173,8 @@ class RegisterBaseViewModel : ViewModel() {
                     { registerData ->
                         PreferenceHelper.SharedPreferencesManager.getInstance().accessToken =
                             registerData.accessToken
+                        PreferenceHelper.SharedPreferencesManager.getInstance().isLoggedIn =
+                            true
                         postRegisterAvatar.postValue(Resource.success(registerData))
                     },
                     {
@@ -200,23 +203,21 @@ class RegisterBaseViewModel : ViewModel() {
     }
 
     fun fetchPetAddPageData() {
-        register.postValue(Resource.loading(null))
+        addAnimalResponse.postValue(Resource.loading(null))
         compositeDisposable.add(
             ServiceBuilder.buildService().getPetInfoPageData()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ registerData ->
-                    register.postValue(Resource.success(registerData))
-                    addAnimalFields.postValue(registerData.fields)
-                    addAnimalLookUps.postValue(registerData.lookups)
+                    addAnimalResponse.postValue(Resource.success(registerData))
                 }, {
-                    register.postValue(Resource.error(it.message, null))
+                    addAnimalResponse.postValue(Resource.error(it.message, null))
                 })
         )
     }
 
     fun fetchPetListPageData() {
-        register.postValue(Resource.loading(null))
+        petListPageData.postValue(Resource.loading(null))
         compositeDisposable.add(
             ServiceBuilder.buildService().getPetListInfoPageData()
                 .subscribeOn(Schedulers.io())
@@ -342,17 +343,17 @@ class RegisterBaseViewModel : ViewModel() {
         return addAnimalImageFields
     }
 
-    fun getAddAnimalFields(): LiveData<List<PethiioResponse>> {
-        return addAnimalFields
+
+
+    fun getPetAddPageData(): LiveData<Resource<PageData>> {
+        return addAnimalResponse
     }
 
     fun getAddAnimalDetails(): LiveData<AnimalDetailResponse> {
         return petAddDetail
     }
 
-    fun getAddAnimalLookUps(): LiveData<List<LookUpsResponse>> {
-        return addAnimalLookUps
-    }
+
 
     fun getPetList(): LiveData<Resource<List<PetListResponse>>> {
         return petList
