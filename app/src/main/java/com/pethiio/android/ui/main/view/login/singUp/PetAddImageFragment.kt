@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
@@ -77,12 +78,22 @@ class PetAddImageFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
         _binding = FragmentPetAddImageBinding.inflate(inflater, container, false)
         val view = binding.root
 
+          val callback: OnBackPressedCallback =
+            object : OnBackPressedCallback(false) {
+                override fun handleOnBackPressed() {
+
+                }
+            }
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
+
+
         binding.imageView.setOnClickListener { openCropImage() }
         binding.img1Ly.setOnClickListener { openCropImage() }
         binding.img2Ly.setOnClickListener { openCropImage() }
         binding.img3Ly.setOnClickListener { openCropImage() }
         binding.image1X.setOnClickListener {
 
+            
 
             if (!TextUtils.isEmpty(uri3)) {
                 uri2 = uri3
@@ -232,11 +243,11 @@ class PetAddImageFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
                         binding.image1X.visibility = View.VISIBLE
 
                         binding.completeBtn.isEnabled = true
-                        binding.completeBtn.setBackgroundResource(R.drawable.orange_button_bg)
+                        binding.completeBtn.setBackgroundResource(R.drawable.disabled_button_bg)
                         binding.completeBtn.setTextColor(
                             ContextCompat.getColor(
                                 requireContext(),
-                                R.color.white
+                                R.color.orangeButton
                             )
                         )
 

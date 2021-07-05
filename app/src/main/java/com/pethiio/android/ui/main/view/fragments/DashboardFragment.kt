@@ -99,14 +99,14 @@ class DashboardFragment : BaseFragment(), CardStackListener,
 
         setupUI()
 
-        val callback: OnBackPressedCallback =
-            object : OnBackPressedCallback(false) {
-                override fun handleOnBackPressed() {
-
-                    // Handle the back button event
-                }
-            }
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
+//        val callback: OnBackPressedCallback =
+//            object : OnBackPressedCallback(true) {
+//                override fun handleOnBackPressed() {
+//
+//                    // Handle the back button event
+//                }
+//            }
+//        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
 
 
 

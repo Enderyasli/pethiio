@@ -85,11 +85,15 @@
         app:launchSingleTop="true"
         tools:layout="@layout/fragment_pet_add">
         <action
+            app:popUpTo="@id/navigation_home"
+            app:launchSingleTop="true"
+            app:popUpToInclusive="true"
             android:id="@+id/action_navigation_pet_add_to_navigation_photo"
             app:destination="@id/navigation_pet_add_photo" />
     </fragment>
 
     <fragment
+        app:popUpTo="@id/navigation_home"
         android:id="@+id/navigation_pet_add_photo"
         android:name="com.pethiio.android.ui.main.view.login.singUp.PetAddImageFragment"
         android:label="PetAddImage"

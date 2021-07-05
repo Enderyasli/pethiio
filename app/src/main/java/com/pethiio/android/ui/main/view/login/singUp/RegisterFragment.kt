@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import com.pethiio.android.R
 import com.pethiio.android.data.model.signup.Register
@@ -140,14 +141,57 @@ class RegisterFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
         _binding = FragmentRegisterBinding.inflate(inflater, container, false)
         val view = binding.root
 
+        binding.registerCb.setOnCheckedChangeListener { buttonView, isChecked ->
+
+            if (isChecked) {
+                binding.signupBtn.isEnabled = true
+                binding.signupBtn.setBackgroundResource(R.drawable.orange_button_bg)
+                binding.signupBtn.setTextColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.white
+                    )
+                )
+            } else {
+                binding.signupBtn.isEnabled = false
+                binding.signupBtn.setBackgroundResource(R.drawable.disabled_button_bg)
+                binding.signupBtn.setTextColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.disabled_button_color
+                    )
+                )
+            }
+        }
+
         binding.signupBtn.setOnClickListener {
 
-            var valid = getViewError(binding.emailPlaceholderTv, "Email cannot be empty")
-            valid = getViewError(binding.nameLy.placeholderTv, "Name cannot be empty")
-            valid = getViewError(binding.surnameLy.placeholderTv, "Surname cannot be empty")
-            valid = getViewError(binding.passwordPlaceholderTv, "Password cannot be empty")
+            var valid = false
+            valid = getViewError(
+                binding.nameLy.placeholderTv,
+                getLocalizedString(Constants.nameEmptyEror)
+            )
+            valid = getViewError(
+                binding.surnameLy.placeholderTv,
+                getLocalizedString(Constants.surnameEmtpyError)
+            )
+            valid = getViewError(
+                binding.emailPlaceholderTv,
+                getLocalizedString(Constants.emailEmtpyError)
+            )
+            valid = getViewError(
+                binding.passwordPlaceholderTv,
+                getLocalizedString(Constants.passwordEmtpyError)
+            )
 
             if (valid) {
+                if (!binding.registerCb.isChecked) {
+
+                    Toast.makeText(requireContext(), "", Toast.LENGTH_LONG).show()
+
+                    return@setOnClickListener
+                }
+
                 postRegister(
                     Register(
                         binding.emailPlaceholderTv.text.toString().trim(),

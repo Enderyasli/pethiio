@@ -106,6 +106,30 @@ class Constants {
         //endregion
 
 
+        //region Errors
+
+        const val nameEmptyEror: String = "nameEmtpyError"
+        const val surnameEmtpyError: String = "surnameEmtpyError"
+        const val emailEmtpyError: String = "emailEmtpyError"
+        const val passwordEmtpyError: String = "passwordEmtpyError"
+        const val dateOfBirthEmtpyError: String = "dateOfBirthEmtpyError"
+        const val genderEmtpyError: String = "genderEmtpyError"
+        const val imageEmtpyError: String = "imageEmtpyError"
+        const val aboutMeEmtpyError: String = "aboutMeEmtpyError"
+        const val yearEmtpyError: String = "yearEmtpyError"
+        const val monthEmtpyError: String = "monthEmtpyError"
+        const val typeEmtpyError: String = "typeEmtpyError"
+        const val breedEmtpyError: String = "breedEmtpyError"
+        const val colorEmtpyError: String = "colorEmtpyError"
+        const val aboutEmtpyError: String = "aboutEmtpyError"
+        const val pinEmtpyError: String = "pinEmtpyError"
+        const val currentPasswordEmtpyError: String = "currentPasswordEmtpyError"
+        const val newPasswordEmtpyError: String = "newPasswordEmtpyError"
+        const val detailEmtpyError: String = "detailEmtpyError"
+
+
+        //endregion
+
     }
 
 }

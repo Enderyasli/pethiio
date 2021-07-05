@@ -66,7 +66,7 @@ class LoginFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
             if (valid)
                 postLogin(
                     LoginRequest(
-                        binding.emailLayout.placeholderTv.text.trim().toString(),
+                        binding.emailLayout.placeholderTv.text?.trim().toString(),
                         binding.passwordPlaceholderTv.text.trim().toString()
                     )
                 )

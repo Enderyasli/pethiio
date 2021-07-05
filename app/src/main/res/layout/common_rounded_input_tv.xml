@@ -37,7 +37,7 @@
             android:fontFamily="@font/poppins_medium"
             android:gravity="center_vertical"
             tools:hint="Ad"
-            android:paddingLeft="15dp"
+            android:paddingStart="15dp"
             android:textColor="@color/black"
             android:textColorHint="@color/hint_text_color"
             android:textSize="14sp" />
