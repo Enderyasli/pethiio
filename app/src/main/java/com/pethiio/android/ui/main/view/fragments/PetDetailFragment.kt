@@ -293,9 +293,6 @@ class PetDetailFragment : BaseFragment() {
 
 
     override fun onPrepareOptionsMenu(menu: Menu) {
-        val item: MenuItem = menu.findItem(R.id.owner)
-        item.title = "Set to 'Out of bed'"
-
         return super.onPrepareOptionsMenu(menu)
     }
 

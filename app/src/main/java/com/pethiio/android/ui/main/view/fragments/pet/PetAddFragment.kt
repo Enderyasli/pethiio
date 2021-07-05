@@ -17,12 +17,14 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import com.google.android.gms.common.internal.service.Common
 import com.pethiio.android.R
 import com.pethiio.android.data.model.PetAdd
 import com.pethiio.android.databinding.FragmentPetAddBinding
 import com.pethiio.android.ui.base.RegisterBaseFragment
 import com.pethiio.android.ui.main.adapter.CharacterAdapter
 import com.pethiio.android.ui.main.viewmodel.signup.RegisterBaseViewModel
+import com.pethiio.android.utils.CommonMethods
 import com.pethiio.android.utils.Constants
 import com.pethiio.android.utils.PreferenceHelper
 import com.pethiio.android.utils.Status
@@ -100,6 +102,49 @@ class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
         binding.skipBtn.setOnClickListener {
 
 
+            // TODO: 6.07.2021 Errorrrrsss
+
+            val validName = getViewError(
+                binding.nameLy.placeholderTv,
+                getLocalizedString(Constants.nameEmptyEror)
+            )
+
+            if (!validName)
+                return@setOnClickListener
+
+            if (binding.yearLy.spinner.selectedItem == null) {
+                CommonMethods.onSNACK(binding.root, getLocalizedString(Constants.yearEmtpyError))
+                return@setOnClickListener
+            }
+            if (binding.monthLy.spinner.selectedItem == null) {
+                CommonMethods.onSNACK(binding.root, getLocalizedString(Constants.monthEmtpyError))
+                return@setOnClickListener
+            }
+            if (binding.genderLy.spinner.selectedItem == null) {
+                CommonMethods.onSNACK(binding.root, getLocalizedString(Constants.genderEmtpyError))
+                return@setOnClickListener
+            }
+            if (binding.typeLy.spinner.selectedItem == null) {
+                CommonMethods.onSNACK(binding.root, getLocalizedString(Constants.typeEmtpyError))
+                return@setOnClickListener
+            }
+            if (binding.breedLy.spinner.selectedItem == null) {
+                CommonMethods.onSNACK(binding.root, getLocalizedString(Constants.breedEmtpyError))
+                return@setOnClickListener
+            }
+            if (binding.colorLy.spinner.selectedItem == null) {
+                CommonMethods.onSNACK(binding.root, getLocalizedString(Constants.colorEmtpyError))
+                return@setOnClickListener
+            }
+
+            val validAbout = getViewError(
+                binding.aboutPlaceholderTv,
+                getLocalizedString(Constants.aboutEmtpyError)
+            )
+            if (!validAbout)
+                return@setOnClickListener
+
+
             var breedId: Int? = null
 
             if (binding.breedLy.spinner.selectedItem != null)
@@ -126,7 +171,7 @@ class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
                 }
 
 
-            var purpose: String = ""
+            var purpose = ""
             val purposeId = binding.radioGroup.checkedRadioButtonId
             if (purposeId != -1) {
                 val selectedRadioButton = binding.radioGroup.findViewById<RadioButton>(purposeId)
@@ -139,43 +184,33 @@ class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
 
 
 
-            if (breedId != null && animalId != null && binding.monthLy.spinner.selectedItem != null
-                && binding.genderLy.spinner.selectedItem != null && binding.yearLy.spinner.selectedItem != null
-                && !TextUtils.isEmpty(binding.nameLy.placeholderTv.text) && !TextUtils.isEmpty(
-                    binding.aboutPlaceholderTv.text
-                )
-                && !TextUtils.isEmpty(purpose)
-            ) {
-                if (selectedPersonalities?.size!! > 0) {
-                    PetAdd(
-                        about = binding.aboutPlaceholderTv.text.toString(),
-                        animalId =
-                        animalId,
-                        breedId = breedId,
-                        animalPersonalities = selectedPersonalities,
-                        color = getLookUpKey(
-                            Constants.lookUpColor,
-                            binding.colorLy.spinner.selectedItem.toString()
-                        ),
-                        gender = getLookUpKey(
-                            Constants.lookUpGender,
-                            binding.genderLy.spinner.selectedItem.toString()
-                        ),
-                        month = binding.monthLy.spinner.selectedItem.toString().toInt(),
-                        name = binding.nameLy.placeholderTv.text.toString(),
-                        purpose = purpose,
-                        year = binding.yearLy.spinner.selectedItem.toString().toInt()
-                    ).let { it2 ->
-                        postPetAdd(
-                            it2
-                        )
-                    }
+            if (selectedPersonalities?.size!! > 0 && breedId != null && animalId != null) {
+                PetAdd(
+                    about = binding.aboutPlaceholderTv.text.toString(),
+                    animalId =
+                    animalId,
+                    breedId = breedId,
+                    animalPersonalities = selectedPersonalities,
+                    color = getLookUpKey(
+                        Constants.lookUpColor,
+                        binding.colorLy.spinner.selectedItem.toString()
+                    ),
+                    gender = getLookUpKey(
+                        Constants.lookUpGender,
+                        binding.genderLy.spinner.selectedItem.toString()
+                    ),
+                    month = binding.monthLy.spinner.selectedItem.toString().toInt(),
+                    name = binding.nameLy.placeholderTv.text.toString(),
+                    purpose = purpose,
+                    year = binding.yearLy.spinner.selectedItem.toString().toInt()
+                ).let { it2 ->
+                    postPetAdd(
+                        it2
+                    )
                 }
             } else {
-                Toast.makeText(requireContext(), "Tüm alanları doldurunuz!", Toast.LENGTH_LONG)
-                    .show()
+                CommonMethods.onSNACK(binding.root, getString(R.string.select_character))
             }
-
 
         }
         return view

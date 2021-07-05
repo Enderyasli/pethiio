@@ -82,7 +82,7 @@ class PetDetailViewModel : ViewModel() {
                         petDetailResponsePageData.postValue(
                             Resource.error(
                                 "Something went wrong",
-                                403
+                                null
                             )
                         )
                     }

@@ -1,27 +1,28 @@
 <resources>
     <string name="app_name">Pethiio</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="skip">Skip</string>
-    <string name="title_onboarding_1">Çiftleştir</string>
-    <string name="title_onboarding_2">Sahiplen</string>
-    <string name="title_onboarding_3">Arkadaş Bul</string>
-    <string name="next">Next</string>
-    <string name="Welcome">Hoşgeldin!</string>
-    <string name="welcome_description">Kayıt olmak için kendinle ilgili bilgilerini gir.</string>
-    <string name="login">Giriş Yap</string>
-    <string name="sign_up">Kayıt Ol</string>
-    <string name="signup_description">Kayıt olmak için kendinle ilgili bilgileri gir.</string>
-    <string name="privacy_policy">$Kullanım Koşulları$ ve $Gizlilik Sözleşmesi\'ni$ onaylıyorum.</string>
-    <string name="enter_info">Bilgilerini Gir</string>
-    <string name="add_animal">Hayvan Ekle</string>
-    <string name="go_without_animal">Hayvan Eklemeden Devam Et</string>
-    <string name="add_photo">Fotoğraf Ekle</string>
-    <string name="complete">Tamamla</string>
-    <string name="forgot_password">Şifreni mi unuttun?</string>
-    <string name="my_animals">Hayvanlarım</string>
-    <string name="my_animals_description">Super! İlk Hayvanını ekledin. Uygulamaya devam etmek için tamamlayı tıkla ya da yeni hayvan ekle</string>
-    <string name="lcl_cancel_datepicker">Vazgeç</string>
-    <string name="lcl_apply_datepicker">Onayla</string>
-    <string name="no_location_detected">No location detected. Make sure location is enabled on the device.</string>
+    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
+    <string name="skip" translatable="false">Skip</string>
+    <string name="title_onboarding_1" translatable="false">Çiftleştir</string>
+    <string name="title_onboarding_2" translatable="false">Sahiplen</string>
+    <string name="title_onboarding_3" translatable="false">Arkadaş Bul</string>
+    <string name="next" translatable="false">Next</string>
+    <string name="Welcome" translatable="false">Hoşgeldin!</string>
+    <string name="welcome_description" translatable="false">Kayıt olmak için kendinle ilgili bilgilerini gir.</string>
+    <string name="login" translatable="false">Giriş Yap</string>
+    <string name="sign_up" translatable="false">Kayıt Ol</string>
+    <string name="signup_description" translatable="false">Kayıt olmak için kendinle ilgili bilgileri gir.</string>
+    <string name="privacy_policy" translatable="false">$Kullanım Koşulları$ ve $Gizlilik Sözleşmesi\'ni$ onaylıyorum.</string>
+    <string name="enter_info" translatable="false">Bilgilerini Gir</string>
+    <string name="add_animal" translatable="false">Hayvan Ekle</string>
+    <string name="go_without_animal" translatable="false">Hayvan Eklemeden Devam Et</string>
+    <string name="add_photo" translatable="false">Fotoğraf Ekle</string>
+    <string name="complete" translatable="false">Tamamla</string>
+    <string name="forgot_password" translatable="false">Şifreni mi unuttun?</string>
+    <string name="my_animals" translatable="false">Hayvanlarım</string>
+    <string name="my_animals_description" translatable="false">Super! İlk Hayvanını ekledin. Uygulamaya devam etmek için tamamlayı tıkla ya da yeni hayvan ekle</string>
+    <string name="lcl_cancel_datepicker" translatable="false">Vazgeç</string>
+    <string name="lcl_apply_datepicker" translatable="false">Onayla</string>
+    <string name="no_location_detected" translatable="false">No location detected. Make sure location is enabled on the device.</string>
+    <string name="select_character">Select Character</string>
 </resources>

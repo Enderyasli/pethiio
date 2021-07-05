@@ -109,7 +109,6 @@ class DashboardFragment : BaseFragment(), CardStackListener,
 //        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
 
 
-
         return view
     }
 
@@ -240,13 +239,11 @@ class DashboardFragment : BaseFragment(), CardStackListener,
                         searchList = it
                         initialize()
                     }
-                    if (it.data?.size == 0){
+                    if (it.data?.size == 0) {
                         binding.emptyLayout.visibility = View.VISIBLE
                         binding.skipButton.visibility = View.GONE
                         binding.likeButton.visibility = View.GONE
-                    }
-
-                    else{
+                    } else {
                         binding.emptyLayout.visibility = View.GONE
                         binding.skipButton.visibility = View.VISIBLE
                         binding.likeButton.visibility = View.VISIBLE
@@ -261,9 +258,9 @@ class DashboardFragment : BaseFragment(), CardStackListener,
 
         })
 
-        viewModel.getSearchFilterList().observe(viewLifecycleOwner,{
-            when(it.status){
-                Status.SUCCESS->{
+        viewModel.getSearchFilterList().observe(viewLifecycleOwner, {
+            when (it.status) {
+                Status.SUCCESS -> {
 
                     purposeFilter = it.data?.purpose.toString()
 
@@ -368,7 +365,6 @@ class DashboardFragment : BaseFragment(), CardStackListener,
         viewModel.fetchPetSearch(memberId)
 
 
-
 //        CommonFunctions.goWelcome(findNavController())
 //        findNavController().navigate(R.id.navigation_welcome, null)
 //        Toast.makeText(context, "event", Toast.LENGTH_LONG).show()
@@ -386,7 +382,6 @@ class DashboardFragment : BaseFragment(), CardStackListener,
 
 
     override fun onCardSwiped(direction: Direction?) {
-
 
 
         if (adapter?.getPetSearchList()?.isEmpty() == true) {

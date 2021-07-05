@@ -2,8 +2,11 @@ package com.pethiio.android.utils
 
 import android.content.Context
 import android.content.res.ColorStateList
+import android.content.res.Resources
 import android.graphics.Color
 import android.os.Build
+import android.util.DisplayMetrics
+import android.view.Gravity
 import android.view.View
 import android.widget.RadioButton
 import android.widget.RadioGroup
@@ -13,6 +16,7 @@ import androidx.core.content.res.ResourcesCompat
 import com.google.android.material.snackbar.Snackbar
 import com.pethiio.android.R
 import com.pethiio.android.data.model.LookUpsResponse
+
 
 class CommonMethods {
 
@@ -101,21 +105,53 @@ class CommonMethods {
             }
             return ""
         }
+
+
+         fun onSNACK(view: View,snackText:String){
+//             Snackbar.make(
+//                 view,
+//                 snackText,
+//                 Snackbar.LENGTH_LONG
+//             ).show()
+
+
+            val snackBar = Snackbar.make(view, snackText,
+                Snackbar.LENGTH_LONG)
+
+//            snackbar.setActionTextColor(Color.BLACK)
+//             val params = view.layoutParams as FrameLayout.LayoutParams
+//             params.gravity = Gravity.TOP
+//             params.height= 135
+//             snackbar.view.layoutParams = params
+
+             val snackBarView = snackBar.view
+            snackBarView.setBackgroundColor(Color.RED)
+            val textView =
+                snackBarView.findViewById(com.google.android.material.R.id.snackbar_text) as TextView
+            textView.setTextColor(Color.WHITE)
+
+             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+                 textView.textAlignment = View.TEXT_ALIGNMENT_CENTER
+             } else {
+                 textView.gravity = Gravity.CENTER_HORIZONTAL
+             }
+             textView.textSize = 16f
+            snackBar.show()
+        }
+
+        fun convertPixelsToDp(px: Float, context: Context?): Float {
+            return if (context != null) {
+                val resources = context.resources
+                val metrics = resources.displayMetrics
+                px / (metrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)
+            } else {
+                val metrics = Resources.getSystem().displayMetrics
+                px / (metrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)
+            }
+        }
+
     }
 
-    fun onSNACK(view: View,snackText:String){
-        //Snackbar(view)
-        val snackbar = Snackbar.make(view, snackText,
-            Snackbar.LENGTH_LONG)
-        snackbar.setActionTextColor(Color.BLUE)
-        val snackbarView = snackbar.view
-        snackbarView.setBackgroundColor(Color.LTGRAY)
-        val textView =
-            snackbarView.findViewById(com.google.android.material.R.id.snackbar_text) as TextView
-        textView.setTextColor(Color.BLUE)
-        textView.textSize = 28f
-        snackbar.show()
-    }
 
 
 
