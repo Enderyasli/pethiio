@@ -191,23 +191,6 @@ abstract class RegisterBaseFragment<VModel : RegisterBaseViewModel> : Fragment()
 
     open fun fetchLogin() {
         viewModel.fetchLogin()
-        //        viewModel.getLogin().observe(this, Observer { it ->
-//            when (it.status) {
-//                Status.SUCCESS -> {
-//                    it.data?.let {
-//
-//                        pawtindResponse = it.fields
-//
-//                        Log.d("gelenresponse", it.toString())
-//                    }
-//                }
-//                Status.LOADING -> {
-//                }
-//                Status.ERROR -> {
-//                }
-//            }
-//        })
-
     }
 
     open fun fetchRegister() {
@@ -238,7 +221,7 @@ abstract class RegisterBaseFragment<VModel : RegisterBaseViewModel> : Fragment()
         viewModel.postRegister(register)
     }
 
-    open fun postLogin(loginRequest: LoginRequest ) {
+    open fun postLogin(loginRequest: LoginRequest) {
         viewModel.postLogin(loginRequest)
     }
 

@@ -4,6 +4,7 @@ import androidx.annotation.Nullable
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.pethiio.android.data.api.ResponseHandler
 import com.pethiio.android.data.api.ServiceBuilder
 import com.pethiio.android.data.model.*
 import com.pethiio.android.data.model.login.LoginRequest
@@ -16,6 +17,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import okhttp3.MultipartBody
+
 
 class RegisterBaseViewModel : ViewModel() {
 
@@ -42,6 +44,8 @@ class RegisterBaseViewModel : ViewModel() {
 
     private val compositeDisposable = CompositeDisposable()
     private var accessToken: String = ""
+    private val responseHandler: ResponseHandler= ResponseHandler()
+
 
     //region Login
 
@@ -74,11 +78,12 @@ class RegisterBaseViewModel : ViewModel() {
                             loginData.accessToken
                         PreferenceHelper.SharedPreferencesManager.getInstance().isLoggedIn =
                             true
+                        responseHandler.handleSuccess(Resource.success(loginData))
 
                         postLogin.postValue(Resource.success(loginData))
                     },
                     {
-                        postLogin.postValue(Resource.error(it.message, null))
+                        postLogin.postValue(responseHandler.handleException(it))
                     }
                 )
         )

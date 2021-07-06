@@ -58,8 +58,8 @@
                     android:layout_marginTop="@dimen/default_margin"
                     android:layout_marginRight="@dimen/margin_minimum"
                     android:fontFamily="@font/typo_round_bold"
-                    android:text="Ad *"
-                    android:textColor="@color/input_text_color" />
+                    android:textColor="@color/input_text_color"
+                    tools:text="Ad *" />
 
 
                 <androidx.cardview.widget.CardView
@@ -72,6 +72,7 @@
                     app:cardCornerRadius="@dimen/commonButtonRadius"
                     app:cardElevation="2dp">
 
+
                     <EditText
                         android:id="@+id/password_placeholder_tv"
                         android:layout_width="match_parent"
@@ -79,18 +80,22 @@
                         android:background="@drawable/common_input_btn_bg"
                         android:fontFamily="@font/poppins_medium"
                         android:gravity="center_vertical"
-                        android:hint="Password"
                         android:inputType="textPassword"
                         android:paddingStart="15dp"
                         android:textColor="@color/black"
-                        android:textColorHint="@color/hint_text_color" />
+                        android:textColorHint="@color/hint_text_color"
+                        tools:hint="Password"
+                        tools:ignore="RtlSymmetry" />
 
                     <ImageView
+                        android:visibility="gone"
+                        android:id="@+id/eye"
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:layout_gravity="right|center_vertical"
-                        android:layout_marginRight="15dp"
-                        android:src="@drawable/eye" />
+                        android:layout_marginEnd="15dp"
+                        android:src="@drawable/eye"
+                        tools:ignore="RtlHardcoded" />
                 </androidx.cardview.widget.CardView>
 
                 <TextView
@@ -102,9 +107,10 @@
                     android:layout_marginRight="@dimen/margin_minimum"
                     android:fontFamily="@font/typo_round_bold"
                     android:gravity="right"
-                    android:text="@string/forgot_password"
+                    tools:text="@string/forgot_password"
                     android:textColor="@color/input_text_color"
-                    android:textSize="@dimen/medium_size" />
+                    android:textSize="@dimen/medium_size"
+                    tools:ignore="RtlHardcoded" />
             </LinearLayout>
 
         </LinearLayout>
@@ -120,9 +126,9 @@
             android:layout_marginBottom="120dp"
             android:background="@drawable/orange_button_bg"
             android:fontFamily="@font/typo_round_bold"
-            android:text="@string/login"
             android:textAllCaps="false"
             android:textColor="@color/white"
-            android:textSize="@dimen/medium_size" />
+            android:textSize="@dimen/medium_size"
+            tools:text="@string/login" />
     </RelativeLayout>
 </RelativeLayout>
