@@ -44,7 +44,7 @@ class RegisterBaseViewModel : ViewModel() {
 
     private val compositeDisposable = CompositeDisposable()
     private var accessToken: String = ""
-    private val responseHandler: ResponseHandler= ResponseHandler()
+    private val responseHandler: ResponseHandler = ResponseHandler()
 
 
     //region Login

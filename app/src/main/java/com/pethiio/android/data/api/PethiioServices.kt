@@ -11,6 +11,7 @@ import com.pethiio.android.data.model.member.PetSearchResponse
 import com.pethiio.android.data.model.petDetail.PetSearchDetailResponse
 import com.pethiio.android.data.model.petDetail.PetSearchOwnerDetailResponse
 import com.pethiio.android.data.model.report.ReportRequest
+import com.pethiio.android.data.model.settings.FAQResponse
 import com.pethiio.android.data.model.signup.PageData
 import com.pethiio.android.data.model.signup.Register
 import com.pethiio.android.data.model.signup.RegisterInfo
@@ -147,4 +148,55 @@ interface PethiioServices {
 
     //endregion
 
+    //region FAQ
+
+    @GET("page/faq/getAll")
+    fun getFAQs(): Observable<List<FAQResponse>>
+
+    @GET("page/faq/info")
+    fun getFAQPageData(): Observable<PageData>
+
+
+
+    //endregion
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

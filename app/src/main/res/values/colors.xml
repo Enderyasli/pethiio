@@ -20,5 +20,6 @@
     <color name="tinder_btn_color">#faede3</color>
     <color name="slider_bg_color">#daf8f5</color>
     <color name="pet_name_bg">#faede4</color>
+    <color name="darkGrey">#333333</color>
 
 </resources>

@@ -1,12 +1,24 @@
 package com.pethiio.android.ui.main.view.fragments
 
+import android.Manifest
+import android.content.IntentSender
+import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import com.google.android.gms.common.api.Api
+import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.common.api.ResolvableApiException
+import com.google.android.gms.location.*
+import com.google.android.gms.tasks.Task
 import com.pethiio.android.R
 import com.pethiio.android.data.model.User
 import com.pethiio.android.databinding.FragmentHomeBinding
@@ -54,12 +66,63 @@ class HomeFragment : BaseFragment(), FilterItemClickListener {
         setupUI()
         setupObserver()
 
+        if (ContextCompat.checkSelfPermission(
+                requireActivity(),
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) !==
+            PackageManager.PERMISSION_GRANTED
+        ) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(
+                    requireActivity(),
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                )
+            ) {
+                // TODO: 6.07.2021 burda location izin ekranına gönder, gelişte location actır, sonra lat, lon al
+//                findNavController().navigate(R.id.navigation_report)
+//                ActivityCompat.requestPermissions(requireActivity(),
+//                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 1)
+            } else {
+//                findNavController().navigate(R.id.navigation_report)
+//                ActivityCompat.requestPermissions(requireActivity(),
+//                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 1)
+            }
+        }
+
 
 
         return view
     }
 
+    override fun onRequestPermissionsResult(
+        requestCode: Int, permissions: Array<String>,
+        grantResults: IntArray
+    ) {
+        when (requestCode) {
+            1 -> {
+                if (grantResults.isNotEmpty() && grantResults[0] ==
+                    PackageManager.PERMISSION_GRANTED
+                ) {
+                    if ((ContextCompat.checkSelfPermission(
+                            requireContext(),
+                            Manifest.permission.ACCESS_FINE_LOCATION
+                        ) ===
+                                PackageManager.PERMISSION_GRANTED)
+                    ) {
+                        Toast.makeText(requireContext(), "Permission Granted", Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                } else {
+                    Toast.makeText(requireContext(), "Permission Denied", Toast.LENGTH_SHORT).show()
+                }
+                return
+            }
+        }
+    }
+
     private fun setupUI() {
+
+//        createLocationRequest()
+
 
         binding.addAnimal.setOnClickListener {
             findNavController().navigate(R.id.navigation_pet_add)
@@ -96,7 +159,8 @@ class HomeFragment : BaseFragment(), FilterItemClickListener {
 
                     if (it.data != null) {
                         binding.animalListRv.layoutManager = GridLayoutManager(requireContext(), 2)
-                        val adapter = HomePetListAdapter(findNavController(),requireContext(), it.data)
+                        val adapter =
+                            HomePetListAdapter(findNavController(), requireContext(), it.data)
                         binding.animalListRv.adapter = adapter
                     }
                     if (it.data?.size == 0) {
@@ -114,6 +178,9 @@ class HomeFragment : BaseFragment(), FilterItemClickListener {
 
 
         })
+        binding.settingsImg.setOnClickListener {
+            findNavController().navigate(R.id.navigation_support)
+        }
 
 
     }
@@ -122,6 +189,65 @@ class HomeFragment : BaseFragment(), FilterItemClickListener {
 
     }
 
+
+    fun createLocationRequest() {
+        val locationRequest = LocationRequest.create().apply {
+            interval = 3000
+            fastestInterval = 1500
+            priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+        }
+        val builder = LocationSettingsRequest.Builder()
+            .addLocationRequest(locationRequest)
+
+
+        val client: SettingsClient = LocationServices.getSettingsClient(requireActivity())
+        val task: Task<LocationSettingsResponse> = client.checkLocationSettings(builder.build())
+
+        task.addOnCompleteListener {
+            try {
+                task.getResult(ApiException::class.java)
+
+
+            } catch (e: ApiException) {
+                when (e.statusCode) {
+                    LocationSettingsStatusCodes.RESOLUTION_REQUIRED -> {
+                        if (e is ResolvableApiException) {
+
+                            try {
+                                e.startResolutionForResult(requireActivity(), 6989)
+                            } catch (sendEx: IntentSender.SendIntentException) {
+                                Log.e("sednex", sendEx.toString())
+
+                            }
+                        }
+                    }
+                }
+
+
+            }
+        }
+
+//        task.addOnSuccessListener { locationSettingsResponse ->
+//            // All location settings are satisfied. The client can initialize
+//            // location requests here.
+//            // ...
+//        }
+//
+//        task.addOnFailureListener { exception ->
+//            if (exception is ResolvableApiException){
+//                // Location settings are not satisfied, but this can be fixed
+//                // by showing the user a dialog.
+//                try {
+//                    // Show the dialog by calling startResolutionForResult(),
+//                    // and check the result in onActivityResult().
+//                    exception.startResolutionForResult(requireActivity(),
+//                        100)
+//                } catch (sendEx: IntentSender.SendIntentException) {
+//                    // Ignore the error.
+//                }
+//            }
+//        }
+    }
 
     private fun renderList(users: List<User>) {
         adapter.addData(users)

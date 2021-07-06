@@ -19,8 +19,6 @@ import com.pethiio.android.ui.main.viewmodel.HomeViewModel
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var mainViewModel: HomeViewModel
-    private lateinit var adapter: MainAdapter
     lateinit var navView: BottomNavigationView
     lateinit var viewCustom: View
 

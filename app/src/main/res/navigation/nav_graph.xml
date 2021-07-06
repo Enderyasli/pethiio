@@ -154,6 +154,12 @@
             android:label="Search"
             tools:layout="@layout/fragment_message" />
 
+        <fragment
+            android:id="@+id/navigation_support"
+            android:name="com.pethiio.android.ui.main.view.fragments.settings.SupportFragment"
+            android:label="Support"
+            tools:layout="@layout/fragment_support" />
+
 
     </navigation>
 
@@ -168,6 +174,7 @@
         android:name="com.pethiio.android.ui.main.view.fragments.ReportFragment"
         android:label="Report"
         tools:layout="@layout/fragment_report" />
+
 
 
 

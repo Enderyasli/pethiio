@@ -127,6 +127,10 @@ class Constants {
         const val newPasswordEmtpyError: String = "newPasswordEmtpyError"
         const val detailEmtpyError: String = "detailEmtpyError"
 
+        //endregion
+
+        //region Settings
+        const val supportDetailButton: String = "supportDetailButton"
 
         //endregion
 
