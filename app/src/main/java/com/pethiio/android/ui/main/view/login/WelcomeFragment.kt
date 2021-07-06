@@ -38,13 +38,15 @@ class WelcomeFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
         val view = binding.root
 
 //        PreferenceHelper.SharedPreferencesManager.getInstance().isLoggedIn = false // TODO: 5.07.2021 sil
+
+
         //Check Onboarding
         if (PreferenceHelper.SharedPreferencesManager.getInstance().isFirstDownload == true) {
             if (findNavController().currentDestination?.id == R.id.navigation_welcome)
                 findNavController().navigate(R.id.action_navigation_welcome_to_navigation_onboarding)
 
         }
-        else if (PreferenceHelper.SharedPreferencesManager.getInstance().isLoggedIn == false) {// TODO: 5.07.2021 true yap   //Check Logged in
+        else if (PreferenceHelper.SharedPreferencesManager.getInstance().isLoggedIn == true) {// TODO: 5.07.2021 true yap   //Check Logged in
             if (findNavController().currentDestination?.id == R.id.navigation_welcome)
                 findNavController().navigate(R.id.action_navigation_start_to_navigation_main)
         }

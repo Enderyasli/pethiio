@@ -25,7 +25,7 @@ public class CommonFunctions {
 
     public static void checkLogin(@Nullable Integer errorCode, NavController navController) {
         if (errorCode!=null && errorCode == 403)
-            navController.navigate(R.id.navigation_pet_add);
+            navController.navigate(R.id.navigation_welcome);
     }
 
 
