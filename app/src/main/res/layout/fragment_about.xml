@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.main.view.fragments.settings.AboutFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/back_btn"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="@dimen/default_margin"
+            android:layout_marginTop="50dp"
+            android:src="@color/black" />
+
+        <TextView
+            android:id="@+id/title_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="26dp"
+            android:layout_marginTop="120dp"
+            android:layout_marginBottom="3dp"
+            android:fontFamily="@font/typo_round_bold"
+            android:textColor="@color/orangeButton"
+            android:textSize="@dimen/signup_title_size"
+            tools:text="About" />
+
+
+        <TextView
+            android:id="@+id/description_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/default_margin"
+            android:layout_marginTop="200dp"
+            android:layout_marginRight="@dimen/default_margin"
+            android:fontFamily="@font/poppins_medium"
+            tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Semper dolor suscipit cras in at nam. Quam sed eget dui, elit sit. Senectus augue integer volutpat sed fames. A, orci, cras ridiculus id at feugiat euismod neque. Volutpat amet nulla massa velit libero, eget mi, diam condimentum. A mauris sagittis ante euismod. Tellus et libero tempor feugiat et et.
+Molestie odio scelerisque dictum et sagittis. Sit aliquam sagittis aliquam sed a, nibh lorem at. Malesuada eros, interdum et eget sollicitudin aliquet sociis. Ultrices turpis orci, ipsum consectetur turpis. Quis maecenas vitae massa egestas congue. Aliquam enim justo, tellus donec sed id imperdiet vitae. Lectus euismod et nisl non, nunc magna lobortis ullamcorper quisque. "
+            android:textColor="@color/grey"
+            android:textSize="16sp" />
+
+    </RelativeLayout>
+</ScrollView>

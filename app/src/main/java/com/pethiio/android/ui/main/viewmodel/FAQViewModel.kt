@@ -21,6 +21,8 @@ class FAQViewModel : ViewModel() {
     private val faqs = MutableLiveData<Resource<List<FAQResponse>>>()
     private val compositeDisposable = CompositeDisposable()
     private val responseHandler: ResponseHandler = ResponseHandler()
+    private val settingsPageData = MutableLiveData<Resource<PageData>>()
+    private val aboutPageData = MutableLiveData<Resource<PageData>>()
 
 
     fun fetchFAQPageData() {
@@ -37,6 +39,44 @@ class FAQViewModel : ViewModel() {
                     },
                     {
                         faqPageData.postValue(responseHandler.handleException(it))
+                    }
+                )
+        )
+    }
+
+    fun fetchSettingsPageData() {
+
+        settingsPageData.postValue(Resource.loading(null))
+        compositeDisposable.add(
+            ServiceBuilder.buildService()
+                .getSettingsPageData()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                    { loginData ->
+                        settingsPageData.postValue(responseHandler.handleSuccess(loginData))
+                    },
+                    {
+                        settingsPageData.postValue(responseHandler.handleException(it))
+                    }
+                )
+        )
+    }
+
+    fun fetchAboutPageData() {
+
+        aboutPageData.postValue(Resource.loading(null))
+        compositeDisposable.add(
+            ServiceBuilder.buildService()
+                .getAboutPageData()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                    { loginData ->
+                        aboutPageData.postValue(responseHandler.handleSuccess(loginData))
+                    },
+                    {
+                        aboutPageData.postValue(responseHandler.handleException(it))
                     }
                 )
         )
@@ -75,6 +115,13 @@ class FAQViewModel : ViewModel() {
 
     fun getFAQPageData(): LiveData<Resource<PageData>> {
         return faqPageData
+    }
+
+    fun getSettingsPageData(): LiveData<Resource<PageData>> {
+        return settingsPageData
+    }
+    fun getAboutPageData(): LiveData<Resource<PageData>> {
+        return aboutPageData
     }
 
 }

@@ -14,9 +14,9 @@
         android:layout_marginTop="@dimen/signup_title_top_margin"
         android:layout_marginBottom="3dp"
         android:fontFamily="@font/typo_round_bold"
-        android:text="Ayarlar"
         android:textColor="@color/orangeButton"
-        android:textSize="@dimen/signup_title_size" />
+        android:textSize="@dimen/signup_title_size"
+        tools:text="Ayarlar" />
 
     <LinearLayout
         android:id="@+id/password_ly"

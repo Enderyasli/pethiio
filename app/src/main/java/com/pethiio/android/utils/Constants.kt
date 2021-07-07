@@ -131,6 +131,16 @@ class Constants {
 
         //region Settings
         const val supportDetailButton: String = "supportDetailButton"
+        const val changePasswordTitle: String = "changePasswordTitle"
+        const val notificationTitle: String = "notificationTitle"
+        const val supportTitle: String = "supportTitle"
+        const val aboutAppTitle: String = "aboutAppTitle"
+        const val logoutTitle: String = "logoutTitle"
+        //endregion
+
+        //region Chat
+
+        const val emptyMessageTitle: String ="emptyMessageTitle"
 
         //endregion
 

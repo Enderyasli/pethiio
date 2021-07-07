@@ -92,7 +92,6 @@ interface PethiioServices {
     fun getPetDetailPageData(): Observable<PageData>
 
 
-
     @GET("page/pet-search-detail/{animalId}")
     fun getPetSearchDetail(
         @Path("animalId") animalId: String,
@@ -140,7 +139,8 @@ interface PethiioServices {
 
     @GET("page/pet-detail/{animalId}")
     fun getPetDetail(
-        @Path("animalId") animalId: String): Observable<PetAdd>
+        @Path("animalId") animalId: String
+    ): Observable<PetAdd>
 
 
     @GET("page/pet-search/info")
@@ -186,6 +186,27 @@ interface PethiioServices {
 
     @POST("page/support")
     fun postSupport(@Body supportRequest: SupportRequest): Observable<Response<Void>>
+
+    //endregion
+
+
+    //region Settings
+
+    @GET("/api/page/settings/info")
+    fun getSettingsPageData(): Observable<PageData>
+
+    @GET("/api/page/about/info")
+    fun getAboutPageData(): Observable<PageData>
+
+
+    //endregion
+
+
+    //region Chat
+
+    @GET("/api/page/chat-list/info")
+    fun getChatPageData(): Observable<PageData>
+
 
     //endregion
 

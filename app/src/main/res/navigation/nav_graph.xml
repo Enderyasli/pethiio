@@ -154,32 +154,40 @@
             android:label="Search"
             tools:layout="@layout/fragment_message" />
 
+
+
+        <fragment
+            android:id="@+id/navigation_support"
+            android:name="com.pethiio.android.ui.main.view.fragments.settings.SupportFragment"
+            android:label="Support"
+            tools:layout="@layout/fragment_support" />
+
+        <fragment
+            android:id="@+id/navigation_pet_detail"
+            android:name="com.pethiio.android.ui.main.view.fragments.PetDetailFragment"
+            android:label="PetDetail"
+            tools:layout="@layout/fragment_pet_detail" />
+
+        <fragment
+            android:id="@+id/navigation_report"
+            android:name="com.pethiio.android.ui.main.view.fragments.ReportFragment"
+            android:label="Report"
+            tools:layout="@layout/fragment_report" />
+
+
+        <fragment
+            android:id="@+id/navigation_settings"
+            android:name="com.pethiio.android.ui.main.view.fragments.settings.SettingsFragment"
+            android:label="Settings"
+            tools:layout="@layout/fragment_settings" />
+        <fragment
+            android:id="@+id/navigation_about"
+            android:name="com.pethiio.android.ui.main.view.fragments.settings.AboutFragment"
+            android:label="About"
+            tools:layout="@layout/fragment_about" />
     </navigation>
 
-    <fragment
-        android:id="@+id/navigation_support"
-        android:name="com.pethiio.android.ui.main.view.fragments.settings.SupportFragment"
-        android:label="Support"
-        tools:layout="@layout/fragment_support" />
 
-    <fragment
-        android:id="@+id/navigation_pet_detail"
-        android:name="com.pethiio.android.ui.main.view.fragments.PetDetailFragment"
-        android:label="PetDetail"
-        tools:layout="@layout/fragment_pet_detail" />
-
-    <fragment
-        android:id="@+id/navigation_report"
-        android:name="com.pethiio.android.ui.main.view.fragments.ReportFragment"
-        android:label="Report"
-        tools:layout="@layout/fragment_report" />
-
-
-    <fragment
-        android:id="@+id/navigation_settings"
-        android:name="com.pethiio.android.ui.main.view.fragments.settings.SettingsFragment"
-        android:label="Settings"
-        tools:layout="@layout/fragment_settings" />
 
 
 </navigation>
