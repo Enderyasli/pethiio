@@ -136,7 +136,7 @@
             android:layout_height="150dp"
             android:layout_gravity="center"
             android:backgroundTint="@color/white"
-            android:src="@drawable/heart" />
+            android:src="@drawable/hearth" />
 
     </FrameLayout>
 

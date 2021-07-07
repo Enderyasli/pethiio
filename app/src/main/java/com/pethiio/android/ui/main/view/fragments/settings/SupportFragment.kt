@@ -49,6 +49,10 @@ class SupportFragment : BaseFragment() {
             val bundle = bundleOf("fromFAQ" to true)
             findNavController().navigate(R.id.navigation_report, bundle)
         }
+        binding.backBtn.setOnClickListener {
+            findNavController().navigateUp()
+
+        }
 
         return view
 

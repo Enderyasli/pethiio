@@ -29,7 +29,7 @@
         <ImageView
             android:layout_width="32dp"
             android:layout_height="32dp"
-            android:src="@color/black" />
+            android:src="@drawable/changepass" />
 
         <TextView
             android:id="@+id/password_change_tv"
@@ -53,7 +53,7 @@
         <ImageView
             android:layout_width="32dp"
             android:layout_height="32dp"
-            android:src="@color/black" />
+            android:src="@drawable/notification" />
 
         <TextView
             android:id="@+id/notification_tv"
@@ -77,7 +77,7 @@
         <ImageView
             android:layout_width="32dp"
             android:layout_height="32dp"
-            android:src="@color/black" />
+            android:src="@drawable/support" />
 
         <TextView
             android:id="@+id/support_tv"
@@ -101,7 +101,7 @@
         <ImageView
             android:layout_width="32dp"
             android:layout_height="32dp"
-            android:src="@color/black" />
+            android:src="@drawable/about" />
 
         <TextView
             android:id="@+id/about_tv"
@@ -125,7 +125,7 @@
         <ImageView
             android:layout_width="32dp"
             android:layout_height="32dp"
-            android:src="@color/black" />
+            android:src="@drawable/logout" />
 
         <TextView
             android:id="@+id/logout_tv"

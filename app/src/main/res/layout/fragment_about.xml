@@ -16,7 +16,7 @@
             android:layout_height="24dp"
             android:layout_marginStart="@dimen/default_margin"
             android:layout_marginTop="50dp"
-            android:src="@color/black" />
+            android:src="@drawable/back_arrow" />
 
         <TextView
             android:id="@+id/title_tv"

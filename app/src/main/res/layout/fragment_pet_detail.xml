@@ -273,7 +273,7 @@ adipiscing elit. Dictumst sed dignissim duis vitae.  Diam pharetra, mauris." />
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:src="@drawable/x" />
+                android:src="@drawable/back_arrow" />
         </FrameLayout>
 
 
@@ -317,7 +317,7 @@ adipiscing elit. Dictumst sed dignissim duis vitae.  Diam pharetra, mauris." />
                     android:layout_width="32dp"
                     android:layout_height="32dp"
                     android:layout_gravity="center"
-                    android:src="@drawable/heart" />
+                    android:src="@drawable/hearth" />
             </androidx.cardview.widget.CardView>
 
 

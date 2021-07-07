@@ -29,19 +29,14 @@
                 android:layout_height="match_parent"
                 android:visibility="visible">
 
-                <ImageView
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
-                    android:layout_gravity="right"
-                    android:layout_marginTop="18dp"
-                    android:layout_marginEnd="25dp"
-                    android:src="@drawable/plus" />
+
 
                 <ImageView
                     android:layout_width="60dp"
                     android:layout_height="60dp"
+                    android:layout_marginBottom="5dp"
                     android:layout_gravity="center"
-                    android:src="@drawable/paw_print" />
+                    android:src="@drawable/pet_add" />
 
                 <TextView
                     android:id="@+id/add_new_button"
