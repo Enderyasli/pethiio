@@ -50,19 +50,6 @@ class SupportFragment : BaseFragment() {
             findNavController().navigate(R.id.navigation_report, bundle)
         }
 
-
-//        val expTv1 = binding.expandTextView
-//        expTv1.text = "Pethiio nedir?  \n jasdjjdadas jasdjsajdaj jsjadjadn jasdjasdja jasdjasdjas asjdjasdas  asjdsajdsaj sadfjdsfjasjdas" +
-//                "sfjsdfjas" +
-//                "asjsajdjasasd" +
-//                "asdjasjasjdjasas" +
-//                "asdjasjdasdas" +
-//                "jassadsa" +
-//                "dasjadskjsadsa" +
-//                "jdsg" +
-//                "as" +
-//                ""
-
         return view
 
     }

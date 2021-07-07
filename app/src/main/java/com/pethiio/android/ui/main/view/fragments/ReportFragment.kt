@@ -1,9 +1,12 @@
 package com.pethiio.android.ui.main.view.fragments
 
+import android.content.Context
 import android.os.Bundle
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
@@ -55,6 +58,10 @@ class ReportFragment : BaseFragment() {
         }
 
         binding.reportBtn.setOnClickListener {
+            val imm =
+                requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(view.windowToken, 0)
+
             postReport()
         }
 
@@ -183,7 +190,8 @@ class ReportFragment : BaseFragment() {
                     if (fromFAQ == false)
                         findNavController().navigateUp()
                     else {
-                        // TODO: 6.07.2021 mesaj gösterimi
+
+                        Handler().postDelayed({ findNavController().navigateUp() }, 2500)
 
                         binding.mainLayout.visibility = View.GONE
                         binding.msgLy.visibility = View.VISIBLE

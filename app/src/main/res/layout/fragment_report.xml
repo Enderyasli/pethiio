@@ -38,7 +38,7 @@
                 android:layout_below="@+id/message_title"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="60dp"
-                android:src="@color/black" />
+                android:src="@drawable/zarf" />
 
             <TextView
                 android:id="@+id/msg_content"

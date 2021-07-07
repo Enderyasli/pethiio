@@ -125,6 +125,7 @@ class HomeFragment : BaseFragment(), FilterItemClickListener {
 
 
         binding.addAnimal.setOnClickListener {
+            if (findNavController().currentDestination?.id == R.id.navigation_home)
             findNavController().navigate(R.id.navigation_pet_add)
         }
 
@@ -179,7 +180,8 @@ class HomeFragment : BaseFragment(), FilterItemClickListener {
 
         })
         binding.settingsImg.setOnClickListener {
-            findNavController().navigate(R.id.navigation_support)
+            if (findNavController().currentDestination?.id == R.id.navigation_home)
+            findNavController().navigate(R.id.navigation_settings)
         }
 
 
