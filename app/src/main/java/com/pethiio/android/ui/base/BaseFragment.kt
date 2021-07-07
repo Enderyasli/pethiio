@@ -9,6 +9,7 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import com.pethiio.android.data.model.LookUpsResponse
 import com.pethiio.android.data.model.PethiioResponse
+import com.pethiio.android.data.model.member.MemberListResponse
 import com.pethiio.android.ui.main.view.MainActivity
 
 abstract class BaseFragment : Fragment() {
@@ -16,6 +17,7 @@ abstract class BaseFragment : Fragment() {
     protected open var bottomNavigationViewVisibility = View.VISIBLE
     protected open var dashboardClicked = true
     private var lookUpsResponse: List<LookUpsResponse>? = null
+    private var memberList: List<MemberListResponse>? = null
 
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -90,6 +92,14 @@ abstract class BaseFragment : Fragment() {
 
     fun setLookUps(lookUpsResponseList: List<LookUpsResponse>) {
         lookUpsResponse = lookUpsResponseList
+    }
+
+    fun setMemberList(memberListResponse: List<MemberListResponse>) {
+        memberList = memberListResponse
+    }
+
+    fun getMemberList(): List<MemberListResponse>? {
+        return memberList
     }
 
     fun getLookUpKey(key: String, value: String): String {

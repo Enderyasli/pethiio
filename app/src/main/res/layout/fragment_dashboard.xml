@@ -66,7 +66,7 @@
             android:layout_marginRight="@dimen/default_margin"
             android:fontFamily="@font/poppins_medium"
             android:gravity="center"
-            android:text="Etrafında arama kriterlerine uyan kimse yok"
+            tools:text="Etrafında arama kriterlerine uyan kimse yok"
             android:textColor="@color/grey"
             android:textSize="22sp"
             app:background="@color/light_button"

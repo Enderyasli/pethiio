@@ -210,6 +210,7 @@ class DashboardFragment : BaseFragment(), CardStackListener,
                     if (it.data != null)
                         memberListResponse = it.data
                     setMembeListSpinner(memberListResponse)
+//                    setMemberList(memberListResponse)
                     binding.progressBar.visibility = View.GONE
                 }
                 Status.ERROR -> {
@@ -303,7 +304,6 @@ class DashboardFragment : BaseFragment(), CardStackListener,
                     isSelectedMemberFirstTime = false
                 }
             }
-
 
     }
 

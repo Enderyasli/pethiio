@@ -1,6 +1,7 @@
 package com.pethiio.android.data.api
 
 import com.pethiio.android.data.model.*
+import com.pethiio.android.data.model.chat.ChatListResponse
 import com.pethiio.android.data.model.filter.PetSearchFilterResponse
 import com.pethiio.android.data.model.filter.SearchFilterRequest
 import com.pethiio.android.data.model.login.LoginRequest
@@ -121,7 +122,7 @@ interface PethiioServices {
 
     //region Member
 
-    @POST("locations")
+    @POST("/api/page/member-location")
     fun postLocations(@Body locationsRequest: LocationsRequest): Observable<Response<Void>>
 
     @GET("page/pet-search/members")
@@ -192,10 +193,10 @@ interface PethiioServices {
 
     //region Settings
 
-    @GET("/api/page/settings/info")
+    @GET("page/settings/info")
     fun getSettingsPageData(): Observable<PageData>
 
-    @GET("/api/page/about/info")
+    @GET("page/about/info")
     fun getAboutPageData(): Observable<PageData>
 
 
@@ -204,49 +205,15 @@ interface PethiioServices {
 
     //region Chat
 
-    @GET("/api/page/chat-list/info")
+    @GET("page/chat-list/info")
     fun getChatPageData(): Observable<PageData>
+
+    @GET("page/chat-list/{memberId}")
+    fun getChatList(
+        @Path("memberId") memberId: Int,
+    ): Observable<List<ChatListResponse>>
 
 
     //endregion
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
