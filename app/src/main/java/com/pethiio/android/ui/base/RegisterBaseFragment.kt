@@ -2,6 +2,7 @@ package com.pethiio.android.ui.base
 
 import android.graphics.Color
 import android.os.Bundle
+import android.provider.SyncStateContract
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.TextUtils
@@ -11,15 +12,13 @@ import android.widget.EditText
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
-import com.pethiio.android.data.model.AnimalDetailResponse
-import com.pethiio.android.data.model.LookUpsResponse
-import com.pethiio.android.data.model.PethiioResponse
-import com.pethiio.android.data.model.PetAdd
+import com.pethiio.android.data.model.*
 import com.pethiio.android.data.model.login.LoginRequest
 import com.pethiio.android.data.model.signup.Register
 import com.pethiio.android.data.model.signup.RegisterInfo
 import com.pethiio.android.ui.main.view.MainActivity
 import com.pethiio.android.ui.main.viewmodel.signup.RegisterBaseViewModel
+import com.pethiio.android.utils.Constants
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import okhttp3.MultipartBody
@@ -78,7 +77,31 @@ abstract class RegisterBaseFragment<VModel : RegisterBaseViewModel> : Fragment()
         }
         return emptyList()
     }
+    fun getLookUpKeys(key: String): List<String> {
 
+        lookUpsResponse?.forEach { it ->
+            if (it.key == key) {
+
+                val arrayList = arrayListOf<String>()
+                it.value.forEach {
+                    arrayList.add(it.key)
+                }
+
+                return arrayList
+
+            }
+        }
+        return emptyList()
+    }
+    fun getLookUpIndex(lookUpkey:String,key: String): Int {
+
+        getLookUpKeys(lookUpkey).forEachIndexed { index, s ->
+            if(s==key)
+                return index
+        }
+
+        return 0
+    }
     fun getAnimalPersonalities(): ArrayList<String> {
 
         val arrayList = arrayListOf<String>()
@@ -240,6 +263,10 @@ abstract class RegisterBaseFragment<VModel : RegisterBaseViewModel> : Fragment()
 
     open fun postPetAdd(petAdd: PetAdd) {
         viewModel.postPetAdd(petAdd)
+    }
+
+    open fun postPetEdit(petEdit: PetEdit ) {
+        viewModel.postPetEdit(petEdit)
     }
 
     open fun fetchPetList() {

@@ -39,7 +39,7 @@
 
 
     <LinearLayout
-
+        android:id="@+id/go_report_ly"
         android:layout_below="@+id/faqRecycler"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

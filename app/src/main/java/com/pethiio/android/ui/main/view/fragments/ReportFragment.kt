@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.pethiio.android.data.model.report.ReportRequest
+import com.pethiio.android.data.model.report.SupportRequest
 import com.pethiio.android.databinding.FragmentReportBinding
 import com.pethiio.android.ui.base.BaseFragment
 import com.pethiio.android.ui.main.viewmodel.ReportViewModel
@@ -25,6 +26,7 @@ class ReportFragment : BaseFragment() {
 
 
     var userId: Int? = 0
+    var fromFAQ: Boolean? = false
     var detailEmtpyError: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,9 +45,20 @@ class ReportFragment : BaseFragment() {
             ViewModelProviders.of(this).get(ReportViewModel::class.java)
 
         userId = arguments?.getInt("userId")
+        fromFAQ = arguments?.getBoolean("fromFAQ")
+        if (fromFAQ == true) {
+            viewModel.fetchSupportPageData()
+            viewModel.fetchSupportSuccessPageData()
+
+        } else {
+            viewModel.fetchReportPageData()
+        }
+
         binding.reportBtn.setOnClickListener {
             postReport()
         }
+
+
 
 
         return view
@@ -58,20 +71,36 @@ class ReportFragment : BaseFragment() {
             binding.detailPlaceholderTv.error = detailEmtpyError
             return
         }
-        if (userId != null && userId!! > 0 && binding.reasonLy.spinner.selectedItem != null) {
+        if (fromFAQ == false) {
 
+            if (userId != null && userId!! > 0 && binding.reasonLy.spinner.selectedItem != null) {
+
+                val type = getLookUpKey(
+                    Constants.lookUpType,
+                    binding.reasonLy.spinner.selectedItem.toString()
+                )
+                if (type.isNotEmpty())
+                    viewModel.postReport(
+                        ReportRequest(
+                            binding.detailPlaceholderTv.text.toString(),
+                            userId!!,
+                            type
+                        )
+                    )
+            }
+        } else {
             val type = getLookUpKey(
                 Constants.lookUpType,
                 binding.reasonLy.spinner.selectedItem.toString()
             )
             if (type.isNotEmpty())
-                viewModel.postReport(
-                    ReportRequest(
+                viewModel.postSupport(
+                    SupportRequest(
                         binding.detailPlaceholderTv.text.toString(),
-                        userId!!,
                         type
                     )
                 )
+
         }
 
 
@@ -79,20 +108,37 @@ class ReportFragment : BaseFragment() {
 
     override fun setUpViews() {
         super.setUpViews()
-        viewModel.fetchReportPageData()
-        viewModel.getReportPageData().observe(viewLifecycleOwner, {
-            when(it.status){
-                Status.LOADING->{
-                    binding.progressBar.visibility=View.VISIBLE
+        viewModel.getReportSuccessPageData().observe(viewLifecycleOwner, {
+            when (it.status) {
+
+                Status.SUCCESS -> {
+
+                    val pageDataFields = it.data?.fields
+
+                    binding.messageTitle.text =
+                        getLocalizedString(Constants.reportTitle, pageDataFields)
+                    binding.msgContent.text =
+                        getLocalizedString(Constants.reportSubTitle, pageDataFields)
                 }
-                Status.SUCCESS->{
+            }
+
+        })
+
+
+        viewModel.getReportPageData().observe(viewLifecycleOwner, {
+            when (it.status) {
+                Status.LOADING -> {
+                    binding.progressBar.visibility = View.VISIBLE
+                }
+                Status.SUCCESS -> {
 
 
                     val pageDataFields = it.data?.fields
                     val pageDataLookUps = it.data?.lookups
                     pageDataLookUps?.let { it1 -> setLookUps(it1) }
 
-                    binding.reportTitle.text = getLocalizedString(Constants.reportTitle, pageDataFields)
+                    binding.reportTitle.text =
+                        getLocalizedString(Constants.reportTitle, pageDataFields)
                     binding.reportSubtitle.text =
                         getLocalizedString(Constants.reportSubTitle, pageDataFields)
                     binding.reasonLy.titleTv.text =
@@ -101,9 +147,11 @@ class ReportFragment : BaseFragment() {
                         getLocalizedSpan(Constants.reportDetailTitle, pageDataFields)
                     binding.detailPlaceholderTv.hint =
                         getLocalizedString(Constants.reportDetailPlaceholder, pageDataFields)
-                    binding.reportBtn.text = getLocalizedString(Constants.reportButton, pageDataFields)
+                    binding.reportBtn.text =
+                        getLocalizedString(Constants.reportButton, pageDataFields)
 
-                    detailEmtpyError = getLocalizedString(Constants.reportDetailEmptyError, pageDataFields)
+                    detailEmtpyError =
+                        getLocalizedString(Constants.reportDetailEmptyError, pageDataFields)
 
 
                     val typeAdapter = ArrayAdapter(
@@ -132,7 +180,15 @@ class ReportFragment : BaseFragment() {
             when (it.status) {
 
                 Status.SUCCESS -> {
-                    findNavController().navigateUp()
+                    if (fromFAQ == false)
+                        findNavController().navigateUp()
+                    else {
+                        // TODO: 6.07.2021 mesaj gösterimi
+
+                        binding.mainLayout.visibility = View.GONE
+                        binding.msgLy.visibility = View.VISIBLE
+
+                    }
                 }
             }
         })

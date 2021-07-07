@@ -26,7 +26,7 @@ class PetDetailViewModel : ViewModel() {
         petDetailResponse.postValue(Resource.loading(null))
         compositeDisposable.add(
             ServiceBuilder.buildService()
-                .getPetDetail(animalId, memberId)
+                .getPetSearchDetail(animalId, memberId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
@@ -66,7 +66,7 @@ class PetDetailViewModel : ViewModel() {
         )
     }
 
-    fun fetchPetDetailPageData() {
+    fun fetchPetSearchDetailPageData() {
 
         petDetailResponsePageData.postValue(Resource.loading(null))
         compositeDisposable.add(
@@ -89,6 +89,31 @@ class PetDetailViewModel : ViewModel() {
                 )
         )
     }
+    fun fetchPetDetailPageData() {
+
+        petDetailResponsePageData.postValue(Resource.loading(null))
+        compositeDisposable.add(
+            ServiceBuilder.buildService()
+                .getPetDetailPageData()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                    { loginData ->
+                        petDetailResponsePageData.postValue(Resource.success(loginData))
+                    },
+                    {
+                        petDetailResponsePageData.postValue(
+                            Resource.error(
+                                "Something went wrong",
+                                null
+                            )
+                        )
+                    }
+                )
+        )
+    }
+
+
 
 
     override fun onCleared() {

@@ -17,6 +17,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import okhttp3.MultipartBody
+import retrofit2.Response
 
 
 class RegisterBaseViewModel : ViewModel() {
@@ -29,6 +30,7 @@ class RegisterBaseViewModel : ViewModel() {
     val postRegisterAvatar = MutableLiveData<Resource<AccessToken>>()
     val postPetPhoto = MutableLiveData<Resource<AccessToken>>()
     val postPetAdd = MutableLiveData<Resource<PetAddResponse>>()
+    val postPetEdit = MutableLiveData<Resource<Response<Void>>>()
     val petList = MutableLiveData<Resource<List<PetListResponse>>>()
     val petListPageData = MutableLiveData<Resource<List<PethiioResponse>>>()
 
@@ -41,6 +43,8 @@ class RegisterBaseViewModel : ViewModel() {
     private val addAnimalResponse = MutableLiveData<Resource<PageData>>()
 
     private val petAddDetail = MutableLiveData<AnimalDetailResponse>()
+
+    private val petDetail = MutableLiveData<Resource<PetAdd>>()
 
     private val compositeDisposable = CompositeDisposable()
     private var accessToken: String = ""
@@ -293,6 +297,40 @@ class RegisterBaseViewModel : ViewModel() {
                 )
         )
     }
+    fun postPetEdit(petEdit: PetEdit) {
+        postPetEdit.postValue(Resource.loading(null))
+        compositeDisposable.add(
+            ServiceBuilder.buildService().postPetEdit(petEdit)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                    { registerData ->
+
+                        postPetEdit.postValue(Resource.success(registerData))
+                    },
+                    {
+                        postPetEdit.postValue(Resource.error(it.message, null))
+                    }
+                )
+        )
+    }
+
+    fun getUserPetDetail(animalId: String) {
+        petDetail.postValue(Resource.loading(null))
+        compositeDisposable.add(
+            ServiceBuilder.buildService().getPetEditDetail(animalId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                    { registerData ->
+                        petDetail.postValue(Resource.success(registerData))
+                    },
+                    {
+                        petDetail.postValue(Resource.error(it.message, null))
+                    }
+                )
+        )
+    }
 
     fun fetchPetList() {
         petList.postValue(Resource.loading(null))
@@ -352,6 +390,10 @@ class RegisterBaseViewModel : ViewModel() {
 
     fun getPetAddPageData(): LiveData<Resource<PageData>> {
         return addAnimalResponse
+    }
+
+    fun getUserPetDetail(): LiveData<Resource<PetAdd>> {
+        return petDetail
     }
 
     fun getAddAnimalDetails(): LiveData<AnimalDetailResponse> {

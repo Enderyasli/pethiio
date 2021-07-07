@@ -6,7 +6,6 @@ import android.os.Build
 import android.os.Bundle
 import android.view.*
 import android.widget.PopupMenu
-import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
@@ -23,6 +22,7 @@ import com.pethiio.android.ui.main.adapter.PetSearchDetailCharacterAdapter
 import com.pethiio.android.ui.main.adapter.ViewPagerAdapter
 import com.pethiio.android.ui.main.viewmodel.PetDetailViewModel
 import com.pethiio.android.utils.Constants
+import com.pethiio.android.utils.PreferenceHelper
 import com.pethiio.android.utils.Status
 import java.lang.reflect.Method
 
@@ -77,13 +77,15 @@ class PetDetailFragment : BaseFragment() {
         animalId = arguments?.getString("animalId", "")!!
         isOwner = arguments?.getBoolean("isOwner", false)!!
 
-        if(isOwner)
-        {
+        if (isOwner) {
+            viewModel.fetchPetDetailPageData()
+
             binding.scrollView.setBackgroundColor(Color.WHITE)
             binding.mainLayout.setBackgroundColor(Color.WHITE)
-            binding.buttonContainer.visibility=View.GONE
+            binding.buttonContainer.visibility = View.GONE
+        } else {
+            viewModel.fetchPetSearchDetailPageData()
         }
-        viewModel.fetchPetDetailPageData()
         viewModel.fetchPetDetail(animalId, memberId)
 
         binding.popupMenu.setOnClickListener {
@@ -102,8 +104,16 @@ class PetDetailFragment : BaseFragment() {
                         getLocalizedString(Constants.petSearchDetailListTypeTitle, fields)
                     binding.detailLy.title.text =
                         getLocalizedString(Constants.petSearchDetailDetailTitle, fields)
-                    owner = getLocalizedString(Constants.petSearchDetailOwner, fields)
-                    report = getLocalizedString(Constants.petSearchDetailReport, fields)
+                    owner = if (isOwner)
+                        getLocalizedString(Constants.petSearchDetailUpdate, fields)
+                    else
+                        getLocalizedString(Constants.petSearchDetailOwner, fields)
+
+                    report = if (isOwner)
+                        getLocalizedString(Constants.petSearchDetailDelete, fields)
+                    else
+                        getLocalizedString(Constants.petSearchDetailReport, fields)
+
 
                     binding.ownerAboutTv.text =
                         getLocalizedString(Constants.petSearchDetailAboutOwnerTitle, fields)
@@ -202,7 +212,9 @@ class PetDetailFragment : BaseFragment() {
                     binding.ownerAboutValueTv.text = petOwnerDetail?.about
                     binding.ownerAgeTv.text = petOwnerDetail?.age + ownerAgeTitle
 
-                    changeUserType(true)
+
+                    if (!isOwner)
+                        changeUserType(true)
 
                     binding.progressBar.visibility = View.GONE
 
@@ -228,19 +240,31 @@ class PetDetailFragment : BaseFragment() {
 
             popUpMenu.setOnMenuItemClickListener { item ->
                 when (item.itemId) {
-                    R.id.owner ->
-                        if (!ownerSelected) {
-                            if (!hasOwnerInfo)
-                                getOwnerDetail()
-                            else
-                                changeUserType(true)
+                    R.id.owner -> {
+                        if (!isOwner) {
+                            if (!ownerSelected) {
+                                if (!hasOwnerInfo)
+                                    getOwnerDetail()
+                                else
+                                    changeUserType(true)
+                            } else {
+                                changeUserType(false)
+                            }
                         } else {
-                            changeUserType(false)
+                            val bundle = bundleOf("animalId" to animalId)
+                            findNavController().navigate(R.id.navigation_pet_add, bundle)
+
+                            // TODO: 7.07.2021 düzenle
                         }
+                    }
 
                     R.id.report -> {
-                        val bundle = bundleOf("userId" to userId)
-                        findNavController().navigate(R.id.navigation_report, bundle)
+                        if (!isOwner) {
+                            findNavController().navigate(R.id.navigation_report)
+                        } else {
+                            // TODO: 7.07.2021 sil
+                        }
+
                     }
 
 

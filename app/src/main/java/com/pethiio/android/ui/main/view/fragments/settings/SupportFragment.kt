@@ -5,10 +5,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.pethiio.android.R
 import com.pethiio.android.databinding.FragmentSupportBinding
 import com.pethiio.android.ui.base.BaseFragment
 import com.pethiio.android.ui.base.ViewModelFactory
@@ -43,6 +45,10 @@ class SupportFragment : BaseFragment() {
 
         setupViewModel()
         setUpObserver()
+        binding.goReportLy.setOnClickListener {
+            val bundle = bundleOf("fromFAQ" to true)
+            findNavController().navigate(R.id.navigation_report, bundle)
+        }
 
 
 //        val expTv1 = binding.expandTextView

@@ -11,6 +11,7 @@ import com.pethiio.android.data.model.member.PetSearchResponse
 import com.pethiio.android.data.model.petDetail.PetSearchDetailResponse
 import com.pethiio.android.data.model.petDetail.PetSearchOwnerDetailResponse
 import com.pethiio.android.data.model.report.ReportRequest
+import com.pethiio.android.data.model.report.SupportRequest
 import com.pethiio.android.data.model.settings.FAQResponse
 import com.pethiio.android.data.model.signup.PageData
 import com.pethiio.android.data.model.signup.Register
@@ -87,9 +88,13 @@ interface PethiioServices {
     @GET("page/pet-search-detail/info")
     fun getPetSearchDetailPageData(): Observable<PageData>
 
+    @GET("page/pet-detail/info")
+    fun getPetDetailPageData(): Observable<PageData>
+
+
 
     @GET("page/pet-search-detail/{animalId}")
-    fun getPetDetail(
+    fun getPetSearchDetail(
         @Path("animalId") animalId: String,
         @Query("sourceMemberId") sourceMemberId: Int
     ): Observable<PetSearchDetailResponse>
@@ -133,8 +138,24 @@ interface PethiioServices {
     @GET("page/pet-search/{animalId}")
     fun getPetSearch(@Path("animalId") animalId: Int): Observable<Content>
 
+    @GET("page/pet-detail/{animalId}")
+    fun getPetDetail(
+        @Path("animalId") animalId: String): Observable<PetAdd>
+
+
     @GET("page/pet-search/info")
     fun getPetSearchPageData(): Observable<PageData>
+
+    //endregion
+
+    //region pet edit
+
+    @GET("page/pet-edit/{petId}")
+    fun getPetEditDetail(@Path("petId") petId: String): Observable<PetAdd>
+
+    @POST("page/pet-edit")
+    fun postPetEdit(@Body petAdd: PetEdit): Observable<Response<Void>>
+
 
     //endregion
 
@@ -156,7 +177,15 @@ interface PethiioServices {
     @GET("page/faq/info")
     fun getFAQPageData(): Observable<PageData>
 
+    @GET("page/support/info")
+    fun getSupportPageData(): Observable<PageData>
 
+    @GET("page/support-success/info")
+    fun getSupportSuccessPageData(): Observable<PageData>
+
+
+    @POST("page/support")
+    fun postSupport(@Body supportRequest: SupportRequest): Observable<Response<Void>>
 
     //endregion
 

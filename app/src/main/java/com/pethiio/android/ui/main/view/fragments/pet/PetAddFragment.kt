@@ -1,7 +1,6 @@
 package com.pethiio.android.ui.main.view.fragments.pet
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.res.ColorStateList
 import android.os.Build
 import android.os.Bundle
@@ -10,16 +9,15 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import com.google.android.gms.common.internal.service.Common
 import com.pethiio.android.R
 import com.pethiio.android.data.model.PetAdd
+import com.pethiio.android.data.model.PetEdit
 import com.pethiio.android.databinding.FragmentPetAddBinding
 import com.pethiio.android.ui.base.RegisterBaseFragment
 import com.pethiio.android.ui.main.adapter.CharacterAdapter
@@ -51,6 +49,7 @@ class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
     private val BREED_ID = 3
     private val COLOR_ID = 4
     var adapterCharacter: CharacterAdapter? = null
+    private var petId: String? = ""
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -63,19 +62,30 @@ class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
     override fun setUpViews() {
         super.setUpViews()
 
+
+
         setUpObserver()
         fetchPetAddPageData()
         fetchAddAnimalDetail("1")
 
+        if (!TextUtils.isEmpty(petId)) {
+
+            petId?.let { viewModel.getUserPetDetail(it) }
+        }
 
         val callback: OnBackPressedCallback =
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
 
-                    if (PreferenceHelper.SharedPreferencesManager.getInstance().isLoggedIn == true)
-                        if (findNavController().currentDestination?.id == R.id.navigation_pet_add)
-                            findNavController().navigate(R.id.navigation_welcome)
+                    if (TextUtils.isEmpty(petId)) {
+                        if (PreferenceHelper.SharedPreferencesManager.getInstance().isLoggedIn == true)
+                            if (findNavController().currentDestination?.id == R.id.navigation_pet_add)
+                                findNavController().navigate(R.id.navigation_welcome)
+                    } else {
+                        findNavController().popBackStack()
+                    }
                 }
+
             }
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
 
@@ -97,12 +107,11 @@ class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
         _binding = FragmentPetAddBinding.inflate(inflater, container, false)
         val view = binding.root
 
+        petId = arguments?.getString("animalId", "")
 
 
         binding.skipBtn.setOnClickListener {
 
-
-            // TODO: 6.07.2021 Errorrrrsss
 
             val validName = getViewError(
                 binding.nameLy.placeholderTv,
@@ -176,40 +185,78 @@ class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
             if (purposeId != -1) {
                 val selectedRadioButton = binding.radioGroup.findViewById<RadioButton>(purposeId)
 
-                purpose = getLookUpKey(
-                    Constants.lookUpPurpose,
-                    selectedRadioButton.text.toString()
-                )
+                if (selectedRadioButton != null)
+                    purpose = getLookUpKey(
+                        Constants.lookUpPurpose,
+                        selectedRadioButton.text.toString()
+                    )
             }
 
 
 
-            if (selectedPersonalities?.size!! > 0 && breedId != null && animalId != null) {
-                PetAdd(
-                    about = binding.aboutPlaceholderTv.text.toString(),
-                    animalId =
-                    animalId,
-                    breedId = breedId,
-                    animalPersonalities = selectedPersonalities,
-                    color = getLookUpKey(
-                        Constants.lookUpColor,
-                        binding.colorLy.spinner.selectedItem.toString()
-                    ),
-                    gender = getLookUpKey(
-                        Constants.lookUpGender,
-                        binding.genderLy.spinner.selectedItem.toString()
-                    ),
-                    month = binding.monthLy.spinner.selectedItem.toString().toInt(),
-                    name = binding.nameLy.placeholderTv.text.toString(),
-                    purpose = purpose,
-                    year = binding.yearLy.spinner.selectedItem.toString().toInt()
-                ).let { it2 ->
-                    postPetAdd(
-                        it2
-                    )
+            if (selectedPersonalities?.size!! > 0 && breedId != null && animalId != null && !TextUtils.isEmpty(
+                    purpose
+                )
+            ) {
+                if (!TextUtils.isEmpty(petId)) {
+                    val id = petId?.toIntOrNull()
+                    if (id != null) {
+                        PetEdit(
+                            id = id,
+                            about = binding.aboutPlaceholderTv.text.toString(),
+                            animalId =
+                            animalId,
+                            breedId = breedId,
+                            animalPersonalities = selectedPersonalities,
+                            color = getLookUpKey(
+                                Constants.lookUpColor,
+                                binding.colorLy.spinner.selectedItem.toString()
+                            ),
+                            gender = getLookUpKey(
+                                Constants.lookUpGender,
+                                binding.genderLy.spinner.selectedItem.toString()
+                            ),
+                            month = binding.monthLy.spinner.selectedItem.toString().toInt(),
+                            name = binding.nameLy.placeholderTv.text.toString(),
+                            purpose = purpose,
+                            year = binding.yearLy.spinner.selectedItem.toString().toInt()
+                        ).let { it2 ->
+                            postPetEdit(
+                                it2
+                            )
+                        }
+                    }
+                } else {
+                    PetAdd(
+                        about = binding.aboutPlaceholderTv.text.toString(),
+                        animalId =
+                        animalId,
+                        breedId = breedId,
+                        animalPersonalities = selectedPersonalities,
+                        color = getLookUpKey(
+                            Constants.lookUpColor,
+                            binding.colorLy.spinner.selectedItem.toString()
+                        ),
+                        gender = getLookUpKey(
+                            Constants.lookUpGender,
+                            binding.genderLy.spinner.selectedItem.toString()
+                        ),
+                        month = binding.monthLy.spinner.selectedItem.toString().toInt(),
+                        name = binding.nameLy.placeholderTv.text.toString(),
+                        purpose = purpose,
+                        year = binding.yearLy.spinner.selectedItem.toString().toInt()
+                    ).let { it2 ->
+                        postPetAdd(
+                            it2
+                        )
+                    }
                 }
+
             } else {
-                CommonMethods.onSNACK(binding.root, getString(R.string.select_character))
+                if (TextUtils.isEmpty(purpose))
+                    CommonMethods.onSNACK(binding.root, getString(R.string.select_purpose))
+                else
+                    CommonMethods.onSNACK(binding.root, getString(R.string.select_character))
             }
 
         }
@@ -220,6 +267,7 @@ class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
 
     @SuppressLint("ResourceType")
     fun setUpObserver() {
+
 
         viewModel.postPetAdd.observe(viewLifecycleOwner, {
             when (it.status) {
@@ -403,6 +451,66 @@ class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
                         gravity = Gravity.CENTER
 
                     }
+
+                    viewModel.getUserPetDetail().observe(viewLifecycleOwner, {
+
+                        when (it.status) {
+                            Status.SUCCESS -> {
+                                val petAdd = it.data
+                                binding.nameLy.placeholderTv.setText(petAdd?.name)
+                                binding.aboutPlaceholderTv.setText(petAdd?.about)
+
+                                val genderIndex = petAdd?.gender?.let { it1 ->
+                                    getLookUpIndex(
+                                        Constants.lookUpGender,
+                                        it1
+                                    )
+                                }
+                                genderIndex?.let { it1 -> binding.genderLy.spinner.setSelection(it1) }
+
+                                val colorIndex = petAdd?.color?.let { it1 ->
+                                    getLookUpIndex(
+                                        Constants.lookUpColor,
+                                        it1
+                                    )
+                                }
+                                colorIndex?.let { it1 -> binding.colorLy.spinner.setSelection(it1) }
+
+                                val animalIndex = petAdd?.animalId?.let { it1 ->
+                                    getLookUpIndex(
+                                        Constants.lookUpAnimals,
+                                        it1.toString()
+                                    )
+                                }
+                                animalIndex?.let { it1 -> binding.typeLy.spinner.setSelection(it1) }
+
+                                // TODO: 7.07.2021 breed e çözüm bul
+                                val breedIndex = petAdd?.breedId?.let { it1 ->
+                                    getLookUpIndex(
+                                        Constants.lookUpType,
+                                        it1.toString()
+                                    )
+                                }
+                                breedIndex?.let { it1 -> binding.breedLy.spinner.setSelection(it1) }
+
+
+                                petAdd?.year?.let { it1 -> binding.yearLy.spinner.setSelection(it1) }
+                                petAdd?.month?.let { it1 -> binding.monthLy.spinner.setSelection(it1 - 1) }
+
+                                val purposeIndex = petAdd?.purpose?.let { it1 ->
+                                    getLookUpIndex(
+                                        Constants.lookUpPurpose,
+                                        it1.toString()
+                                    )
+                                }
+                                purposeIndex?.let { it1 -> binding.radioGroup.check(it1) }
+
+                            }
+
+                        }
+
+
+                    })
 
                     //endregion
 
