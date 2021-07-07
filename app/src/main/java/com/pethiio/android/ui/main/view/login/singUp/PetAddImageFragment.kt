@@ -78,7 +78,7 @@ class PetAddImageFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
         _binding = FragmentPetAddImageBinding.inflate(inflater, container, false)
         val view = binding.root
 
-          val callback: OnBackPressedCallback =
+        val callback: OnBackPressedCallback =
             object : OnBackPressedCallback(false) {
                 override fun handleOnBackPressed() {
 
@@ -86,14 +86,14 @@ class PetAddImageFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
             }
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
 
+        binding.photoAddAnim.setAnimation("foto_ekle.json")
 
-        binding.imageView.setOnClickListener { openCropImage() }
+//        binding.imageView.setOnClickListener { openCropImage() }
         binding.img1Ly.setOnClickListener { openCropImage() }
         binding.img2Ly.setOnClickListener { openCropImage() }
         binding.img3Ly.setOnClickListener { openCropImage() }
         binding.image1X.setOnClickListener {
 
-            
 
             if (!TextUtils.isEmpty(uri3)) {
                 uri2 = uri3
@@ -230,6 +230,8 @@ class PetAddImageFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             val result = CropImage.getActivityResult(data)
             if (resultCode == -1) {
+                binding.imageView.visibility = View.VISIBLE
+                binding.photoAddAnim.visibility = View.GONE
                 val resultUri: Uri = result.uri
                 Glide.with(requireContext())
                     .load(resultUri)

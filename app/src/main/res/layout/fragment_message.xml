@@ -52,27 +52,29 @@
         android:layout_marginTop="40dp" />
 
     <RelativeLayout
-        android:visibility="gone"
+        android:visibility="visible"
         android:id="@+id/no_msj_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true">
 
-        <ImageView
-            android:id="@+id/no_msg_img"
-            android:layout_width="match_parent"
-            android:layout_height="220dp"
+
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/no_msg_anim"
             android:layout_marginLeft="90dp"
             android:layout_marginTop="80dp"
             android:layout_marginRight="90dp"
-            android:src="@drawable/mesajlar_json" />
-
+            android:layout_width="match_parent"
+            android:layout_height="220dp"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"/>
 
         <TextView
             android:id="@+id/no_msg_tv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/no_msg_img"
+            android:layout_below="@+id/no_msg_anim"
             android:layout_gravity="center"
             android:layout_marginStart="@dimen/default_margin"
             android:layout_marginTop="60dp"

@@ -63,7 +63,6 @@ class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
         super.setUpViews()
 
 
-
         setUpObserver()
         fetchPetAddPageData()
         fetchAddAnimalDetail("1")

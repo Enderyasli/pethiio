@@ -5,20 +5,17 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.pethiio.android.data.api.ResponseHandler
 import com.pethiio.android.data.api.ServiceBuilder
-import com.pethiio.android.data.model.PetListResponse
-import com.pethiio.android.data.model.User
 import com.pethiio.android.data.model.chat.ChatListResponse
 import com.pethiio.android.data.model.member.MemberListResponse
 import com.pethiio.android.data.model.signup.PageData
-import com.pethiio.android.data.repository.MainRepository
 import com.pethiio.android.utils.Resource
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
-import retrofit2.HttpException
 
 class ChatViewModel() : ViewModel() {
 
+    val chatListPageData = MutableLiveData<Resource<PageData>>()
     val chatPageData = MutableLiveData<Resource<PageData>>()
     val chatList = MutableLiveData<Resource<List<ChatListResponse>>>()
     private val memberList = MutableLiveData<Resource<List<MemberListResponse>>>()
@@ -28,9 +25,27 @@ class ChatViewModel() : ViewModel() {
 
 
     init {
-        fetchChatPageData()
+        fetchChatListPageData()
     }
 
+
+    fun fetchChatListPageData() {
+        chatListPageData.postValue(Resource.loading(null))
+        compositeDisposable.add(
+            ServiceBuilder.buildService()
+                .getChatListPageData()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                    { registerData ->
+                        chatListPageData.postValue(responseHandler.handleSuccess(registerData))
+                    },
+                    {
+                        chatListPageData.postValue(responseHandler.handleException(it))
+                    }
+                )
+        )
+    }
 
     fun fetchChatPageData() {
         chatPageData.postValue(Resource.loading(null))
@@ -93,6 +108,9 @@ class ChatViewModel() : ViewModel() {
         compositeDisposable.dispose()
     }
 
+    fun getChatListPageData(): LiveData<Resource<PageData>> {
+        return chatListPageData
+    }
     fun getChatPageData(): LiveData<Resource<PageData>> {
         return chatPageData
     }
@@ -100,8 +118,10 @@ class ChatViewModel() : ViewModel() {
     fun getMemberList(): LiveData<Resource<List<MemberListResponse>>> {
         return memberList
     }
+
     fun getChatList(): LiveData<Resource<List<ChatListResponse>>> {
         return chatList
     }
+
 
 }

@@ -101,5 +101,7 @@ dependencies {
 
     api 'com.github.cachapa:ExpandableLayout:2.9.2'
 
+    implementation 'com.airbnb.android:lottie:3.7.0'
+
 
 }

@@ -206,7 +206,11 @@ interface PethiioServices {
     //region Chat
 
     @GET("page/chat-list/info")
+    fun getChatListPageData(): Observable<PageData>
+
+    @GET("page/chat/info")
     fun getChatPageData(): Observable<PageData>
+
 
     @GET("page/chat-list/{memberId}")
     fun getChatList(

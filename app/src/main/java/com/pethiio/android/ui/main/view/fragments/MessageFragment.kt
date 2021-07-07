@@ -10,7 +10,6 @@ import android.widget.AdapterView
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.pethiio.android.data.model.Message
 import com.pethiio.android.data.model.member.MemberListResponse
 import com.pethiio.android.databinding.FragmentMessageBinding
 import com.pethiio.android.ui.base.BaseFragment
@@ -58,6 +57,8 @@ class MessageFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
         _binding = FragmentMessageBinding.inflate(inflater, container, false)
         val view = binding.root
 
+
+        binding.noMsgAnim.setAnimation("mesaj_yok.json")
 
         setupViewModel()
         setUpObserver()
@@ -119,7 +120,7 @@ class MessageFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
         })
 
 
-        viewModel.getChatPageData().observe(viewLifecycleOwner, {
+        viewModel.getChatListPageData().observe(viewLifecycleOwner, {
 
             val pageDataFields = it.data?.fields
 

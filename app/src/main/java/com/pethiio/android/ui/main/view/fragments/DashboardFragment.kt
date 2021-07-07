@@ -156,6 +156,8 @@ class DashboardFragment : BaseFragment(), CardStackListener,
     }
 
     private fun setupUI() {
+
+        binding.noResultImg.setAnimation("evim.json")
         setupButton()
         viewModel.fetchPetSearchPageData()
 

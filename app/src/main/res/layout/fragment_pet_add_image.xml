@@ -43,12 +43,21 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
-
-                <ImageView
+                <com.airbnb.lottie.LottieAnimationView
                     android:id="@+id/imageView"
+                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:src="@drawable/dog_placeholder" />
+                    android:src="@drawable/dog_placeholder"
+                    app:lottie_autoPlay="true"
+                    app:lottie_loop="true" />
+                <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/photo_add_anim"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/dog_placeholder"
+                    app:lottie_autoPlay="true"
+                    app:lottie_loop="true" />
 
             </androidx.cardview.widget.CardView>
         </androidx.constraintlayout.widget.ConstraintLayout>

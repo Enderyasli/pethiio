@@ -44,6 +44,9 @@ class ReportFragment : BaseFragment() {
         _binding = FragmentReportBinding.inflate(inflater, container, false)
         val view = binding.root
 
+        binding.msgAnim.setAnimation("zarf.json")
+
+
         viewModel =
             ViewModelProviders.of(this).get(ReportViewModel::class.java)
 
