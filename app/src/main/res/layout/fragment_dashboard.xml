@@ -66,11 +66,11 @@
             android:layout_marginRight="@dimen/default_margin"
             android:fontFamily="@font/poppins_medium"
             android:gravity="center"
-            tools:text="Etrafında arama kriterlerine uyan kimse yok"
             android:textColor="@color/grey"
             android:textSize="22sp"
             app:background="@color/light_button"
-            tools:ignore="RtlSymmetry" />
+            tools:ignore="RtlSymmetry"
+            tools:text="Etrafında arama kriterlerine uyan kimse yok" />
     </LinearLayout>
 
     <LinearLayout
@@ -95,11 +95,11 @@
                 android:orientation="horizontal">
 
                 <androidx.cardview.widget.CardView
-                    android:visibility="gone"
                     android:id="@+id/skip_button"
                     android:layout_width="70dp"
                     android:layout_height="70dp"
                     android:layout_marginEnd="90dp"
+                    android:visibility="gone"
                     app:cardBackgroundColor="@color/tinder_btn_color"
                     app:cardCornerRadius="25dp">
 
@@ -112,11 +112,11 @@
 
 
                 <androidx.cardview.widget.CardView
-                    android:visibility="gone"
                     android:id="@+id/like_button"
                     android:layout_width="70dp"
                     android:layout_height="70dp"
                     android:layout_toEndOf="@id/skip_button"
+                    android:visibility="gone"
                     app:cardBackgroundColor="@color/tinder_btn_color"
                     app:cardCornerRadius="25dp">
 
@@ -124,7 +124,7 @@
                         android:layout_width="32dp"
                         android:layout_height="32dp"
                         android:layout_gravity="center"
-                        android:src="@drawable/heart" />
+                        android:src="@drawable/hearth" />
                 </androidx.cardview.widget.CardView>
 
 

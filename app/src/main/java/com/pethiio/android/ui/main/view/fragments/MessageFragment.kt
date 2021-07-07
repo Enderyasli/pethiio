@@ -148,13 +148,14 @@ class MessageFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
                     else
                         binding.noMsjLayout.visibility = View.GONE
 
+                    binding.progressBar.visibility = View.GONE
                 }
-                Status.LOADING -> {
 
+                Status.LOADING -> {
+                    binding.progressBar.visibility = View.VISIBLE
                 }
 
                 Status.ERROR -> {
-
                 }
             }
 
