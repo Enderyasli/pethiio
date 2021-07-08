@@ -26,7 +26,7 @@
         android:layout_marginLeft="@dimen/margin_minimum"
         android:layout_marginTop="5dp"
         android:layout_marginRight="@dimen/margin_minimum"
-        android:fontFamily="@font/poppins_medium"
+        android:fontFamily="@font/typo_round_regular"
         tools:text="Doberman"
         android:textColor="@color/grey"
         android:textSize="14dp" />

@@ -17,6 +17,11 @@
         <item name="colorAccent">@color/orangeButton</item>
     </style>
 
+    <style name="Widget.BottomNavigationView"
+        parent="Widget.Design.BottomNavigationView">
+        <item name="android:textSize">15sp</item>
 
+        <item name="fontFamily">@font/typo_round_bold</item>
+    </style>
 
 </resources>

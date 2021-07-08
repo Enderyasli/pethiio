@@ -38,7 +38,7 @@
             android:layout_marginLeft="@dimen/default_margin"
             android:layout_marginTop="200dp"
             android:layout_marginRight="@dimen/default_margin"
-            android:fontFamily="@font/poppins_medium"
+            android:fontFamily="@font/typo_round_regular"
             tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Semper dolor suscipit cras in at nam. Quam sed eget dui, elit sit. Senectus augue integer volutpat sed fames. A, orci, cras ridiculus id at feugiat euismod neque. Volutpat amet nulla massa velit libero, eget mi, diam condimentum. A mauris sagittis ante euismod. Tellus et libero tempor feugiat et et.
 Molestie odio scelerisque dictum et sagittis. Sit aliquam sagittis aliquam sed a, nibh lorem at. Malesuada eros, interdum et eget sollicitudin aliquet sociis. Ultrices turpis orci, ipsum consectetur turpis. Quis maecenas vitae massa egestas congue. Aliquam enim justo, tellus donec sed id imperdiet vitae. Lectus euismod et nisl non, nunc magna lobortis ullamcorper quisque. "
             android:textColor="@color/grey"

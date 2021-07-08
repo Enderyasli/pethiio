@@ -17,7 +17,7 @@
         android:layout_marginBottom="20dp"
         android:background="@drawable/character_item_bg"
         android:elevation="2dp"
-        android:fontFamily="@font/poppins_medium"
+        android:fontFamily="@font/typo_round_regular"
         android:gravity="center"
         android:textColor="@color/grey"
         android:textSize="14sp"

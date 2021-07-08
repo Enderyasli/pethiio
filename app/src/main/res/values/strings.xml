@@ -26,5 +26,7 @@
     <string name="no_location_detected" translatable="false">No location detected. Make sure location is enabled on the device.</string>
     <string name="select_character">Select Character</string>
     <string name="select_purpose">Select Purpose</string>
+    <string name="bottom_menu_message">Mesajlar</string>
+    <string name="bottom_menu_home">Evim</string>
 
 </resources>

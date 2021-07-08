@@ -4,15 +4,15 @@
 
     <item
         android:id="@+id/navigation_home"
-        android:icon="@drawable/ic_baseline_home_24"
-        android:title="Evim" />
+        android:icon="@drawable/home_unselected"
+        android:title="@string/bottom_menu_home" />
     <item
         android:id="@+id/navigation_dashboard"
         android:title="" />
     <item
         android:id="@+id/navigation_search"
-        android:icon="@drawable/ic_baseline_home_24"
-        android:title="Mesajlar" />
+        android:icon="@drawable/message_icon"
+        android:title="@string/bottom_menu_message" />
 
 
 

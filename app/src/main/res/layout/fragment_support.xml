@@ -64,7 +64,7 @@
             android:layout_marginTop="@dimen/medium_size"
             android:layout_marginEnd="@dimen/medium_size"
             android:layout_marginBottom="@dimen/medium_size"
-            android:fontFamily="@font/poppins_medium"
+            android:fontFamily="@font/typo_round_regular"
             android:textColor="@color/darkGrey"
             android:textSize="15sp"
             tools:text="Teknik destek ve daha ayrıntılı destek almak için tıkla." />

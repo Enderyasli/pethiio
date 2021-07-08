@@ -53,7 +53,7 @@
         android:layout_marginTop="5dp"
         android:layout_marginEnd="20dp"
         android:layout_toEndOf="@+id/profile_image"
-        android:fontFamily="@font/poppins_medium"
+        android:fontFamily="@font/typo_round_regular"
         android:text="Lorem ipsum dolor sit amet"
         android:textColor="@color/grey"
         android:textSize="12sp" />

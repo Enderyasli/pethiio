@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/default_margin"
             android:layout_marginRight="@dimen/default_margin"
-            android:fontFamily="@font/poppins_medium"
+            android:fontFamily="@font/typo_round_regular"
             android:textColor="@color/grey"
             android:textSize="22dp"
             tools:text="@string/my_animals_description" />
