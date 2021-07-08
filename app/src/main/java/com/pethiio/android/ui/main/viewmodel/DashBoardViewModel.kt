@@ -27,6 +27,7 @@ class DashBoardViewModel : ViewModel() {
     private val petSearchPageData = MutableLiveData<Resource<PageData>>()
 
     private val locations = MutableLiveData<Resource<Response<Void>>>()
+    private val locationPageData = MutableLiveData<Resource<PageData>>()
     private val memberList = MutableLiveData<Resource<List<MemberListResponse>>>()
     private val petSearchResult = MutableLiveData<Resource<List<PetSearchResponse>>>()
     private val postPetSearchResult = MutableLiveData<Resource<Response<Void>>>()
@@ -52,6 +53,26 @@ class DashBoardViewModel : ViewModel() {
                     },
                     {
                         petSearchPageData.postValue(
+                            responseHandler.handleException(it)
+                        )
+                    }
+                )
+        )
+    }
+
+    fun fetchLocationPageData() {
+        locationPageData.postValue(Resource.loading(null))
+        compositeDisposable.add(
+            ServiceBuilder.buildService()
+                .getLocationAccessPageData()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                    { loginData ->
+                        locationPageData.postValue(Resource.success(loginData))
+                    },
+                    {
+                        locationPageData.postValue(
                             responseHandler.handleException(it)
                         )
                     }
@@ -210,6 +231,9 @@ class DashBoardViewModel : ViewModel() {
 
     fun getPetSearchPageData(): LiveData<Resource<PageData>> {
         return petSearchPageData
+    }
+    fun getLocationPageData(): LiveData<Resource<PageData>> {
+        return locationPageData
     }
 
     fun getLocations(): LiveData<Resource<Response<Void>>> {

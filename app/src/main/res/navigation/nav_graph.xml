@@ -191,6 +191,12 @@
             android:label="Chat"
             tools:layout="@layout/fragment_chat_screen" />
 
+        <fragment
+            android:id="@+id/navigation_location"
+            android:name="com.pethiio.android.ui.main.view.fragments.LocationFragment"
+            android:label="Location"
+            tools:layout="@layout/fragment_location" />
+
     </navigation>
 
 

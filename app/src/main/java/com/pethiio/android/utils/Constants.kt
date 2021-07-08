@@ -145,6 +145,13 @@ class Constants {
 
         //endregion
 
+        //region Location
+        const val locationButton: String ="locationButton"
+        const val nextButton: String ="nextButton"
+
+
+        //endregion
+
     }
 
 }

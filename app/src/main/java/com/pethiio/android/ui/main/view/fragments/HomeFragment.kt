@@ -66,28 +66,6 @@ class HomeFragment : BaseFragment(), FilterItemClickListener {
         setupUI()
         setupObserver()
 
-        if (ContextCompat.checkSelfPermission(
-                requireActivity(),
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) !==
-            PackageManager.PERMISSION_GRANTED
-        ) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(
-                    requireActivity(),
-                    Manifest.permission.ACCESS_FINE_LOCATION
-                )
-            ) {
-                // TODO: 6.07.2021 burda location izin ekranına gönder, gelişte location actır, sonra lat, lon al
-//                findNavController().navigate(R.id.navigation_report)
-//                ActivityCompat.requestPermissions(requireActivity(),
-//                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 1)
-            } else {
-//                findNavController().navigate(R.id.navigation_report)
-//                ActivityCompat.requestPermissions(requireActivity(),
-//                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 1)
-            }
-        }
-
 
 
         return view
@@ -121,7 +99,7 @@ class HomeFragment : BaseFragment(), FilterItemClickListener {
 
     private fun setupUI() {
 
-//        createLocationRequest()
+        createLocationRequest()
 
 
         binding.addAnimal.setOnClickListener {

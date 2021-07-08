@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.main.view.fragments.LocationFragment">
+
+
+    <TextView
+        android:id="@+id/title_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="26dp"
+        android:layout_marginTop="@dimen/signup_title_top_margin"
+        android:layout_marginBottom="3dp"
+        android:fontFamily="@font/typo_round_bold"
+        android:lines="2"
+        android:textColor="@color/orangeButton"
+        android:textSize="@dimen/signup_title_size"
+        tools:text="Konum Hizmetleri" />
+
+    <LinearLayout
+        android:id="@+id/anim_ly"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:orientation="vertical">
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/location_anim"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_marginLeft="80dp"
+            android:layout_marginRight="80dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true" />
+
+
+        <TextView
+            android:id="@+id/description_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="60dp"
+            android:layout_marginRight="40dp"
+            android:fontFamily="@font/typo_round_regular"
+            android:gravity="center"
+            android:textColor="@color/grey"
+            android:textSize="22sp"
+            tools:text="Lokasyon ayarlarının etkinleştirilmesi uygulama
+            için gereklidir." />
+
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/complete_btn"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/common_button_height"
+        android:layout_below="@+id/anim_ly"
+        android:layout_gravity="bottom"
+        android:layout_marginLeft="@dimen/default_margin"
+        android:layout_marginTop="60dp"
+        android:layout_marginRight="@dimen/default_margin"
+        android:background="@drawable/orange_button_bg"
+        android:fontFamily="@font/typo_round_bold"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="@dimen/medium_size"
+        tools:text="Etkinleştir" />
+
+</RelativeLayout>

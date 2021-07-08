@@ -2,9 +2,10 @@ package com.pethiio.android.ui.main.view.fragments
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.app.AlertDialog
 import android.content.pm.PackageManager
+import android.location.Location
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -12,21 +13,24 @@ import android.view.ViewGroup
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.LinearInterpolator
 import android.widget.AdapterView
-import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.core.app.ActivityCompat
-import androidx.core.os.bundleOf
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.DiffUtil
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.tasks.CancellationTokenSource
+import com.google.android.gms.tasks.Task
 import com.pethiio.android.R
 import com.pethiio.android.data.EventBus.FilterEvent
 import com.pethiio.android.data.model.member.LocationsRequest
 import com.pethiio.android.data.model.member.MemberListResponse
 import com.pethiio.android.data.model.member.PetSearchRequest
 import com.pethiio.android.data.model.member.PetSearchResponse
-import com.pethiio.android.data.socket.SocketIO
 import com.pethiio.android.databinding.FragmentDashboardBinding
 import com.pethiio.android.ui.base.BaseFragment
 import com.pethiio.android.ui.base.ViewModelFactory
@@ -48,8 +52,15 @@ import java.util.*
 class DashboardFragment : BaseFragment(), CardStackListener,
     AdapterView.OnItemSelectedListener {
 
-    private val manager get() = CardStackLayoutManager(requireContext(), this)
+    private val manager by lazy { CardStackLayoutManager(requireContext(), this) }
     private var adapter: CardStackAdapter? = null
+
+    // The Fused Location Provider provides access to location APIs.
+    private val fusedLocationClient: FusedLocationProviderClient by lazy {
+        LocationServices.getFusedLocationProviderClient(requireContext())
+    }
+    private var cancellationTokenSource = CancellationTokenSource()
+
 
     private var _binding: FragmentDashboardBinding? = null
     private val binding get() = _binding!!
@@ -62,19 +73,25 @@ class DashboardFragment : BaseFragment(), CardStackListener,
 
     private var memberListResponse = emptyList<MemberListResponse>()
     private var isSelectedMemberFirstTime = true
+    private var isLocationSended = false
+
     private var selectedMemberId = 0
 
 
     var searchList: List<PetSearchResponse>? = null
     var memberId: Int = 0
 
+    override fun onStop() {
+        super.onStop()
+        // Cancels location request (if in flight).
+        cancellationTokenSource.cancel()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         EventBus.getDefault().register(this)
 
-        checkLocationPermission()
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -98,6 +115,7 @@ class DashboardFragment : BaseFragment(), CardStackListener,
             ViewModelProviders.of(this, ViewModelFactory()).get(DashBoardViewModel::class.java)
         isSelectedMemberFirstTime = true
 
+
         setupUI()
 //        val socketIO = SocketIO()
 //        socketIO.main()
@@ -111,46 +129,67 @@ class DashboardFragment : BaseFragment(), CardStackListener,
             }
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
 
+//        checkLocationPermission()
+
+        requestCurrentLocation()
 
         return view
     }
 
+    @SuppressLint("MissingPermission")
+    private fun requestCurrentLocation() {
+
+
+        val currentLocationTask: Task<Location> = fusedLocationClient.getCurrentLocation(
+            LocationRequest.PRIORITY_HIGH_ACCURACY,
+            cancellationTokenSource.token
+        )
+
+        currentLocationTask.addOnCompleteListener { task: Task<Location> ->
+            if (task.isSuccessful && task.result != null) {
+                val result: Location = task.result
+//                "Location (success): ${result.latitude}, ${result.longitude}"
+
+                viewModel.fetchLocations(
+                    LocationsRequest(
+                        result.latitude.toString(),
+                        result.longitude.toString()
+                    )
+                )
+            } else {
+                val exception = task.exception
+                "Location (failure): $exception"
+            }
+
+//            Log.d("location", "getCurrentLocation() result: $result")
+        }
+    }
+
 
     private fun checkLocationPermission() {
-        if (ActivityCompat.checkSelfPermission(
-                requireContext(),
+
+        if (ContextCompat.checkSelfPermission(
+                requireActivity(),
                 Manifest.permission.ACCESS_FINE_LOCATION
-            )
-            != PackageManager.PERMISSION_GRANTED
+            ) !=
+            PackageManager.PERMISSION_GRANTED
         ) {
-            // Should we show an explanation?
             if (ActivityCompat.shouldShowRequestPermissionRationale(
                     requireActivity(),
                     Manifest.permission.ACCESS_FINE_LOCATION
                 )
             ) {
-
-                // TODO: 28.06.2021 burada tasarım ac izne gönder
-
-                // Show an explanation to the user *asynchronously* -- don't block
-                // this thread waiting for the user's response! After the user
-                // sees the explanation, try again to request the permission.
-                AlertDialog.Builder(requireContext())
-                    .setTitle("Location Permission Needed")
-                    .setMessage("This app needs the Location permission, please accept to use location functionality")
-                    .setPositiveButton(
-                        "OK"
-                    ) { _, _ ->
-                        //Prompt the user once explanation has been shown
-//                        requestLocationPermission()
-                    }
-                    .create()
-                    .show()
+                // TODO: 6.07.2021 burda location izin ekranına gönder, gelişte location actır, sonra lat, lon al
+                findNavController().navigate(R.id.navigation_location)
+//                ActivityCompat.requestPermissions(requireActivity(),
+//                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 1)
             } else {
-                // No explanation needed, we can request the permission.
-//                requestLocationPermission()
+                findNavController().navigate(R.id.navigation_location)
+//                ActivityCompat.requestPermissions(requireActivity(),
+//                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 1)
             }
         }
+
     }
 
 
@@ -164,14 +203,26 @@ class DashboardFragment : BaseFragment(), CardStackListener,
         setupButton()
         viewModel.fetchPetSearchPageData()
 
-        viewModel.fetchLocations(
-            LocationsRequest(
-                "37.414972210438144",
-                "41.37366053245295"
-            )
-        )
-        viewModel.fetchMemberList()
-        viewModel.fetchFilterList()
+        viewModel.getLocations().observe(viewLifecycleOwner, {
+
+            when (it.status) {
+                Status.SUCCESS -> {
+                    if (!isLocationSended) {
+                        viewModel.fetchMemberList()
+                        viewModel.fetchFilterList()
+                        isLocationSended = true
+                    }
+
+                }
+            }
+
+        })
+        if (isLocationSended) {
+            viewModel.fetchMemberList()
+            viewModel.fetchFilterList()
+        }
+
+
 
 
         viewModel.getPostSearchFilter().observe(viewLifecycleOwner, {
@@ -284,7 +335,9 @@ class DashboardFragment : BaseFragment(), CardStackListener,
         val new = mutableListOf<PetSearchResponse>().apply {
             old?.let { addAll(it) }
 
-            removeAt(manager.topPosition)
+            removeAt(manager.topPosition - 1)
+
+//            removeAt(manager.topPosition-1)
 
         }
         val callback = old?.let { CardSackDiffCallback(it, new) }
@@ -311,6 +364,7 @@ class DashboardFragment : BaseFragment(), CardStackListener,
             }
 
     }
+
 
     private fun setupButton() {
 
@@ -393,7 +447,10 @@ class DashboardFragment : BaseFragment(), CardStackListener,
             return
         }
 
+
         val petSearch = adapter?.getPetSearchList()?.get(manager.topPosition)
+
+        removeFirst()
 
         if (direction != null && memberId > 0) {
             petSearch?.petId?.let {
@@ -410,7 +467,6 @@ class DashboardFragment : BaseFragment(), CardStackListener,
             }
 
         }
-        removeFirst()
 
 
 //        Log.d("petsize",adapter.getPetSearchList().size.toString())

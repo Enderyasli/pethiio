@@ -203,6 +203,12 @@ interface PethiioServices {
 
     //endregion
 
+    //region Location
+
+    @GET("page/member-location/info")
+    fun getLocationAccessPageData(): Observable<PageData>
+
+    //endregion
 
     //region Chat
 
@@ -222,8 +228,6 @@ interface PethiioServices {
     fun getChatRoom(
         @Path("roomId") roomId: Int,
     ): Observable<List<ChatRoomResponse>>
-
-
 
     //endregion
 
