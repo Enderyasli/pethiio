@@ -94,6 +94,7 @@ public class SocketIO {
         String obj = gson.toJson(message,ChatSendMessage.class);
             socket.emit(Constants.SOCKET_PRIVATE_CHAT, new JSONObject(obj));
 
+
     }
 
 

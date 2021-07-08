@@ -11,6 +11,7 @@ import com.pethiio.android.databinding.FragmentSettingsBinding
 import com.pethiio.android.ui.base.BaseFragment
 import com.pethiio.android.ui.main.viewmodel.FAQViewModel
 import com.pethiio.android.utils.Constants
+import com.pethiio.android.utils.PreferenceHelper
 
 
 class SettingsFragment : BaseFragment() {
@@ -38,6 +39,12 @@ class SettingsFragment : BaseFragment() {
 
         binding.aboutLy.setOnClickListener {
             findNavController().navigate(R.id.navigation_about)
+        }
+        binding.logoutLy.setOnClickListener {
+            PreferenceHelper.SharedPreferencesManager.getInstance().isLoggedIn=false
+            PreferenceHelper.SharedPreferencesManager.getInstance().accessToken=""
+
+            findNavController().navigate(R.id.action_global_navigation_welcome)
         }
 
         setupViewModel()

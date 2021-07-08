@@ -196,6 +196,11 @@
             android:name="com.pethiio.android.ui.main.view.fragments.LocationFragment"
             android:label="Location"
             tools:layout="@layout/fragment_location" />
+        <action
+            android:id="@+id/action_global_navigation_welcome"
+            app:popUpTo="@id/navigation_welcome"
+            app:popUpToInclusive="true"
+            app:destination="@id/navigation_welcome" />
 
     </navigation>
 

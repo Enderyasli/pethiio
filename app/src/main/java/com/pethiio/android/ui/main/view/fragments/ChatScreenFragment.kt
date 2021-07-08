@@ -62,6 +62,7 @@ class ChatScreenFragment : BaseFragment() {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: ChatEvent) {
 
+
         adapter?.addMessage(event)
         adapter?.listSize?.let { binding.recyclerView.smoothScrollToPosition(it) }
 //
@@ -97,6 +98,8 @@ class ChatScreenFragment : BaseFragment() {
                 roomId,
                 memberId
             ))
+            binding.etMessage.setText("")
+
         }
 
         return view
