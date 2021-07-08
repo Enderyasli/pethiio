@@ -54,7 +54,7 @@ import java.util.*
 class DashboardFragment : BaseFragment(), CardStackListener,
     AdapterView.OnItemSelectedListener {
 
-    private val manager by lazy { CardStackLayoutManager(requireContext(), this) }
+    private var manager:CardStackLayoutManager? =null
     private var adapter: CardStackAdapter? = null
 
     // The Fused Location Provider provides access to location APIs.
@@ -75,7 +75,7 @@ class DashboardFragment : BaseFragment(), CardStackListener,
 
     private var memberListResponse = emptyList<MemberListResponse>()
     private var isSelectedMemberFirstTime = true
-    private var isLocationSended = false
+    private var isLocationSended = true // TODO: 8.07.2021 false yap
 
     private var selectedMemberId = 0
 
@@ -112,6 +112,8 @@ class DashboardFragment : BaseFragment(), CardStackListener,
     ): View {
         _binding = FragmentDashboardBinding.inflate(inflater, container, false)
         val view = binding.root
+
+        manager = CardStackLayoutManager(requireContext(), this)
 
         viewModel =
             ViewModelProviders.of(this, ViewModelFactory()).get(DashBoardViewModel::class.java)
@@ -409,7 +411,7 @@ class DashboardFragment : BaseFragment(), CardStackListener,
         val new = mutableListOf<PetSearchResponse>().apply {
             old?.let { addAll(it) }
 
-            removeAt(manager.topPosition - 1)
+            manager?.topPosition?.minus(1)?.let { removeAt(it) }
 
 //            removeAt(manager.topPosition-1)
 
@@ -448,7 +450,7 @@ class DashboardFragment : BaseFragment(), CardStackListener,
                 .setDuration(Duration.Normal.duration)
                 .setInterpolator(AccelerateInterpolator())
                 .build()
-            manager.setSwipeAnimationSetting(setting)
+            manager?.setSwipeAnimationSetting(setting)
             binding.cardStackView.swipe()
         }
 
@@ -466,23 +468,24 @@ class DashboardFragment : BaseFragment(), CardStackListener,
                 .setDuration(Duration.Normal.duration)
                 .setInterpolator(AccelerateInterpolator())
                 .build()
-            manager.setSwipeAnimationSetting(setting)
+            manager?.setSwipeAnimationSetting(setting)
             binding.cardStackView.swipe()
         }
     }
 
     private fun initialize() {
-        manager.setStackFrom(StackFrom.None)
-        manager.setVisibleCount(3)
-        manager.setTranslationInterval(8.0f)
-        manager.setScaleInterval(0.95f)
-        manager.setSwipeThreshold(0.3f)
-        manager.setMaxDegree(20.0f)
-        manager.setDirections(Direction.HORIZONTAL)
-        manager.setCanScrollHorizontal(true)
-        manager.setCanScrollVertical(true)
-        manager.setSwipeableMethod(SwipeableMethod.AutomaticAndManual)
-        manager.setOverlayInterpolator(LinearInterpolator())
+        manager?.setStackFrom(StackFrom.None)
+        manager?.setVisibleCount(3)
+        manager?.setTranslationInterval(8.0f)
+        manager?.setScaleInterval(0.95f)
+        manager?.setSwipeThreshold(0.3f)
+        manager?.setMaxDegree(20.0f)
+        manager?.setDirections(Direction.HORIZONTAL)
+        manager?.setCanScrollHorizontal(true)
+        manager?.setCanScrollVertical(true)
+        manager?.setSwipeableMethod(SwipeableMethod.AutomaticAndManual)
+        manager?.setOverlayInterpolator(LinearInterpolator())
+        if( binding.cardStackView.layoutManager==null)
         binding.cardStackView.layoutManager = manager
         binding.cardStackView.adapter = adapter
         binding.cardStackView.itemAnimator.apply {
@@ -522,7 +525,7 @@ class DashboardFragment : BaseFragment(), CardStackListener,
         }
 
 
-        val petSearch = adapter?.getPetSearchList()?.get(manager.topPosition)
+        val petSearch = manager?.topPosition?.let { adapter?.getPetSearchList()?.get(it) }
 
         removeFirst()
 
