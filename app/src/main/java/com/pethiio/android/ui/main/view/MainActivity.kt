@@ -4,24 +4,21 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.IntentSender
 import android.content.pm.PackageManager
-import android.location.Location
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.get
+import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
-import com.google.android.gms.location.LocationRequest.PRIORITY_HIGH_ACCURACY
-import com.google.android.gms.tasks.CancellationTokenSource
 import com.google.android.gms.tasks.Task
 import com.google.android.material.bottomnavigation.BottomNavigationItemView
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView
@@ -37,7 +34,7 @@ class MainActivity : AppCompatActivity() {
 
     lateinit var navView: BottomNavigationView
     lateinit var viewCustom: View
-
+    var navController: NavController? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,9 +53,9 @@ class MainActivity : AppCompatActivity() {
 
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.navHostFragment) as NavHostFragment
-        val navController = navHostFragment.navController
+        navController = navHostFragment.navController
         findViewById<BottomNavigationView>(R.id.bottomNav_view)
-            .setupWithNavController(navController)
+            .setupWithNavController(navController!!)
 
 
         //Add custom tab menu
@@ -72,7 +69,7 @@ class MainActivity : AppCompatActivity() {
 //            navController.navigate(R.id.navigation_dashboard)
 //        }
         itemView[1].setOnClickListener {
-            navController.navigate(R.id.navigation_dashboard)
+            navController!!.navigate(R.id.navigation_dashboard)
         }
         itemView.addView(viewCustom)
 
@@ -89,7 +86,7 @@ class MainActivity : AppCompatActivity() {
 //        } catch (e: Exception) {
 //        }
 
-        createLocationRequest()
+//        createLocationRequest()
 
 
 
@@ -105,10 +102,12 @@ class MainActivity : AppCompatActivity() {
                 )
             ) {
                 // TODO: 6.07.2021 burda location izin ekranına gönder, gelişte location actır, sonra lat, lon al
-                navController.navigate(R.id.navigation_location)
+                navController!!.navigate(R.id.navigation_location)
 //                ActivityCompat.requestPermissions(requireActivity(),
 //                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 1)
             } else {
+
+                createLocationRequest()
 
 
                 // GET CURRENT LOCATION
@@ -154,20 +153,18 @@ class MainActivity : AppCompatActivity() {
                         )
                         == PackageManager.PERMISSION_GRANTED
                     ) {
+                        createLocationRequest()
+
+                        navController!!.navigateUp()
 
 
-                        Toast.makeText(this, "location ok", Toast.LENGTH_LONG).show()
-                        //Request location updates:
-//                        locationManager.requestLocationUpdates(provider, 400, 1, this);
-                    }
+//                        Toast.makeText(this, "location ok", Toast.LENGTH_LONG).show()
+
+                                            }
 
                 } else {
 
-                    Toast.makeText(this, "location no", Toast.LENGTH_LONG).show()
-
-
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
+//                    Toast.makeText(this, "location no", Toast.LENGTH_LONG).show()
 
                 }
             }
