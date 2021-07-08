@@ -141,6 +141,7 @@ class Constants {
         //region Chat
 
         const val emptyMessageTitle: String ="emptyMessageTitle"
+        const val inputPlaceholder: String ="inputPlaceholder"
 
         //endregion
 

@@ -2,6 +2,7 @@ package com.pethiio.android.data.api
 
 import com.pethiio.android.data.model.*
 import com.pethiio.android.data.model.chat.ChatListResponse
+import com.pethiio.android.data.model.chat.ChatRoomResponse
 import com.pethiio.android.data.model.filter.PetSearchFilterResponse
 import com.pethiio.android.data.model.filter.SearchFilterRequest
 import com.pethiio.android.data.model.login.LoginRequest
@@ -216,6 +217,12 @@ interface PethiioServices {
     fun getChatList(
         @Path("memberId") memberId: Int,
     ): Observable<List<ChatListResponse>>
+
+    @GET("page/chat/{roomId}")
+    fun getChatRoom(
+        @Path("roomId") roomId: Int,
+    ): Observable<List<ChatRoomResponse>>
+
 
 
     //endregion

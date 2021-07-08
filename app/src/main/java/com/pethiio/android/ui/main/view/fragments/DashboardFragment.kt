@@ -26,6 +26,7 @@ import com.pethiio.android.data.model.member.LocationsRequest
 import com.pethiio.android.data.model.member.MemberListResponse
 import com.pethiio.android.data.model.member.PetSearchRequest
 import com.pethiio.android.data.model.member.PetSearchResponse
+import com.pethiio.android.data.socket.SocketIO
 import com.pethiio.android.databinding.FragmentDashboardBinding
 import com.pethiio.android.ui.base.BaseFragment
 import com.pethiio.android.ui.base.ViewModelFactory
@@ -98,6 +99,8 @@ class DashboardFragment : BaseFragment(), CardStackListener,
         isSelectedMemberFirstTime = true
 
         setupUI()
+//        val socketIO = SocketIO()
+//        socketIO.main()
 
         val callback: OnBackPressedCallback =
             object : OnBackPressedCallback(true) {

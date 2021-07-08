@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.pethiio.android.data.api.ResponseHandler
 import com.pethiio.android.data.api.ServiceBuilder
 import com.pethiio.android.data.model.chat.ChatListResponse
+import com.pethiio.android.data.model.chat.ChatRoomResponse
 import com.pethiio.android.data.model.member.MemberListResponse
 import com.pethiio.android.data.model.signup.PageData
 import com.pethiio.android.utils.Resource
@@ -18,6 +19,7 @@ class ChatViewModel() : ViewModel() {
     val chatListPageData = MutableLiveData<Resource<PageData>>()
     val chatPageData = MutableLiveData<Resource<PageData>>()
     val chatList = MutableLiveData<Resource<List<ChatListResponse>>>()
+    val chatRoomList = MutableLiveData<Resource<List<ChatRoomResponse>>>()
     private val memberList = MutableLiveData<Resource<List<MemberListResponse>>>()
 
     private val compositeDisposable = CompositeDisposable()
@@ -83,6 +85,24 @@ class ChatViewModel() : ViewModel() {
         )
     }
 
+    fun fetchChatRoom(roomId: Int) {
+        chatRoomList.postValue(Resource.loading(null))
+        compositeDisposable.add(
+            ServiceBuilder.buildService()
+                .getChatRoom(roomId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                    { registerData ->
+                        chatRoomList.postValue(responseHandler.handleSuccess(registerData))
+                    },
+                    {
+                        chatRoomList.postValue(responseHandler.handleException(it))
+                    }
+                )
+        )
+    }
+
     fun fetchMemberList() {
 
         memberList.postValue(Resource.loading(null))
@@ -111,6 +131,7 @@ class ChatViewModel() : ViewModel() {
     fun getChatListPageData(): LiveData<Resource<PageData>> {
         return chatListPageData
     }
+
     fun getChatPageData(): LiveData<Resource<PageData>> {
         return chatPageData
     }
@@ -121,6 +142,9 @@ class ChatViewModel() : ViewModel() {
 
     fun getChatList(): LiveData<Resource<List<ChatListResponse>>> {
         return chatList
+    }
+    fun getChatRoomList(): LiveData<Resource<List<ChatRoomResponse>>> {
+        return chatRoomList
     }
 
 

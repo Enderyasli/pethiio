@@ -138,7 +138,7 @@ class MessageFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
                     adapter = it.data?.let { it1 ->
                         MessageAdapter(
                             requireContext(), findNavController(),
-                            it1
+                            it1,memberId
                         )
                     }
                     binding.messagesRv.layoutManager = LinearLayoutManager(requireContext())

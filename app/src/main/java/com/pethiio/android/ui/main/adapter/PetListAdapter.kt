@@ -5,6 +5,7 @@ import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.NavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.pethiio.android.R
@@ -13,6 +14,7 @@ import kotlinx.android.synthetic.main.item_pets.view.*
 
 class PetListAdapter(
     val context: Context,
+    private val navController: NavController,
     private val petList: ArrayList<PetListResponse>,
     private val newButtonTitle: String,
 
@@ -51,6 +53,10 @@ class PetListAdapter(
         if (position != petList.size)
             holder.bind(context, petList[position])
         else {
+            holder.itemView.setOnClickListener {
+                navController.navigate(R.id.navigation_pet_add)
+            }
+
             holder.itemView.add_new_button.text = newButtonTitle
             holder.itemView.pet_layout.visibility = View.GONE
             holder.itemView.add_pet_layout.visibility = View.VISIBLE

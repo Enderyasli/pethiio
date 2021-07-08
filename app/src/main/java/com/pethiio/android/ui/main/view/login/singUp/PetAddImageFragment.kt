@@ -230,7 +230,7 @@ class PetAddImageFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             val result = CropImage.getActivityResult(data)
             if (resultCode == -1) {
-                binding.imageView.visibility = View.VISIBLE
+                binding.imageBg.visibility = View.VISIBLE
                 binding.photoAddAnim.visibility = View.GONE
                 val resultUri: Uri = result.uri
                 Glide.with(requireContext())
@@ -245,11 +245,11 @@ class PetAddImageFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
                         binding.image1X.visibility = View.VISIBLE
 
                         binding.completeBtn.isEnabled = true
-                        binding.completeBtn.setBackgroundResource(R.drawable.disabled_button_bg)
+                        binding.completeBtn.setBackgroundResource(R.drawable.orange_button_bg)
                         binding.completeBtn.setTextColor(
                             ContextCompat.getColor(
                                 requireContext(),
-                                R.color.orangeButton
+                                R.color.white
                             )
                         )
 

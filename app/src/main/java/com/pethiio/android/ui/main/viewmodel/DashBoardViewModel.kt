@@ -3,6 +3,7 @@ package com.pethiio.android.ui.main.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.pethiio.android.data.api.ResponseHandler
 import com.pethiio.android.data.api.ServiceBuilder
 import com.pethiio.android.data.model.LookUpsResponse
 import com.pethiio.android.data.model.PethiioResponse
@@ -33,6 +34,7 @@ class DashBoardViewModel : ViewModel() {
     private val petSearchFilter = MutableLiveData<Resource<PetSearchFilterResponse>>()
     private val petSearchFilterPageData = MutableLiveData<Resource<List<PethiioResponse>>>()
     private val petSearchFilterPageDataLookUps = MutableLiveData<Resource<List<LookUpsResponse>>>()
+    private val responseHandler: ResponseHandler = ResponseHandler()
 
 
     private val compositeDisposable = CompositeDisposable()
@@ -50,10 +52,7 @@ class DashBoardViewModel : ViewModel() {
                     },
                     {
                         petSearchPageData.postValue(
-                            Resource.error(
-                                "Something went wrong",
-                                null
-                            )
+                            responseHandler.handleException(it)
                         )
                     }
                 )
@@ -74,11 +73,12 @@ class DashBoardViewModel : ViewModel() {
                             locations.postValue(Resource.success(loginData))
                     },
                     {
-                        locations.postValue(Resource.error("Something went wrong", null))
+                        locations.postValue(responseHandler.handleException(it))
                     }
                 )
         )
     }
+    // TODO: 8.07.2021 responsehandler
 
     fun fetchMemberList() {
 
@@ -93,12 +93,7 @@ class DashBoardViewModel : ViewModel() {
                         memberList.postValue(Resource.success(loginData))
                     },
                     {
-                        memberList.postValue(
-                            Resource.error(
-                                "Something went wrong",
-                                (it as HttpException).code()
-                            )
-                        )
+                        memberList.postValue(responseHandler.handleException(it))
                     }
                 )
         )
@@ -119,10 +114,7 @@ class DashBoardViewModel : ViewModel() {
                     },
                     {
                         petSearchFilterPageData.postValue(
-                            Resource.error(
-                                "Something went wrong",
-                                null
-                            )
+                            responseHandler.handleException(it)
                         )
                     }
                 )
@@ -142,7 +134,7 @@ class DashBoardViewModel : ViewModel() {
                         petSearchFilter.postValue(Resource.success(loginData))
                     },
                     {
-                        petSearchFilter.postValue(Resource.error("Something went wrong", 403))
+                        petSearchFilter.postValue(responseHandler.handleException(it))
                     }
                 )
         )
@@ -161,7 +153,7 @@ class DashBoardViewModel : ViewModel() {
                         petSearchResult.postValue(Resource.success(loginData.content))
                     },
                     {
-                        petSearchResult.postValue(Resource.error(it.message, null))
+                        petSearchResult.postValue(responseHandler.handleException(it))
                     }
                 )
         )
@@ -183,7 +175,7 @@ class DashBoardViewModel : ViewModel() {
                             postPetSearchResult.postValue(Resource.error(it.message(), null))
                     },
                     {
-                        postPetSearchResult.postValue(Resource.error(it.message, null))
+                        postPetSearchResult.postValue(responseHandler.handleException(it))
                     }
                 )
         )
@@ -205,7 +197,7 @@ class DashBoardViewModel : ViewModel() {
                             postSearchFilter.postValue(Resource.error(it.message(), null))
                     },
                     {
-                        postSearchFilter.postValue(Resource.error(it.message, null))
+                        postSearchFilter.postValue(responseHandler.handleException(it))
                     }
                 )
         )
@@ -215,6 +207,7 @@ class DashBoardViewModel : ViewModel() {
         super.onCleared()
         compositeDisposable.dispose()
     }
+
     fun getPetSearchPageData(): LiveData<Resource<PageData>> {
         return petSearchPageData
     }

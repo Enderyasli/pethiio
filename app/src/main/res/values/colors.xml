@@ -21,5 +21,6 @@
     <color name="slider_bg_color">#daf8f5</color>
     <color name="pet_name_bg">#faede4</color>
     <color name="darkGrey">#333333</color>
+    <color name="receiver_color">#f0d1ba</color>
 
 </resources>

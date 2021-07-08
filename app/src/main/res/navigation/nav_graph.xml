@@ -155,7 +155,6 @@
             tools:layout="@layout/fragment_message" />
 
 
-
         <fragment
             android:id="@+id/navigation_support"
             android:name="com.pethiio.android.ui.main.view.fragments.settings.SupportFragment"
@@ -185,9 +184,14 @@
             android:name="com.pethiio.android.ui.main.view.fragments.settings.AboutFragment"
             android:label="About"
             tools:layout="@layout/fragment_about" />
+
+        <fragment
+            android:id="@+id/navigation_chat"
+            android:name="com.pethiio.android.ui.main.view.fragments.ChatScreenFragment"
+            android:label="Chat"
+            tools:layout="@layout/fragment_chat_screen" />
+
     </navigation>
-
-
 
 
 </navigation>

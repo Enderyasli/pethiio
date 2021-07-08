@@ -63,7 +63,7 @@ class PetListFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
                 val list2 = ArrayList<PetListResponse>(it.data)
 
                 binding.petlistRv.layoutManager = GridLayoutManager(requireContext(), 2)
-                val adapter = PetListAdapter(requireContext(), list2, getLocalizedString(Constants.animalListAddNewTitle))
+                val adapter = PetListAdapter(requireContext(),findNavController(), list2, getLocalizedString(Constants.animalListAddNewTitle))
                 binding.petlistRv.adapter = adapter
 
             })
