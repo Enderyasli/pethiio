@@ -2,11 +2,9 @@ package com.pethiio.android.ui.main.view.fragments
 
 import android.annotation.SuppressLint
 import android.graphics.Color
-import android.graphics.Typeface
 import android.os.Build
 import android.os.Bundle
-import android.text.Spannable
-import android.text.SpannableString
+import android.os.Handler
 import android.view.*
 import android.widget.PopupMenu
 import androidx.core.os.bundleOf
@@ -268,7 +266,9 @@ class PetDetailFragment : BaseFragment() {
                         if (!isOwner) {
                             findNavController().navigate(R.id.navigation_report)
                         } else {
-                            // TODO: 7.07.2021 sil
+                            animalId.toIntOrNull()?.let { viewModel.fetchPetDelete(it) }
+                            binding.progressBar.visibility = View.VISIBLE
+                            Handler().postDelayed({ findNavController().navigateUp() }, 500)
                         }
 
                     }

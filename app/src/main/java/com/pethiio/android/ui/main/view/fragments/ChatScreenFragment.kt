@@ -5,11 +5,17 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.pethiio.android.data.EventBus.ChatEvent
+import com.pethiio.android.data.model.chat.ChatRoomResponse
+import com.pethiio.android.data.model.socket.ChatSendMessage
+import com.pethiio.android.data.socket.SocketIO
 import com.pethiio.android.databinding.FragmentChatScreenBinding
 import com.pethiio.android.ui.base.BaseFragment
+import com.pethiio.android.ui.main.adapter.CardStack.CardStackAdapter
 import com.pethiio.android.ui.main.adapter.ChatAdapter
 import com.pethiio.android.ui.main.viewmodel.ChatViewModel
 import com.pethiio.android.utils.Constants
@@ -18,6 +24,9 @@ import com.pethiio.android.utils.Status
 import io.socket.client.IO
 import io.socket.client.Socket
 import io.socket.emitter.Emitter
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 
 class ChatScreenFragment : BaseFragment() {
@@ -30,12 +39,33 @@ class ChatScreenFragment : BaseFragment() {
     var memberId: Int = 0
     private var adapter: ChatAdapter? = null
 
-    lateinit var mSocket: Socket
+    val socketIO = SocketIO()
 
 
+
+
+
+
+    override fun onDestroy() {
+        //unregister event bus
+        EventBus.getDefault().unregister(this)
+        super.onDestroy()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        EventBus.getDefault().register(this)
+
+
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: ChatEvent) {
+
+        adapter?.addMessage(event)
+        adapter?.listSize?.let { binding.recyclerView.smoothScrollToPosition(it) }
+//
+
 
     }
 
@@ -50,6 +80,9 @@ class ChatScreenFragment : BaseFragment() {
         roomId = arguments?.getInt("roomId", 0)!!
         memberId = arguments?.getInt("memberId", 0)!!
 
+        socketIO.connectSocket(roomId)
+
+
         binding.backIv.setOnClickListener {
             findNavController().navigateUp()
         }
@@ -58,7 +91,12 @@ class ChatScreenFragment : BaseFragment() {
         setUpObserver()
 
         binding.btnSend.setOnClickListener {
-            socket()
+
+            socketIO.sendMessage(ChatSendMessage(
+                binding.etMessage.text.trim().toString(),
+                roomId,
+                memberId
+            ))
         }
 
         return view
@@ -89,7 +127,8 @@ class ChatScreenFragment : BaseFragment() {
 
                     adapter = it.data?.let { it1 ->
                         ChatAdapter(
-                            requireContext(), it1,memberId)
+                            requireContext(), it1, memberId
+                        )
                     }
                     binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
                     binding.recyclerView.adapter = adapter
@@ -104,34 +143,6 @@ class ChatScreenFragment : BaseFragment() {
 
     }
 
-    private fun socket(){
-
-        var onConnect = Emitter.Listener {
-            //After getting a Socket.EVENT_CONNECT which indicate socket has been connected to server,
-//            //send userName and roomName so that they can join the room.
-//            val data = initialData(userName, roomName)
-//            val jsonData = gson.toJson(data) // Gson changes data object to Json type.
-//            mSocket.emit("subscribe", jsonData)
-        }
-
-        try {
-            //This address is the way you can connect to localhost with AVD(Android Virtual Device)
-            mSocket = IO.socket("http://api.pawtind.com:9092")
-            Log.d("success", mSocket.id())
-
-        } catch (e: Exception) {
-            e.printStackTrace()
-            Log.d("fail", "Failed to connect")
-        }
-
-        mSocket.connect()
-        mSocket.on(Socket.EVENT_CONNECT, onConnect)
-
-
-        //Register all the listener and callbacks here.
-        mSocket.on(Socket.EVENT_CONNECT, onConnect)
-
-    }
 
 
 

@@ -28,6 +28,7 @@ import com.google.android.gms.location.*
 import com.google.android.gms.tasks.CancellationTokenSource
 import com.google.android.gms.tasks.Task
 import com.pethiio.android.R
+import com.pethiio.android.data.EventBus.ChatEvent
 import com.pethiio.android.data.EventBus.FilterEvent
 import com.pethiio.android.data.model.member.LocationsRequest
 import com.pethiio.android.data.model.member.MemberListResponse
@@ -54,7 +55,7 @@ import java.util.*
 class DashboardFragment : BaseFragment(), CardStackListener,
     AdapterView.OnItemSelectedListener {
 
-    private var manager:CardStackLayoutManager? =null
+    private var manager: CardStackLayoutManager? = null
     private var adapter: CardStackAdapter? = null
 
     // The Fused Location Provider provides access to location APIs.
@@ -411,7 +412,8 @@ class DashboardFragment : BaseFragment(), CardStackListener,
         val new = mutableListOf<PetSearchResponse>().apply {
             old?.let { addAll(it) }
 
-            manager?.topPosition?.minus(1)?.let { removeAt(it) }
+
+                manager?.topPosition?.minus(1)?.let { removeAt(it) }
 
 //            removeAt(manager.topPosition-1)
 
@@ -485,8 +487,8 @@ class DashboardFragment : BaseFragment(), CardStackListener,
         manager?.setCanScrollVertical(true)
         manager?.setSwipeableMethod(SwipeableMethod.AutomaticAndManual)
         manager?.setOverlayInterpolator(LinearInterpolator())
-        if( binding.cardStackView.layoutManager==null)
-        binding.cardStackView.layoutManager = manager
+        if (binding.cardStackView.layoutManager == null)
+            binding.cardStackView.layoutManager = manager
         binding.cardStackView.adapter = adapter
         binding.cardStackView.itemAnimator.apply {
             if (this is DefaultItemAnimator) {
@@ -524,8 +526,13 @@ class DashboardFragment : BaseFragment(), CardStackListener,
             return
         }
 
+        val petSearch = manager?.topPosition?.let {
+            if( adapter?.getPetSearchList()?.size==1)
+            adapter?.getPetSearchList()?.get(0)
+            else
+                adapter?.getPetSearchList()?.get(it)
 
-        val petSearch = manager?.topPosition?.let { adapter?.getPetSearchList()?.get(it) }
+        }
 
         removeFirst()
 

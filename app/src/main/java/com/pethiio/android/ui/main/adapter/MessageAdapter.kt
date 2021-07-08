@@ -11,6 +11,8 @@ import com.bumptech.glide.Glide
 import com.pethiio.android.R
 import com.pethiio.android.data.model.Message
 import com.pethiio.android.data.model.chat.ChatListResponse
+import com.pethiio.android.data.model.socket.ChatSendMessage
+import com.pethiio.android.data.socket.SocketIO
 import com.pethiio.android.utils.PreferenceHelper
 import com.pethiio.android.utils.Resource
 import kotlinx.android.synthetic.main.message_list_item.view.*
@@ -64,6 +66,7 @@ class MessageAdapter(
         holder.itemView.setOnClickListener {
             val bundle =
                 bundleOf("roomId" to chat.id, "memberId" to memberId)
+
 
             navController.navigate(R.id.navigation_chat, bundle)
         }

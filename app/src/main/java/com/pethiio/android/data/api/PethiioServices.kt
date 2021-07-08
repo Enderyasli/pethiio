@@ -158,6 +158,9 @@ interface PethiioServices {
     @POST("page/pet-edit")
     fun postPetEdit(@Body petAdd: PetEdit): Observable<Response<Void>>
 
+    @DELETE("page/pet-detail/{petId}")
+    fun postPetDelete(@Path("petId") petId: Int): Observable<Response<Void>>
+
 
     //endregion
 

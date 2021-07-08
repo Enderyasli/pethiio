@@ -11,6 +11,8 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.pethiio.android.data.model.member.MemberListResponse
+import com.pethiio.android.data.model.socket.ChatSendMessage
+import com.pethiio.android.data.socket.SocketIO
 import com.pethiio.android.databinding.FragmentMessageBinding
 import com.pethiio.android.ui.base.BaseFragment
 import com.pethiio.android.ui.main.adapter.MessageAdapter
@@ -35,6 +37,7 @@ class MessageFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
     private var isSelectedMemberFirstTime = true
     private var selectedMemberId = 0
     var memberId: Int = 0
+
 
     private var adapter: MessageAdapter? = null
 
@@ -64,11 +67,13 @@ class MessageFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
         setUpObserver()
 
 
+
         return view
     }
 
     private fun setupViewModel() {
         viewModel = ViewModelProviders.of(this).get(ChatViewModel::class.java)
+        isSelectedMemberFirstTime = true
 
         viewModel.fetchMemberList()
 
@@ -138,7 +143,7 @@ class MessageFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
                     adapter = it.data?.let { it1 ->
                         MessageAdapter(
                             requireContext(), findNavController(),
-                            it1,memberId
+                            it1, memberId
                         )
                     }
                     binding.messagesRv.layoutManager = LinearLayoutManager(requireContext())
