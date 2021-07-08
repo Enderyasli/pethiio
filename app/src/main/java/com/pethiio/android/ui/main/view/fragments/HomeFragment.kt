@@ -71,40 +71,13 @@ class HomeFragment : BaseFragment(), FilterItemClickListener {
         return view
     }
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int, permissions: Array<String>,
-        grantResults: IntArray
-    ) {
-        when (requestCode) {
-            1 -> {
-                if (grantResults.isNotEmpty() && grantResults[0] ==
-                    PackageManager.PERMISSION_GRANTED
-                ) {
-                    if ((ContextCompat.checkSelfPermission(
-                            requireContext(),
-                            Manifest.permission.ACCESS_FINE_LOCATION
-                        ) ===
-                                PackageManager.PERMISSION_GRANTED)
-                    ) {
-                        Toast.makeText(requireContext(), "Permission Granted", Toast.LENGTH_SHORT)
-                            .show()
-                    }
-                } else {
-                    Toast.makeText(requireContext(), "Permission Denied", Toast.LENGTH_SHORT).show()
-                }
-                return
-            }
-        }
-    }
 
     private fun setupUI() {
-
-        createLocationRequest()
 
 
         binding.addAnimal.setOnClickListener {
             if (findNavController().currentDestination?.id == R.id.navigation_home)
-            findNavController().navigate(R.id.navigation_pet_add)
+                findNavController().navigate(R.id.navigation_pet_add)
         }
 
 
@@ -159,7 +132,7 @@ class HomeFragment : BaseFragment(), FilterItemClickListener {
         })
         binding.settingsImg.setOnClickListener {
             if (findNavController().currentDestination?.id == R.id.navigation_home)
-            findNavController().navigate(R.id.navigation_settings)
+                findNavController().navigate(R.id.navigation_settings)
         }
 
 
@@ -169,65 +142,6 @@ class HomeFragment : BaseFragment(), FilterItemClickListener {
 
     }
 
-
-    fun createLocationRequest() {
-        val locationRequest = LocationRequest.create().apply {
-            interval = 3000
-            fastestInterval = 1500
-            priority = LocationRequest.PRIORITY_HIGH_ACCURACY
-        }
-        val builder = LocationSettingsRequest.Builder()
-            .addLocationRequest(locationRequest)
-
-
-        val client: SettingsClient = LocationServices.getSettingsClient(requireActivity())
-        val task: Task<LocationSettingsResponse> = client.checkLocationSettings(builder.build())
-
-        task.addOnCompleteListener {
-            try {
-                task.getResult(ApiException::class.java)
-
-
-            } catch (e: ApiException) {
-                when (e.statusCode) {
-                    LocationSettingsStatusCodes.RESOLUTION_REQUIRED -> {
-                        if (e is ResolvableApiException) {
-
-                            try {
-                                e.startResolutionForResult(requireActivity(), 6989)
-                            } catch (sendEx: IntentSender.SendIntentException) {
-                                Log.e("sednex", sendEx.toString())
-
-                            }
-                        }
-                    }
-                }
-
-
-            }
-        }
-
-//        task.addOnSuccessListener { locationSettingsResponse ->
-//            // All location settings are satisfied. The client can initialize
-//            // location requests here.
-//            // ...
-//        }
-//
-//        task.addOnFailureListener { exception ->
-//            if (exception is ResolvableApiException){
-//                // Location settings are not satisfied, but this can be fixed
-//                // by showing the user a dialog.
-//                try {
-//                    // Show the dialog by calling startResolutionForResult(),
-//                    // and check the result in onActivityResult().
-//                    exception.startResolutionForResult(requireActivity(),
-//                        100)
-//                } catch (sendEx: IntentSender.SendIntentException) {
-//                    // Ignore the error.
-//                }
-//            }
-//        }
-    }
 
     private fun renderList(users: List<User>) {
         adapter.addData(users)

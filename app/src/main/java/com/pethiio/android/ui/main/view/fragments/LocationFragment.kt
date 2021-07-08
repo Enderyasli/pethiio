@@ -1,13 +1,17 @@
 package com.pethiio.android.ui.main.view.fragments
 
 import android.Manifest
+import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import com.pethiio.android.R
 import com.pethiio.android.databinding.FragmentDashboardBinding
 import com.pethiio.android.databinding.FragmentLocationBinding
@@ -50,6 +54,7 @@ class LocationFragment : BaseFragment() {
 
             when (it.status) {
                 Status.LOADING -> {
+                    binding.progressBar.visibility=View.VISIBLE
                 }
 
                 Status.SUCCESS -> {
@@ -58,6 +63,8 @@ class LocationFragment : BaseFragment() {
                     binding.descriptionTv.text =
                         getLocalizedString(Constants.registerSubTitle, fields)
                     binding.completeBtn.text = getLocalizedString(Constants.locationButton, fields)
+
+                    binding.progressBar.visibility=View.GONE
 
                 }
 
@@ -76,6 +83,36 @@ class LocationFragment : BaseFragment() {
 
         return view
 
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        when (requestCode) {
+            MY_PERMISSIONS_REQUEST_LOCATION -> {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.isNotEmpty()
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED
+                ) {
+                    if (ContextCompat.checkSelfPermission(
+                            requireContext(),
+                            Manifest.permission.ACCESS_FINE_LOCATION
+                        )
+                        == PackageManager.PERMISSION_GRANTED
+                    ) {
+
+                        findNavController().navigateUp()
+
+                    }
+
+                } else {
+                }
+            }
+        }
     }
 
 }

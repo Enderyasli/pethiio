@@ -254,7 +254,7 @@ adipiscing elit. Dictumst sed dignissim duis vitae.  Diam pharetra, mauris." />
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:src="@drawable/x" />
+                android:src="@drawable/dots" />
         </FrameLayout>
 
         <FrameLayout

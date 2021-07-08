@@ -2,8 +2,11 @@ package com.pethiio.android.ui.main.view.fragments
 
 import android.annotation.SuppressLint
 import android.graphics.Color
+import android.graphics.Typeface
 import android.os.Build
 import android.os.Bundle
+import android.text.Spannable
+import android.text.SpannableString
 import android.view.*
 import android.widget.PopupMenu
 import androidx.core.os.bundleOf
@@ -22,7 +25,6 @@ import com.pethiio.android.ui.main.adapter.PetSearchDetailCharacterAdapter
 import com.pethiio.android.ui.main.adapter.ViewPagerAdapter
 import com.pethiio.android.ui.main.viewmodel.PetDetailViewModel
 import com.pethiio.android.utils.Constants
-import com.pethiio.android.utils.PreferenceHelper
 import com.pethiio.android.utils.Status
 import java.lang.reflect.Method
 
@@ -231,7 +233,11 @@ class PetDetailFragment : BaseFragment() {
 
     private fun openPopUpMenu() {
         val popUpMenu = PopupMenu(requireContext(), binding.popupMenu)
-        popUpMenu.inflate(R.menu.pop_up_menu)
+        if (isOwner)
+            popUpMenu.inflate(R.menu.pop_up_menu)
+        else
+            popUpMenu.inflate(R.menu.pop_up_owner)
+
 
         popUpMenu.menu.getItem(0).title = owner
         popUpMenu.menu.getItem(1).title = report
@@ -302,6 +308,7 @@ class PetDetailFragment : BaseFragment() {
         }
 
     }
+
 
     private fun changeUserType(isUser: Boolean) {
         if (isUser) {

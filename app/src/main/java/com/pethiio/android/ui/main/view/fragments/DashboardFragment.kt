@@ -2,6 +2,7 @@ package com.pethiio.android.ui.main.view.fragments
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.IntentSender
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
@@ -13,6 +14,7 @@ import android.view.ViewGroup
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.LinearInterpolator
 import android.widget.AdapterView
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -20,9 +22,9 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.DiffUtil
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationRequest
-import com.google.android.gms.location.LocationServices
+import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.common.api.ResolvableApiException
+import com.google.android.gms.location.*
 import com.google.android.gms.tasks.CancellationTokenSource
 import com.google.android.gms.tasks.Task
 import com.pethiio.android.R
@@ -120,6 +122,8 @@ class DashboardFragment : BaseFragment(), CardStackListener,
 //        val socketIO = SocketIO()
 //        socketIO.main()
 
+        checkGpsPermission()
+
         val callback: OnBackPressedCallback =
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
@@ -129,17 +133,17 @@ class DashboardFragment : BaseFragment(), CardStackListener,
             }
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
 
-//        checkLocationPermission()
 
         requestCurrentLocation()
 
         return view
     }
 
+
+    //region Location
+
     @SuppressLint("MissingPermission")
     private fun requestCurrentLocation() {
-
-
         val currentLocationTask: Task<Location> = fusedLocationClient.getCurrentLocation(
             LocationRequest.PRIORITY_HIGH_ACCURACY,
             cancellationTokenSource.token
@@ -165,39 +169,109 @@ class DashboardFragment : BaseFragment(), CardStackListener,
         }
     }
 
-
-    private fun checkLocationPermission() {
-
-        if (ContextCompat.checkSelfPermission(
-                requireActivity(),
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) !=
-            PackageManager.PERMISSION_GRANTED
-        ) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(
-                    requireActivity(),
-                    Manifest.permission.ACCESS_FINE_LOCATION
-                )
-            ) {
-                // TODO: 6.07.2021 burda location izin ekranına gönder, gelişte location actır, sonra lat, lon al
-                findNavController().navigate(R.id.navigation_location)
-//                ActivityCompat.requestPermissions(requireActivity(),
-//                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 1)
-            } else {
-                findNavController().navigate(R.id.navigation_location)
-//                ActivityCompat.requestPermissions(requireActivity(),
-//                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 1)
-            }
-        }
-
-    }
+    //endregion
 
 
     companion object {
         private const val MY_PERMISSIONS_REQUEST_LOCATION = 99
     }
 
+    public fun checkGpsPermission() {
+        if (ContextCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) !=
+            PackageManager.PERMISSION_GRANTED
+            && ActivityCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+
+
+            if (PreferenceHelper.SharedPreferencesManager.getInstance().isLoggedIn == true)
+                findNavController().navigate(R.id.navigation_location)
+
+        } else {
+            createLocationRequest()
+        }
+    }
+
+    fun createLocationRequest() {
+        val locationRequest = LocationRequest.create().apply {
+            interval = 3000
+            fastestInterval = 1500
+            priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+        }
+        val builder = LocationSettingsRequest.Builder()
+            .addLocationRequest(locationRequest)
+
+
+        val client: SettingsClient = LocationServices.getSettingsClient(requireContext())
+        val task: Task<LocationSettingsResponse> = client.checkLocationSettings(builder.build())
+
+
+
+        task.addOnCompleteListener {
+            try {
+                task.getResult(ApiException::class.java)
+
+
+            } catch (e: ApiException) {
+                when (e.statusCode) {
+                    LocationSettingsStatusCodes.RESOLUTION_REQUIRED -> {
+                        if (e is ResolvableApiException) {
+
+                            try {
+                                e.startResolutionForResult(requireActivity(), 6989)
+                            } catch (sendEx: IntentSender.SendIntentException) {
+                                Log.e("sednex", sendEx.toString())
+
+                            }
+                        }
+                    }
+                }
+
+
+            }
+        }
+
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        when (requestCode) {
+            MY_PERMISSIONS_REQUEST_LOCATION -> {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.isNotEmpty()
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED
+                ) {
+                    if (ContextCompat.checkSelfPermission(
+                            requireContext(),
+                            Manifest.permission.ACCESS_FINE_LOCATION
+                        )
+                        == PackageManager.PERMISSION_GRANTED
+                    ) {
+                        createLocationRequest()
+
+                        findNavController().navigateUp()
+
+                    }
+
+                } else {
+                    Toast.makeText(requireContext(), "else e girdi", Toast.LENGTH_LONG).show()
+                }
+            }
+        }
+    }
+
     private fun setupUI() {
+
 
         binding.noResultImg.setAnimation("evim.json")
         setupButton()
@@ -277,13 +351,13 @@ class DashboardFragment : BaseFragment(), CardStackListener,
 
         })
 
-        viewModel.postSearchResponse().observe(viewLifecycleOwner, {
-            when (it.status) {
-                Status.SUCCESS -> {
-                }
-            }
-
-        })
+//        viewModel.postSearchResponse().observe(viewLifecycleOwner, {
+//            when (it.status) {
+//                Status.SUCCESS -> {
+//                }
+//            }
+//
+//        })
         viewModel.getSearchList().observe(viewLifecycleOwner, { it ->
 
             when (it.status) {

@@ -3,12 +3,12 @@
 
     <item
         android:id="@+id/owner"
-        android:icon="@drawable/owner"
+        android:icon="@drawable/update"
 
         android:title="" />
     <item
         android:id="@+id/report"
-        android:icon="@drawable/report"
+        android:icon="@drawable/delete"
         android:title="" />
 
 
