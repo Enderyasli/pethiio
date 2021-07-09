@@ -5,10 +5,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.pethiio.android.data.api.ResponseHandler
 import com.pethiio.android.data.api.ServiceBuilder
+import com.pethiio.android.data.model.AccessToken
+import com.pethiio.android.data.model.login.ChangePassRequest
+import com.pethiio.android.data.model.login.LoginRequest
 import com.pethiio.android.data.model.petDetail.PetSearchDetailResponse
 import com.pethiio.android.data.model.petDetail.PetSearchOwnerDetailResponse
 import com.pethiio.android.data.model.settings.FAQResponse
 import com.pethiio.android.data.model.signup.PageData
+import com.pethiio.android.utils.PreferenceHelper
 import com.pethiio.android.utils.Resource
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -23,6 +27,8 @@ class FAQViewModel : ViewModel() {
     private val responseHandler: ResponseHandler = ResponseHandler()
     private val settingsPageData = MutableLiveData<Resource<PageData>>()
     private val aboutPageData = MutableLiveData<Resource<PageData>>()
+    private val changePassPageData = MutableLiveData<Resource<PageData>>()
+    private val postChangePass = MutableLiveData<Resource<AccessToken>>()
 
 
     fun fetchFAQPageData() {
@@ -39,6 +45,30 @@ class FAQViewModel : ViewModel() {
                     },
                     {
                         faqPageData.postValue(responseHandler.handleException(it))
+                    }
+                )
+        )
+    }
+
+
+    fun postChangePass(changePassRequest: ChangePassRequest) {
+        postChangePass.postValue(Resource.loading(null))
+        compositeDisposable.add(
+            ServiceBuilder.buildService()
+                .postChangePass(changePassRequest)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                    { loginData ->
+                        PreferenceHelper.SharedPreferencesManager.getInstance().accessToken =
+                            loginData.accessToken
+                        PreferenceHelper.SharedPreferencesManager.getInstance().isLoggedIn =
+                            true
+
+                        postChangePass.postValue(Resource.success(loginData))
+                    },
+                    {
+                        postChangePass.postValue(responseHandler.handleException(it))
                     }
                 )
         )
@@ -82,6 +112,25 @@ class FAQViewModel : ViewModel() {
         )
     }
 
+    fun fetchChangePassPageData() {
+
+        changePassPageData.postValue(Resource.loading(null))
+        compositeDisposable.add(
+            ServiceBuilder.buildService()
+                .getChangePassPageData()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                    { loginData ->
+                        changePassPageData.postValue(responseHandler.handleSuccess(loginData))
+                    },
+                    {
+                        changePassPageData.postValue(responseHandler.handleException(it))
+                    }
+                )
+        )
+    }
+
     fun fetchFAQs() {
 
         faqPageData.postValue(Resource.loading(null))
@@ -117,11 +166,21 @@ class FAQViewModel : ViewModel() {
         return faqPageData
     }
 
+    fun getChangePassPageData(): LiveData<Resource<PageData>> {
+        return changePassPageData
+    }
+
     fun getSettingsPageData(): LiveData<Resource<PageData>> {
         return settingsPageData
     }
+
     fun getAboutPageData(): LiveData<Resource<PageData>> {
         return aboutPageData
+    }
+
+
+    fun getChangePass(): LiveData<Resource<AccessToken>> {
+        return postChangePass
     }
 
 }

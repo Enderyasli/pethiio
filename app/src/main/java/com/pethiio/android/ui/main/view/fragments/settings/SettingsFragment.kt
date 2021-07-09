@@ -47,6 +47,10 @@ class SettingsFragment : BaseFragment() {
             findNavController().navigate(R.id.action_global_navigation_welcome)
         }
 
+        binding.passwordChangeTv.setOnClickListener {
+            findNavController().navigate(R.id.navigation_change_password)
+        }
+
         setupViewModel()
         setUpObserver()
 

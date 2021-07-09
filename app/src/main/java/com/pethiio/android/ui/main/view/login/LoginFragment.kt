@@ -69,7 +69,6 @@ class LoginFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
                 showPass = false
             }
 
-
         }
 
 

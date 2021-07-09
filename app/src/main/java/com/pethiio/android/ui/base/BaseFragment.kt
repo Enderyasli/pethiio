@@ -4,8 +4,10 @@ import android.graphics.Color
 import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableString
+import android.text.TextUtils
 import android.text.style.ForegroundColorSpan
 import android.view.View
+import android.widget.EditText
 import androidx.fragment.app.Fragment
 import com.pethiio.android.data.model.LookUpsResponse
 import com.pethiio.android.data.model.PethiioResponse
@@ -114,6 +116,16 @@ abstract class BaseFragment : Fragment() {
             }
         }
         return ""
+    }
+
+    fun getViewError(editText: EditText, message: String): Boolean {
+        var valid = true
+        if (TextUtils.isEmpty(editText.text.trim())) {
+            editText.error = message
+            editText.requestFocus()
+            valid = false
+        }
+        return valid
     }
 
 

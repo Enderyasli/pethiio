@@ -25,21 +25,19 @@ open class ResponseHandler {
 
             is HttpException -> {
 
-                if (ErrorCodes.UnAuthorized.code == e.code()) {
-                    Resource.error(
-                        getErrorMessage(ErrorCodes.UnAuthorized.code),
-                        null
-                    )
-                } else {
-
-
+//                if (ErrorCodes.UnAuthorized.code != e.code()) {
+//                    Resource.error(
+//                        getErrorMessage(ErrorCodes.UnAuthorized.code),
+//                        null
+//                    )
+//                } else {
                     val body = e.response()?.errorBody()
                     val gson = Gson()
                     val type = object : TypeToken<PethiioErrorHandler>() {}.type
                     val errorResponse: PethiioErrorHandler? =
                         gson.fromJson(body?.charStream(), type)
-                    Resource.error(errorResponse?.apierror?.subErrors?.get(0)?.message, null)
-                }
+                    Resource.error(errorResponse?.apierror?.message, null)
+//                }
             }
             is SocketTimeoutException -> Resource.error(
                 getErrorMessage(ErrorCodes.SocketTimeOut.code),

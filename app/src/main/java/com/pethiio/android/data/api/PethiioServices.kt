@@ -5,6 +5,7 @@ import com.pethiio.android.data.model.chat.ChatListResponse
 import com.pethiio.android.data.model.chat.ChatRoomResponse
 import com.pethiio.android.data.model.filter.PetSearchFilterResponse
 import com.pethiio.android.data.model.filter.SearchFilterRequest
+import com.pethiio.android.data.model.login.ChangePassRequest
 import com.pethiio.android.data.model.login.LoginRequest
 import com.pethiio.android.data.model.member.LocationsRequest
 import com.pethiio.android.data.model.member.MemberListResponse
@@ -202,6 +203,13 @@ interface PethiioServices {
 
     @GET("page/about/info")
     fun getAboutPageData(): Observable<PageData>
+
+    @GET("/api/page/change-password/info")
+    fun getChangePassPageData(): Observable<PageData>
+
+    @POST("page/change-password")
+    fun postChangePass(@Body changePassRequest: ChangePassRequest): Observable<AccessToken>
+
 
 
     //endregion

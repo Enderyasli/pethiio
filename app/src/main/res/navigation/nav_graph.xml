@@ -180,6 +180,11 @@
             android:label="Settings"
             tools:layout="@layout/fragment_settings" />
         <fragment
+            android:id="@+id/navigation_change_password"
+            android:name="com.pethiio.android.ui.main.view.fragments.ChangePasswordFragment"
+            android:label="ChangePassword"
+            tools:layout="@layout/fragment_change_password" />
+        <fragment
             android:id="@+id/navigation_about"
             android:name="com.pethiio.android.ui.main.view.fragments.settings.AboutFragment"
             android:label="About"

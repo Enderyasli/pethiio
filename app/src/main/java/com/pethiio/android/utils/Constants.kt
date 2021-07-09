@@ -143,6 +143,18 @@ class Constants {
         const val logoutTitle: String = "logoutTitle"
         //endregion
 
+        //region ChangePass
+        const val currentPasswordTitle: String = "currentPasswordTitle"
+        const val currentPasswordPlaceholder: String = "currentPasswordPlaceholder"
+        const val newPasswordTitle: String = "newPasswordTitle"
+        const val newPasswordPlaceholder: String = "newPasswordPlaceholder"
+        const val newPasswordDetail: String = "newPasswordDetail"
+        const val passwordTitle: String = "passwordTitle"
+        const val passwordPlaceholder: String = "passwordPlaceholder"
+        const val changeButtonTitle: String = "changeButtonTitle"
+
+        //endregion
+
         //region Chat
 
         const val emptyMessageTitle: String ="emptyMessageTitle"

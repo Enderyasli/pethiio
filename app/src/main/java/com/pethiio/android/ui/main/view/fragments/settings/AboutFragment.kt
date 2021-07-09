@@ -29,7 +29,7 @@ class AboutFragment : BaseFragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         _binding = FragmentAboutBinding.inflate(inflater, container, false)
         val view = binding.root
@@ -60,7 +60,6 @@ class AboutFragment : BaseFragment() {
             binding.titleTv.text = getLocalizedString(Constants.registerTitle, pageDataFields)
             binding.descriptionTv.text =
                 getLocalizedString(Constants.registerSubTitle, pageDataFields)
-
 
 
         })
