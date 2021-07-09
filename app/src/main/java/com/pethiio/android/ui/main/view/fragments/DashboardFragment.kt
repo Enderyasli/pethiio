@@ -28,7 +28,6 @@ import com.google.android.gms.location.*
 import com.google.android.gms.tasks.CancellationTokenSource
 import com.google.android.gms.tasks.Task
 import com.pethiio.android.R
-import com.pethiio.android.data.EventBus.ChatEvent
 import com.pethiio.android.data.EventBus.FilterEvent
 import com.pethiio.android.data.EventBus.LikeEvent
 import com.pethiio.android.data.model.member.LocationsRequest
@@ -77,7 +76,7 @@ class DashboardFragment : BaseFragment(), CardStackListener,
 
     private var memberListResponse = emptyList<MemberListResponse>()
     private var isSelectedMemberFirstTime = true
-    private var isLocationSended = true // TODO: 8.07.2021 false yap
+    private var isLocationSended = false // TODO: 8.07.2021 false yap
 
     private var selectedMemberId = 0
 
@@ -153,6 +152,8 @@ class DashboardFragment : BaseFragment(), CardStackListener,
             cancellationTokenSource.token
         )
 
+        //samsung da izin aldıktan sonra giriyor
+
         currentLocationTask.addOnCompleteListener { task: Task<Location> ->
             if (task.isSuccessful && task.result != null) {
                 val result: Location = task.result
@@ -171,7 +172,21 @@ class DashboardFragment : BaseFragment(), CardStackListener,
 
 //            Log.d("location", "getCurrentLocation() result: $result")
         }
+        //xiaomi de giriyor
+        fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
+            location?.let { it: Location ->
+                viewModel.fetchLocations(
+                    LocationsRequest(
+                        it.latitude.toString(),
+                        it.longitude.toString()
+                    )
+                )
+            } ?: kotlin.run {
+                // Handle Null case or Request periodic location update https://developer.android.com/training/location/receive-location-updates
+            }
+        }
     }
+
 
     //endregion
 
@@ -201,6 +216,7 @@ class DashboardFragment : BaseFragment(), CardStackListener,
         }
     }
 
+    @SuppressLint("MissingPermission")
     fun createLocationRequest() {
         val locationRequest = LocationRequest.create().apply {
             interval = 3000
@@ -209,7 +225,6 @@ class DashboardFragment : BaseFragment(), CardStackListener,
         }
         val builder = LocationSettingsRequest.Builder()
             .addLocationRequest(locationRequest)
-
 
         val client: SettingsClient = LocationServices.getSettingsClient(requireContext())
         val task: Task<LocationSettingsResponse> = client.checkLocationSettings(builder.build())
@@ -239,6 +254,51 @@ class DashboardFragment : BaseFragment(), CardStackListener,
 
             }
         }
+
+    }
+
+    override fun onStart() {
+        super.onStart()
+        val locationRequest = LocationRequest.create().apply {
+            interval = 3000
+            fastestInterval = 1500
+            priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+        }
+        val builder = LocationSettingsRequest.Builder()
+            .addLocationRequest(locationRequest)
+
+        val mLocationCallback: LocationCallback = object : LocationCallback() {
+            override fun onLocationResult(locationResult: LocationResult) {
+                if (locationResult == null) {
+                    return
+                }
+                for (location in locationResult.locations) {
+                    if (location != null) {
+                        //TODO: UI updates.
+                    }
+                }
+            }
+        }
+
+        if (ActivityCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return
+        }
+        LocationServices.getFusedLocationProviderClient(requireContext())
+            .requestLocationUpdates(locationRequest, mLocationCallback, null);
 
     }
 
@@ -596,7 +656,8 @@ class DashboardFragment : BaseFragment(), CardStackListener,
                     memberId = it
                     PreferenceHelper.SharedPreferencesManager.getInstance().memberId = it
                     selectedMemberId = position
-                    PreferenceHelper.SharedPreferencesManager.getInstance().selectedSpinnerId = selectedMemberId
+                    PreferenceHelper.SharedPreferencesManager.getInstance().selectedSpinnerId =
+                        selectedMemberId
 
                 }
 
