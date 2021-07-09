@@ -14,6 +14,7 @@ import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.pethiio.android.R
+import com.pethiio.android.data.model.petDetail.PetImageResponse
 import com.pethiio.android.databinding.FragmentPetAddImageBinding
 import com.pethiio.android.ui.base.RegisterBaseFragment
 import com.pethiio.android.ui.main.viewmodel.signup.RegisterBaseViewModel
@@ -35,6 +36,7 @@ class PetAddImageFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
     var uri1: String = ""
     var uri2: String = ""
     var uri3: String = ""
+    private var petId: String? = ""
 
 
     private val binding get() = _binding!!
@@ -48,6 +50,14 @@ class PetAddImageFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
             binding.animalAddPhotoTitle.text = getLocalizedString(Constants.registerTitle)
             binding.completeBtn.text = getLocalizedString(Constants.registerCompleteButtonTitle)
 
+        })
+
+
+        petId?.toIntOrNull()?.let { viewModel.fetchPetPhotos(it) }
+
+        viewModel.getPetPhotos().observe(viewLifecycleOwner, {
+
+            it.data?.let { it1 -> setImages(it1) }
         })
     }
 
@@ -87,6 +97,9 @@ class PetAddImageFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
 
         binding.photoAddAnim.setAnimation("foto_ekle.json")
+
+        petId = arguments?.getString("petId", "")
+
 
 //        binding.imageView.setOnClickListener { openCropImage() }
         binding.img1Ly.setOnClickListener { openCropImage() }
@@ -135,6 +148,9 @@ class PetAddImageFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
                         R.color.disabled_button_color
                     )
                 )
+
+                binding.imageBg.visibility = View.GONE
+                binding.photoAddAnim.visibility = View.VISIBLE
             }
 
 
@@ -216,6 +232,44 @@ class PetAddImageFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
 
     }
 
+    private fun setImages(images: List<PetImageResponse>) {
+
+        if (images.isNotEmpty()) {
+            if (images[0].indexOrder == 0) {
+
+                binding.imageBg.visibility = View.VISIBLE
+                binding.photoAddAnim.visibility = View.GONE
+
+                binding.completeBtn.isEnabled = true
+                binding.completeBtn.setBackgroundResource(R.drawable.orange_button_bg)
+                binding.completeBtn.setTextColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.white
+                    )
+                )
+
+                uri1 = images[0].path
+                Glide.with(requireContext())
+                    .load(uri1)
+                    .into(binding.imageView)
+
+                setImageHolder(uri1, binding.image1, binding.image1Placeholder, binding.image1X)
+            }
+            if (images.size >= 2 && images[1].indexOrder == 1) {
+                uri2 = images[1].path
+                setImageHolder(uri2, binding.image2, binding.image2Placeholder, binding.image2X)
+            }
+            if (images.size >= 3 && images[2].indexOrder == 2) {
+                uri3 = images[2].path
+                setImageHolder(uri3, binding.image3, binding.image3Placeholder, binding.image3X)
+            }
+
+        }
+
+
+    }
+
     fun getFilePart(uri: String): MultipartBody.Part? {
         if (!TextUtils.isEmpty(uri)) {
             val file = File(uri)
@@ -280,6 +334,22 @@ class PetAddImageFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
                 result.error
             }
         }
+    }
+
+    private fun setImageHolder(
+        uri: String,
+        imageView: ImageView,
+        imagePlaceholder: ImageView,
+        imageX: ImageView
+    ) {
+
+        Glide.with(requireContext())
+            .load(uri)
+            .into(imageView)
+
+        imagePlaceholder.visibility = View.GONE
+        imageX.visibility = View.VISIBLE
+
     }
 
     override fun onDestroyView() {

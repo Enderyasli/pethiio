@@ -181,17 +181,17 @@ class ChangePasswordFragment : BaseFragment() {
             binding.descriptionTv.text =
                 getLocalizedString(Constants.registerSubTitle, pageDataFields)
             binding.currentPasswordTitleTv.text =
-                getLocalizedString(Constants.currentPasswordTitle, pageDataFields)
+                getLocalizedSpan(Constants.currentPasswordTitle, pageDataFields)
             binding.currentPasswordPlaceholder.hint =
                 getLocalizedString(Constants.currentPasswordPlaceholder, pageDataFields)
             binding.newPasswordTitleTv.text =
-                getLocalizedString(Constants.newPasswordTitle, pageDataFields)
+                getLocalizedSpan(Constants.newPasswordTitle, pageDataFields)
             binding.newPasswordPlaceholder.hint =
                 getLocalizedString(Constants.newPasswordPlaceholder, pageDataFields)
             binding.passwordDetailTv.text =
                 getLocalizedString(Constants.newPasswordDetail, pageDataFields)
             binding.newPasswordAgainTitleTv.text =
-                getLocalizedString(Constants.passwordTitle, pageDataFields)
+                getLocalizedSpan(Constants.passwordTitle, pageDataFields)
             binding.newPasswordAgainPlaceholder.hint =
                 getLocalizedString(Constants.newPasswordPlaceholder, pageDataFields)
             binding.changeBtn.text = getLocalizedString(Constants.changeButtonTitle, pageDataFields)

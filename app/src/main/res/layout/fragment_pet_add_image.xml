@@ -90,20 +90,22 @@
 
                 <ImageView
                     android:id="@+id/image1_x"
-                    android:layout_width="@dimen/medium_size"
-                    android:layout_height="@dimen/medium_size"
+                    android:layout_width="26dp"
+                    android:layout_height="26dp"
                     android:layout_gravity="right"
+                    android:padding="5dp"
                     android:layout_marginTop="@dimen/small_size"
                     android:layout_marginRight="@dimen/small_size"
                     android:src="@drawable/x"
-                    android:visibility="gone" />
+                    android:visibility="gone"
+                    tools:ignore="RtlHardcoded" />
 
                 <ImageView
                     android:id="@+id/image1_placeholder"
                     android:layout_width="32dp"
                     android:layout_height="32dp"
                     android:layout_gravity="center"
-                    android:src="@drawable/image" />
+                    android:src="@drawable/photo_add" />
 
             </androidx.cardview.widget.CardView>
 
@@ -122,13 +124,15 @@
 
                 <ImageView
                     android:id="@+id/image2_x"
-                    android:layout_width="@dimen/medium_size"
-                    android:layout_height="@dimen/medium_size"
+                    android:layout_width="26dp"
+                    android:layout_height="26dp"
                     android:layout_gravity="right"
+                    android:padding="5dp"
                     android:layout_marginTop="@dimen/small_size"
                     android:layout_marginRight="@dimen/small_size"
                     android:src="@drawable/x"
-                    android:visibility="gone" />
+                    android:visibility="gone"
+                    tools:ignore="RtlHardcoded" />
 
                 <ImageView
                     android:id="@+id/image2"
@@ -140,7 +144,7 @@
                     android:layout_width="32dp"
                     android:layout_height="32dp"
                     android:layout_gravity="center"
-                    android:src="@drawable/image" />
+                    android:src="@drawable/photo_add" />
 
             </androidx.cardview.widget.CardView>
 
@@ -164,20 +168,22 @@
 
                 <ImageView
                     android:id="@+id/image3_x"
-                    android:layout_width="@dimen/medium_size"
-                    android:layout_height="@dimen/medium_size"
+                    android:layout_width="26dp"
+                    android:layout_height="26dp"
                     android:layout_gravity="right"
+                    android:padding="5dp"
                     android:layout_marginTop="@dimen/small_size"
                     android:layout_marginRight="@dimen/small_size"
                     android:src="@drawable/x"
-                    android:visibility="gone" />
+                    android:visibility="gone"
+                    tools:ignore="RtlHardcoded" />
 
                 <ImageView
                     android:id="@+id/image3_placeholder"
                     android:layout_width="32dp"
                     android:layout_height="32dp"
                     android:layout_gravity="center"
-                    android:src="@drawable/image" />
+                    android:src="@drawable/photo_add" />
 
             </androidx.cardview.widget.CardView>
 

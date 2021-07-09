@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-<!--    <item>-->
-<!--        <shape android:shape="rectangle">-->
-<!--            <solid android:color="@android:color/white" />-->
-<!--        </shape>-->
-<!--    </item>-->
-<!--    <item>-->
-<!--        <bitmap android:gravity="center" android:src="@drawable/ic_baseline_home_24" />-->
-<!--    </item>-->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android"
+    android:opacity="opaque"> <!-- android:opacity="opaque" should be here -->
+    <item>
+        <!--this is your background, you can use color, gradient etc.-->
+        <color android:color="@color/white" />
+    </item>
+    <item>
+        <bitmap
+            android:gravity="center"
+            android:src="@drawable/app_icon" />
+    </item>
 </layer-list>

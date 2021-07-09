@@ -8,6 +8,7 @@ import com.pethiio.android.data.api.ResponseHandler
 import com.pethiio.android.data.api.ServiceBuilder
 import com.pethiio.android.data.model.*
 import com.pethiio.android.data.model.login.LoginRequest
+import com.pethiio.android.data.model.petDetail.PetImageResponse
 import com.pethiio.android.data.model.signup.PageData
 import com.pethiio.android.data.model.signup.Register
 import com.pethiio.android.data.model.signup.RegisterInfo
@@ -41,10 +42,10 @@ class RegisterBaseViewModel : ViewModel() {
     private val registerDetailLookUps = MutableLiveData<List<LookUpsResponse>>()
     private val addAnimalImageFields = MutableLiveData<List<PethiioResponse>>()
     private val addAnimalResponse = MutableLiveData<Resource<PageData>>()
-
     private val petAddDetail = MutableLiveData<AnimalDetailResponse>()
-
     private val petDetail = MutableLiveData<Resource<PetAdd>>()
+    private val petAddPhotos = MutableLiveData<Resource<List<PetImageResponse>>>()
+
 
     private val compositeDisposable = CompositeDisposable()
     private var accessToken: String = ""
@@ -82,8 +83,6 @@ class RegisterBaseViewModel : ViewModel() {
                             loginData.accessToken
                         PreferenceHelper.SharedPreferencesManager.getInstance().isLoggedIn =
                             true
-                        responseHandler.handleSuccess(Resource.success(loginData))
-
                         postLogin.postValue(Resource.success(loginData))
                     },
                     {
@@ -108,7 +107,7 @@ class RegisterBaseViewModel : ViewModel() {
                     registerFields.postValue(registerData.fields)
                     registerLookUps.postValue(registerData.lookups)
                 }, {
-                    register.postValue(Resource.error(it.message, null))
+                    register.postValue(responseHandler.handleException(it))
                 })
         )
     }
@@ -124,7 +123,7 @@ class RegisterBaseViewModel : ViewModel() {
                     registerDetailFields.postValue(registerData.fields)
                     registerDetailLookUps.postValue(registerData.lookups)
                 }, {
-                    register.postValue(Resource.error(it.message, null))
+                    register.postValue(responseHandler.handleException(it))
                 })
         )
     }
@@ -144,7 +143,7 @@ class RegisterBaseViewModel : ViewModel() {
 
                     },
                     {
-                        postRegister.postValue(Resource.error(it.message, null))
+                        postRegister.postValue(responseHandler.handleException(it))
                     }
                 )
         )
@@ -165,7 +164,7 @@ class RegisterBaseViewModel : ViewModel() {
                         postRegisterInfo.postValue(Resource.success(registerData))
                     },
                     {
-                        postRegisterInfo.postValue(Resource.error(it.message, null))
+                        postRegisterInfo.postValue(responseHandler.handleException(it))
                     }
                 )
         )
@@ -187,7 +186,7 @@ class RegisterBaseViewModel : ViewModel() {
                         postRegisterAvatar.postValue(Resource.success(registerData))
                     },
                     {
-                        postRegisterAvatar.postValue(Resource.error(it.message, null))
+                        postRegisterAvatar.postValue(responseHandler.handleException(it))
                     }
                 )
         )
@@ -196,7 +195,8 @@ class RegisterBaseViewModel : ViewModel() {
     //endregion
 
     //region Pet
-    fun fetchAnimalAddPhoto() {
+
+    fun fetchAnimalAddPhotoPageData() {
         register.postValue(Resource.loading(null))
         compositeDisposable.add(
             ServiceBuilder.buildService().getPetAddPhotoPageData()
@@ -220,7 +220,21 @@ class RegisterBaseViewModel : ViewModel() {
                 .subscribe({ registerData ->
                     addAnimalResponse.postValue(Resource.success(registerData))
                 }, {
-                    addAnimalResponse.postValue(Resource.error(it.message, null))
+                    addAnimalResponse.postValue(responseHandler.handleException(it))
+                })
+        )
+    }
+
+    fun fetchPetPhotos(petId: Int) {
+        petAddPhotos.postValue(Resource.loading(null))
+        compositeDisposable.add(
+            ServiceBuilder.buildService().getPetPhotos(petId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ registerData ->
+                    petAddPhotos.postValue(responseHandler.handleSuccess(registerData))
+                }, {
+                    petAddPhotos.postValue(responseHandler.handleException(it))
                 })
         )
     }
@@ -234,7 +248,7 @@ class RegisterBaseViewModel : ViewModel() {
                 .subscribe({ registerData ->
                     petListPageData.postValue(Resource.success(registerData.fields))
                 }, {
-                    petListPageData.postValue(Resource.error(it.message, null))
+                    petListPageData.postValue(responseHandler.handleException(it))
                 })
         )
     }
@@ -248,7 +262,7 @@ class RegisterBaseViewModel : ViewModel() {
                 .subscribe(fun(registerData: AnimalDetailResponse) {
                     petAddDetail.postValue(registerData)
                 }, {
-                    register.postValue(Resource.error(it.message, null))
+                    register.postValue(responseHandler.handleException(it))
                 })
         )
     }
@@ -273,7 +287,7 @@ class RegisterBaseViewModel : ViewModel() {
 
                     },
                     {
-                        postPetPhoto.postValue(Resource.error(it.message, null))
+                        postPetPhoto.postValue(responseHandler.handleException(it))
                     }
                 )
         )
@@ -292,11 +306,12 @@ class RegisterBaseViewModel : ViewModel() {
                         postPetAdd.postValue(Resource.success(registerData))
                     },
                     {
-                        postPetAdd.postValue(Resource.error(it.message, null))
+                        postPetAdd.postValue(responseHandler.handleException(it))
                     }
                 )
         )
     }
+
     fun postPetEdit(petEdit: PetEdit) {
         postPetEdit.postValue(Resource.loading(null))
         compositeDisposable.add(
@@ -309,7 +324,7 @@ class RegisterBaseViewModel : ViewModel() {
                         postPetEdit.postValue(Resource.success(registerData))
                     },
                     {
-                        postPetEdit.postValue(Resource.error(it.message, null))
+                        postPetEdit.postValue(responseHandler.handleException(it))
                     }
                 )
         )
@@ -326,7 +341,7 @@ class RegisterBaseViewModel : ViewModel() {
                         petDetail.postValue(Resource.success(registerData))
                     },
                     {
-                        petDetail.postValue(Resource.error(it.message, null))
+                        petDetail.postValue(responseHandler.handleException(it))
                     }
                 )
         )
@@ -344,7 +359,7 @@ class RegisterBaseViewModel : ViewModel() {
                         petList.postValue(Resource.success(registerData))
                     },
                     {
-                        petList.postValue(Resource.error(it.message, null))
+                        petList.postValue(responseHandler.handleException(it))
                     }
                 )
         )
@@ -370,6 +385,7 @@ class RegisterBaseViewModel : ViewModel() {
     fun getRegisterFields(): LiveData<List<PethiioResponse>> {
         return registerFields
     }
+
     fun getRegisterLookUps(): LiveData<List<LookUpsResponse>> {
         return registerLookUps
     }
@@ -386,8 +402,6 @@ class RegisterBaseViewModel : ViewModel() {
         return addAnimalImageFields
     }
 
-
-
     fun getPetAddPageData(): LiveData<Resource<PageData>> {
         return addAnimalResponse
     }
@@ -401,9 +415,15 @@ class RegisterBaseViewModel : ViewModel() {
     }
 
 
-
     fun getPetList(): LiveData<Resource<List<PetListResponse>>> {
         return petList
+    }
+
+    fun getPetPhotos(): LiveData<Resource<List<PetImageResponse>>> {
+        return petAddPhotos
+    }
+    fun getPostPetEdit(): LiveData<Resource<Response<Void>>> {
+        return postPetEdit
     }
 
     //endregion

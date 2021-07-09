@@ -2,7 +2,6 @@ package com.pethiio.android.ui.base
 
 import android.graphics.Color
 import android.os.Bundle
-import android.provider.SyncStateContract
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.TextUtils
@@ -18,7 +17,6 @@ import com.pethiio.android.data.model.signup.Register
 import com.pethiio.android.data.model.signup.RegisterInfo
 import com.pethiio.android.ui.main.view.MainActivity
 import com.pethiio.android.ui.main.viewmodel.signup.RegisterBaseViewModel
-import com.pethiio.android.utils.Constants
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import okhttp3.MultipartBody
@@ -225,7 +223,7 @@ abstract class RegisterBaseFragment<VModel : RegisterBaseViewModel> : Fragment()
     }
 
     open fun fetchAnimalAddPhoto() {
-        viewModel.fetchAnimalAddPhoto()
+        viewModel.fetchAnimalAddPhotoPageData()
     }
 
     open fun fetchPetAddPageData() {

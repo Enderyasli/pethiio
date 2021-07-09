@@ -13,6 +13,7 @@ import android.widget.*
 import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.pethiio.android.R
@@ -267,17 +268,41 @@ class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
     @SuppressLint("ResourceType")
     fun setUpObserver() {
 
+        viewModel.getPostPetEdit().observe(viewLifecycleOwner,{
+
+            when (it.status) {
+                Status.SUCCESS -> {
+                    activity?.runOnUiThread {
+                        val bundle = bundleOf("petId" to petId)
+
+                        if (findNavController().currentDestination?.id == R.id.navigation_pet_add)
+                            findNavController().navigate(
+                                R.id.action_navigation_pet_add_to_navigation_photo,
+                                bundle
+                            )
+                    }
+                }
+                Status.ERROR -> {
+                    it.message?.let { it1 -> CommonMethods.onSNACK(binding.root, it1.toString()) }
+
+                }
+                Status.LOADING -> {
+                }
+            }
+        })
 
         viewModel.postPetAdd.observe(viewLifecycleOwner, {
             when (it.status) {
                 Status.SUCCESS -> {
                     activity?.runOnUiThread {
+
                         if (findNavController().currentDestination?.id == R.id.navigation_pet_add)
-                            findNavController().navigate(R.id.action_navigation_pet_add_to_navigation_photo)
+                            findNavController().navigate(
+                                R.id.action_navigation_pet_add_to_navigation_photo)
                     }
                 }
                 Status.ERROR -> {
-                    Toast.makeText(requireContext(), it.message, Toast.LENGTH_LONG).show()
+                    it.message?.let { it1 -> CommonMethods.onSNACK(binding.root, it1.toString()) }
                 }
                 Status.LOADING -> {
                 }

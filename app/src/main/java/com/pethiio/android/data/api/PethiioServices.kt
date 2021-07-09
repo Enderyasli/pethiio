@@ -11,6 +11,7 @@ import com.pethiio.android.data.model.member.LocationsRequest
 import com.pethiio.android.data.model.member.MemberListResponse
 import com.pethiio.android.data.model.member.PetSearchRequest
 import com.pethiio.android.data.model.member.PetSearchResponse
+import com.pethiio.android.data.model.petDetail.PetImageResponse
 import com.pethiio.android.data.model.petDetail.PetSearchDetailResponse
 import com.pethiio.android.data.model.petDetail.PetSearchOwnerDetailResponse
 import com.pethiio.android.data.model.report.ReportRequest
@@ -79,6 +80,12 @@ interface PethiioServices {
 
     @GET("page/pet-add/animal-detail/{animalId}")
     fun getAnimalDetail(@Path("animalId") animalId: String): Observable<AnimalDetailResponse>
+
+
+    @GET("page/pet-add-photo/{petId}")
+    fun getPetPhotos(
+        @Path("petId") petId: Int
+    ): Observable<List<PetImageResponse>>
 
 
     @GET("page/pet-list")
@@ -209,7 +216,6 @@ interface PethiioServices {
 
     @POST("page/change-password")
     fun postChangePass(@Body changePassRequest: ChangePassRequest): Observable<AccessToken>
-
 
 
     //endregion
