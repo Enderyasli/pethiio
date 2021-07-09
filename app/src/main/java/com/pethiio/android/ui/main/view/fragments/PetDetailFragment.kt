@@ -14,6 +14,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.pethiio.android.R
+import com.pethiio.android.data.EventBus.ChatEvent
+import com.pethiio.android.data.EventBus.LikeEvent
 import com.pethiio.android.data.model.petDetail.PetSearchDetailResponse
 import com.pethiio.android.data.model.petDetail.PetSearchOwnerDetailResponse
 import com.pethiio.android.databinding.FragmentPetDetailBinding
@@ -24,6 +26,7 @@ import com.pethiio.android.ui.main.adapter.ViewPagerAdapter
 import com.pethiio.android.ui.main.viewmodel.PetDetailViewModel
 import com.pethiio.android.utils.Constants
 import com.pethiio.android.utils.Status
+import org.greenrobot.eventbus.EventBus
 import java.lang.reflect.Method
 
 
@@ -129,6 +132,19 @@ class PetDetailFragment : BaseFragment() {
                 Status.LOADING -> {
                     binding.progressBar.visibility = View.VISIBLE
                 }
+            }
+
+            binding.skipButton.setOnClickListener {
+
+                findNavController().navigateUp()
+                Handler().postDelayed({EventBus.getDefault().post(LikeEvent(false))}, 500)
+            }
+            binding.likeButton.setOnClickListener {
+
+                findNavController().navigateUp()
+                Handler().postDelayed({EventBus.getDefault().post(LikeEvent(true))}, 500)
+
+
             }
 
 

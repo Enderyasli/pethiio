@@ -30,6 +30,7 @@ import com.google.android.gms.tasks.Task
 import com.pethiio.android.R
 import com.pethiio.android.data.EventBus.ChatEvent
 import com.pethiio.android.data.EventBus.FilterEvent
+import com.pethiio.android.data.EventBus.LikeEvent
 import com.pethiio.android.data.model.member.LocationsRequest
 import com.pethiio.android.data.model.member.MemberListResponse
 import com.pethiio.android.data.model.member.PetSearchRequest
@@ -413,7 +414,7 @@ class DashboardFragment : BaseFragment(), CardStackListener,
             old?.let { addAll(it) }
 
 
-                manager?.topPosition?.minus(1)?.let { removeAt(it) }
+            manager?.topPosition?.minus(1)?.let { removeAt(it) }
 
 //            removeAt(manager.topPosition-1)
 
@@ -501,11 +502,25 @@ class DashboardFragment : BaseFragment(), CardStackListener,
     fun onEvent(event: FilterEvent?) {
         viewModel.fetchFilterList()
         viewModel.fetchPetSearch(memberId)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: LikeEvent?) {
+        var direction: Direction = Direction.Left
+        direction = if (event?.like == true)
+            Direction.Right
+        else
+            Direction.Left
 
 
-//        CommonFunctions.goWelcome(findNavController())
-//        findNavController().navigate(R.id.navigation_welcome, null)
-//        Toast.makeText(context, "event", Toast.LENGTH_LONG).show()
+        val setting = SwipeAnimationSetting.Builder()
+            .setDirection(direction)
+            .setDuration(Duration.Normal.duration)
+            .setInterpolator(AccelerateInterpolator())
+            .build()
+        manager?.setSwipeAnimationSetting(setting)
+        binding.cardStackView.swipe()
+
     }
 
     override fun onDestroy() {
@@ -527,8 +542,8 @@ class DashboardFragment : BaseFragment(), CardStackListener,
         }
 
         val petSearch = manager?.topPosition?.let {
-            if( adapter?.getPetSearchList()?.size==1)
-            adapter?.getPetSearchList()?.get(0)
+            if (adapter?.getPetSearchList()?.size == 1)
+                adapter?.getPetSearchList()?.get(0)
             else
                 adapter?.getPetSearchList()?.get(it)
 
