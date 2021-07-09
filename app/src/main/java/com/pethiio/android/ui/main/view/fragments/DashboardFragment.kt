@@ -429,6 +429,9 @@ class DashboardFragment : BaseFragment(), CardStackListener,
     fun setMembeListSpinner(memberListResponse: List<MemberListResponse>) {
         val customAdapter = MemberListSpinner(requireContext(), memberListResponse)
 
+        if (PreferenceHelper.SharedPreferencesManager.getInstance().selectedSpinnerId <= memberListResponse.size)
+            selectedMemberId =
+                PreferenceHelper.SharedPreferencesManager.getInstance().selectedSpinnerId
         if (isSelectedMemberFirstTime)
             with(binding.memberlistSpinner)
             {
@@ -507,10 +510,10 @@ class DashboardFragment : BaseFragment(), CardStackListener,
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: LikeEvent?) {
         var direction: Direction = Direction.Left
-        direction = if (event?.like == true)
-            Direction.Right
+        if (event?.like == true)
+            direction = Direction.Right
         else
-            Direction.Left
+            direction = Direction.Left
 
 
         val setting = SwipeAnimationSetting.Builder()
@@ -593,6 +596,8 @@ class DashboardFragment : BaseFragment(), CardStackListener,
                     memberId = it
                     PreferenceHelper.SharedPreferencesManager.getInstance().memberId = it
                     selectedMemberId = position
+                    PreferenceHelper.SharedPreferencesManager.getInstance().selectedSpinnerId = selectedMemberId
+
                 }
 
             }

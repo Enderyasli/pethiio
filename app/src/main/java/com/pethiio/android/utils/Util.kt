@@ -55,6 +55,10 @@ public object PreferenceHelper {
             get() = sharedPreferences.getInt(MEMBER_ID, 0)
             set(value) = sharedPreferences.edit().putInt(MEMBER_ID, value).apply()
 
+        public var selectedSpinnerId: Int //main tabs spinners
+            get() = sharedPreferences.getInt(SPINNER_ID, 0)
+            set(value) = sharedPreferences.edit().putInt(SPINNER_ID, value).apply()
+
 
         public var isLoggedIn: Boolean?
             get() = sharedPreferences.getBoolean(IS_LOGGED_IN, false)
@@ -70,6 +74,7 @@ public object PreferenceHelper {
             private const val IS_LOGGED_IN = "loginState"
             private const val PET_ID = "pet_id"
             private const val MEMBER_ID = "member_id"
+            private const val SPINNER_ID = "spinner_id"
             private var instance: SharedPreferencesManager? = null
 
             @Synchronized

@@ -84,6 +84,9 @@ class MessageFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
     fun setMembeListSpinner(memberListResponse: List<MemberListResponse>) {
         val customAdapter = MemberListSpinner(requireContext(), memberListResponse)
 
+        if (PreferenceHelper.SharedPreferencesManager.getInstance().selectedSpinnerId <= memberListResponse.size)
+            selectedMemberId =
+                PreferenceHelper.SharedPreferencesManager.getInstance().selectedSpinnerId
         if (isSelectedMemberFirstTime)
             with(binding.memberlistSpinner)
             {
@@ -201,6 +204,8 @@ class MessageFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
                     memberId = it
                     PreferenceHelper.SharedPreferencesManager.getInstance().memberId = it
                     selectedMemberId = position
+                    PreferenceHelper.SharedPreferencesManager.getInstance().selectedSpinnerId = selectedMemberId
+
                 }
 
             }
