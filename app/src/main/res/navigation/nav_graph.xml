@@ -36,9 +36,10 @@
             android:id="@+id/action_navigation_welcome_to_navigation_signup"
             app:destination="@id/navigation_register"
             app:enterAnim="@anim/slide_left"
-            app:popExitAnim="@anim/slide_right" />
+          />
         <action
             android:id="@+id/action_navigation_welcome_to_navigation_login"
+            app:enterAnim="@anim/slide_left"
             app:destination="@id/navigation_login" />
     </fragment>
 
@@ -64,6 +65,7 @@
 
         <action
             android:id="@+id/action_navigation_register_to_navigation_register_detail"
+            app:enterAnim="@anim/slide_left"
             app:destination="@id/navigation_register_detail" />
     </fragment>
     <fragment
@@ -75,6 +77,7 @@
         <action
             android:id="@+id/action_navigation_register_detail_to_navigation_add_animal"
             app:destination="@id/navigation_pet_add"
+            app:enterAnim="@anim/slide_left"
             app:launchSingleTop="true"
             app:popUpToInclusive="true" />
         <action
@@ -93,6 +96,7 @@
             android:id="@+id/action_navigation_pet_add_to_navigation_photo"
             app:destination="@id/navigation_pet_add_photo"
             app:launchSingleTop="true"
+            app:enterAnim="@anim/slide_left"
             app:popUpTo="@id/navigation_home"
             app:popUpToInclusive="true" />
     </fragment>

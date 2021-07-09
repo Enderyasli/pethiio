@@ -55,9 +55,9 @@
                 android:layout_marginRight="@dimen/default_margin"
                 android:layout_marginBottom="3dp"
                 android:fontFamily="@font/typo_round_bold"
-                android:text="@string/sign_up"
+                tools:text="@string/sign_up"
                 android:textColor="@color/orangeButton"
-                android:textSize="40dp" />
+                android:textSize="40sp" />
 
             <TextView
                 android:id="@+id/signup_description"
@@ -67,9 +67,9 @@
                 android:layout_marginTop="200dp"
                 android:layout_marginRight="@dimen/default_margin"
                 android:fontFamily="@font/typo_round_regular"
-                android:text="@string/signup_description"
+                tools:text="Kayıt olmak için kendinle ilgili bilgileri gir."
                 android:textColor="@color/grey"
-                android:textSize="22dp" />
+                android:textSize="22sp" />
 
         </FrameLayout>
 
@@ -108,7 +108,7 @@
                     android:layout_marginLeft="@dimen/margin_minimum"
                     android:layout_marginRight="@dimen/margin_minimum"
                     android:fontFamily="@font/typo_round_bold"
-                    android:text="Ad *"
+                    tools:text="Ad *"
                     android:textColor="@color/input_text_color"
                     android:textSize="14sp" />
 
@@ -130,7 +130,7 @@
                         android:background="@drawable/common_input_btn_bg"
                         android:fontFamily="@font/typo_round_regular"
                         android:gravity="center_vertical"
-                        android:hint="Ad"
+                        tools:hint="Ad"
                         android:paddingLeft="15dp"
                         android:textColor="@color/black"
                         android:textColorHint="@color/hint_text_color"
@@ -156,7 +156,7 @@
                         android:layout_marginTop="@dimen/default_margin"
                         android:layout_marginRight="@dimen/margin_minimum"
                         android:fontFamily="@font/typo_round_bold"
-                        android:text="Şifre"
+                        tools:text="Şifre"
                         android:textColor="@color/input_text_color"
                         android:textSize="14sp" />
 
@@ -173,7 +173,7 @@
                         android:layout_marginTop="@dimen/default_margin"
                         android:layout_marginRight="@dimen/margin_minimum"
                         android:fontFamily="@font/typo_round_bold"
-                        android:text="Şifre 1'i büyük 8 karakterden oluşmalı"
+                        tools:text="Şifre 1'i büyük 8 karakterden oluşmalı"
                         android:textColor="@color/input_text_color"
                         android:textSize="10sp" />
 
@@ -198,12 +198,13 @@
                         android:background="@drawable/common_input_btn_bg"
                         android:fontFamily="@font/typo_round_regular"
                         android:gravity="center_vertical"
-                        android:hint="Password"
+                        tools:hint="Password"
                         android:inputType="textPassword"
                         android:paddingStart="15dp"
                         android:textColor="@color/black"
                         android:textColorHint="@color/hint_text_color"
-                        android:textSize="14sp" />
+                        android:textSize="14sp"
+                        tools:ignore="RtlSymmetry" />
 
 
                 </androidx.cardview.widget.CardView>
@@ -217,7 +218,7 @@
                     android:layout_marginRight="@dimen/margin_minimum"
                     android:fontFamily="@font/typo_round_bold"
                     android:gravity="right"
-                    android:text="@string/forgot_password"
+                    tools:text="@string/forgot_password"
                     android:textColor="@color/input_text_color"
                     android:textSize="@dimen/medium_size" />
             </LinearLayout>
@@ -239,7 +240,7 @@
                     android:id="@+id/terms_link_title_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Kullanım Koşulları "
+                    tools:text="Kullanım Koşulları "
                     android:textColor="@color/orangeButton"
                     android:textSize="11sp" />
 
@@ -247,7 +248,7 @@
                     android:id="@+id/terms_and_title_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="ve "
+                    tools:text="ve "
                     android:textColor="@color/input_text_color"
                     android:textSize="11sp" />
 
@@ -255,7 +256,7 @@
                     android:id="@+id/privacy_title_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Gizlilik Sözleşmesi'ni "
+                    tools:text="Gizlilik Sözleşmesi'ni "
                     android:textColor="@color/orangeButton"
                     android:textSize="11sp" />
 
@@ -263,7 +264,7 @@
                     android:id="@+id/privacy_approve_title_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="onaylıyorum"
+                    tools:text="onaylıyorum"
                     android:textColor="@color/input_text_color"
                     android:textSize="11sp" />
             </LinearLayout>
@@ -278,7 +279,7 @@
                 android:layout_marginBottom="50dp"
                 android:background="@drawable/disabled_button_bg"
                 android:fontFamily="@font/typo_round_bold"
-                android:text="@string/sign_up"
+                tools:text="@string/sign_up"
                 android:textAllCaps="false"
                 android:textColor="@color/disabled_button_color"
                 android:textSize="16dp" />

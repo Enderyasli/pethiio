@@ -10,19 +10,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import com.bigkoo.pickerview.builder.TimePickerBuilder
 import com.bumptech.glide.Glide
-import com.google.android.material.snackbar.Snackbar
 import com.pethiio.android.R
 import com.pethiio.android.data.model.signup.RegisterInfo
 import com.pethiio.android.databinding.FragmentRegisterDetailBinding
 import com.pethiio.android.ui.base.RegisterBaseFragment
 import com.pethiio.android.ui.main.viewmodel.signup.RegisterBaseViewModel
+import com.pethiio.android.utils.CommonMethods
 import com.pethiio.android.utils.Constants
-import com.pethiio.android.utils.PreferenceHelper
 import com.pethiio.android.utils.Status
 import com.theartofdev.edmodo.cropper.CropImage
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -115,11 +113,7 @@ class RegisterDetailFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
             )
 
             if (valid && !validSpinner) {
-                Toast.makeText(
-                    requireContext(),
-                    getLocalizedString(Constants.genderEmtpyError),
-                    Toast.LENGTH_LONG
-                ).show()
+                CommonMethods.onSNACK(binding.root, getLocalizedString(Constants.genderEmtpyError))
                 return@setOnClickListener
 
             }
@@ -173,11 +167,8 @@ class RegisterDetailFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
 
                                                 }
                                                 Status.ERROR -> {
-                                                    Toast.makeText(
-                                                        requireContext(),
-                                                        it1.message,
-                                                        Toast.LENGTH_LONG
-                                                    ).show()
+                                                    CommonMethods.onSNACK(binding.root, it1.message.toString())
+
 
                                                 }
                                                 Status.LOADING -> {
@@ -186,11 +177,9 @@ class RegisterDetailFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
                                         })
 
                                 } else {
-                                    Snackbar.make(
-                                        binding.root,
-                                        getLocalizedString(Constants.imageEmtpyError),
-                                        Snackbar.LENGTH_LONG
-                                    ).show()
+                                    CommonMethods.onSNACK(binding.root,  getLocalizedString(Constants.imageEmtpyError))
+
+
                                     binding.imagePlaceholder.requestFocus()
                                 }
 
@@ -198,8 +187,7 @@ class RegisterDetailFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
 
                         }
                         Status.ERROR -> {
-                            Toast.makeText(requireContext(), it.message, Toast.LENGTH_LONG)
-                                .show()
+                            CommonMethods.onSNACK(binding.root, it.message.toString())
 
                         }
                         Status.LOADING -> {
@@ -229,11 +217,7 @@ class RegisterDetailFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
             )
 
             if (valid && !validSpinner) {
-                Toast.makeText(
-                    requireContext(),
-                    getLocalizedString(Constants.genderEmtpyError),
-                    Toast.LENGTH_LONG
-                ).show()
+                CommonMethods.onSNACK(binding.root, getLocalizedString(Constants.genderEmtpyError))
                 return@setOnClickListener
 
             }
@@ -281,11 +265,8 @@ class RegisterDetailFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
 
 
                                                 Status.ERROR -> {
-                                                    Toast.makeText(
-                                                        requireContext(),
-                                                        it1.message,
-                                                        Toast.LENGTH_LONG
-                                                    ).show()
+                                                    CommonMethods.onSNACK(binding.root, it.message.toString())
+
 
                                                 }
                                                 Status.LOADING -> {
@@ -294,11 +275,9 @@ class RegisterDetailFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
                                         })
 
                                 } else {
-                                    Snackbar.make(
-                                        binding.root,
-                                        getLocalizedString(Constants.imageEmtpyError),
-                                        Snackbar.LENGTH_LONG
-                                    ).show()
+
+                                    CommonMethods.onSNACK(binding.root, getLocalizedString(Constants.imageEmtpyError))
+
                                     binding.imagePlaceholder.requestFocus()
                                 }
 
@@ -306,8 +285,9 @@ class RegisterDetailFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
 
                         }
                         Status.ERROR -> {
-                            Toast.makeText(requireContext(), it.message, Toast.LENGTH_LONG)
-                                .show()
+                            CommonMethods.onSNACK(binding.root, it.message.toString())
+
+
 
                         }
                         Status.LOADING -> {

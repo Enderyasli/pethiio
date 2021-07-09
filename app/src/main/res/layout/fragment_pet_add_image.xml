@@ -19,7 +19,7 @@
             android:layout_marginTop="@dimen/signup_title_top_margin"
             android:layout_marginRight="@dimen/default_margin"
             android:fontFamily="@font/typo_round_bold"
-            android:text="@string/add_photo"
+            tools:text="Fotograf ekle"
             android:textColor="@color/orangeButton"
             android:textSize="@dimen/signup_title_size" />
 

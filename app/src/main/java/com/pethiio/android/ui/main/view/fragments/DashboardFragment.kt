@@ -121,6 +121,7 @@ class DashboardFragment : BaseFragment(), CardStackListener,
         isSelectedMemberFirstTime = true
 
 
+
         setupUI()
 //        val socketIO = SocketIO()
 //        socketIO.main()
@@ -147,12 +148,13 @@ class DashboardFragment : BaseFragment(), CardStackListener,
 
     @SuppressLint("MissingPermission")
     private fun requestCurrentLocation() {
+
         val currentLocationTask: Task<Location> = fusedLocationClient.getCurrentLocation(
             LocationRequest.PRIORITY_HIGH_ACCURACY,
             cancellationTokenSource.token
         )
 
-        //samsung da izin aldıktan sonra giriyor
+//        samsung da izin aldıktan sonra giriyor
 
         currentLocationTask.addOnCompleteListener { task: Task<Location> ->
             if (task.isSuccessful && task.result != null) {
@@ -336,6 +338,8 @@ class DashboardFragment : BaseFragment(), CardStackListener,
 
     private fun setupUI() {
 
+        binding.progressBar.visibility=View.VISIBLE
+
 
         binding.noResultImg.setAnimation("evim.json")
         setupButton()
@@ -384,7 +388,6 @@ class DashboardFragment : BaseFragment(), CardStackListener,
                     binding.petEmptyErrorTv.text =
                         getLocalizedString(Constants.petSearchEmptyMessageTitle, fields)
 
-                    binding.progressBar.visibility = View.GONE
 
                 }
 

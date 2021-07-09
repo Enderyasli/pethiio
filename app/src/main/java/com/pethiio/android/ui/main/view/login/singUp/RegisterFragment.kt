@@ -10,7 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.Toast
+
 import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import com.pethiio.android.R
@@ -18,9 +18,7 @@ import com.pethiio.android.data.model.signup.Register
 import com.pethiio.android.databinding.FragmentRegisterBinding
 import com.pethiio.android.ui.base.RegisterBaseFragment
 import com.pethiio.android.ui.main.viewmodel.signup.RegisterBaseViewModel
-import com.pethiio.android.utils.Constants
-import com.pethiio.android.utils.PreferenceHelper
-import com.pethiio.android.utils.Status
+import com.pethiio.android.utils.*
 import java.util.regex.Pattern
 
 
@@ -62,7 +60,6 @@ class RegisterFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
                 getLocalizedSpan(Constants.registerEmailTitle)
             binding.emailPlaceholderTv.hint =
                 getLocalizedString(Constants.registerEmailPlaceholder)
-            binding.emailPlaceholderTv.setText("@gmail.com")
             binding.passwordTitleTv.text =
                 getLocalizedSpan(Constants.registerPasswordTitle)
             binding.passwordDetailTv.text =
@@ -222,7 +219,7 @@ class RegisterFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
 
                         }
                         Status.ERROR -> {
-                            Toast.makeText(requireContext(), it.message, Toast.LENGTH_LONG).show()
+                            CommonMethods.onSNACK(binding.root, it.message.toString())
 
                         }
                         Status.LOADING -> {

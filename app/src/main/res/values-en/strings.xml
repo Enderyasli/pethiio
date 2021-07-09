@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Pethiio</string>
+    <string name="Welcome" translatable="false">Welcome!</string>
+    <string name="next" translatable="false">Next</string>
+    <string name="title_onboarding_3">Find a Companion</string>
+    <string name="title_onboarding_1" translatable="false">Find a Partner</string>
+    <string name="title_onboarding_2">Appropriate</string>
+    <string name="skip" translatable="false">Skip</string>
+    <string name="welcome_description">To register, enter your information about yourself.</string>
+    <string name="login">Login</string>
+    <string name="sign_up">Register</string>
+    <string name="bottom_menu_message">Messages</string>
+    <string name="select_purpose">Select Purpose</string>
+    <string name="select_character">Select Character</string>
+    <string name="lcl_apply_datepicker">Done</string>
+    <string name="lcl_cancel_datepicker">Cancel</string>
+    <string name="complete" translatable="false">Complete</string>
+    <string name="bottom_menu_home">Home</string>
+</resources>

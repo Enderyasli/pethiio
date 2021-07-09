@@ -9,21 +9,24 @@
 
     <ImageView
         android:id="@+id/img_onboard"
-        android:scaleType="centerCrop"
-        android:src="@drawable/onboard1"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/onboard1" />
+
     <TextView
-        android:maxLines="2"
         android:id="@+id/titleTv"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginLeft="@dimen/default_margin"
         android:layout_marginTop="50dp"
         android:layout_marginRight="@dimen/default_margin"
-        android:text="Çiftleştir"
+        android:fontFamily="@font/typo_round_bold"
+        android:letterSpacing="0.01"
+        android:maxLines="2"
+        tools:text="Arkadaş Bul"
         android:textColor="@color/white"
-        android:textSize="76dp" />
+        android:textSize="76sp" />
 
 </RelativeLayout>
