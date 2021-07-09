@@ -1,6 +1,7 @@
 package com.pethiio.android.ui.main.view.login.singUp
 
 import android.content.Intent
+import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.text.TextUtils
@@ -13,12 +14,16 @@ import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.SimpleTarget
+import com.bumptech.glide.request.transition.Transition
 import com.pethiio.android.R
 import com.pethiio.android.data.model.petDetail.PetImageResponse
 import com.pethiio.android.databinding.FragmentPetAddImageBinding
 import com.pethiio.android.ui.base.RegisterBaseFragment
 import com.pethiio.android.ui.main.viewmodel.signup.RegisterBaseViewModel
+import com.pethiio.android.utils.CommonFunctions
 import com.pethiio.android.utils.Constants
+import com.pethiio.android.utils.PreferenceHelper
 import com.pethiio.android.utils.Status
 import com.theartofdev.edmodo.cropper.CropImage
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -36,6 +41,7 @@ class PetAddImageFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
     var uri1: String = ""
     var uri2: String = ""
     var uri3: String = ""
+
     private var petId: String? = ""
 
 
@@ -53,7 +59,10 @@ class PetAddImageFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
         })
 
 
-        petId?.toIntOrNull()?.let { viewModel.fetchPetPhotos(it) }
+        petId?.toIntOrNull()?.let {
+            viewModel.fetchPetPhotos(it)
+            PreferenceHelper.SharedPreferencesManager.getInstance().petId = it
+        }
 
         viewModel.getPetPhotos().observe(viewLifecycleOwner, {
 
@@ -189,8 +198,14 @@ class PetAddImageFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
                                                 when (it.status) {
                                                     Status.SUCCESS -> {
                                                         activity?.runOnUiThread {
-                                                            if (findNavController().currentDestination?.id == R.id.navigation_pet_add_photo)
-                                                                findNavController().navigate(R.id.action_navigation_pet_add_image_to_navigation_animal_list)
+                                                            if (petId == null) {
+
+
+                                                                if (findNavController().currentDestination?.id == R.id.navigation_pet_add_photo)
+                                                                    findNavController().navigate(R.id.action_navigation_pet_add_image_to_navigation_animal_list)
+                                                            } else
+                                                                if (findNavController().currentDestination?.id == R.id.navigation_pet_add_photo)
+                                                                    findNavController().navigate(R.id.action_navigation_pet_add_photo_to_navigation_main)
                                                         }
                                                     }
                                                     Status.ERROR -> {
@@ -254,15 +269,33 @@ class PetAddImageFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
                     .load(uri1)
                     .into(binding.imageView)
 
-                setImageHolder(uri1, binding.image1, binding.image1Placeholder, binding.image1X)
+                setImageHolder(
+                    uri1,
+                    binding.image1,
+                    binding.image1Placeholder,
+                    binding.image1X,
+                    "uri1.png"
+                )
             }
             if (images.size >= 2 && images[1].indexOrder == 1) {
                 uri2 = images[1].path
-                setImageHolder(uri2, binding.image2, binding.image2Placeholder, binding.image2X)
+                setImageHolder(
+                    uri2,
+                    binding.image2,
+                    binding.image2Placeholder,
+                    binding.image2X,
+                    "uri2.png"
+                )
             }
             if (images.size >= 3 && images[2].indexOrder == 2) {
                 uri3 = images[2].path
-                setImageHolder(uri3, binding.image3, binding.image3Placeholder, binding.image3X)
+                setImageHolder(
+                    uri3,
+                    binding.image3,
+                    binding.image3Placeholder,
+                    binding.image3X,
+                    "uri3.png"
+                )
             }
 
         }
@@ -340,7 +373,7 @@ class PetAddImageFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
         uri: String,
         imageView: ImageView,
         imagePlaceholder: ImageView,
-        imageX: ImageView
+        imageX: ImageView, fileName: String
     ) {
 
         Glide.with(requireContext())
@@ -350,7 +383,30 @@ class PetAddImageFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
         imagePlaceholder.visibility = View.GONE
         imageX.visibility = View.VISIBLE
 
+
+        Glide.with(imageView)
+            .asBitmap().load(uri).into(object : SimpleTarget<Bitmap?>() {
+
+                override fun onResourceReady(
+                    resource: Bitmap,
+                    transition: Transition<in Bitmap?>?
+                ) {
+
+                    val filesDir = requireActivity().filesDir.toString() + "/petImages"
+
+                    if (fileName == "uri1.png")
+                        uri1 = CommonFunctions.saveImage(filesDir, fileName, resource)
+                    if (fileName == "uri2.png")
+                        uri2 = CommonFunctions.saveImage(filesDir, fileName, resource)
+                    if (fileName == "uri3.png")
+                        uri3 = CommonFunctions.saveImage(filesDir, fileName, resource)
+
+                }
+            })
+
+
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

@@ -271,6 +271,7 @@ adipiscing elit. Dictumst sed dignissim duis vitae.  Diam pharetra, mauris." />
                 android:src="@color/white" />
 
             <ImageView
+                android:layout_gravity="center"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@drawable/back_arrow" />

@@ -88,6 +88,13 @@ interface PethiioServices {
     ): Observable<List<PetImageResponse>>
 
 
+    @Multipart
+    @POST("page/pet-add-photo/{animalId}")
+    fun postPetPhotoEdit(
+        @Path("animalId") animalId: Int,
+        @Part files: List<MultipartBody.Part?>
+    ): Observable<Response<Void>>
+
     @GET("page/pet-list")
     fun getPetList(): Observable<List<PetListResponse>>
 

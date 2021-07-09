@@ -60,11 +60,14 @@ class PetListFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
 
             viewModel.getPetList().observe(viewLifecycleOwner, {
 
-                val list2 = ArrayList<PetListResponse>(it.data)
+                if(it.data!=null){
+                    val list2 = ArrayList<PetListResponse>(it.data)
 
-                binding.petlistRv.layoutManager = GridLayoutManager(requireContext(), 2)
-                val adapter = PetListAdapter(requireContext(),findNavController(), list2, getLocalizedString(Constants.animalListAddNewTitle))
-                binding.petlistRv.adapter = adapter
+                    binding.petlistRv.layoutManager = GridLayoutManager(requireContext(), 2)
+                    val adapter = PetListAdapter(requireContext(),findNavController(), list2, getLocalizedString(Constants.animalListAddNewTitle))
+                    binding.petlistRv.adapter = adapter
+                }
+
 
             })
 

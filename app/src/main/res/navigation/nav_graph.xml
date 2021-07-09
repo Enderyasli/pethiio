@@ -107,6 +107,9 @@
         <action
             android:id="@+id/action_navigation_pet_add_image_to_navigation_animal_list"
             app:destination="@id/navigation_animal_list" />
+        <action
+            android:id="@+id/action_navigation_pet_add_photo_to_navigation_main"
+            app:destination="@id/navigation_main" />
     </fragment>
 
 
