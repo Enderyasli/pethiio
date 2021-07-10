@@ -211,57 +211,13 @@ class DashboardFragment : BaseFragment(), CardStackListener,
                 Manifest.permission.ACCESS_COARSE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) {
-            CommonMethods.onSNACK(binding.root,getString(R.string.accept_gps_error))
+            CommonMethods.onSNACK(binding.root,getString(R.string.no_location_detected))
             //main activityde handle edildi
         } else {
-            createLocationRequest()
         }
     }
 
-    @SuppressLint("MissingPermission")
-    fun createLocationRequest() {
 
-        if (findNavController().currentDestination?.id == R.id.navigation_dashboard) {
-
-            val locationRequest = LocationRequest.create().apply {
-                interval = 3000
-                fastestInterval = 1500
-                priority = LocationRequest.PRIORITY_HIGH_ACCURACY
-            }
-            val builder = LocationSettingsRequest.Builder()
-                .addLocationRequest(locationRequest)
-
-            val client: SettingsClient = LocationServices.getSettingsClient(requireContext())
-            val task: Task<LocationSettingsResponse> = client.checkLocationSettings(builder.build())
-
-
-
-            task.addOnCompleteListener {
-                try {
-                    task.getResult(ApiException::class.java)
-
-
-                } catch (e: ApiException) {
-                    when (e.statusCode) {
-                        LocationSettingsStatusCodes.RESOLUTION_REQUIRED -> {
-                            if (e is ResolvableApiException) {
-
-                                try {
-                                    e.startResolutionForResult(requireActivity(), 6989)
-                                } catch (sendEx: IntentSender.SendIntentException) {
-                                    Log.e("sednex", sendEx.toString())
-
-                                }
-                            }
-                        }
-                    }
-
-
-                }
-            }
-
-        }
-    }
 
     override fun onStart() {
         super.onStart()
@@ -333,7 +289,6 @@ class DashboardFragment : BaseFragment(), CardStackListener,
                         )
                         == PackageManager.PERMISSION_GRANTED
                     ) {
-                        createLocationRequest()
 
                         findNavController().navigateUp()
 
@@ -508,7 +463,7 @@ class DashboardFragment : BaseFragment(), CardStackListener,
     fun setMembeListSpinner(memberListResponse: List<MemberListResponse>) {
         val customAdapter = MemberListSpinner(requireContext(), memberListResponse)
 
-        if (PreferenceHelper.SharedPreferencesManager.getInstance().selectedSpinnerId <= memberListResponse.size)
+        if (PreferenceHelper.SharedPreferencesManager.getInstance().selectedSpinnerId <= memberListResponse.size-1)
             selectedMemberId =
                 PreferenceHelper.SharedPreferencesManager.getInstance().selectedSpinnerId
         if (isSelectedMemberFirstTime)

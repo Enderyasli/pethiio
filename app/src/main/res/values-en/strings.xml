@@ -17,4 +17,5 @@
     <string name="lcl_cancel_datepicker">Cancel</string>
     <string name="complete" translatable="false">Complete</string>
     <string name="bottom_menu_home">Home</string>
+    <string name="no_location_detected" translatable="false">No location detected. Make sure location is enabled on the device.</string>
 </resources>

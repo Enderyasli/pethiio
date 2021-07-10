@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import com.pethiio.android.R
 import com.pethiio.android.data.model.login.ChangePassRequest
 import com.pethiio.android.databinding.FragmentChangePasswordBinding
@@ -44,6 +45,10 @@ class ChangePasswordFragment : BaseFragment() {
     ): View {
         _binding = FragmentChangePasswordBinding.inflate(inflater, container, false)
         val view = binding.root
+
+        binding.backBtn.setOnClickListener {
+            findNavController().navigateUp()
+        }
 
         setupViewModel()
         setUpObserver()

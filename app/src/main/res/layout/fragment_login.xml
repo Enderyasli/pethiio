@@ -85,6 +85,7 @@
                         android:textColor="@color/black"
                         android:textColorHint="@color/hint_text_color"
                         tools:hint="Password"
+                        android:paddingEnd="40dp"
                         tools:ignore="RtlSymmetry" />
 
                     <ImageView

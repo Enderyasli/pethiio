@@ -151,6 +151,7 @@ class MainActivity : AppCompatActivity() {
                         )
                         == PackageManager.PERMISSION_GRANTED
                     ) {
+                        createLocationRequest()
 
                         navController?.navigateUp()
 
@@ -175,11 +176,58 @@ class MainActivity : AppCompatActivity() {
                 Manifest.permission.ACCESS_COARSE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) {
-
             if (PreferenceHelper.SharedPreferencesManager.getInstance().isLoggedIn == true)
                 navController?.navigate(R.id.navigation_location)
+        }
+        else{
+            createLocationRequest()
 
         }
     }
+    @SuppressLint("MissingPermission")
+    fun createLocationRequest() {
+
+        if (navController?.currentDestination?.id == R.id.navigation_dashboard) {
+
+            val locationRequest = LocationRequest.create().apply {
+                interval = 3000
+                fastestInterval = 1500
+                priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+            }
+            val builder = LocationSettingsRequest.Builder()
+                .addLocationRequest(locationRequest)
+
+            val client: SettingsClient = LocationServices.getSettingsClient(applicationContext)
+            val task: Task<LocationSettingsResponse> = client.checkLocationSettings(builder.build())
+
+
+
+            task.addOnCompleteListener {
+                try {
+                    task.getResult(ApiException::class.java)
+
+
+                } catch (e: ApiException) {
+                    when (e.statusCode) {
+                        LocationSettingsStatusCodes.RESOLUTION_REQUIRED -> {
+                            if (e is ResolvableApiException) {
+
+                                try {
+                                    e.startResolutionForResult(this, 6989)
+                                } catch (sendEx: IntentSender.SendIntentException) {
+                                    Log.e("sednex", sendEx.toString())
+
+                                }
+                            }
+                        }
+                    }
+
+
+                }
+            }
+
+        }
+    }
+
 
 }

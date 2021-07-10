@@ -13,8 +13,9 @@
     <string name="sign_up">Kayıt Ol</string>
     <string name="select_purpose">Amaç Seçiniz</string>
     <string name="bottom_menu_message">Mesajlar</string>
-    <string name="lcl_apply_datepicker">Onayla</string>
+    <string name="lcl_apply_datepicker">Seç</string>
     <string name="lcl_cancel_datepicker">Vazgeç</string>
     <string name="complete" translatable="false">Tamamla</string>
     <string name="bottom_menu_home">Evim</string>
+    <string name="no_location_detected">Konum bulunamadı.Lütfen konum bilgisine izin verdiğinizden emin olunuz.</string>
 </resources>

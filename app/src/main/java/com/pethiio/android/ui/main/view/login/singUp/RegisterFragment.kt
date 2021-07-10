@@ -4,10 +4,10 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.text.SpannableString
-import android.text.Spanned
-import android.text.TextPaint
+import android.text.*
+import android.text.method.HideReturnsTransformationMethod
 import android.text.method.LinkMovementMethod
+import android.text.method.PasswordTransformationMethod
 import android.text.style.ClickableSpan
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -37,6 +37,7 @@ class RegisterFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
     private var isSelectedFirstTime = true
 
     private var languageAdapter: ArrayAdapter<String>? = null
+    private var showPass: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,6 +46,43 @@ class RegisterFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
     @SuppressLint("SetTextI18n", "ResourceType")
     override fun setUpViews() {
         super.setUpViews()
+
+        isSelectedFirstTime = true
+
+
+        binding.passwordPlaceholderTv.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                if (s != null) {
+                    if (s.isEmpty())
+                        binding.eye.visibility = View.GONE
+                    else
+                        binding.eye.visibility = View.VISIBLE
+                }
+
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+            }
+
+        })
+
+        binding.eye.setOnClickListener {
+
+            if (!showPass) {
+                binding.passwordPlaceholderTv.transformationMethod =
+                    HideReturnsTransformationMethod.getInstance()
+                showPass = true
+            } else {
+                binding.passwordPlaceholderTv.transformationMethod =
+                    PasswordTransformationMethod.getInstance()
+                showPass = false
+            }
+
+        }
 
         viewModel.getRegisterFields().observe(this, {
 
@@ -56,9 +94,9 @@ class RegisterFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
                 getLocalizedSpan(Constants.registerNameTitle)
             binding.nameLy.placeholderTv.hint =
                 getLocalizedString(Constants.registerNamePlaceholder)
-            binding.surnameLy.titleTv.text =
+            binding.surnameTitleTv.text =
                 getLocalizedSpan(Constants.registerSurnameTitle)
-            binding.surnameLy.placeholderTv.hint =
+            binding.surnamePlaceholderTv.hint =
                 getLocalizedString(Constants.registerSurnamePlaceholder)
             binding.emailTitleTv.text =
                 getLocalizedSpan(Constants.registerEmailTitle)
@@ -229,7 +267,7 @@ class RegisterFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
                 getLocalizedString(Constants.nameEmptyEror)
             )
             var validSur = getViewError(
-                binding.surnameLy.placeholderTv,
+                binding.surnamePlaceholderTv,
                 getLocalizedString(Constants.surnameEmtpyError)
             )
             var validEmail = getViewError(
@@ -258,7 +296,7 @@ class RegisterFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
                         Register(
                             binding.emailPlaceholderTv.text.toString().trim(),
                             binding.nameLy.placeholderTv.text.toString().trim(),
-                            binding.surnameLy.placeholderTv.text.toString().trim(),
+                            binding.surnamePlaceholderTv.text.toString().trim(),
                             binding.passwordPlaceholderTv.text.toString().trim(),
                         )
                     )
@@ -292,6 +330,7 @@ class RegisterFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
             }
 
         }
+
 
         return view
 
