@@ -71,7 +71,6 @@ class DashboardFragment : BaseFragment(), CardStackListener,
     override var dashboardClicked: Boolean = true
 
 
-
     private lateinit var viewModel: DashBoardViewModel
 
     private var memberListResponse = emptyList<MemberListResponse>()
@@ -624,18 +623,12 @@ class DashboardFragment : BaseFragment(), CardStackListener,
             return
         }
 
-        val petSearch = manager?.topPosition?.let {
-            if (adapter?.getPetSearchList()?.size == 1)
-                adapter?.getPetSearchList()?.get(0)
-            else
-                adapter?.getPetSearchList()?.get(it)
-
-        }
+        val petSearch = adapter?.getPetSearchList()?.get(0)
 
         removeFirst()
 
         if (direction != null && memberId > 0) {
-            petSearch?.petId?.let {
+            petSearch?.memberId?.let {
                 PetSearchRequest(
                     memberId,
                     it,

@@ -17,8 +17,8 @@ class TokenInterceptor : Interceptor {
             .header("Content-Type", "application/json")
             .header(
                 "Accept-Language",
-                "tr" // TODO: 5.07.2021 applanguage al
-//                PreferenceHelper.SharedPreferencesManager.getInstance().appLanguage
+                PreferenceHelper.SharedPreferencesManager.getInstance().appLanguage
+//                "tr" // TODO: 5.07.2021 applanguage al
             )
             .header("Authorization", "Bearer $accessToken")
             .build()
