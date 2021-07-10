@@ -70,7 +70,7 @@ class DashboardFragment : BaseFragment(), CardStackListener,
     override var bottomNavigationViewVisibility = View.VISIBLE
     override var dashboardClicked: Boolean = true
 
-    private var purposeFilter: String = "DATING"
+
 
     private lateinit var viewModel: DashBoardViewModel
 
@@ -161,12 +161,13 @@ class DashboardFragment : BaseFragment(), CardStackListener,
                 val result: Location = task.result
 //                "Location (success): ${result.latitude}, ${result.longitude}"
 
-                viewModel.fetchLocations(
-                    LocationsRequest(
-                        result.latitude.toString(),
-                        result.longitude.toString()
+                if (!isLocationSended)
+                    viewModel.fetchLocations(
+                        LocationsRequest(
+                            result.latitude.toString(),
+                            result.longitude.toString()
+                        )
                     )
-                )
             } else {
                 val exception = task.exception
                 "Location (failure): $exception"
@@ -175,20 +176,21 @@ class DashboardFragment : BaseFragment(), CardStackListener,
 //            Log.d("location", "getCurrentLocation() result: $result")
         }
         //xiaomi de giriyor
+
         fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
             location?.let { it: Location ->
-                viewModel.fetchLocations(
-                    LocationsRequest(
-                        it.latitude.toString(),
-                        it.longitude.toString()
+                if (!isLocationSended)
+                    viewModel.fetchLocations(
+                        LocationsRequest(
+                            it.latitude.toString(),
+                            it.longitude.toString()
+                        )
                     )
-                )
             } ?: kotlin.run {
                 // Handle Null case or Request periodic location update https://developer.android.com/training/location/receive-location-updates
             }
         }
     }
-
 
     //endregion
 
@@ -220,43 +222,47 @@ class DashboardFragment : BaseFragment(), CardStackListener,
 
     @SuppressLint("MissingPermission")
     fun createLocationRequest() {
-        val locationRequest = LocationRequest.create().apply {
-            interval = 3000
-            fastestInterval = 1500
-            priority = LocationRequest.PRIORITY_HIGH_ACCURACY
-        }
-        val builder = LocationSettingsRequest.Builder()
-            .addLocationRequest(locationRequest)
 
-        val client: SettingsClient = LocationServices.getSettingsClient(requireContext())
-        val task: Task<LocationSettingsResponse> = client.checkLocationSettings(builder.build())
+        if (findNavController().currentDestination?.id == R.id.navigation_dashboard) {
 
+            val locationRequest = LocationRequest.create().apply {
+                interval = 3000
+                fastestInterval = 1500
+                priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+            }
+            val builder = LocationSettingsRequest.Builder()
+                .addLocationRequest(locationRequest)
 
-
-        task.addOnCompleteListener {
-            try {
-                task.getResult(ApiException::class.java)
+            val client: SettingsClient = LocationServices.getSettingsClient(requireContext())
+            val task: Task<LocationSettingsResponse> = client.checkLocationSettings(builder.build())
 
 
-            } catch (e: ApiException) {
-                when (e.statusCode) {
-                    LocationSettingsStatusCodes.RESOLUTION_REQUIRED -> {
-                        if (e is ResolvableApiException) {
 
-                            try {
-                                e.startResolutionForResult(requireActivity(), 6989)
-                            } catch (sendEx: IntentSender.SendIntentException) {
-                                Log.e("sednex", sendEx.toString())
+            task.addOnCompleteListener {
+                try {
+                    task.getResult(ApiException::class.java)
 
+
+                } catch (e: ApiException) {
+                    when (e.statusCode) {
+                        LocationSettingsStatusCodes.RESOLUTION_REQUIRED -> {
+                            if (e is ResolvableApiException) {
+
+                                try {
+                                    e.startResolutionForResult(requireActivity(), 6989)
+                                } catch (sendEx: IntentSender.SendIntentException) {
+                                    Log.e("sednex", sendEx.toString())
+
+                                }
                             }
                         }
                     }
+
+
                 }
-
-
             }
-        }
 
+        }
     }
 
     override fun onStart() {
@@ -271,12 +277,18 @@ class DashboardFragment : BaseFragment(), CardStackListener,
 
         val mLocationCallback: LocationCallback = object : LocationCallback() {
             override fun onLocationResult(locationResult: LocationResult) {
-                if (locationResult == null) {
-                    return
-                }
                 for (location in locationResult.locations) {
                     if (location != null) {
-                        //TODO: UI updates.
+
+                        if (!isLocationSended)
+                            viewModel.fetchLocations(
+                                LocationsRequest(
+                                    location.latitude.toString(),
+                                    location.longitude.toString()
+                                )
+                            )
+
+                        //TODO: UI burda cagır xiomi de
                     }
                 }
             }
@@ -338,7 +350,7 @@ class DashboardFragment : BaseFragment(), CardStackListener,
 
     private fun setupUI() {
 
-        binding.progressBar.visibility=View.VISIBLE
+        binding.progressBar.visibility = View.VISIBLE
 
 
         binding.noResultImg.setAnimation("evim.json")
@@ -456,15 +468,15 @@ class DashboardFragment : BaseFragment(), CardStackListener,
 
         })
 
-        viewModel.getSearchFilterList().observe(viewLifecycleOwner, {
-            when (it.status) {
-                Status.SUCCESS -> {
-
-                    purposeFilter = it.data?.purpose.toString()
-
-                }
-            }
-        })
+//        viewModel.getSearchFilterList().observe(viewLifecycleOwner, {
+//            when (it.status) {
+//                Status.SUCCESS -> {
+//
+//                    purposeFilter = it.data?.purpose.toString()
+//
+//                }
+//            }
+//        })
     }
 
     private fun removeFirst() {
@@ -482,6 +494,12 @@ class DashboardFragment : BaseFragment(), CardStackListener,
 //            removeAt(manager.topPosition-1)
 
         }
+
+        if (new.isEmpty()) {
+            viewModel.fetchPetSearch(memberId)
+
+        }
+
         val callback = old?.let { CardSackDiffCallback(it, new) }
         val result = callback?.let { DiffUtil.calculateDiff(it) }
         adapter?.setPetSearchList(new)
@@ -572,11 +590,10 @@ class DashboardFragment : BaseFragment(), CardStackListener,
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: LikeEvent?) {
-        var direction: Direction = Direction.Left
-        if (event?.like == true)
-            direction = Direction.Right
+        var direction: Direction = if (event?.like == true)
+            Direction.Right
         else
-            direction = Direction.Left
+            Direction.Left
 
 
         val setting = SwipeAnimationSetting.Builder()
@@ -622,8 +639,7 @@ class DashboardFragment : BaseFragment(), CardStackListener,
                 PetSearchRequest(
                     memberId,
                     it,
-                    direction == Direction.Right,
-                    purposeFilter
+                    direction == Direction.Right
                 )
             }?.let {
                 viewModel.postPetSearch(

@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.main.view.login.singUp.RegisterFragment">
 
     <LinearLayout
@@ -138,7 +139,7 @@
                 </androidx.cardview.widget.CardView>
             </LinearLayout>
 
-            <LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
@@ -209,25 +210,14 @@
 
                 </androidx.cardview.widget.CardView>
 
-                <TextView
-                    android:id="@+id/forgot_password"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/margin_minimum"
-                    android:layout_marginTop="@dimen/default_margin"
-                    android:layout_marginRight="@dimen/margin_minimum"
-                    android:fontFamily="@font/typo_round_bold"
-                    android:gravity="right"
-                    tools:text="@string/forgot_password"
-                    android:textColor="@color/input_text_color"
-                    android:textSize="@dimen/medium_size" />
+
             </LinearLayout>
 
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="84dp"
+                android:layout_marginTop="70dp"
                 android:orientation="horizontal">
 
                 <CheckBox

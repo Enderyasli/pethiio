@@ -14,7 +14,6 @@ class Constants {
         const val lookUpType: String = "type"
 
 
-
         val datePickerFormat: SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd")
 
         const val BASE_URL: String = "http://api.pawtind.com/api/"
@@ -127,7 +126,6 @@ class Constants {
         const val breedEmtpyError: String = "breedEmtpyError"
         const val colorEmtpyError: String = "colorEmtpyError"
         const val aboutEmtpyError: String = "aboutEmtpyError"
-        const val pinEmtpyError: String = "pinEmtpyError"
         const val currentPasswordEmtpyError: String = "currentPasswordEmtpyError"
         const val newPasswordEmtpyError: String = "newPasswordEmtpyError"
         const val detailEmtpyError: String = "detailEmtpyError"
@@ -157,14 +155,23 @@ class Constants {
 
         //region Chat
 
-        const val emptyMessageTitle: String ="emptyMessageTitle"
-        const val inputPlaceholder: String ="inputPlaceholder"
+        const val emptyMessageTitle: String = "emptyMessageTitle"
+        const val inputPlaceholder: String = "inputPlaceholder"
 
         //endregion
 
         //region Location
-        const val locationButton: String ="locationButton"
-        const val nextButton: String ="nextButton"
+        const val locationButton: String = "locationButton"
+        const val nextButton: String = "nextButton"
+
+        //endregion
+
+        //region Reset Pass
+        const val sendButtonTitle: String = "sendButtonTitle"
+        const val pinPlaceholder: String = "pinPlaceholder"
+        const val pinSubTitleForEmail: String = "subTitleForEmail"
+        const val pinEmtpyError: String = "pinEmtpyError"
+        const val nextButtonTitle: String = "nextButtonTitle"
 
 
         //endregion

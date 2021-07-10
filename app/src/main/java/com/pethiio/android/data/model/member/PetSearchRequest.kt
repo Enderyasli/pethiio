@@ -8,7 +8,5 @@ data class PetSearchRequest(
     @SerializedName("targetId")
     val targetId: Int = 0,
     @SerializedName("liked")
-    val liked: Boolean = false,
-    @SerializedName("purpose")
-    val purpose: String = "DATING"
+    val liked: Boolean = false
 )

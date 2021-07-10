@@ -35,12 +35,11 @@
         <action
             android:id="@+id/action_navigation_welcome_to_navigation_signup"
             app:destination="@id/navigation_register"
-            app:enterAnim="@anim/slide_left"
-          />
+            app:enterAnim="@anim/slide_left" />
         <action
             android:id="@+id/action_navigation_welcome_to_navigation_login"
-            app:enterAnim="@anim/slide_left"
-            app:destination="@id/navigation_login" />
+            app:destination="@id/navigation_login"
+            app:enterAnim="@anim/slide_left" />
     </fragment>
 
     <fragment
@@ -54,6 +53,12 @@
         <action
             android:id="@+id/action_navigation_login_to_navigation_main"
             app:destination="@id/navigation_main" />
+
+        <action
+            android:id="@+id/action_navigation_login_to_navigation_reset_password"
+            app:destination="@id/navigation_reset_password"
+            app:enterAnim="@anim/slide_left" />
+
     </fragment>
 
     <fragment
@@ -65,8 +70,8 @@
 
         <action
             android:id="@+id/action_navigation_register_to_navigation_register_detail"
-            app:enterAnim="@anim/slide_left"
-            app:destination="@id/navigation_register_detail" />
+            app:destination="@id/navigation_register_detail"
+            app:enterAnim="@anim/slide_left" />
     </fragment>
     <fragment
         android:id="@+id/navigation_register_detail"
@@ -95,8 +100,8 @@
         <action
             android:id="@+id/action_navigation_pet_add_to_navigation_photo"
             app:destination="@id/navigation_pet_add_photo"
-            app:launchSingleTop="true"
             app:enterAnim="@anim/slide_left"
+            app:launchSingleTop="true"
             app:popUpTo="@id/navigation_home"
             app:popUpToInclusive="true" />
     </fragment>
@@ -127,6 +132,42 @@
             android:id="@+id/action_navigation_animal_list_to_navigation_main"
             app:destination="@id/navigation_main" />
     </fragment>
+
+    <fragment
+        android:id="@+id/navigation_reset_password"
+        android:name="com.pethiio.android.ui.main.view.fragments.ResetPassFragment"
+        android:label="Reset Password"
+        tools:layout="@layout/fragment_reset_pass">
+
+        <action
+            android:id="@+id/action_navigation_reset_password_to_navigation_pin_verified"
+            app:destination="@id/navigation_pin_verified"
+            app:enterAnim="@anim/slide_left" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_pin_verified"
+        android:name="com.pethiio.android.ui.main.view.fragments.PinVerifiedFragment"
+        android:label="Pin Verify"
+        tools:layout="@layout/fragment_pin_verified">
+        <action
+            android:id="@+id/action_navigation_pin_verified_to_navigation_reset_password_request"
+            app:destination="@id/navigation_reset_password_request"
+            app:enterAnim="@anim/slide_left" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_reset_password_request"
+        android:name="com.pethiio.android.ui.main.view.fragments.settings.ResetPasswordFragment"
+        android:label="Reset Password Request"
+        tools:layout="@layout/fragment_reset_password">
+        <action
+            android:id="@+id/action_navigation_reset_password_request_to_navigation_welcome"
+            app:destination="@id/navigation_welcome"
+            app:enterAnim="@anim/slide_left" />
+    </fragment>
+
+
     <navigation
         android:id="@+id/navigation_main"
         app:startDestination="@+id/navigation_dashboard">
@@ -210,9 +251,9 @@
             tools:layout="@layout/fragment_location" />
         <action
             android:id="@+id/action_global_navigation_welcome"
+            app:destination="@id/navigation_welcome"
             app:popUpTo="@id/navigation_welcome"
-            app:popUpToInclusive="true"
-            app:destination="@id/navigation_welcome" />
+            app:popUpToInclusive="true" />
 
     </navigation>
 

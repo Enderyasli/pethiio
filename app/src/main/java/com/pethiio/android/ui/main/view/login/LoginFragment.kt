@@ -38,17 +38,17 @@ class LoginFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
         super.setUpViews()
 
 
-        binding.passwordPlaceholderTv.addTextChangedListener(object :TextWatcher{
+        binding.passwordPlaceholderTv.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
 
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 if (s != null) {
-                    if(s.isEmpty())
-                        binding.eye.visibility=View.GONE
+                    if (s.isEmpty())
+                        binding.eye.visibility = View.GONE
                     else
-                        binding.eye.visibility=View.VISIBLE
+                        binding.eye.visibility = View.VISIBLE
                 }
 
             }
@@ -105,6 +105,13 @@ class LoginFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
         val view = binding.root
 
+        binding.forgotPassword.setOnClickListener {
+
+            if (findNavController().currentDestination?.id == R.id.navigation_login)
+                findNavController().navigate(R.id.action_navigation_login_to_navigation_reset_password)
+
+        }
+
         binding.loginBtn.setOnClickListener {
 
             var validEmail = getViewError(
@@ -139,7 +146,7 @@ class LoginFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
 
                     }
                     Status.ERROR -> {
-                        CommonMethods.onSNACK(binding.root,it.message.toString())
+                        CommonMethods.onSNACK(binding.root, it.message.toString())
 //                        Toast.makeText(requireContext(), it.message, Toast.LENGTH_LONG).show()
 
                     }

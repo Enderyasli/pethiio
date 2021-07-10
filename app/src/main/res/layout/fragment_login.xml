@@ -107,7 +107,7 @@
                     android:layout_marginRight="@dimen/margin_minimum"
                     android:fontFamily="@font/typo_round_bold"
                     android:gravity="right"
-                    tools:text="@string/forgot_password"
+                    tools:text="Forgot Password"
                     android:textColor="@color/input_text_color"
                     android:textSize="@dimen/medium_size"
                     tools:ignore="RtlHardcoded" />

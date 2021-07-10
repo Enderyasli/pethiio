@@ -1,5 +1,6 @@
 package com.pethiio.android.data.api
 
+import com.bumptech.glide.load.engine.Resource
 import com.pethiio.android.data.model.*
 import com.pethiio.android.data.model.chat.ChatListResponse
 import com.pethiio.android.data.model.chat.ChatRoomResponse
@@ -10,12 +11,15 @@ import com.pethiio.android.data.model.login.LoginRequest
 import com.pethiio.android.data.model.member.LocationsRequest
 import com.pethiio.android.data.model.member.MemberListResponse
 import com.pethiio.android.data.model.member.PetSearchRequest
-import com.pethiio.android.data.model.member.PetSearchResponse
 import com.pethiio.android.data.model.petDetail.PetImageResponse
 import com.pethiio.android.data.model.petDetail.PetSearchDetailResponse
 import com.pethiio.android.data.model.petDetail.PetSearchOwnerDetailResponse
 import com.pethiio.android.data.model.report.ReportRequest
 import com.pethiio.android.data.model.report.SupportRequest
+import com.pethiio.android.data.model.resetPass.PinVerificationRequest
+import com.pethiio.android.data.model.resetPass.ResetPassDemand
+import com.pethiio.android.data.model.resetPass.ResetPassDemandResponse
+import com.pethiio.android.data.model.resetPass.ResetPasswordRequest
 import com.pethiio.android.data.model.settings.FAQResponse
 import com.pethiio.android.data.model.signup.PageData
 import com.pethiio.android.data.model.signup.Register
@@ -224,6 +228,29 @@ interface PethiioServices {
     @POST("page/change-password")
     fun postChangePass(@Body changePassRequest: ChangePassRequest): Observable<AccessToken>
 
+    //endregion
+
+    //region Reset Password
+
+    @GET("page/reset-password-demand/info")
+    fun getResetPassDemandPageData(): Observable<PageData>
+
+    @POST("page/reset-password-demand")
+    fun postResetDemand(@Body resetPassDemand: ResetPassDemand): Observable<ResetPassDemandResponse>
+
+
+    @GET("page/reset-password/info")
+    fun getResetPassPageData(): Observable<PageData>
+
+
+    @GET("page/pin-verification/info")
+    fun getPinVerifyPageData(): Observable<PageData>
+
+    @POST("page/pin-verification/reset-password")
+    fun postPinVerification(@Body pinVerificationRequest: PinVerificationRequest ): Observable<Response<Void>>
+
+    @POST("page/reset-password")
+    fun postResetPassword(@Body resetPasswordRequest: ResetPasswordRequest ): Observable<Response<Void>>
 
     //endregion
 

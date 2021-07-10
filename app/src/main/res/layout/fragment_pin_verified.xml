@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.main.view.fragments.PinVerifiedFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="120dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/pin_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/default_margin"
+            android:layout_marginRight="@dimen/default_margin"
+            android:layout_marginBottom="3dp"
+            android:fontFamily="@font/typo_round_bold"
+            android:textColor="@color/orangeButton"
+            android:textSize="40sp"
+            tools:text="Pin gir" />
+
+        <TextView
+            android:id="@+id/pin_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/default_margin"
+            android:layout_marginTop="30dp"
+            android:layout_marginRight="@dimen/default_margin"
+            android:fontFamily="@font/typo_round_regular"
+            android:textColor="@color/grey"
+            android:textSize="22sp"
+            tools:text="Şifreni sıfırlayabilmek için gönderdiğimiz emaildeki pini gir." />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="45dp"
+            android:layout_marginRight="20dp"
+            android:orientation="vertical">
+
+
+            <LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="45dp"
+                android:orientation="vertical">
+
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_minimum"
+                    android:layout_marginRight="@dimen/margin_minimum"
+                    android:layout_marginBottom="5dp"
+                    app:cardBackgroundColor="@color/whitegrey"
+                    app:cardCornerRadius="@dimen/commonButtonRadius"
+                    app:cardElevation="2dp">
+
+                    <EditText
+                        android:maxLength="6"
+                        android:id="@+id/pin_placeholder_tv"
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:background="@drawable/common_input_btn_bg"
+                        android:fontFamily="@font/typo_round_regular"
+                        android:gravity="center_vertical"
+                        android:inputType="number"
+                        android:paddingLeft="15dp"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/hint_text_color"
+                        android:textSize="24sp"
+                        tools:hint="Pin" />
+                </androidx.cardview.widget.CardView>
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/send_btn"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/common_button_height"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="@dimen/default_margin"
+        android:layout_marginTop="48dp"
+        android:layout_marginRight="@dimen/default_margin"
+        android:layout_marginBottom="120dp"
+        android:background="@drawable/disabled_button_bg"
+        android:fontFamily="@font/typo_round_bold"
+        android:textAllCaps="false"
+        android:textColor="@color/disabled_button_color"
+        android:textSize="@dimen/medium_size"
+        tools:text="İlerle" />
+</RelativeLayout>
