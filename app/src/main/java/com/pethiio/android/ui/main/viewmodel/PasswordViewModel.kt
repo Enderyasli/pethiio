@@ -23,6 +23,7 @@ class PasswordViewModel : ViewModel() {
     private val resetPassDemandPageData = MutableLiveData<Resource<PageData>>()
     private val pinVerifyPageData = MutableLiveData<Resource<PageData>>()
     private val pinResetPasswordPageData = MutableLiveData<Resource<PageData>>()
+    private val resetPasswordDonePageData = MutableLiveData<Resource<PageData>>()
     private val postResetDemand = MutableLiveData<Resource<ResetPassDemandResponse>>()
     private val postResetPassword = MutableLiveData<Resource<Response<Void>>>()
     private val pinVerificationResponse = MutableLiveData<Resource<Response<Void>>>()
@@ -142,6 +143,25 @@ class PasswordViewModel : ViewModel() {
         )
     }
 
+    fun fetchResetPasswordDonePageData() {
+
+        resetPasswordDonePageData.postValue(Resource.loading(null))
+        compositeDisposable.add(
+            ServiceBuilder.buildService()
+                .getResetPasswordDonePageData()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                    { loginData ->
+                        resetPasswordDonePageData.postValue(responseHandler.handleSuccess(loginData))
+                    },
+                    {
+                        resetPasswordDonePageData.postValue(responseHandler.handleException(it))
+                    }
+                )
+        )
+    }
+
 
     override fun onCleared() {
         super.onCleared()
@@ -171,6 +191,9 @@ class PasswordViewModel : ViewModel() {
 
     fun getPinResetPasswordPageData(): LiveData<Resource<PageData>> {
         return pinResetPasswordPageData
+    }
+    fun getResetPasswordDonePageData(): LiveData<Resource<PageData>> {
+        return resetPasswordDonePageData
     }
 
 }

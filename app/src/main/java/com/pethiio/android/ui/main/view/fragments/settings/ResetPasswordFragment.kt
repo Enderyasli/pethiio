@@ -33,6 +33,7 @@ class ResetPasswordFragment : BaseFragment() {
     private var pinValue = ""
     private val binding get() = _binding!!
     private var showPass: Boolean = false
+    private var btnValue = ""
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,6 +50,8 @@ class ResetPasswordFragment : BaseFragment() {
 
         referenceToken = arguments?.getString("referenceToken", "")!!
         pinValue = arguments?.getString("pinValue", "")!!
+
+        binding.msgAnim.setAnimation("sifre_sıfırlama.json")
 
         setupViewModel()
         setUpObserver()
@@ -92,10 +95,10 @@ class ResetPasswordFragment : BaseFragment() {
     private fun setupViewModel() {
         viewModel = ViewModelProviders.of(this).get(PasswordViewModel::class.java)
         viewModel.fetchResetPasswordLastPageData()
+        viewModel.fetchResetPasswordDonePageData()
     }
 
     private fun setUpObserver() {
-
 
         viewModel.getPinResetPasswordPageData().observe(viewLifecycleOwner, {
 
@@ -142,9 +145,9 @@ class ResetPasswordFragment : BaseFragment() {
                         .find()
                 if (validRegex && password.length >= 8) {
 
-                    if (binding.passwordDetailTv.text.trim()
-                            .toString() == binding.newPasswordAgainPlaceholder.text.trim()
-                            .toString()
+                    if (binding.passwordPlaceholderTv.text
+                            .toString().trim() == binding.newPasswordAgainPlaceholder.text
+                            .toString().trim()
                     )
                         viewModel.postResetPassword(
                             ResetPasswordRequest(
@@ -155,14 +158,13 @@ class ResetPasswordFragment : BaseFragment() {
                         )
                     else {
                         binding.newPasswordAgainPlaceholder.error =
-                            getLocalizedString(Constants.newPasswordEmtpyError, pageDataFields)
+                            getLocalizedString(Constants.passwordEmtpyError, pageDataFields)
 
                         binding.newPasswordAgainPlaceholder.requestFocus()
                     }
 
 
-                }
-                else {
+                } else {
                     binding.passwordPlaceholderTv.error =
                         getLocalizedString(Constants.passwordPlaceholder, pageDataFields)
 
@@ -174,10 +176,18 @@ class ResetPasswordFragment : BaseFragment() {
                     when (it1.status) {
                         Status.SUCCESS -> {
 
-                            if (findNavController().currentDestination?.id == R.id.navigation_reset_password_request)
-                                findNavController().navigate(
-                                    R.id.action_navigation_reset_password_request_to_navigation_welcome
-                                )
+                            binding.msgLy.visibility = View.VISIBLE
+                            binding.mainLayout.visibility = View.GONE
+
+                            binding.sendBtn.text = btnValue
+                            binding.sendBtn.setOnClickListener {
+                                if (findNavController().currentDestination?.id == R.id.navigation_reset_password_request)
+                                    findNavController().navigate(
+                                        R.id.action_navigation_reset_password_request_to_navigation_welcome
+                                    )
+                            }
+
+
                         }
                         Status.ERROR -> {
                             CommonMethods.onSNACK(binding.root, it1.message.toString())
@@ -192,6 +202,16 @@ class ResetPasswordFragment : BaseFragment() {
 
         })
 
+        viewModel.getResetPasswordDonePageData().observe(viewLifecycleOwner, {
+            val pageDataFields = it.data?.fields
+
+            binding.messageTitle.text = getLocalizedString(Constants.registerTitle, pageDataFields)
+            binding.msgContent.text = getLocalizedString(Constants.registerTitle, pageDataFields)
+            btnValue =
+                getLocalizedString(Constants.registerLoginButtonTitle, pageDataFields)
+
+
+        })
 
     }
 

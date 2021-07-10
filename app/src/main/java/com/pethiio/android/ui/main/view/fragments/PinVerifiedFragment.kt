@@ -91,6 +91,11 @@ class PinVerifiedFragment : BaseFragment() {
         })
 
         binding.sendBtn.setOnClickListener {
+//            // TODO: 10.07.2021 sil
+//            if (findNavController().currentDestination?.id == R.id.navigation_pin_verified)
+//                findNavController().navigate(
+//                    R.id.action_navigation_pin_verified_to_navigation_reset_password_request
+//                )
             viewModel.postPostPinVerification(
                 PinVerificationRequest(
                     binding.pinPlaceholderTv.text.trim().toString(),

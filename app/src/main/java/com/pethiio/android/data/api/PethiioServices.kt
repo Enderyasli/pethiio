@@ -242,6 +242,9 @@ interface PethiioServices {
     @GET("page/reset-password/info")
     fun getResetPassPageData(): Observable<PageData>
 
+    @GET("page/reset-password-done/info")
+    fun getResetPasswordDonePageData(): Observable<PageData>
+
 
     @GET("page/pin-verification/info")
     fun getPinVerifyPageData(): Observable<PageData>

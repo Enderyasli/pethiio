@@ -164,7 +164,10 @@
         <action
             android:id="@+id/action_navigation_reset_password_request_to_navigation_welcome"
             app:destination="@id/navigation_welcome"
-            app:enterAnim="@anim/slide_left" />
+            app:enterAnim="@anim/slide_left"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/navigation_welcome"
+            app:popUpToInclusive="true" />
     </fragment>
 
 
