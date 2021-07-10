@@ -183,7 +183,7 @@
                         android:textAllCaps="false"
                         android:textColor="@color/white"
                         android:textSize="@dimen/medium_size"
-                        tools:text="@string/add_animal" />
+                        tools:text="Hayvan ekle" />
 
                     <TextView
                         android:id="@+id/go_without_animal_tv"
@@ -195,7 +195,7 @@
                         android:gravity="center"
                         android:textColor="@color/orangeButton"
                         android:textSize="@dimen/medium_size"
-                        tools:text="@string/go_without_animal" />
+                        tools:text="Hayvan eklemeden devam et" />
 
                 </LinearLayout>
             </LinearLayout>
@@ -224,14 +224,14 @@
                 android:layout_width="28dp"
                 android:layout_height="28dp"
                 android:layout_gravity="center"
-                android:src="@drawable/image" />
+                android:src="@drawable/photo_add" />
         </androidx.cardview.widget.CardView>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="222.5dp"
-            android:layout_toRightOf="@id/imagelY"
+            android:layout_toEndOf="@id/imagelY"
             android:text="*"
             android:textColor="@color/red"
             android:textSize="14sp" />

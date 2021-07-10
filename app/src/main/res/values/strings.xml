@@ -19,5 +19,6 @@
     <string name="bottom_menu_message">Mesajlar</string>
     <string name="bottom_menu_home">Home</string>
     <string name="title_onboarding_1">Find a Partner</string>
+    <string name="accept_gps_error">Uygulamayı kullanabilmek için konuma izin vermelisiniz.</string>
 
 </resources>

@@ -85,7 +85,6 @@ class LocationFragment : BaseFragment() {
 
     }
 
-    // TODO: 9.07.2021 buraya girmiyor
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,

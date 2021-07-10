@@ -4,13 +4,17 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.TextPaint
+import android.text.method.LinkMovementMethod
+import android.text.style.ClickableSpan
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-
 import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import com.pethiio.android.R
@@ -68,27 +72,84 @@ class RegisterFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
                 getLocalizedString(Constants.registerPasswordPlaceholder)
             binding.signupBtn.text =
                 getLocalizedString(Constants.registerButtonTitle)
-            binding.termsLinkTitleTv.text =
-                getLocalizedString(Constants.registerTermsLinkTitle) + " "
-            binding.termsAndTitleTv.text =
-                getLocalizedString(Constants.registerTermsAndTitle) + " "
-            binding.privacyTitleTv.text =
-                getLocalizedString(Constants.registerPrivacyLinkTitle) + " "
-            binding.privacyApproveTitleTv.text =
-                getLocalizedString(Constants.registerPrivacyApproveTitle)
 
-            binding.termsLinkTitleTv.setOnClickListener {
-                val uri: Uri =
-                    Uri.parse(getLocalizedString(Constants.registerTermsLink))
-                val intent = Intent(Intent.ACTION_VIEW, uri)
-                startActivity(intent)
+            val termsLink = getLocalizedString(Constants.registerTermsLinkTitle) + " "
+            val termsAndTitle = getLocalizedString(Constants.registerTermsAndTitle) + " "
+
+            val privacyTitle = getLocalizedString(Constants.registerPrivacyLinkTitle) + " "
+            val privacyApprove = getLocalizedString(Constants.registerPrivacyApproveTitle) + " "
+
+            val termsPrivacyText = "$termsLink $termsAndTitle $privacyTitle $privacyApprove"
+
+            val spanned = SpannableString(termsPrivacyText)
+
+
+            val termsSpanOnclick = object : ClickableSpan() {
+                override fun onClick(view: View) {
+                    val uri: Uri =
+                        Uri.parse(getLocalizedString(Constants.registerTermsLink))
+                    val intent = Intent(Intent.ACTION_VIEW, uri)
+                    try {
+                        startActivity(intent)
+                    } catch (e: Exception) {
+                    }
+
+                }
+
+                override fun updateDrawState(ds: TextPaint) {
+                    ds.color = ContextCompat.getColor(requireContext(), R.color.orangeButton)
+                    ds.isUnderlineText = false
+                }
             }
-            binding.privacyTitleTv.setOnClickListener {
-                val uri: Uri =
-                    Uri.parse(getLocalizedString(Constants.registerPrivacyLink))
-                val intent = Intent(Intent.ACTION_VIEW, uri)
-                startActivity(intent)
+            val privacySpanOnclick = object : ClickableSpan() {
+                override fun onClick(view: View) {
+                    val uri: Uri =
+                        Uri.parse(getLocalizedString(Constants.registerPrivacyLink))
+                    val intent = Intent(Intent.ACTION_VIEW, uri)
+                    try {
+                        startActivity(intent)
+                    } catch (e: Exception) {
+                    }
+
+                }
+
+                override fun updateDrawState(ds: TextPaint) {
+                    ds.color = ContextCompat.getColor(requireContext(), R.color.orangeButton)
+                    ds.isUnderlineText = false
+                }
             }
+
+            spanned.setSpan(
+                termsSpanOnclick,
+                0,
+                termsLink.length - 1,
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+            );
+            spanned.setSpan(
+                privacySpanOnclick,
+                termsLink.length + termsAndTitle.length,
+                termsPrivacyText.length - privacyApprove.length,
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+            );
+
+
+            binding.termsLinkTitleTv.text =
+                spanned
+            binding.termsLinkTitleTv.movementMethod = LinkMovementMethod.getInstance()
+
+
+//            binding.termsLinkTitleTv.setOnClickListener {
+//                val uri: Uri =
+//                    Uri.parse(getLocalizedString(Constants.registerTermsLink))
+//                val intent = Intent(Intent.ACTION_VIEW, uri)
+//                startActivity(intent)
+//            }
+//            binding.privacyTitleTv.setOnClickListener {
+//                val uri: Uri =
+//                    Uri.parse(getLocalizedString(Constants.registerPrivacyLink))
+//                val intent = Intent(Intent.ACTION_VIEW, uri)
+//                startActivity(intent)
+//            }
 
 
         })

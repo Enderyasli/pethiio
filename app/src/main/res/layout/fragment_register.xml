@@ -215,6 +215,7 @@
 
 
             <LinearLayout
+                android:paddingBottom="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="70dp"
@@ -228,35 +229,14 @@
 
                 <TextView
                     android:id="@+id/terms_link_title_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    tools:text="Kullanım Koşulları "
-                    android:textColor="@color/orangeButton"
-                    android:textSize="11sp" />
-
-                <TextView
-                    android:id="@+id/terms_and_title_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    tools:text="ve "
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fontFamily="@font/typo_round_regular"
+                    tools:text="Kullanım Koşulları  "
                     android:textColor="@color/input_text_color"
                     android:textSize="11sp" />
 
-                <TextView
-                    android:id="@+id/privacy_title_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    tools:text="Gizlilik Sözleşmesi'ni "
-                    android:textColor="@color/orangeButton"
-                    android:textSize="11sp" />
 
-                <TextView
-                    android:id="@+id/privacy_approve_title_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    tools:text="onaylıyorum"
-                    android:textColor="@color/input_text_color"
-                    android:textSize="11sp" />
             </LinearLayout>
 
             <Button

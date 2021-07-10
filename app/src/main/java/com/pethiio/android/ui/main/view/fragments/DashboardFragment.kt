@@ -41,10 +41,7 @@ import com.pethiio.android.ui.main.adapter.CardStack.CardSackDiffCallback
 import com.pethiio.android.ui.main.adapter.CardStack.CardStackAdapter
 import com.pethiio.android.ui.main.view.customViews.MemberListSpinner
 import com.pethiio.android.ui.main.viewmodel.DashBoardViewModel
-import com.pethiio.android.utils.CommonFunctions
-import com.pethiio.android.utils.Constants
-import com.pethiio.android.utils.PreferenceHelper
-import com.pethiio.android.utils.Status
+import com.pethiio.android.utils.*
 import com.yuyakaido.android.cardstackview.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -96,6 +93,12 @@ class DashboardFragment : BaseFragment(), CardStackListener,
 
     }
 
+    override fun onResume() {
+        super.onResume()
+        checkGpsPermission()
+
+    }
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
     }
@@ -125,7 +128,6 @@ class DashboardFragment : BaseFragment(), CardStackListener,
 //        val socketIO = SocketIO()
 //        socketIO.main()
 
-        checkGpsPermission()
 
         val callback: OnBackPressedCallback =
             object : OnBackPressedCallback(true) {
@@ -198,7 +200,7 @@ class DashboardFragment : BaseFragment(), CardStackListener,
         private const val MY_PERMISSIONS_REQUEST_LOCATION = 99
     }
 
-    public fun checkGpsPermission() {
+     fun checkGpsPermission() {
         if (ContextCompat.checkSelfPermission(
                 requireContext(),
                 Manifest.permission.ACCESS_FINE_LOCATION
@@ -209,11 +211,8 @@ class DashboardFragment : BaseFragment(), CardStackListener,
                 Manifest.permission.ACCESS_COARSE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) {
-
-
-            if (PreferenceHelper.SharedPreferencesManager.getInstance().isLoggedIn == true)
-                findNavController().navigate(R.id.navigation_location)
-
+            CommonMethods.onSNACK(binding.root,getString(R.string.accept_gps_error))
+            //main activityde handle edildi
         } else {
             createLocationRequest()
         }

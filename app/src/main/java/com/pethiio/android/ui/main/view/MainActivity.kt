@@ -27,6 +27,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationItemView
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.pethiio.android.R
+import com.pethiio.android.utils.CommonMethods
 import com.pethiio.android.utils.PreferenceHelper
 
 
@@ -47,7 +48,7 @@ class MainActivity : AppCompatActivity() {
 
         //change statusbar color
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            window.decorView.systemUiVisibility =View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
             window.statusBarColor = Color.WHITE
         }
 
@@ -84,6 +85,8 @@ class MainActivity : AppCompatActivity() {
         itemView.addView(viewCustom)
 
 
+        checkGpsPermission()
+
 //        try {
 //            val db = Room.databaseBuilder(
 //                this,
@@ -97,10 +100,6 @@ class MainActivity : AppCompatActivity() {
 
 
     }
-
-
-
-
 
 
     @SuppressLint("ResourceAsColor")
@@ -155,11 +154,31 @@ class MainActivity : AppCompatActivity() {
 
                         navController?.navigateUp()
 
+                    } else {
+
                     }
 
                 } else {
                 }
             }
+        }
+    }
+
+    public fun checkGpsPermission() {
+        if (ContextCompat.checkSelfPermission(
+                applicationContext,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) !=
+            PackageManager.PERMISSION_GRANTED
+            && ActivityCompat.checkSelfPermission(
+                applicationContext,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+
+            if (PreferenceHelper.SharedPreferencesManager.getInstance().isLoggedIn == true)
+                navController?.navigate(R.id.navigation_location)
+
         }
     }
 
