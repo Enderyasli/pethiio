@@ -21,6 +21,7 @@ import com.pethiio.android.ui.base.RegisterBaseFragment
 import com.pethiio.android.ui.main.viewmodel.signup.RegisterBaseViewModel
 import com.pethiio.android.utils.CommonMethods
 import com.pethiio.android.utils.Constants
+import com.pethiio.android.utils.PreferenceHelper
 import com.pethiio.android.utils.Status
 import com.theartofdev.edmodo.cropper.CropImage
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -259,6 +260,7 @@ class RegisterDetailFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
                                             when (it1.status) {
 
                                                 Status.SUCCESS -> {
+                                                    PreferenceHelper.SharedPreferencesManager.getInstance().isLoggedIn=true
                                                     if (findNavController().currentDestination?.id == R.id.navigation_register_detail)
                                                         findNavController().navigate(R.id.action_navigation_register_detail_to_navigation_welcome)
                                                 }

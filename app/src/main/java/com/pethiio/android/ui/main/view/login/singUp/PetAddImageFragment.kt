@@ -111,17 +111,117 @@ class PetAddImageFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
 
 
 //        binding.imageView.setOnClickListener { openCropImage() }
-        binding.img1Ly.setOnClickListener { openCropImage() }
-        binding.img2Ly.setOnClickListener { openCropImage() }
-        binding.img3Ly.setOnClickListener { openCropImage() }
+        binding.img1Ly.setOnClickListener {
+            if (TextUtils.isEmpty(uri1))
+                openCropImage()
+            else {
+                Glide.with(requireContext())
+                    .load(uri1)
+                    .into(binding.imageView)
+            }
+        }
+        binding.img2Ly.setOnClickListener {
+            if (TextUtils.isEmpty(uri2))
+                openCropImage()
+            else {
+                Glide.with(requireContext())
+                    .load(uri2)
+                    .into(binding.imageView)
+            }
+        }
+        binding.img3Ly.setOnClickListener {
+            if (TextUtils.isEmpty(uri3))
+                openCropImage()
+            else {
+                Glide.with(requireContext())
+                    .load(uri3)
+                    .into(binding.imageView)
+            }
+        }
         binding.image1X.setOnClickListener {
 
-
             if (!TextUtils.isEmpty(uri3)) {
-                uri2 = uri3
+
+                val uri3temp = uri3
+                val uri2temp = uri2
+//                val uri1temp= uri1
                 Glide.with(requireContext())
                     .load(uri3)
                     .into(binding.image2)
+
+                clearImage(
+                    binding.image3Placeholder,
+                    binding.image3X,
+                    binding.image3
+                )
+
+                Glide.with(requireContext())
+                    .load(uri2)
+                    .into(binding.image1)
+
+                uri2 = uri3temp
+                uri3 = ""
+                uri1 = uri2temp
+
+
+            } else if (!TextUtils.isEmpty(uri2)) {
+
+                uri1 = uri2
+                uri2 = ""
+                Glide.with(requireContext())
+                    .load(uri1)
+                    .into(binding.image1)
+                clearImage(
+                    binding.image2Placeholder,
+                    binding.image2X,
+                    binding.image2
+                )
+
+            } else if (!TextUtils.isEmpty(uri1)) {
+                clearLast()
+            }
+
+        }
+
+        binding.image2X.setOnClickListener {
+
+            if (!TextUtils.isEmpty(uri3)) {
+
+                val uri3temp = uri3
+//                val uri1temp= uri1
+                Glide.with(requireContext())
+                    .load(uri3)
+                    .into(binding.image2)
+
+                clearImage(
+                    binding.image3Placeholder,
+                    binding.image3X,
+                    binding.image3
+                )
+
+
+
+                uri2 = uri3temp
+                uri3 = ""
+
+
+            } else if (!TextUtils.isEmpty(uri2)) {
+
+                uri2 = ""
+
+                clearImage(
+                    binding.image2Placeholder,
+                    binding.image2X,
+                    binding.image2
+                )
+
+            }
+
+        }
+
+        binding.image3X.setOnClickListener {
+
+            if (!TextUtils.isEmpty(uri3)) {
                 clearImage(
                     binding.image3Placeholder,
                     binding.image3X,
@@ -129,39 +229,6 @@ class PetAddImageFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
                 )
                 uri3 = ""
             }
-            if (!TextUtils.isEmpty(uri2)) {
-                uri1 = uri2
-                Glide.with(requireContext())
-                    .load(uri2)
-                    .into(binding.image1)
-                uri2 = ""
-                binding.image2.setImageResource(0)
-                clearImage(
-                    binding.image2Placeholder,
-                    binding.image2X,
-                    binding.image2
-                )
-            } else {
-                clearImage(
-                    binding.image1Placeholder,
-                    binding.image1X,
-                    binding.image1
-                )
-                uri1 = ""
-
-                binding.completeBtn.isEnabled = false
-                binding.completeBtn.setBackgroundResource(R.drawable.disabled_button_bg)
-                binding.completeBtn.setTextColor(
-                    ContextCompat.getColor(
-                        requireContext(),
-                        R.color.disabled_button_color
-                    )
-                )
-
-                binding.imageBg.visibility = View.GONE
-                binding.photoAddAnim.visibility = View.VISIBLE
-            }
-
 
         }
 
@@ -245,6 +312,27 @@ class PetAddImageFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
 
         return view
 
+    }
+
+    private fun clearLast() {
+        clearImage(
+            binding.image1Placeholder,
+            binding.image1X,
+            binding.image1
+        )
+        uri1 = ""
+
+        binding.completeBtn.isEnabled = false
+        binding.completeBtn.setBackgroundResource(R.drawable.disabled_button_bg)
+        binding.completeBtn.setTextColor(
+            ContextCompat.getColor(
+                requireContext(),
+                R.color.disabled_button_color
+            )
+        )
+
+        binding.imageBg.visibility = View.GONE
+        binding.photoAddAnim.visibility = View.VISIBLE
     }
 
     private fun setImages(images: List<PetImageResponse>) {

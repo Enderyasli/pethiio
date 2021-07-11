@@ -11,10 +11,10 @@ import kotlinx.android.synthetic.main.item_layout.view.*
 
 class CharacterAdapter(
     val context: Context,
-    private val characterList: ArrayList<String>
+    private val characterList: ArrayList<String>,
+    private val selectedCharacterList: ArrayList<String>
 ) : RecyclerView.Adapter<CharacterAdapter.DataViewHolder>() {
 
-    var selectedCharacters: ArrayList<String> = ArrayList()
 
     class DataViewHolder(itemView: View) :
         RecyclerView.ViewHolder(itemView) {
@@ -23,6 +23,7 @@ class CharacterAdapter(
             itemView.character_title_tv.text = character
 
             itemView.setOnClickListener {
+
                 if (!it.isSelected) {
                     itemView.character_title_tv.setBackgroundResource(R.drawable.character_item_selected_bg)
                     itemView.character_title_tv.setTextColor(
@@ -65,13 +66,13 @@ class CharacterAdapter(
     override fun getItemCount(): Int = characterList.size
 
     override fun onBindViewHolder(holder: DataViewHolder, position: Int) =
-        holder.bind(context, characterList[position], selectedCharacters)
+        holder.bind(context, characterList[position], selectedCharacterList)
 
     fun addData(list: List<String>) {
         characterList.addAll(list)
     }
 
     open fun getSelectedItems(): ArrayList<String> {
-        return selectedCharacters
+        return selectedCharacterList
     }
 }

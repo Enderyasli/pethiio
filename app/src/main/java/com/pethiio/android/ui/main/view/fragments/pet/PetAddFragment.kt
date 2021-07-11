@@ -50,6 +50,8 @@ class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
     private val BREED_ID = 3
     private val COLOR_ID = 4
     var adapterCharacter: CharacterAdapter? = null
+    var selectedCharacters: ArrayList<String> = ArrayList()
+
     private var petId: String? = ""
 
 
@@ -268,7 +270,7 @@ class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
     @SuppressLint("ResourceType")
     fun setUpObserver() {
 
-        viewModel.getPostPetEdit().observe(viewLifecycleOwner,{
+        viewModel.getPostPetEdit().observe(viewLifecycleOwner, {
 
             when (it.status) {
                 Status.SUCCESS -> {
@@ -298,7 +300,8 @@ class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
 
                         if (findNavController().currentDestination?.id == R.id.navigation_pet_add)
                             findNavController().navigate(
-                                R.id.action_navigation_pet_add_to_navigation_photo)
+                                R.id.action_navigation_pet_add_to_navigation_photo
+                            )
                     }
                 }
                 Status.ERROR -> {
@@ -310,7 +313,7 @@ class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
         })
 
 
-        viewModel.getPetAddPageData().observe(viewLifecycleOwner, {
+        viewModel.getPetAddPageData().observe(viewLifecycleOwner, { it ->
 
             when (it.status) {
                 Status.LOADING -> {
@@ -345,7 +348,7 @@ class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
                         getLocalizedString(Constants.petaboutPlaceholder)
 
                     binding.purposeTitleTv.text =
-                        getLocalizedSpan(Constants.animalAddCharacterTitle)
+                        getLocalizedSpan(Constants.animalAddPurposeTitle)
 
 
                     binding.genderLy.spinner.prompt =
@@ -476,65 +479,123 @@ class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
 
                     }
 
-                    viewModel.getUserPetDetail().observe(viewLifecycleOwner, {
+                    viewModel.getAddAnimalDetails().observe(this,
+                        {
+                            setAnimalDetail(it)
 
-                        when (it.status) {
-                            Status.SUCCESS -> {
-                                val petAdd = it.data
-                                binding.nameLy.placeholderTv.setText(petAdd?.name)
-                                binding.aboutPlaceholderTv.setText(petAdd?.about)
+                            binding.characterRc.layoutManager =
+                                GridLayoutManager(requireContext(), 3)
 
-                                val genderIndex = petAdd?.gender?.let { it1 ->
-                                    getLookUpIndex(
-                                        Constants.lookUpGender,
-                                        it1
-                                    )
-                                }
-                                genderIndex?.let { it1 -> binding.genderLy.spinner.setSelection(it1) }
+                            adapterCharacter = CharacterAdapter(
+                                requireContext(),
+                                getAnimalPersonalities(),
+                                selectedCharacters
+                            )
 
-                                val colorIndex = petAdd?.color?.let { it1 ->
-                                    getLookUpIndex(
-                                        Constants.lookUpColor,
-                                        it1
-                                    )
-                                }
-                                colorIndex?.let { it1 -> binding.colorLy.spinner.setSelection(it1) }
+                            binding.characterRc.adapter = adapterCharacter
 
-                                val animalIndex = petAdd?.animalId?.let { it1 ->
-                                    getLookUpIndex(
-                                        Constants.lookUpAnimals,
-                                        it1.toString()
-                                    )
-                                }
-                                animalIndex?.let { it1 -> binding.typeLy.spinner.setSelection(it1) }
+                            val breedAdapter = ArrayAdapter(
+                                requireContext(),
+                                android.R.layout.simple_spinner_item,
+                                getAnimalBreeds()
+                            )
+                            breedAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
 
-                                // TODO: 7.07.2021 breed e çözüm bul
-                                val breedIndex = petAdd?.breedId?.let { it1 ->
-                                    getLookUpIndex(
-                                        Constants.lookUpType,
-                                        it1.toString()
-                                    )
-                                }
-                                breedIndex?.let { it1 -> binding.breedLy.spinner.setSelection(it1) }
-
-
-                                petAdd?.year?.let { it1 -> binding.yearLy.spinner.setSelection(it1) }
-                                petAdd?.month?.let { it1 -> binding.monthLy.spinner.setSelection(it1 - 1) }
-
-                                val purposeIndex = petAdd?.purpose?.let { it1 ->
-                                    getLookUpIndex(
-                                        Constants.lookUpPurpose,
-                                        it1.toString()
-                                    )
-                                }
-                                purposeIndex?.let { it1 -> binding.radioGroup.check(it1) }
+                            with(binding.breedLy.spinner)
+                            {
+                                adapter = breedAdapter
+                                onItemSelectedListener = this@PetAddFragment
+                                gravity = Gravity.CENTER
 
                             }
 
-                        }
+
+                            if (!TextUtils.isEmpty(petId))
+                                viewModel.getUserPetDetail().observe(viewLifecycleOwner, {
+
+                                when (it.status) {
+                                    Status.SUCCESS -> {
+                                        val petAdd = it.data
+                                        binding.nameLy.placeholderTv.setText(petAdd?.name)
+                                        binding.aboutPlaceholderTv.setText(petAdd?.about)
+
+                                        val genderIndex = petAdd?.gender?.let { it1 ->
+                                            getLookUpIndex(
+                                                Constants.lookUpGender,
+                                                it1
+                                            )
+                                        }
+                                        genderIndex?.let { it1 ->
+                                            binding.genderLy.spinner.setSelection(
+                                                it1
+                                            )
+                                        }
+
+                                        val colorIndex = petAdd?.color?.let { it1 ->
+                                            getLookUpIndex(
+                                                Constants.lookUpColor,
+                                                it1
+                                            )
+                                        }
+                                        colorIndex?.let { it1 ->
+                                            binding.colorLy.spinner.setSelection(
+                                                it1
+                                            )
+                                        }
+
+                                        val animalIndex = petAdd?.animalId?.let { it1 ->
+                                            getLookUpIndex(
+                                                Constants.lookUpAnimals,
+                                                it1.toString()
+                                            )
+                                        }
+                                        animalIndex?.let { it1 ->
+                                            binding.typeLy.spinner.setSelection(
+                                                it1
+                                            )
+                                        }
+
+                                        val breedIndex = petAdd?.breedId?.let { it1 ->
+                                            getLookUpIndex(
+                                                Constants.lookUpType,
+                                                it1.toString()
+                                            )
+                                        }
+                                        breedIndex?.let { it1 ->
+                                            binding.breedLy.spinner.setSelection(
+                                                it1
+                                            )
+                                        }
 
 
-                    })
+                                        petAdd?.year?.let { it1 ->
+                                            binding.yearLy.spinner.setSelection(
+                                                it1
+                                            )
+                                        }
+                                        petAdd?.month?.let { it1 ->
+                                            binding.monthLy.spinner.setSelection(
+                                                it1 - 1
+                                            )
+                                        }
+
+                                        val purposeIndex = petAdd?.purpose?.let { it1 ->
+                                            getLookUpIndex(
+                                                Constants.lookUpPurpose,
+                                                it1.toString()
+                                            )
+                                        }
+                                        purposeIndex?.let { it1 -> binding.radioGroup.check(it1 + 1) }
+
+                                    }
+
+                                }
+
+
+                            })
+
+                        })
+
 
                     //endregion
 
@@ -544,34 +605,7 @@ class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
 
         })
 
-        viewModel.getAddAnimalDetails().observe(this,
-            {
-                setAnimalDetail(it)
 
-                binding.characterRc.layoutManager = GridLayoutManager(requireContext(), 3)
-
-                adapterCharacter = CharacterAdapter(
-                    requireContext(),
-                    getAnimalPersonalities()
-                )
-
-                binding.characterRc.adapter = adapterCharacter
-
-                val breedAdapter = ArrayAdapter(
-                    requireContext(),
-                    android.R.layout.simple_spinner_item,
-                    getAnimalBreeds()
-                )
-                breedAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-
-                with(binding.breedLy.spinner)
-                {
-                    adapter = breedAdapter
-                    onItemSelectedListener = this@PetAddFragment
-                    gravity = Gravity.CENTER
-
-                }
-            })
     }
 
     override fun onDestroyView() {

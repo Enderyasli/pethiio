@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.view.*
 import android.widget.PopupMenu
+import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
@@ -14,7 +15,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.pethiio.android.R
-import com.pethiio.android.data.EventBus.ChatEvent
 import com.pethiio.android.data.EventBus.LikeEvent
 import com.pethiio.android.data.model.petDetail.PetSearchDetailResponse
 import com.pethiio.android.data.model.petDetail.PetSearchOwnerDetailResponse
@@ -26,7 +26,6 @@ import com.pethiio.android.ui.main.adapter.ViewPagerAdapter
 import com.pethiio.android.ui.main.view.customViews.MaximobileDialog
 import com.pethiio.android.ui.main.viewmodel.PetDetailViewModel
 import com.pethiio.android.utils.Constants
-import com.pethiio.android.utils.PreferenceHelper
 import com.pethiio.android.utils.Status
 import org.greenrobot.eventbus.EventBus
 import java.lang.reflect.Method

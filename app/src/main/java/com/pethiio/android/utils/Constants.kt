@@ -62,6 +62,7 @@ class Constants {
         const val animalAddYearTitle: String = "yearTitle"
         const val animalAddYearPlaceholder: String = "yearPlaceholder"
         const val animalAddMonthTitle: String = "monthTitle"
+        const val animalAddPurposeTitle: String = "purposeTitle"
         const val animalAddGenderTitle: String = "genderTitle"
         const val animalAddTypeTitle: String = "typeTitle"
         const val animalAddBreedTitle: String = "breedTitle"
