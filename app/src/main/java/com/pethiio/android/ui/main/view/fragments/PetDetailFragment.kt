@@ -23,8 +23,10 @@ import com.pethiio.android.ui.base.BaseFragment
 import com.pethiio.android.ui.base.ViewModelFactory
 import com.pethiio.android.ui.main.adapter.PetSearchDetailCharacterAdapter
 import com.pethiio.android.ui.main.adapter.ViewPagerAdapter
+import com.pethiio.android.ui.main.view.customViews.MaximobileDialog
 import com.pethiio.android.ui.main.viewmodel.PetDetailViewModel
 import com.pethiio.android.utils.Constants
+import com.pethiio.android.utils.PreferenceHelper
 import com.pethiio.android.utils.Status
 import org.greenrobot.eventbus.EventBus
 import java.lang.reflect.Method
@@ -44,6 +46,9 @@ class PetDetailFragment : BaseFragment() {
     private var memberId: Int = 0
     private var animalId: String = ""
     private var ownerAgeTitle: String = ""
+    private var petDeleteAlert: String = ""
+
+
     private var isOwner: Boolean = false
 
     private var hasOwnerInfo: Boolean = false
@@ -126,7 +131,9 @@ class PetDetailFragment : BaseFragment() {
                             fields
                         )
 
+                    petDeleteAlert = getLocalizedString(Constants.petDeleteAlert, fields)
                     binding.progressBar.visibility = View.GONE
+
 
                 }
                 Status.LOADING -> {
@@ -137,12 +144,12 @@ class PetDetailFragment : BaseFragment() {
             binding.skipButton.setOnClickListener {
 
                 findNavController().navigateUp()
-                Handler().postDelayed({EventBus.getDefault().post(LikeEvent(false))}, 500)
+                Handler().postDelayed({ EventBus.getDefault().post(LikeEvent(false)) }, 500)
             }
             binding.likeButton.setOnClickListener {
 
                 findNavController().navigateUp()
-                Handler().postDelayed({EventBus.getDefault().post(LikeEvent(true))}, 500)
+                Handler().postDelayed({ EventBus.getDefault().post(LikeEvent(true)) }, 500)
 
 
             }
@@ -282,9 +289,8 @@ class PetDetailFragment : BaseFragment() {
                         if (!isOwner) {
                             findNavController().navigate(R.id.navigation_report)
                         } else {
-                            animalId.toIntOrNull()?.let { viewModel.fetchPetDelete(it) }
-                            binding.progressBar.visibility = View.VISIBLE
-                            Handler().postDelayed({ findNavController().navigateUp() }, 500)
+
+                            openDelete(report, petDeleteAlert)
                         }
 
                     }
@@ -293,6 +299,7 @@ class PetDetailFragment : BaseFragment() {
                 }
                 true
             }
+
 
             // show icons on popup menu
 
@@ -322,6 +329,31 @@ class PetDetailFragment : BaseFragment() {
 
             popUpMenu.show()
         }
+
+    }
+
+    private fun openDelete(delete: String, title: String) {
+
+        val maximobileDialog =
+            MaximobileDialog(
+                requireContext(),
+                true,
+                title,
+                delete,
+                getString(R.string.lcl_cancel_datepicker)
+            )
+
+        maximobileDialog.getPositiveButton().setOnClickListener {
+            maximobileDialog.dissmiss()
+
+            animalId.toIntOrNull()?.let { viewModel.fetchPetDelete(it) }
+            binding.progressBar.visibility = View.VISIBLE
+            Handler().postDelayed({ findNavController().navigateUp() }, 500)
+        }
+        maximobileDialog.getNegativeButton().setOnClickListener {
+            maximobileDialog.dissmiss()
+        }
+        maximobileDialog.getPositiveButton().visibility = View.VISIBLE
 
     }
 

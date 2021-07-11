@@ -89,6 +89,8 @@ class Constants {
         const val petSearchDetailOwner: String = "owner"
         const val petSearchDetailReport: String = "report"
         const val petSearchDetailUpdate: String = "update"
+        const val petDeleteAlert: String = "deleteAlert"
+
 
         const val petSearchFilterDistanceTitle: String = "distanceTitle"
         const val petSearchFilterAgeTitle: String = "ageTitle"
