@@ -28,7 +28,7 @@ class FAQViewModel : ViewModel() {
     private val changePassPageData = MutableLiveData<Resource<PageData>>()
     private val notificationSettingsPageData = MutableLiveData<Resource<PageData>>()
     private val notificationList = MutableLiveData<Resource<List<NotificationListResponse>>>()
-    private val postChangePass = MutableLiveData<Resource<AccessToken>>()
+    private val postChangePass = SingleLiveEvent<Resource<AccessToken>>()
     private val postNotificationChange = MutableLiveData<Resource<Response<Void>>>()
 
 

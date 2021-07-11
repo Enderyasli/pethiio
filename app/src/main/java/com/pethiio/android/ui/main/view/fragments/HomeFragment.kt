@@ -54,6 +54,11 @@ class HomeFragment : BaseFragment(), FilterItemClickListener {
 
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.fetchPetList()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

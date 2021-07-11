@@ -46,7 +46,7 @@ class SettingsFragment : BaseFragment() {
             openLogOut()
         }
 
-        binding.passwordChangeTv.setOnClickListener {
+        binding.passwordLy.setOnClickListener {
             findNavController().navigate(R.id.navigation_change_password)
         }
 
