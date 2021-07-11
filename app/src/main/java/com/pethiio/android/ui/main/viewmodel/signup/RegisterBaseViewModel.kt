@@ -12,6 +12,7 @@ import com.pethiio.android.data.model.petDetail.PetImageResponse
 import com.pethiio.android.data.model.signup.PageData
 import com.pethiio.android.data.model.signup.Register
 import com.pethiio.android.data.model.signup.RegisterInfo
+import com.pethiio.android.ui.main.viewmodel.SingleLiveEvent
 import com.pethiio.android.utils.PreferenceHelper
 import com.pethiio.android.utils.Resource
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -25,13 +26,13 @@ class RegisterBaseViewModel : ViewModel() {
 
     private val loginPageData = MutableLiveData<Resource<PageData>>()
     val register = MutableLiveData<Resource<PageData>>()
-    val postRegister = MutableLiveData<Resource<AccessToken>>()
-    val postLogin = MutableLiveData<Resource<AccessToken>>()
+    var postRegister = SingleLiveEvent<Resource<AccessToken>>()
+    val postLogin = SingleLiveEvent<Resource<AccessToken>>()
     val postRegisterInfo = MutableLiveData<Resource<AccessToken>>()
     val postRegisterAvatar = MutableLiveData<Resource<AccessToken>>()
-    val postPetPhoto = MutableLiveData<Resource<AccessToken>>()
-    val postPetAdd = MutableLiveData<Resource<PetAddResponse>>()
-    val postPetEdit = MutableLiveData<Resource<Response<Void>>>()
+    val postPetPhoto = SingleLiveEvent<Resource<AccessToken>>()
+    val postPetAdd = SingleLiveEvent<Resource<PetAddResponse>>()
+    val postPetEdit = SingleLiveEvent<Resource<Response<Void>>>()
     val petList = MutableLiveData<Resource<List<PetListResponse>>>()
     val petListPageData = MutableLiveData<Resource<List<PethiioResponse>>>()
 
@@ -432,6 +433,8 @@ class RegisterBaseViewModel : ViewModel() {
         super.onCleared()
         compositeDisposable.dispose()
     }
+
+
 
 
 }

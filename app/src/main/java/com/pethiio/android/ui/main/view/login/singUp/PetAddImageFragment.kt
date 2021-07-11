@@ -144,7 +144,6 @@ class PetAddImageFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
 
                 val uri3temp = uri3
                 val uri2temp = uri2
-//                val uri1temp= uri1
                 Glide.with(requireContext())
                     .load(uri3)
                     .into(binding.image2)
@@ -188,7 +187,6 @@ class PetAddImageFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
             if (!TextUtils.isEmpty(uri3)) {
 
                 val uri3temp = uri3
-//                val uri1temp= uri1
                 Glide.with(requireContext())
                     .load(uri3)
                     .into(binding.image2)

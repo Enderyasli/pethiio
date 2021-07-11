@@ -310,7 +310,7 @@ class RegisterFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
                     when (it.status) {
                         Status.SUCCESS -> {
                             activity?.runOnUiThread {
-                                fetchRegisterDetail()
+//                                fetchRegisterDetail()
                                 if (findNavController().currentDestination?.id == R.id.navigation_register)
                                     findNavController().navigate(R.id.action_navigation_register_to_navigation_register_detail)
 
@@ -357,5 +357,6 @@ class RegisterFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
 
     override fun onNothingSelected(parent: AdapterView<*>?) {
     }
+
 
 }

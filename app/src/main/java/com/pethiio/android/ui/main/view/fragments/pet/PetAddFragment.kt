@@ -513,86 +513,86 @@ class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
                             if (!TextUtils.isEmpty(petId))
                                 viewModel.getUserPetDetail().observe(viewLifecycleOwner, {
 
-                                when (it.status) {
-                                    Status.SUCCESS -> {
-                                        val petAdd = it.data
-                                        binding.nameLy.placeholderTv.setText(petAdd?.name)
-                                        binding.aboutPlaceholderTv.setText(petAdd?.about)
+                                    when (it.status) {
+                                        Status.SUCCESS -> {
+                                            val petAdd = it.data
+                                            binding.nameLy.placeholderTv.setText(petAdd?.name)
+                                            binding.aboutPlaceholderTv.setText(petAdd?.about)
 
-                                        val genderIndex = petAdd?.gender?.let { it1 ->
-                                            getLookUpIndex(
-                                                Constants.lookUpGender,
-                                                it1
-                                            )
-                                        }
-                                        genderIndex?.let { it1 ->
-                                            binding.genderLy.spinner.setSelection(
-                                                it1
-                                            )
-                                        }
+                                            val genderIndex = petAdd?.gender?.let { it1 ->
+                                                getLookUpIndex(
+                                                    Constants.lookUpGender,
+                                                    it1
+                                                )
+                                            }
+                                            genderIndex?.let { it1 ->
+                                                binding.genderLy.spinner.setSelection(
+                                                    it1
+                                                )
+                                            }
 
-                                        val colorIndex = petAdd?.color?.let { it1 ->
-                                            getLookUpIndex(
-                                                Constants.lookUpColor,
-                                                it1
-                                            )
-                                        }
-                                        colorIndex?.let { it1 ->
-                                            binding.colorLy.spinner.setSelection(
-                                                it1
-                                            )
-                                        }
+                                            val colorIndex = petAdd?.color?.let { it1 ->
+                                                getLookUpIndex(
+                                                    Constants.lookUpColor,
+                                                    it1
+                                                )
+                                            }
+                                            colorIndex?.let { it1 ->
+                                                binding.colorLy.spinner.setSelection(
+                                                    it1
+                                                )
+                                            }
 
-                                        val animalIndex = petAdd?.animalId?.let { it1 ->
-                                            getLookUpIndex(
-                                                Constants.lookUpAnimals,
-                                                it1.toString()
-                                            )
-                                        }
-                                        animalIndex?.let { it1 ->
-                                            binding.typeLy.spinner.setSelection(
-                                                it1
-                                            )
-                                        }
+                                            val animalIndex = petAdd?.animalId?.let { it1 ->
+                                                getLookUpIndex(
+                                                    Constants.lookUpAnimals,
+                                                    it1.toString()
+                                                )
+                                            }
+                                            animalIndex?.let { it1 ->
+                                                binding.typeLy.spinner.setSelection(
+                                                    it1
+                                                )
+                                            }
 
-                                        val breedIndex = petAdd?.breedId?.let { it1 ->
-                                            getLookUpIndex(
-                                                Constants.lookUpType,
-                                                it1.toString()
-                                            )
-                                        }
-                                        breedIndex?.let { it1 ->
-                                            binding.breedLy.spinner.setSelection(
-                                                it1
-                                            )
-                                        }
+                                            val breedIndex = petAdd?.breedId?.let { it1 ->
+                                                getLookUpIndex(
+                                                    Constants.lookUpType,
+                                                    it1.toString()
+                                                )
+                                            }
+                                            breedIndex?.let { it1 ->
+                                                binding.breedLy.spinner.setSelection(
+                                                    it1
+                                                )
+                                            }
 
 
-                                        petAdd?.year?.let { it1 ->
-                                            binding.yearLy.spinner.setSelection(
-                                                it1
-                                            )
-                                        }
-                                        petAdd?.month?.let { it1 ->
-                                            binding.monthLy.spinner.setSelection(
-                                                it1 - 1
-                                            )
-                                        }
+                                            petAdd?.year?.let { it1 ->
+                                                binding.yearLy.spinner.setSelection(
+                                                    it1
+                                                )
+                                            }
+                                            petAdd?.month?.let { it1 ->
+                                                binding.monthLy.spinner.setSelection(
+                                                    it1 - 1
+                                                )
+                                            }
 
-                                        val purposeIndex = petAdd?.purpose?.let { it1 ->
-                                            getLookUpIndex(
-                                                Constants.lookUpPurpose,
-                                                it1.toString()
-                                            )
+                                            val purposeIndex = petAdd?.purpose?.let { it1 ->
+                                                getLookUpIndex(
+                                                    Constants.lookUpPurpose,
+                                                    it1.toString()
+                                                )
+                                            }
+                                            purposeIndex?.let { it1 -> binding.radioGroup.check(it1 + 1) }
+
                                         }
-                                        purposeIndex?.let { it1 -> binding.radioGroup.check(it1 + 1) }
 
                                     }
 
-                                }
 
-
-                            })
+                                })
 
                         })
 

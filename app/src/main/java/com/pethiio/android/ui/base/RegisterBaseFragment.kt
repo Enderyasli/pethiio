@@ -75,6 +75,7 @@ abstract class RegisterBaseFragment<VModel : RegisterBaseViewModel> : Fragment()
         }
         return emptyList()
     }
+
     fun getLookUpKeys(key: String): List<String> {
 
         lookUpsResponse?.forEach { it ->
@@ -91,15 +92,17 @@ abstract class RegisterBaseFragment<VModel : RegisterBaseViewModel> : Fragment()
         }
         return emptyList()
     }
-    fun getLookUpIndex(lookUpkey:String,key: String): Int {
+
+    fun getLookUpIndex(lookUpkey: String, key: String): Int {
 
         getLookUpKeys(lookUpkey).forEachIndexed { index, s ->
-            if(s==key)
+            if (s == key)
                 return index
         }
 
         return 0
     }
+
     fun getAnimalPersonalities(): ArrayList<String> {
 
         val arrayList = arrayListOf<String>()
@@ -263,7 +266,7 @@ abstract class RegisterBaseFragment<VModel : RegisterBaseViewModel> : Fragment()
         viewModel.postPetAdd(petAdd)
     }
 
-    open fun postPetEdit(petEdit: PetEdit ) {
+    open fun postPetEdit(petEdit: PetEdit) {
         viewModel.postPetEdit(petEdit)
     }
 

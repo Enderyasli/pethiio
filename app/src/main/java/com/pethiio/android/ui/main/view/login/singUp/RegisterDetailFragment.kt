@@ -168,7 +168,10 @@ class RegisterDetailFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
 
                                                 }
                                                 Status.ERROR -> {
-                                                    CommonMethods.onSNACK(binding.root, it1.message.toString())
+                                                    CommonMethods.onSNACK(
+                                                        binding.root,
+                                                        it1.message.toString()
+                                                    )
 
 
                                                 }
@@ -178,7 +181,10 @@ class RegisterDetailFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
                                         })
 
                                 } else {
-                                    CommonMethods.onSNACK(binding.root,  getLocalizedString(Constants.imageEmtpyError))
+                                    CommonMethods.onSNACK(
+                                        binding.root,
+                                        getLocalizedString(Constants.imageEmtpyError)
+                                    )
 
 
                                     binding.imagePlaceholder.requestFocus()
@@ -260,14 +266,18 @@ class RegisterDetailFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
                                             when (it1.status) {
 
                                                 Status.SUCCESS -> {
-                                                    PreferenceHelper.SharedPreferencesManager.getInstance().isLoggedIn=true
+                                                    PreferenceHelper.SharedPreferencesManager.getInstance().isLoggedIn =
+                                                        true
                                                     if (findNavController().currentDestination?.id == R.id.navigation_register_detail)
                                                         findNavController().navigate(R.id.action_navigation_register_detail_to_navigation_welcome)
                                                 }
 
 
                                                 Status.ERROR -> {
-                                                    CommonMethods.onSNACK(binding.root, it.message.toString())
+                                                    CommonMethods.onSNACK(
+                                                        binding.root,
+                                                        it.message.toString()
+                                                    )
 
 
                                                 }
@@ -278,7 +288,10 @@ class RegisterDetailFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
 
                                 } else {
 
-                                    CommonMethods.onSNACK(binding.root, getLocalizedString(Constants.imageEmtpyError))
+                                    CommonMethods.onSNACK(
+                                        binding.root,
+                                        getLocalizedString(Constants.imageEmtpyError)
+                                    )
 
                                     binding.imagePlaceholder.requestFocus()
                                 }
@@ -288,7 +301,6 @@ class RegisterDetailFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
                         }
                         Status.ERROR -> {
                             CommonMethods.onSNACK(binding.root, it.message.toString())
-
 
 
                         }
