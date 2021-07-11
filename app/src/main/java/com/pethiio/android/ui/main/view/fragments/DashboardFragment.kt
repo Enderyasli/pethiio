@@ -2,11 +2,9 @@ package com.pethiio.android.ui.main.view.fragments
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.content.IntentSender
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
-import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -22,8 +20,6 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.DiffUtil
-import com.google.android.gms.common.api.ApiException
-import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
 import com.google.android.gms.tasks.CancellationTokenSource
 import com.google.android.gms.tasks.Task
@@ -306,7 +302,7 @@ class DashboardFragment : BaseFragment(), CardStackListener,
         binding.progressBar.visibility = View.VISIBLE
 
 
-        binding.noResultImg.setAnimation("evim.json")
+        binding.noResultImg.setAnimation("bulunamadi.json")
         setupButton()
         viewModel.fetchPetSearchPageData()
 
@@ -350,7 +346,7 @@ class DashboardFragment : BaseFragment(), CardStackListener,
                 Status.SUCCESS -> {
                     val fields = it.data?.fields
                     binding.titleTv.text = getLocalizedString(Constants.petSearchTitle, fields)
-                    binding.petEmptyErrorTv.text =
+                    binding.noAnimalTv.text =
                         getLocalizedString(Constants.petSearchEmptyMessageTitle, fields)
 
 
@@ -403,11 +399,11 @@ class DashboardFragment : BaseFragment(), CardStackListener,
                         initialize()
                     }
                     if (it.data?.size == 0) {
-                        binding.emptyLayout.visibility = View.VISIBLE
+                        binding.noResultLayout.visibility = View.VISIBLE
                         binding.skipButton.visibility = View.GONE
                         binding.likeButton.visibility = View.GONE
                     } else {
-                        binding.emptyLayout.visibility = View.GONE
+                        binding.noResultLayout.visibility = View.GONE
                         binding.skipButton.visibility = View.VISIBLE
                         binding.likeButton.visibility = View.VISIBLE
                     }

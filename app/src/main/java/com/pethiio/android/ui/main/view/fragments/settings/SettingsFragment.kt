@@ -12,6 +12,7 @@ import com.pethiio.android.ui.base.BaseFragment
 import com.pethiio.android.ui.main.viewmodel.FAQViewModel
 import com.pethiio.android.utils.Constants
 import com.pethiio.android.utils.PreferenceHelper
+import com.pethiio.android.utils.Status
 
 
 class SettingsFragment : BaseFragment() {
@@ -41,14 +42,18 @@ class SettingsFragment : BaseFragment() {
             findNavController().navigate(R.id.navigation_about)
         }
         binding.logoutLy.setOnClickListener {
-            PreferenceHelper.SharedPreferencesManager.getInstance().isLoggedIn=false
-            PreferenceHelper.SharedPreferencesManager.getInstance().accessToken=""
+            PreferenceHelper.SharedPreferencesManager.getInstance().isLoggedIn = false
+            PreferenceHelper.SharedPreferencesManager.getInstance().accessToken = ""
 
             findNavController().navigate(R.id.action_global_navigation_welcome)
         }
 
         binding.passwordChangeTv.setOnClickListener {
             findNavController().navigate(R.id.navigation_change_password)
+        }
+
+        binding.notificationLy.setOnClickListener {
+            findNavController().navigate(R.id.navigation_notification)
         }
 
         setupViewModel()
@@ -67,22 +72,34 @@ class SettingsFragment : BaseFragment() {
     private fun setUpObserver() {
 
         viewModel.getSettingsPageData().observe(viewLifecycleOwner, {
+            when (it.status) {
+                Status.LOADING -> {
+                    binding.progressBar.visibility=View.VISIBLE
 
-            val pageDataFields = it.data?.fields
+                }
+                Status.SUCCESS -> {
+                    val pageDataFields = it.data?.fields
 
-            binding.titleTv.text = getLocalizedString(Constants.registerTitle, pageDataFields)
-            binding.supportTv.text =
-                getLocalizedString(Constants.supportTitle, pageDataFields)
+                    binding.titleTv.text =
+                        getLocalizedString(Constants.registerTitle, pageDataFields)
+                    binding.supportTv.text =
+                        getLocalizedString(Constants.supportTitle, pageDataFields)
 
-            binding.passwordChangeTv.text =
-                getLocalizedString(Constants.changePasswordTitle, pageDataFields)
+                    binding.passwordChangeTv.text =
+                        getLocalizedString(Constants.changePasswordTitle, pageDataFields)
 
-            binding.notificationTv.text =
-                getLocalizedString(Constants.notificationTitle, pageDataFields)
-            binding.aboutTv.text =
-                getLocalizedString(Constants.aboutAppTitle, pageDataFields)
-            binding.logoutTv.text =
-                getLocalizedString(Constants.logoutTitle, pageDataFields)
+                    binding.notificationTv.text =
+                        getLocalizedString(Constants.notificationTitle, pageDataFields)
+                    binding.aboutTv.text =
+                        getLocalizedString(Constants.aboutAppTitle, pageDataFields)
+                    binding.logoutTv.text =
+                        getLocalizedString(Constants.logoutTitle, pageDataFields)
+
+                    binding.progressBar.visibility=View.GONE
+
+                }
+            }
+
 
         })
 

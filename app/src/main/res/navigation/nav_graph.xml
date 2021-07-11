@@ -242,6 +242,12 @@
             tools:layout="@layout/fragment_about" />
 
         <fragment
+            android:id="@+id/navigation_notification"
+            android:name="com.pethiio.android.ui.main.view.fragments.NotificationFragment"
+            android:label="Notification"
+            tools:layout="@layout/fragment_notification" />
+
+        <fragment
             android:id="@+id/navigation_chat"
             android:name="com.pethiio.android.ui.main.view.fragments.ChatScreenFragment"
             android:label="Chat"

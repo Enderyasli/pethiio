@@ -1,6 +1,5 @@
 package com.pethiio.android.data.api
 
-import com.bumptech.glide.load.engine.Resource
 import com.pethiio.android.data.model.*
 import com.pethiio.android.data.model.chat.ChatListResponse
 import com.pethiio.android.data.model.chat.ChatRoomResponse
@@ -11,6 +10,7 @@ import com.pethiio.android.data.model.login.LoginRequest
 import com.pethiio.android.data.model.member.LocationsRequest
 import com.pethiio.android.data.model.member.MemberListResponse
 import com.pethiio.android.data.model.member.PetSearchRequest
+import com.pethiio.android.data.model.notification.NotificationListResponse
 import com.pethiio.android.data.model.petDetail.PetImageResponse
 import com.pethiio.android.data.model.petDetail.PetSearchDetailResponse
 import com.pethiio.android.data.model.petDetail.PetSearchOwnerDetailResponse
@@ -228,6 +228,16 @@ interface PethiioServices {
     @POST("page/change-password")
     fun postChangePass(@Body changePassRequest: ChangePassRequest): Observable<AccessToken>
 
+    @GET("page/notification-settings/info")
+    fun getNotificationSettingsPageData(): Observable<PageData>
+
+    @GET("/api/page/notification-settings")
+    fun getNotificationList(): Observable<List<NotificationListResponse>>
+
+    @POST("/api/page/notification-settings")
+    fun postNotificationChange(@Body notificationListResponse: NotificationListResponse): Observable<Response<Void>>
+
+
     //endregion
 
     //region Reset Password
@@ -250,10 +260,10 @@ interface PethiioServices {
     fun getPinVerifyPageData(): Observable<PageData>
 
     @POST("page/pin-verification/reset-password")
-    fun postPinVerification(@Body pinVerificationRequest: PinVerificationRequest ): Observable<Response<Void>>
+    fun postPinVerification(@Body pinVerificationRequest: PinVerificationRequest): Observable<Response<Void>>
 
     @POST("page/reset-password")
-    fun postResetPassword(@Body resetPasswordRequest: ResetPasswordRequest ): Observable<Response<Void>>
+    fun postResetPassword(@Body resetPasswordRequest: ResetPasswordRequest): Observable<Response<Void>>
 
     //endregion
 

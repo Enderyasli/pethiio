@@ -1,142 +1,157 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context=".ui.main.view.fragments.settings.SettingsFragment">
 
-    <TextView
-        android:id="@+id/title_tv"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/title_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="26dp"
+            android:layout_marginTop="@dimen/signup_title_top_margin"
+            android:layout_marginBottom="3dp"
+            android:fontFamily="@font/typo_round_bold"
+            android:textColor="@color/orangeButton"
+            android:textSize="@dimen/signup_title_size"
+            tools:text="Ayarlar" />
+
+        <LinearLayout
+            android:id="@+id/password_ly"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/default_margin"
+            android:layout_marginTop="40dp"
+            android:layout_marginRight="@dimen/default_margin">
+
+            <ImageView
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/changepass" />
+
+            <TextView
+                android:id="@+id/password_change_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/default_margin"
+                android:fontFamily="@font/typo_round_bold"
+                android:textColor="@color/grey"
+                android:textSize="22sp"
+                tools:text="Şifre Değiştir" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/notification_ly"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/default_margin"
+            android:layout_marginTop="30dp"
+            android:layout_marginRight="@dimen/default_margin">
+
+            <ImageView
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/notification" />
+
+            <TextView
+                android:id="@+id/notification_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/default_margin"
+                android:fontFamily="@font/typo_round_bold"
+                android:textColor="@color/grey"
+                android:textSize="22sp"
+                tools:text="Bildirimler" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/support_ly"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/default_margin"
+            android:layout_marginTop="30dp"
+            android:layout_marginRight="@dimen/default_margin">
+
+            <ImageView
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/support" />
+
+            <TextView
+                android:id="@+id/support_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/default_margin"
+                android:fontFamily="@font/typo_round_bold"
+                android:textColor="@color/grey"
+                android:textSize="22sp"
+                tools:text="Destek" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/about_ly"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/default_margin"
+            android:layout_marginTop="30dp"
+            android:layout_marginRight="@dimen/default_margin">
+
+            <ImageView
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/about" />
+
+            <TextView
+                android:id="@+id/about_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/default_margin"
+                android:fontFamily="@font/typo_round_bold"
+                android:textColor="@color/grey"
+                android:textSize="22sp"
+                tools:text="Hakkında" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/logout_ly"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/default_margin"
+            android:layout_marginTop="30dp"
+            android:layout_marginRight="@dimen/default_margin">
+
+            <ImageView
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/logout" />
+
+            <TextView
+                android:id="@+id/logout_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/default_margin"
+                android:fontFamily="@font/typo_round_bold"
+                android:textColor="@color/grey"
+                android:textSize="22sp"
+                tools:text="Çıkış Yap" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="26dp"
-        android:layout_marginTop="@dimen/signup_title_top_margin"
-        android:layout_marginBottom="3dp"
-        android:fontFamily="@font/typo_round_bold"
-        android:textColor="@color/orangeButton"
-        android:textSize="@dimen/signup_title_size"
-        tools:text="Ayarlar" />
-
-    <LinearLayout
-        android:id="@+id/password_ly"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/default_margin"
-        android:layout_marginTop="40dp"
-        android:layout_marginRight="@dimen/default_margin">
-
-        <ImageView
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:src="@drawable/changepass" />
-
-        <TextView
-            android:id="@+id/password_change_tv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/default_margin"
-            android:fontFamily="@font/typo_round_bold"
-            android:textColor="@color/grey"
-            android:textSize="22sp"
-            tools:text="Şifre Değiştir" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/notification_ly"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/default_margin"
-        android:layout_marginTop="30dp"
-        android:layout_marginRight="@dimen/default_margin">
-
-        <ImageView
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:src="@drawable/notification" />
-
-        <TextView
-            android:id="@+id/notification_tv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/default_margin"
-            android:fontFamily="@font/typo_round_bold"
-            android:textColor="@color/grey"
-            android:textSize="22sp"
-            tools:text="Bildirimler" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/support_ly"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/default_margin"
-        android:layout_marginTop="30dp"
-        android:layout_marginRight="@dimen/default_margin">
-
-        <ImageView
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:src="@drawable/support" />
-
-        <TextView
-            android:id="@+id/support_tv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/default_margin"
-            android:fontFamily="@font/typo_round_bold"
-            android:textColor="@color/grey"
-            android:textSize="22sp"
-            tools:text="Destek" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/about_ly"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/default_margin"
-        android:layout_marginTop="30dp"
-        android:layout_marginRight="@dimen/default_margin">
-
-        <ImageView
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:src="@drawable/about" />
-
-        <TextView
-            android:id="@+id/about_tv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/default_margin"
-            android:fontFamily="@font/typo_round_bold"
-            android:textColor="@color/grey"
-            android:textSize="22sp"
-            tools:text="Hakkında" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/logout_ly"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/default_margin"
-        android:layout_marginTop="30dp"
-        android:layout_marginRight="@dimen/default_margin">
-
-        <ImageView
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:src="@drawable/logout" />
-
-        <TextView
-            android:id="@+id/logout_tv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/default_margin"
-            android:fontFamily="@font/typo_round_bold"
-            android:textColor="@color/grey"
-            android:textSize="22sp"
-            tools:text="Çıkış Yap" />
-    </LinearLayout>
+        android:layout_centerInParent="true"
+        android:alpha="0.9"
+        android:indeterminateTint="@color/orangeButton"
+        android:visibility="gone" />
 
 
-</LinearLayout>
+</RelativeLayout>

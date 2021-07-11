@@ -7,9 +7,7 @@ import com.pethiio.android.data.api.ResponseHandler
 import com.pethiio.android.data.api.ServiceBuilder
 import com.pethiio.android.data.model.AccessToken
 import com.pethiio.android.data.model.login.ChangePassRequest
-import com.pethiio.android.data.model.login.LoginRequest
-import com.pethiio.android.data.model.petDetail.PetSearchDetailResponse
-import com.pethiio.android.data.model.petDetail.PetSearchOwnerDetailResponse
+import com.pethiio.android.data.model.notification.NotificationListResponse
 import com.pethiio.android.data.model.settings.FAQResponse
 import com.pethiio.android.data.model.signup.PageData
 import com.pethiio.android.utils.PreferenceHelper
@@ -17,7 +15,7 @@ import com.pethiio.android.utils.Resource
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
-import retrofit2.HttpException
+import retrofit2.Response
 
 class FAQViewModel : ViewModel() {
 
@@ -28,7 +26,10 @@ class FAQViewModel : ViewModel() {
     private val settingsPageData = MutableLiveData<Resource<PageData>>()
     private val aboutPageData = MutableLiveData<Resource<PageData>>()
     private val changePassPageData = MutableLiveData<Resource<PageData>>()
+    private val notificationSettingsPageData = MutableLiveData<Resource<PageData>>()
+    private val notificationList = MutableLiveData<Resource<List<NotificationListResponse>>>()
     private val postChangePass = MutableLiveData<Resource<AccessToken>>()
+    private val postNotificationChange = MutableLiveData<Resource<Response<Void>>>()
 
 
     fun fetchFAQPageData() {
@@ -92,6 +93,63 @@ class FAQViewModel : ViewModel() {
                 )
         )
     }
+
+    fun fetchNotificationSettingsPageData() {
+
+        notificationSettingsPageData.postValue(Resource.loading(null))
+        compositeDisposable.add(
+            ServiceBuilder.buildService()
+                .getNotificationSettingsPageData()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                    { loginData ->
+                        notificationSettingsPageData.postValue(responseHandler.handleSuccess(loginData))
+                    },
+                    {
+                        notificationSettingsPageData.postValue(responseHandler.handleException(it))
+                    }
+                )
+        )
+    }
+    fun fetchNotificationListPageData() {
+
+        notificationList.postValue(Resource.loading(null))
+        compositeDisposable.add(
+            ServiceBuilder.buildService()
+                .getNotificationList()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                    { loginData ->
+                        notificationList.postValue(responseHandler.handleSuccess(loginData))
+                    },
+                    {
+                        notificationList.postValue(responseHandler.handleException(it))
+                    }
+                )
+        )
+    }
+
+    fun fetchPostNotification(notificationListResponse: NotificationListResponse) {
+
+        postNotificationChange.postValue(Resource.loading(null))
+        compositeDisposable.add(
+            ServiceBuilder.buildService()
+                .postNotificationChange(notificationListResponse)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                    { loginData ->
+                        postNotificationChange.postValue(responseHandler.handleSuccess(loginData))
+                    },
+                    {
+                        postNotificationChange.postValue(responseHandler.handleException(it))
+                    }
+                )
+        )
+    }
+
 
     fun fetchAboutPageData() {
 
@@ -181,6 +239,18 @@ class FAQViewModel : ViewModel() {
 
     fun getChangePass(): LiveData<Resource<AccessToken>> {
         return postChangePass
+    }
+
+    fun getNotificationSettingsPageData(): LiveData<Resource<PageData>> {
+        return notificationSettingsPageData
+    }
+
+    fun getNotificationList(): LiveData<Resource<List<NotificationListResponse>>> {
+        return notificationList
+    }
+
+    fun getPostNotificationChange(): LiveData<Resource<Response<Void>>> {
+        return postNotificationChange
     }
 
 }

@@ -13,6 +13,14 @@ class Constants {
         const val lookUpLanguage: String = "language"
         const val lookUpType: String = "type"
 
+        const val notificationNewMesage: String = "NEW_MESSAGE"
+        const val notificationNewMatch: String = "NEW_MATCH"
+        const val notificationPromotional: String = "PROMOTIONAL"
+
+        const val notificationNewMesageTitle: String = "newMessageTitle"
+        const val notificationNewMatchTitle: String = "newMatchTitle"
+        const val notificationPromotionalTitle: String = "promotionalTitle"
+
 
         val datePickerFormat: SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd")
 
