@@ -42,10 +42,6 @@ class ChatScreenFragment : BaseFragment() {
     val socketIO = SocketIO()
 
 
-
-
-
-
     override fun onDestroy() {
         //unregister event bus
         EventBus.getDefault().unregister(this)
@@ -93,12 +89,17 @@ class ChatScreenFragment : BaseFragment() {
 
         binding.btnSend.setOnClickListener {
 
-            socketIO.sendMessage(ChatSendMessage(
-                binding.etMessage.text.trim().toString(),
-                roomId,
-                memberId
-            ))
-            binding.etMessage.setText("")
+            if (binding.etMessage.text.isNotEmpty()) {
+                socketIO.sendMessage(
+                    ChatSendMessage(
+                        binding.etMessage.text.trim().toString(),
+                        roomId,
+                        memberId
+                    )
+                )
+                binding.etMessage.setText("")
+            }
+
 
         }
 
@@ -145,8 +146,6 @@ class ChatScreenFragment : BaseFragment() {
         })
 
     }
-
-
 
 
 }

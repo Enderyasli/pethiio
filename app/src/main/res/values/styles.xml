@@ -24,4 +24,11 @@
         <item name="fontFamily">@font/typo_round_bold</item>
     </style>
 
+    <style name="DialogTheme" parent="Theme.AppCompat.Dialog">
+        <item name="android:windowEnterAnimation">@anim/slide_up</item>
+        <item name="android:windowExitAnimation">@anim/slide_out_down</item>
+
+
+    </style>
+
 </resources>

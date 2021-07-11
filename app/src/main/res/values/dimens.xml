@@ -13,4 +13,6 @@
     <dimen name="spinner_item_size">22sp</dimen>
     <dimen name="default_spinner_item_size">14sp</dimen>
     <dimen name="pet_detail_character_recycler_size">62dp</dimen>
+    <dimen name="dimen_32_dp">32dp</dimen>
+    <dimen name="alert_button_height">40dp</dimen>
 </resources>

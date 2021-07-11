@@ -18,4 +18,6 @@
     <string name="complete" translatable="false">Complete</string>
     <string name="bottom_menu_home">Home</string>
     <string name="no_location_detected" translatable="false">No location detected. Make sure location is enabled on the device.</string>
+    <string name="sure_logout">Are you sure you want to log out?</string>
+    <string name="logout">Log Out</string>
 </resources>

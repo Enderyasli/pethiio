@@ -9,6 +9,7 @@ import androidx.navigation.fragment.findNavController
 import com.pethiio.android.R
 import com.pethiio.android.databinding.FragmentSettingsBinding
 import com.pethiio.android.ui.base.BaseFragment
+import com.pethiio.android.ui.main.view.customViews.MaximobileDialog
 import com.pethiio.android.ui.main.viewmodel.FAQViewModel
 import com.pethiio.android.utils.Constants
 import com.pethiio.android.utils.PreferenceHelper
@@ -42,10 +43,7 @@ class SettingsFragment : BaseFragment() {
             findNavController().navigate(R.id.navigation_about)
         }
         binding.logoutLy.setOnClickListener {
-            PreferenceHelper.SharedPreferencesManager.getInstance().isLoggedIn = false
-            PreferenceHelper.SharedPreferencesManager.getInstance().accessToken = ""
-
-            findNavController().navigate(R.id.action_global_navigation_welcome)
+            openLogOut()
         }
 
         binding.passwordChangeTv.setOnClickListener {
@@ -61,7 +59,33 @@ class SettingsFragment : BaseFragment() {
 
 
 
+
+
         return view
+    }
+
+    private fun openLogOut() {
+
+        val maximobileDialog =
+            MaximobileDialog(
+                requireContext(),
+                true,
+                getString(R.string.sure_logout),
+                getString(R.string.logout),
+                getString(R.string.lcl_cancel_datepicker)
+            )
+
+        maximobileDialog.getPositiveButton().setOnClickListener {
+            maximobileDialog.dissmiss()
+            PreferenceHelper.SharedPreferencesManager.getInstance().isLoggedIn = false
+            PreferenceHelper.SharedPreferencesManager.getInstance().accessToken = ""
+            findNavController().navigate(R.id.action_global_navigation_welcome)
+        }
+        maximobileDialog.getNegativeButton().setOnClickListener {
+            maximobileDialog.dissmiss()
+        }
+        maximobileDialog.getPositiveButton().visibility = View.VISIBLE
+
     }
 
     private fun setupViewModel() {
@@ -74,7 +98,7 @@ class SettingsFragment : BaseFragment() {
         viewModel.getSettingsPageData().observe(viewLifecycleOwner, {
             when (it.status) {
                 Status.LOADING -> {
-                    binding.progressBar.visibility=View.VISIBLE
+                    binding.progressBar.visibility = View.VISIBLE
 
                 }
                 Status.SUCCESS -> {
@@ -95,7 +119,7 @@ class SettingsFragment : BaseFragment() {
                     binding.logoutTv.text =
                         getLocalizedString(Constants.logoutTitle, pageDataFields)
 
-                    binding.progressBar.visibility=View.GONE
+                    binding.progressBar.visibility = View.GONE
 
                 }
             }

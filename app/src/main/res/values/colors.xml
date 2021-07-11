@@ -22,5 +22,8 @@
     <color name="pet_name_bg">#faede4</color>
     <color name="darkGrey">#333333</color>
     <color name="receiver_color">#f0d1ba</color>
+    <color name="alert_success">#22B573</color>
+    <color name="alert_error">#c1272d</color>
+
 
 </resources>
