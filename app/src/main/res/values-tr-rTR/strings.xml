@@ -20,4 +20,6 @@
     <string name="no_location_detected">Konum bulunamadı.Lütfen konum bilgisine izin verdiğinizden emin olunuz.</string>
     <string name="sure_logout">Çıkış Yapmak istediğinden emin misin?</string>
     <string name="logout">Çıkış Yap</string>
+    <string name="something_went_wrong">Bir şeyler ters gitti.Lütfen tekrar deneyin</string>
+    <string name="ok">Tamam</string>
 </resources>

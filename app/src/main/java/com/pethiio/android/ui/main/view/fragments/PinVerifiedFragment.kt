@@ -2,6 +2,7 @@ package com.pethiio.android.ui.main.view.fragments
 
 import android.os.Bundle
 import android.text.Editable
+import android.text.TextUtils
 import android.text.TextWatcher
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -30,7 +31,10 @@ class PinVerifiedFragment : BaseFragment() {
     override var bottomNavigationViewVisibility = View.GONE
     private lateinit var viewModel: PasswordViewModel
 
-    private var referenceToken = ""
+    private var fromLogin: Boolean? = false
+    private var referenceToken: String? = ""
+    private var emailVerificationToken: String? = ""
+
     private val binding get() = _binding!!
 
 
@@ -47,7 +51,10 @@ class PinVerifiedFragment : BaseFragment() {
         _binding = FragmentPinVerifiedBinding.inflate(inflater, container, false)
         val view = binding.root
 
-        referenceToken = arguments?.getString("referenceToken", "")!!
+
+        fromLogin = arguments?.getBoolean("fromLogin", false)
+        referenceToken = arguments?.getString("referenceToken", "")
+        emailVerificationToken = arguments?.getString("emailVerificationToken", "")
 
 
         setupViewModel()
@@ -96,13 +103,57 @@ class PinVerifiedFragment : BaseFragment() {
 //                findNavController().navigate(
 //                    R.id.action_navigation_pin_verified_to_navigation_reset_password_request
 //                )
-            viewModel.postPostPinVerification(
-                PinVerificationRequest(
-                    binding.pinPlaceholderTv.text.trim().toString(),
-                    referenceToken
-                )
-            )
+
+            if (fromLogin == false) {
+                referenceToken?.let { it1 ->
+                    PinVerificationRequest(
+                        binding.pinPlaceholderTv.text.trim().toString(),
+                        it1
+                    )
+                }?.let { it2 ->
+                    viewModel.postPostPinVerification(
+                        it2
+                    )
+                }
+            } else {
+
+                emailVerificationToken?.let { it1 ->
+                    PinVerificationRequest(
+                        binding.pinPlaceholderTv.text.trim().toString(),
+                        it1
+                    )
+                }?.let { it2 ->
+                    viewModel.postEmailVerification(
+                        it2
+                    )
+                }
+
+
+            }
+
         }
+
+        viewModel.getEmailVerificationResponse().observe(viewLifecycleOwner, {
+
+            when (it.status) {
+                Status.SUCCESS -> {
+
+                    val bundle = bundleOf(
+                        "referenceToken" to referenceToken,
+                        "pinValue" to binding.pinPlaceholderTv.text.trim().toString()
+                    )
+
+                    if (findNavController().currentDestination?.id == R.id.navigation_pin_verified)
+                        findNavController().navigate(
+                            R.id.action_navigation_pin_verified_to_navigation_register_detail,
+                            bundle
+                        )
+                }
+                Status.ERROR -> {
+                    CommonMethods.onSNACK(binding.root, it.message.toString())
+                }
+            }
+        })
 
         viewModel.getPinVerificationResponse().observe(viewLifecycleOwner, {
 

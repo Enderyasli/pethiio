@@ -2,6 +2,8 @@ package com.pethiio.android.data.api
 
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.pethiio.android.PethiioApplication
+import com.pethiio.android.R
 import com.pethiio.android.data.model.error.PethiioErrorHandler
 import com.pethiio.android.utils.Resource
 import retrofit2.HttpException
@@ -31,12 +33,19 @@ open class ResponseHandler {
 //                        null
 //                    )
 //                } else {
-                    val body = e.response()?.errorBody()
-                    val gson = Gson()
-                    val type = object : TypeToken<PethiioErrorHandler>() {}.type
-                    val errorResponse: PethiioErrorHandler? =
-                        gson.fromJson(body?.charStream(), type)
-                    Resource.error(errorResponse?.apierror?.message, null)
+                val body = e.response()?.errorBody()
+                val gson = Gson()
+                val type = object : TypeToken<PethiioErrorHandler>() {}.type
+                val errorResponse: PethiioErrorHandler? =
+                    gson.fromJson(body?.charStream(), type)
+                // TODO: 12.07.2021 liste bossa try again
+                if (errorResponse?.apierror?.subErrors == null || errorResponse.apierror.subErrors.isEmpty()) {
+                    Resource.error(
+                        PethiioApplication.applicationContext()
+                            .getString(R.string.something_went_wrong), null
+                    )
+                } else
+                    Resource.error(errorResponse.apierror.subErrors[0].message, null)
 //                }
             }
             is SocketTimeoutException -> Resource.error(

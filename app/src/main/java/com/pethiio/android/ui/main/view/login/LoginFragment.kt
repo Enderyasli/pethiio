@@ -138,20 +138,39 @@ class LoginFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
             viewModel.getPostLogin().observe(viewLifecycleOwner, {
 
                 when (it.status) {
-                    Status.SUCCESS -> {
-                        activity?.runOnUiThread {
-                            if (findNavController().currentDestination?.id == R.id.navigation_login)
-                                findNavController().navigate(R.id.action_navigation_login_to_navigation_main)
-                        }
-
+                    Status.LOADING -> {
+                        binding.progressBar.visibility = View.VISIBLE
                     }
                     Status.ERROR -> {
                         CommonMethods.onSNACK(binding.root, it.message.toString())
-//                        Toast.makeText(requireContext(), it.message, Toast.LENGTH_LONG).show()
+                        binding.progressBar.visibility = View.GONE
+                    }
+                    Status.SUCCESS -> {
+                        binding.progressBar.visibility = View.GONE
+
+                        if (it.data?.emailVerified == true) {
+
+                            if (it.data.registrationCompleted) {
+                                activity?.runOnUiThread {
+                                    if (findNavController().currentDestination?.id == R.id.navigation_login)
+                                        findNavController().navigate(R.id.action_navigation_login_to_navigation_main)
+                                }
+                            } else {
+                                fetchRegisterDetail()
+
+                                activity?.runOnUiThread {
+                                    if (findNavController().currentDestination?.id == R.id.navigation_login)
+                                        findNavController().navigate(R.id.action_navigation_login_to_navigation_register_detail)
+                                }
+                            }
+
+                        } else {
+
+                        }
+
 
                     }
-                    Status.LOADING -> {
-                    }
+
                 }
             })
 

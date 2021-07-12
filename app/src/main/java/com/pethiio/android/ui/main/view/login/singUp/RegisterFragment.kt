@@ -16,6 +16,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import com.pethiio.android.R
 import com.pethiio.android.data.model.signup.Register
@@ -310,18 +311,42 @@ class RegisterFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
                     when (it.status) {
                         Status.SUCCESS -> {
                             activity?.runOnUiThread {
-//                                fetchRegisterDetail()
-                                if (findNavController().currentDestination?.id == R.id.navigation_register)
-                                    findNavController().navigate(R.id.action_navigation_register_to_navigation_register_detail)
+
+                                fetchRegisterDetail()
+
+                                binding.progressBar.visibility = View.GONE
+
+                                if (!TextUtils.isEmpty(it.data?.emailVerificationToken)) {
+                                    val bundle =
+                                        bundleOf(
+                                            "emailVerificationToken" to it.data?.emailVerificationToken,
+                                            "fromLogin" to true
+                                        )
+                                    if (findNavController().currentDestination?.id == R.id.navigation_register)
+                                        findNavController().navigate(
+                                            R.id.action_navigation_register_to_navigation_pin_verified,
+                                            bundle
+                                        )
+
+                                } else {
+                                    if (findNavController().currentDestination?.id == R.id.navigation_register)
+                                        findNavController().navigate(R.id.action_navigation_register_to_navigation_register_detail)
+
+                                }
+
 
                             }
 
                         }
                         Status.ERROR -> {
+                            binding.progressBar.visibility = View.GONE
+
                             CommonMethods.onSNACK(binding.root, it.message.toString())
 
                         }
                         Status.LOADING -> {
+
+                            binding.progressBar.visibility = View.VISIBLE
                         }
                     }
                 })

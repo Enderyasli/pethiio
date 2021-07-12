@@ -9,9 +9,7 @@ import com.pethiio.android.data.api.ServiceBuilder
 import com.pethiio.android.data.model.*
 import com.pethiio.android.data.model.login.LoginRequest
 import com.pethiio.android.data.model.petDetail.PetImageResponse
-import com.pethiio.android.data.model.signup.PageData
-import com.pethiio.android.data.model.signup.Register
-import com.pethiio.android.data.model.signup.RegisterInfo
+import com.pethiio.android.data.model.signup.*
 import com.pethiio.android.ui.main.viewmodel.SingleLiveEvent
 import com.pethiio.android.utils.PreferenceHelper
 import com.pethiio.android.utils.Resource
@@ -26,8 +24,8 @@ class RegisterBaseViewModel : ViewModel() {
 
     private val loginPageData = MutableLiveData<Resource<PageData>>()
     val register = MutableLiveData<Resource<PageData>>()
-    var postRegister = SingleLiveEvent<Resource<AccessToken>>()
-    val postLogin = SingleLiveEvent<Resource<AccessToken>>()
+    var postRegister = SingleLiveEvent<Resource<RegisterResponse>>()
+    val postLogin = SingleLiveEvent<Resource<LoginResponse>>()
     val postRegisterInfo = MutableLiveData<Resource<AccessToken>>()
     val postRegisterAvatar = MutableLiveData<Resource<AccessToken>>()
     val postPetPhoto = SingleLiveEvent<Resource<AccessToken>>()
@@ -80,10 +78,12 @@ class RegisterBaseViewModel : ViewModel() {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                     { loginData ->
-                        PreferenceHelper.SharedPreferencesManager.getInstance().accessToken =
-                            loginData.accessToken
-                        PreferenceHelper.SharedPreferencesManager.getInstance().isLoggedIn =
-                            true
+                        if (loginData.emailVerified && loginData.registrationCompleted) {
+                            PreferenceHelper.SharedPreferencesManager.getInstance().accessToken =
+                                loginData.accessToken
+                            PreferenceHelper.SharedPreferencesManager.getInstance().isLoggedIn =
+                                true
+                        }
                         postLogin.postValue(Resource.success(loginData))
                     },
                     {
@@ -375,7 +375,7 @@ class RegisterBaseViewModel : ViewModel() {
         return loginPageData
     }
 
-    fun getPostLogin(): LiveData<Resource<AccessToken>> {
+    fun getPostLogin(): LiveData<Resource<LoginResponse>> {
         return postLogin
     }
 
@@ -423,6 +423,7 @@ class RegisterBaseViewModel : ViewModel() {
     fun getPetPhotos(): LiveData<Resource<List<PetImageResponse>>> {
         return petAddPhotos
     }
+
     fun getPostPetEdit(): LiveData<Resource<Response<Void>>> {
         return postPetEdit
     }
@@ -433,8 +434,6 @@ class RegisterBaseViewModel : ViewModel() {
         super.onCleared()
         compositeDisposable.dispose()
     }
-
-
 
 
 }

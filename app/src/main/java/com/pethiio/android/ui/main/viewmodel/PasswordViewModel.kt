@@ -27,6 +27,7 @@ class PasswordViewModel : ViewModel() {
     private val postResetDemand = MutableLiveData<Resource<ResetPassDemandResponse>>()
     private val postResetPassword = MutableLiveData<Resource<Response<Void>>>()
     private val pinVerificationResponse = MutableLiveData<Resource<Response<Void>>>()
+    private val emailVerificationResponse = MutableLiveData<Resource<Response<Void>>>()
 
 
     fun postResetDemandPass(resetPassDemand: ResetPassDemand) {
@@ -62,6 +63,25 @@ class PasswordViewModel : ViewModel() {
                     },
                     {
                         pinVerificationResponse.postValue(responseHandler.handleException(it))
+                    }
+                )
+        )
+    }
+
+    fun postEmailVerification(pinVerificationRequest: PinVerificationRequest) {
+        emailVerificationResponse.postValue(Resource.loading(null))
+        compositeDisposable.add(
+            ServiceBuilder.buildService()
+                .postEmailVerification(pinVerificationRequest)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                    { loginData ->
+                        if (loginData.code().toString().startsWith("2"))
+                            emailVerificationResponse.postValue(Resource.success(loginData))
+                    },
+                    {
+                        emailVerificationResponse.postValue(responseHandler.handleException(it))
                     }
                 )
         )
@@ -183,6 +203,9 @@ class PasswordViewModel : ViewModel() {
 
     fun getPinVerificationResponse(): LiveData<Resource<Response<Void>>> {
         return pinVerificationResponse
+    }
+    fun getEmailVerificationResponse(): LiveData<Resource<Response<Void>>> {
+        return emailVerificationResponse
     }
 
     fun getResetPasswordResponse(): LiveData<Resource<Response<Void>>> {

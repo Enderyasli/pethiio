@@ -52,6 +52,7 @@ class RegisterDetailFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
     override fun setUpViews() {
         super.setUpViews()
 
+
         viewModel.getRegisterDetailFields().observe(this, {
 
             setPethiioResponseList(it)

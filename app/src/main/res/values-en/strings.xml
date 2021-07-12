@@ -20,4 +20,6 @@
     <string name="no_location_detected" translatable="false">No location detected. Make sure location is enabled on the device.</string>
     <string name="sure_logout">Are you sure you want to log out?</string>
     <string name="logout">Log Out</string>
+    <string name="something_went_wrong">Something went wrong.Please try again</string>
+    <string name="ok">Ok</string>
 </resources>

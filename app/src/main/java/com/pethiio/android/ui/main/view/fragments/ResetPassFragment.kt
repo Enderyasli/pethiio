@@ -56,7 +56,7 @@ class ResetPassFragment : BaseFragment() {
     private fun setUpObserver() {
 
 
-        viewModel.getResetPassDemandPageData().observe(viewLifecycleOwner, {
+        viewModel.getResetPassDemandPageData().observe(viewLifecycleOwner, { it ->
 
             val pageDataFields = it.data?.fields
 

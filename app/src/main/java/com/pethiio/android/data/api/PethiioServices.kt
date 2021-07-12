@@ -21,9 +21,7 @@ import com.pethiio.android.data.model.resetPass.ResetPassDemand
 import com.pethiio.android.data.model.resetPass.ResetPassDemandResponse
 import com.pethiio.android.data.model.resetPass.ResetPasswordRequest
 import com.pethiio.android.data.model.settings.FAQResponse
-import com.pethiio.android.data.model.signup.PageData
-import com.pethiio.android.data.model.signup.Register
-import com.pethiio.android.data.model.signup.RegisterInfo
+import com.pethiio.android.data.model.signup.*
 import io.reactivex.Observable
 import okhttp3.MultipartBody
 import retrofit2.Response
@@ -36,14 +34,14 @@ interface PethiioServices {
     fun getLoginPageData(): Observable<PageData>
 
     @POST("page/login")
-    fun postLogin(@Body loginRequest: LoginRequest): Observable<AccessToken>
+    fun postLogin(@Body loginRequest: LoginRequest): Observable<LoginResponse>
 
     //endregion
 
     //region Register
 
     @POST("page/register")
-    fun postRegister(@Body register: Register): Observable<AccessToken>
+    fun postRegister(@Body register: Register): Observable<RegisterResponse>
 
     @GET("page/register/info")
     fun getRegisterPageData(): Observable<PageData>
@@ -261,6 +259,10 @@ interface PethiioServices {
 
     @POST("page/pin-verification/reset-password")
     fun postPinVerification(@Body pinVerificationRequest: PinVerificationRequest): Observable<Response<Void>>
+
+    @POST("page/pin-verification/email")
+    fun postEmailVerification(@Body pinVerificationRequest: PinVerificationRequest): Observable<Response<Void>>
+
 
     @POST("page/reset-password")
     fun postResetPassword(@Body resetPasswordRequest: ResetPasswordRequest): Observable<Response<Void>>

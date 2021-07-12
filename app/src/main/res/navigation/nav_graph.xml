@@ -58,6 +58,10 @@
             android:id="@+id/action_navigation_login_to_navigation_reset_password"
             app:destination="@id/navigation_reset_password"
             app:enterAnim="@anim/slide_left" />
+        <action
+            app:enterAnim="@anim/slide_left"
+            android:id="@+id/action_navigation_login_to_navigation_register_detail"
+            app:destination="@id/navigation_register_detail" />
 
     </fragment>
 
@@ -72,6 +76,10 @@
             android:id="@+id/action_navigation_register_to_navigation_register_detail"
             app:destination="@id/navigation_register_detail"
             app:enterAnim="@anim/slide_left" />
+        <action
+            app:enterAnim="@anim/slide_left"
+            android:id="@+id/action_navigation_register_to_navigation_pin_verified"
+            app:destination="@id/navigation_pin_verified" />
     </fragment>
     <fragment
         android:id="@+id/navigation_register_detail"
@@ -154,6 +162,10 @@
             android:id="@+id/action_navigation_pin_verified_to_navigation_reset_password_request"
             app:destination="@id/navigation_reset_password_request"
             app:enterAnim="@anim/slide_left" />
+        <action
+            app:enterAnim="@anim/slide_left"
+            android:id="@+id/action_navigation_pin_verified_to_navigation_register_detail"
+            app:destination="@id/navigation_register_detail" />
     </fragment>
 
     <fragment
