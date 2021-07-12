@@ -26,6 +26,7 @@ import com.pethiio.android.ui.base.BaseFragment
 import com.pethiio.android.ui.base.ViewModelFactory
 import com.pethiio.android.ui.main.adapter.*
 import com.pethiio.android.ui.main.viewmodel.HomeViewModel
+import com.pethiio.android.utils.Constants
 import com.pethiio.android.utils.Status
 
 
@@ -79,6 +80,29 @@ class HomeFragment : BaseFragment(), FilterItemClickListener {
 
     private fun setupUI() {
 
+//        viewModel.fetchHomePageData() // TODO: 13.07.2021 evim pagedata servisi eklenecek.
+
+        binding.noAnimalAnim.setAnimation("evim.json")
+
+        viewModel.getHomePageData().observe(viewLifecycleOwner, {
+
+            when (it.status) {
+                Status.LOADING -> {
+                    binding.progressBar.visibility = View.VISIBLE
+                }
+
+                Status.SUCCESS -> {
+                    val fields = it.data?.fields
+                    binding.titleTv.text = getLocalizedString(Constants.petSearchTitle, fields)
+                    binding.petEmptyErrorTv.text =
+                        getLocalizedString(Constants.petSearchEmptyMessageTitle, fields)
+
+
+                }
+
+            }
+
+        })
 
         binding.addAnimal.setOnClickListener {
             if (findNavController().currentDestination?.id == R.id.navigation_home)
@@ -110,7 +134,6 @@ class HomeFragment : BaseFragment(), FilterItemClickListener {
             when (it.status) {
                 Status.LOADING -> {
                     binding.progressBar.visibility = View.VISIBLE
-
                 }
                 Status.SUCCESS -> {
 
@@ -161,16 +184,16 @@ class HomeFragment : BaseFragment(), FilterItemClickListener {
     }
 
     override fun onFilterItemClick(item: String?) {
-        if (!item.equals("All")) {
-            binding.noAnimalImg.visibility = View.VISIBLE
-            binding.noAnimalTv.visibility = View.VISIBLE
-            binding.animalListRv.visibility = View.GONE
-        } else {
-            binding.noAnimalImg.visibility = View.GONE
-            binding.noAnimalTv.visibility = View.GONE
-            binding.animalListRv.visibility = View.VISIBLE
-
-        }
+//        if (!item.equals("All")) {
+//            binding.noAnimalImg.visibility = View.VISIBLE
+//            binding.noAnimalTv.visibility = View.VISIBLE
+//            binding.animalListRv.visibility = View.GONE
+//        } else {
+//            binding.noAnimalImg.visibility = View.GONE
+//            binding.noAnimalTv.visibility = View.GONE
+//            binding.animalListRv.visibility = View.VISIBLE
+//
+//        }
     }
 
 

@@ -39,13 +39,13 @@ open class ResponseHandler {
                 val errorResponse: PethiioErrorHandler? =
                     gson.fromJson(body?.charStream(), type)
                 // TODO: 12.07.2021 liste bossa try again
-                if (errorResponse?.apierror?.subErrors == null || errorResponse.apierror.subErrors.isEmpty()) {
+                if (errorResponse?.apierror?.message == null) {
                     Resource.error(
                         PethiioApplication.applicationContext()
                             .getString(R.string.something_went_wrong), null
                     )
                 } else
-                    Resource.error(errorResponse.apierror.subErrors[0].message, null)
+                    Resource.error(errorResponse.apierror.message, null)
 //                }
             }
             is SocketTimeoutException -> Resource.error(

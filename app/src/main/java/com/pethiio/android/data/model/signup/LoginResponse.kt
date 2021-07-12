@@ -9,5 +9,8 @@ data class LoginResponse(
     val emailVerified: Boolean = false,
     @SerializedName("registrationCompleted")
     val registrationCompleted: Boolean = false,
+    @SerializedName("emailVerificationToken")
+    val emailVerificationToken: String = "",
+
 
 )

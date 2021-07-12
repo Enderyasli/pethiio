@@ -62,6 +62,10 @@
             app:enterAnim="@anim/slide_left"
             android:id="@+id/action_navigation_login_to_navigation_register_detail"
             app:destination="@id/navigation_register_detail" />
+        <action
+            app:enterAnim="@anim/slide_left"
+            android:id="@+id/action_navigation_login_to_navigation_pin_verified"
+            app:destination="@id/navigation_pin_verified" />
 
     </fragment>
 

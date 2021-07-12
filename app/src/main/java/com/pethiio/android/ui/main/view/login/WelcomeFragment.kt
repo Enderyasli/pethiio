@@ -10,6 +10,7 @@ import com.pethiio.android.R
 import com.pethiio.android.databinding.FragmentWelcomeBinding
 import com.pethiio.android.ui.base.RegisterBaseFragment
 import com.pethiio.android.ui.main.viewmodel.signup.RegisterBaseViewModel
+import com.pethiio.android.utils.CommonMethods
 import com.pethiio.android.utils.PreferenceHelper
 import com.pethiio.android.utils.Status
 
@@ -63,7 +64,7 @@ class WelcomeFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
 
                     }
                     Status.ERROR -> {
-                        Toast.makeText(requireContext(), it.message, Toast.LENGTH_LONG).show()
+                        CommonMethods.onSNACK(binding.root, it.message.toString())
 
                     }
                     Status.LOADING -> {
@@ -84,7 +85,7 @@ class WelcomeFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
 
                     }
                     Status.ERROR -> {
-                        Toast.makeText(requireContext(), it.message, Toast.LENGTH_LONG).show()
+                        CommonMethods.onSNACK(binding.root, it.message.toString())
 
                     }
                     Status.LOADING -> {

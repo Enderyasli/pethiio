@@ -2,6 +2,7 @@ package com.pethiio.android.ui.main.view
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.content.IntentSender
 import android.content.pm.PackageManager
 import android.graphics.Color
@@ -27,6 +28,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationItemView
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.pethiio.android.R
+import com.pethiio.android.data.socket.SocketIOService
 import com.pethiio.android.utils.CommonMethods
 import com.pethiio.android.utils.PreferenceHelper
 
@@ -86,6 +88,11 @@ class MainActivity : AppCompatActivity() {
 
 
         checkGpsPermission()
+
+//        val service = Intent(this, SocketIOService::class.java)
+//        service.putExtra(SocketIOService.EXTRA_EVENT_TYPE, SocketIOService.EVENT_TYPE_JOIN)
+//        service.putExtra(SocketIOService.EXTRA_USER_NAME, response.getData().getId())
+//        startService(service) todo ac
 
 //        try {
 //            val db = Room.databaseBuilder(

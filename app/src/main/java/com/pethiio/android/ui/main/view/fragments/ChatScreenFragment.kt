@@ -1,29 +1,23 @@
 package com.pethiio.android.ui.main.view.fragments
 
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.pethiio.android.data.EventBus.ChatEvent
-import com.pethiio.android.data.model.chat.ChatRoomResponse
 import com.pethiio.android.data.model.socket.ChatSendMessage
 import com.pethiio.android.data.socket.SocketIO
+import com.pethiio.android.data.socket.SocketIOService
 import com.pethiio.android.databinding.FragmentChatScreenBinding
 import com.pethiio.android.ui.base.BaseFragment
-import com.pethiio.android.ui.main.adapter.CardStack.CardStackAdapter
 import com.pethiio.android.ui.main.adapter.ChatAdapter
 import com.pethiio.android.ui.main.viewmodel.ChatViewModel
 import com.pethiio.android.utils.Constants
 import com.pethiio.android.utils.Status
-
-import io.socket.client.IO
-import io.socket.client.Socket
-import io.socket.emitter.Emitter
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -90,6 +84,27 @@ class ChatScreenFragment : BaseFragment() {
         binding.btnSend.setOnClickListener {
 
             if (binding.etMessage.text.isNotEmpty()) {
+
+//                activity?.let {
+//                    val service = Intent(it, SocketIOService::class.java)
+//                    service.putExtra(SocketIOService.EXTRA_EVENT_TYPE, 2)
+//
+//                    service.putExtra(
+//                        SocketIOService.EXTRA_DATA,
+//                        ChatSendMessage(
+//                            binding.etMessage.text.trim().toString(),
+//                            roomId,
+//                            memberId
+//                        )
+//                    )
+//                    it.startService(service)
+//
+//                }
+//                val service = Intent(this@ChatScreenFragment, SocketIOService::class.java)
+//                service.putExtra(SocketIOService.EXTRA_EVENT_TYPE, SocketIOService.EVENT_TYPE_JOIN)
+////                service.putExtra(SocketIOService.EXTRA_USER_NAME, response.getData().getId())
+//                requireContext().startService(service)
+
                 socketIO.sendMessage(
                     ChatSendMessage(
                         binding.etMessage.text.trim().toString(),

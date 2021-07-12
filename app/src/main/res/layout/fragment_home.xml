@@ -18,10 +18,10 @@
 
 
         <TextView
-            android:id="@+id/signup_title"
+            android:id="@+id/title_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="26dp"
+            android:layout_marginStart="26dp"
             android:layout_marginTop="@dimen/signup_title_top_margin"
             android:layout_marginBottom="3dp"
             android:fontFamily="@font/typo_round_bold"
@@ -38,40 +38,42 @@
             android:layout_marginEnd="24dp"
             android:layout_marginRight="@dimen/margin_minimum"
             android:layout_marginBottom="5dp"
-            android:layout_toLeftOf="@+id/settings_img"
+            android:layout_toStartOf="@+id/settings_img"
             app:cardBackgroundColor="@color/light_button"
             app:cardCornerRadius="20dp"
             app:cardElevation="2dp">
 
             <LinearLayout
-                android:layout_gravity="center"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
-                android:layout_marginTop="2dp"
-                android:fontFamily="@font/typo_round_regular"
-                android:text="+ "
-                android:textColor="@color/grey"
-                android:textSize="18sp"
-                app:background="@color/light_button"
-                tools:ignore="RtlSymmetry" />
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="15dp"
-                android:fontFamily="@font/typo_round_regular"
-                android:gravity="center"
-                android:text="Hayvan Ekle"
-                android:textColor="@color/grey"
-                android:textSize="14sp"
-                app:background="@color/light_button"
-                tools:ignore="RtlSymmetry" />
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="2dp"
+                    android:fontFamily="@font/typo_round_regular"
+                    android:text="+ "
+                    android:textColor="@color/grey"
+                    android:textSize="24sp"
+                    app:background="@color/light_button"
+                    tools:ignore="RtlSymmetry" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="15dp"
+                    android:fontFamily="@font/typo_round_regular"
+                    android:gravity="center"
+                    android:text="Hayvan Ekle"
+                    android:textColor="@color/grey"
+                    android:textSize="14sp"
+                    app:background="@color/light_button"
+                    tools:ignore="RtlSymmetry" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
@@ -87,7 +89,6 @@
 
 
         <androidx.cardview.widget.CardView
-            android:visibility="gone"
             android:id="@+id/search_ly"
             android:layout_width="match_parent"
             android:layout_height="36dp"
@@ -96,6 +97,7 @@
             android:layout_marginTop="30dp"
             android:layout_marginRight="@dimen/default_margin"
             android:layout_marginBottom="5dp"
+            android:visibility="gone"
             app:cardBackgroundColor="@color/whitegrey"
             app:cardCornerRadius="@dimen/commonButtonRadius"
             app:cardElevation="2dp">
@@ -124,7 +126,6 @@
         </androidx.cardview.widget.CardView>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:visibility="gone"
             android:id="@+id/animal_rv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -132,7 +133,8 @@
             android:layout_marginLeft="10dp"
             android:layout_marginTop="40dp"
             android:layout_marginRight="10dp"
-            android:orientation="horizontal" />
+            android:orientation="horizontal"
+            android:visibility="gone" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/animal_list_rv"
@@ -146,42 +148,6 @@
             android:orientation="horizontal" />
 
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@+id/animal_rv"
-            android:layout_marginTop="80dp">
-
-            <ImageView
-                android:id="@+id/no_animal_img"
-                android:layout_width="wrap_content"
-                android:layout_height="220dp"
-                android:layout_marginLeft="90dp"
-                android:layout_marginRight="90dp"
-                android:src="@drawable/dog_placeholder"
-                android:visibility="gone" />
-
-
-            <TextView
-                android:id="@+id/no_animal_tv"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/no_animal_img"
-                android:layout_gravity="center"
-                android:layout_marginStart="15dp"
-                android:layout_marginTop="60dp"
-                android:layout_marginEnd="15dp"
-                android:layout_marginBottom="100dp"
-                android:fontFamily="@font/typo_round_regular"
-                android:gravity="center"
-                android:text="Henüz bir evcil hayvanın yok."
-                android:textColor="@color/grey"
-                android:textSize="22dp"
-                android:visibility="gone"
-                app:background="@color/light_button"
-                tools:ignore="RtlSymmetry" />
-
-        </RelativeLayout>
         <LinearLayout
             android:id="@+id/empty_layout"
             android:layout_width="match_parent"
@@ -190,12 +156,14 @@
             android:orientation="vertical"
             android:visibility="gone">
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:layout_marginLeft="50dp"
-                android:layout_marginRight="50dp"
-                android:src="@drawable/no_pet" />
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/no_animal_anim"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="50dp"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="false" />
 
             <TextView
                 android:id="@+id/pet_empty_error_tv"
@@ -208,16 +176,16 @@
                 android:layout_marginRight="@dimen/margin_minimum"
                 android:fontFamily="@font/typo_round_bold"
                 android:gravity="center"
+                android:text="Henüz bir evcil hayvanın yok."
                 android:textColor="@color/grey"
-                android:textSize="22sp"
-                android:text="Hayvan Yok" />
+                android:textSize="22sp" />
         </LinearLayout>
 
         <ProgressBar
-            android:layout_centerInParent="true"
             android:id="@+id/progressBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
             android:layout_gravity="center"
             android:alpha="0.9"
             android:indeterminateTint="@color/orangeButton"

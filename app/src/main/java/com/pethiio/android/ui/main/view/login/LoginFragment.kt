@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.pethiio.android.R
@@ -165,6 +166,17 @@ class LoginFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
                             }
 
                         } else {
+                            val bundle =
+                                bundleOf(
+                                    "emailVerificationToken" to it.data?.emailVerificationToken,
+                                    "fromLogin" to true
+                                )
+                            if (findNavController().currentDestination?.id == R.id.navigation_login)
+                                findNavController().navigate(
+                                    R.id.action_navigation_login_to_navigation_pin_verified,
+                                    bundle
+                                )
+
 
                         }
 

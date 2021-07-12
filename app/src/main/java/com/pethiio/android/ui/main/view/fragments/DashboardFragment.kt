@@ -2,6 +2,7 @@ package com.pethiio.android.ui.main.view.fragments
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
@@ -120,6 +121,8 @@ class DashboardFragment : BaseFragment(), CardStackListener,
 
 
 
+// TODO: 12.07.2021 aç
+
         setupUI()
 //        val socketIO = SocketIO()
 //        socketIO.main()
@@ -134,7 +137,7 @@ class DashboardFragment : BaseFragment(), CardStackListener,
             }
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
 
-
+// TODO: 12.07.2021 aç
         requestCurrentLocation()
 
         return view

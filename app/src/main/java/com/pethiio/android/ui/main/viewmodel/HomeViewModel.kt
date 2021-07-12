@@ -3,18 +3,23 @@ package com.pethiio.android.ui.main.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.pethiio.android.data.api.ResponseHandler
 import com.pethiio.android.data.api.ServiceBuilder
 import com.pethiio.android.data.model.PetListResponse
 import com.pethiio.android.data.model.User
+import com.pethiio.android.data.model.signup.PageData
 import com.pethiio.android.data.repository.MainRepository
 import com.pethiio.android.utils.Resource
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 
-class HomeViewModel() : ViewModel() {
+class HomeViewModel : ViewModel() {
 
     val petList = MutableLiveData<Resource<List<PetListResponse>>>()
+    private val homePageData = MutableLiveData<Resource<PageData>>()
+    private val responseHandler: ResponseHandler = ResponseHandler()
+
 
     private val compositeDisposable = CompositeDisposable()
 
@@ -35,7 +40,27 @@ class HomeViewModel() : ViewModel() {
                         petList.postValue(Resource.success(registerData))
                     },
                     {
-                        petList.postValue(Resource.error(it.message, null))
+                        petList.postValue(responseHandler.handleException(it))
+                    }
+                )
+        )
+    }
+
+    fun fetchHomePageData() {
+        homePageData.postValue(Resource.loading(null))
+        compositeDisposable.add(
+            ServiceBuilder.buildService()
+                .getPetSearchPageData()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                    { loginData ->
+                        homePageData.postValue(Resource.success(loginData))
+                    },
+                    {
+                        homePageData.postValue(
+                            Resource.error(it.message, null)
+                        )
                     }
                 )
         )
@@ -48,6 +73,9 @@ class HomeViewModel() : ViewModel() {
 
     fun getPetList(): LiveData<Resource<List<PetListResponse>>> {
         return petList
+    }
+    fun getHomePageData(): LiveData<Resource<PageData>> {
+        return homePageData
     }
 
 
