@@ -3,9 +3,11 @@ package com.pethiio.android.data.socket;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
+import com.pethiio.android.PethiioApplication;
 import com.pethiio.android.data.EventBus.ChatEvent;
 import com.pethiio.android.data.model.chat.ChatRoomResponse;
 import com.pethiio.android.data.model.socket.ChatSendMessage;
+import com.pethiio.android.ui.main.util.NotificationUtils;
 import com.pethiio.android.utils.Constants;
 import com.pethiio.android.utils.PreferenceHelper;
 
@@ -24,6 +26,7 @@ import java.nio.charset.StandardCharsets;
 
 public class SocketIO {
     Socket socket;
+
     public void connectSocket(int roomId) throws JSONException, InterruptedException {
         IO.Options options = new IO.Options();
         String token = "Bearer " + PreferenceHelper.SharedPreferencesManager.Companion.getInstance().getAccessToken();
@@ -37,11 +40,15 @@ public class SocketIO {
             public void call(Object... objects) {
                 JSONObject object = (JSONObject) objects[0];
                 JsonParser parser = new JsonParser();
-                JsonElement mJson =  parser.parse(object.toString());
+                JsonElement mJson = parser.parse(object.toString());
                 Gson gson = new Gson();
                 ChatRoomResponse response = gson.fromJson(mJson, ChatRoomResponse.class);
                 System.out.println("Message :" + object.toString());
-                EventBus.getDefault().post(new ChatEvent(roomId,response.getId(),response.getContent(),response.getSenderMemberId(),response.getTime()));
+                EventBus.getDefault().post(new ChatEvent(roomId, response.getId(), response.getContent(), response.getSenderMemberId(), response.getTime()));
+
+                NotificationUtils notificationUtils = new NotificationUtils(PethiioApplication.context);
+                notificationUtils.showNotificationMessage("notificationTitle", "notificationMessage", null, null);
+//                NotificationHelper.generateNotification("senderName", "message");
 
                 // TODO: 8.07.2021 Eventbusla mesaj güncelle
 
@@ -91,8 +98,8 @@ public class SocketIO {
 
     public void sendMessage(ChatSendMessage message) throws JSONException {
         Gson gson = new Gson();
-        String obj = gson.toJson(message,ChatSendMessage.class);
-            socket.emit(Constants.SOCKET_PRIVATE_CHAT, new JSONObject(obj));
+        String obj = gson.toJson(message, ChatSendMessage.class);
+        socket.emit(Constants.SOCKET_PRIVATE_CHAT, new JSONObject(obj));
     }
 
 

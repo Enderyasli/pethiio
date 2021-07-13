@@ -17,9 +17,12 @@ import androidx.annotation.Nullable;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
+import com.pethiio.android.PethiioApplication;
 import com.pethiio.android.data.EventBus.ChatEvent;
+import com.pethiio.android.data.api.PethiioServices;
 import com.pethiio.android.data.model.chat.ChatRoomResponse;
 import com.pethiio.android.data.model.socket.ChatSendMessage;
+import com.pethiio.android.ui.main.util.NotificationUtils;
 import com.pethiio.android.utils.Constants;
 import com.pethiio.android.utils.PreferenceHelper;
 
@@ -419,7 +422,10 @@ public class SocketIOService extends Service implements SocketEventListener.List
 //                        QueryUtils.saveMessage(this, chat);
                 //MessageUtils.playNotificationRingtone(getApplicationContext()); // play notification sound
 //                        if (!Utils.isChatActivityRunning(ChatActivity.class.getClass())) {
-                NotificationHelper.generateNotification(this, "senderName", "message");
+
+//                NotificationUtils notificationUtils = new NotificationUtils(PethiioApplication.context);
+//                notificationUtils.showNotificationMessage("notificationTitle", "notificationMessage", null, null);
+//                NotificationHelper.generateNotification( "senderName", "message");
 //                        }
 //                    }
                 intent.putExtra("test", "test");

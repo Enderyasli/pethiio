@@ -294,7 +294,7 @@ class DashboardFragment : BaseFragment(), CardStackListener,
                     }
 
                 } else {
-                    Toast.makeText(requireContext(), "else e girdi", Toast.LENGTH_LONG).show()
+//                    Toast.makeText(requireContext(), "else e girdi", Toast.LENGTH_LONG).show()
                 }
             }
         }
