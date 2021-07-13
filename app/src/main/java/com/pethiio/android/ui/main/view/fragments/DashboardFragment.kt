@@ -120,10 +120,11 @@ class DashboardFragment : BaseFragment(), CardStackListener,
         isSelectedMemberFirstTime = true
 
 
-
 // TODO: 12.07.2021 aç
 
         setupUI()
+
+
 //        val socketIO = SocketIO()
 //        socketIO.main()
 
@@ -199,7 +200,7 @@ class DashboardFragment : BaseFragment(), CardStackListener,
         private const val MY_PERMISSIONS_REQUEST_LOCATION = 99
     }
 
-     fun checkGpsPermission() {
+    fun checkGpsPermission() {
         if (ContextCompat.checkSelfPermission(
                 requireContext(),
                 Manifest.permission.ACCESS_FINE_LOCATION
@@ -210,12 +211,11 @@ class DashboardFragment : BaseFragment(), CardStackListener,
                 Manifest.permission.ACCESS_COARSE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) {
-            CommonMethods.onSNACK(binding.root,getString(R.string.no_location_detected))
+            CommonMethods.onSNACK(binding.root, getString(R.string.no_location_detected))
             //main activityde handle edildi
         } else {
         }
     }
-
 
 
     override fun onStart() {
@@ -301,6 +301,7 @@ class DashboardFragment : BaseFragment(), CardStackListener,
     }
 
     private fun setupUI() {
+
 
         binding.progressBar.visibility = View.VISIBLE
 
@@ -462,7 +463,7 @@ class DashboardFragment : BaseFragment(), CardStackListener,
     fun setMembeListSpinner(memberListResponse: List<MemberListResponse>) {
         val customAdapter = MemberListSpinner(requireContext(), memberListResponse)
 
-        if (PreferenceHelper.SharedPreferencesManager.getInstance().selectedSpinnerId <= memberListResponse.size-1)
+        if (PreferenceHelper.SharedPreferencesManager.getInstance().selectedSpinnerId <= memberListResponse.size - 1)
             selectedMemberId =
                 PreferenceHelper.SharedPreferencesManager.getInstance().selectedSpinnerId
         if (isSelectedMemberFirstTime)

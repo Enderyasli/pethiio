@@ -102,6 +102,13 @@ interface PethiioServices {
 
     //endregion
 
+    //region pet Match
+
+    //endregion
+
+    @GET("page/pet-match/info")
+    fun getPetMatchPageData(): Observable<PageData>
+
     //region Pet Detail
 
     @GET("page/pet-search-detail/info")
