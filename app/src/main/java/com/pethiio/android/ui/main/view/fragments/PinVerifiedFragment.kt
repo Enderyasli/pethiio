@@ -136,6 +136,9 @@ class PinVerifiedFragment : BaseFragment() {
         viewModel.getEmailVerificationResponse().observe(viewLifecycleOwner, {
 
             when (it.status) {
+                Status.LOADING -> {
+                    binding.progressBar.visibility = View.VISIBLE
+                }
                 Status.SUCCESS -> {
 
                     val bundle = bundleOf(
@@ -148,9 +151,13 @@ class PinVerifiedFragment : BaseFragment() {
                             R.id.action_navigation_pin_verified_to_navigation_register_detail,
                             bundle
                         )
+                    binding.progressBar.visibility = View.GONE
+
                 }
                 Status.ERROR -> {
                     CommonMethods.onSNACK(binding.root, it.message.toString())
+                    binding.progressBar.visibility = View.GONE
+
                 }
             }
         })
@@ -158,6 +165,9 @@ class PinVerifiedFragment : BaseFragment() {
         viewModel.getPinVerificationResponse().observe(viewLifecycleOwner, {
 
             when (it.status) {
+                Status.LOADING -> {
+                    binding.progressBar.visibility = View.VISIBLE
+                }
                 Status.SUCCESS -> {
 
                     val bundle = bundleOf(
@@ -170,8 +180,11 @@ class PinVerifiedFragment : BaseFragment() {
                             R.id.action_navigation_pin_verified_to_navigation_reset_password_request,
                             bundle
                         )
+                    binding.progressBar.visibility = View.GONE
+
                 }
                 Status.ERROR -> {
+                    binding.progressBar.visibility = View.GONE
                     CommonMethods.onSNACK(binding.root, it.message.toString())
                 }
             }
