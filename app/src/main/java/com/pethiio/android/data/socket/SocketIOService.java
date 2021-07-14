@@ -17,6 +17,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.pethiio.android.PethiioApplication;
 import com.pethiio.android.data.EventBus.ChatEvent;
+import com.pethiio.android.data.model.chat.ChatListResponse;
 import com.pethiio.android.data.model.chat.ChatRoomResponse;
 import com.pethiio.android.data.model.socket.ChatSendMessage;
 import com.pethiio.android.ui.main.util.NotificationUtils;
@@ -31,6 +32,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -52,9 +54,12 @@ public class SocketIOService extends Service implements SocketEventListener.List
     private static final String EVENT_RECEIVED = "received";
     private static final String EVENT_TYPING = "typing";
     public static final String EXTRA_DATA = "extra_data_message";
+    public static final String EXTRA_MEMBER_NAME = "extra_data_member";
     public static final String EXTRA_USER_NAME = "extra_user_name";
     public static final String EXTRA_EVENT_TYPE = "extra_event_type";
-    public static final String SOCKET_PRIVATE_CHAT = "/topic/private.chat.9";
+    public static final String SOCKET_PRIVATE_CHAT = "/topic/private.chat.";
+    public static int ROOM_ID = 9;
+
 
     private static final String TAG = SocketIOService.class.getSimpleName();
     private Socket mSocket;
@@ -66,7 +71,28 @@ public class SocketIOService extends Service implements SocketEventListener.List
     private ServiceHandler mServiceHandler;
     private HeartBeat heartBeat;
     private String mUserId;
+
+
+//    public void setListenersMap(List<ChatListResponse> chatList) {
+//        for (ChatListResponse chat :
+//                chatList) {
+//            listenersMap.put(SOCKET_PRIVATE_CHAT + chat.getId(), new SocketEventListener(SOCKET_PRIVATE_CHAT + chat.getId(), this));
+//
+//        }
+//    }
+
     private ConcurrentHashMap<String, SocketEventListener> listenersMap;
+
+    public void changeRoomId(int roomId) {
+        ROOM_ID = roomId;
+
+        listenersMap = new ConcurrentHashMap<>();
+
+//        getSocketListener();
+        // TODO: 14.07.2021 varsa ekleme
+        listenersMap.put(SOCKET_PRIVATE_CHAT + ROOM_ID, new SocketEventListener(SOCKET_PRIVATE_CHAT + ROOM_ID, this));
+
+    }
 
     // Handler that receives messages from the thread
     private final class ServiceHandler extends Handler {
@@ -142,7 +168,7 @@ public class SocketIOService extends Service implements SocketEventListener.List
         listenersMap.put(Socket.EVENT_CONNECT_TIMEOUT, new SocketEventListener(Socket.EVENT_CONNECT_TIMEOUT, this));
 //        listenersMap.put(EVENT_MESSAGE, new SocketEventListener(EVENT_MESSAGE, this));
 //        listenersMap.put(EVENT_MESSAGE, new SocketEventListener(Constants.SOCKET_TOPIC + 9, this));
-        listenersMap.put(SOCKET_PRIVATE_CHAT, new SocketEventListener(Constants.SOCKET_TOPIC + 9, this));
+        listenersMap.put(SOCKET_PRIVATE_CHAT + ROOM_ID, new SocketEventListener(SOCKET_PRIVATE_CHAT + ROOM_ID, this));
     }
 
     @Nullable
@@ -201,6 +227,7 @@ public class SocketIOService extends Service implements SocketEventListener.List
         }
         return START_STICKY;
     }
+
 
     private boolean isSocketConnected() {
         if (null == mSocket) {
@@ -263,7 +290,7 @@ public class SocketIOService extends Service implements SocketEventListener.List
         mSocket.emit(Constants.SOCKET_PRIVATE_CHAT, new JSONObject(obj));
         Log.w(TAG, "message sent " + obj.toString());
 
-        mSocket.emit(SOCKET_PRIVATE_CHAT, new JSONObject(obj));
+        mSocket.emit(SOCKET_PRIVATE_CHAT + ROOM_ID, new JSONObject(obj));
 
 
 //        mSocket.on("/topic/private.chat.9", new Emitter.Listener() {
@@ -345,50 +372,55 @@ public class SocketIOService extends Service implements SocketEventListener.List
 
     @Override
     public void onEventCall(String event, Object... args) {
-        switch (event) {
-            case Socket.EVENT_CONNECT:
-                joinChat();
-                android.os.Message msg = mServiceHandler.obtainMessage();
-                msg.arg1 = 1;
-                mServiceHandler.sendMessage(msg);
-                isConnected = true;
-                break;
-            case Socket.EVENT_DISCONNECT:
-                Log.w(TAG, "socket disconnected");
-                isConnected = false;
-                msg = mServiceHandler.obtainMessage();
-                msg.arg1 = 2;
-                mServiceHandler.sendMessage(msg);
-                break;
-            case Socket.EVENT_CONNECT_ERROR:
-                isConnected = false;
-                msg = mServiceHandler.obtainMessage();
-                msg.arg1 = 3;
-                mServiceHandler.sendMessage(msg);
-                // reconnect
-                mSocket.connect();
-                break;
-            case Socket.EVENT_CONNECT_TIMEOUT:
-                if (!mTyping) return;
 
-                mTyping = false;
-                mSocket.emit("stop typing");
-                break;
-            case SOCKET_PRIVATE_CHAT:
-                JSONObject object = (JSONObject) args[0];
-                JsonParser parser = new JsonParser();
-                JsonElement mJson = parser.parse(object.toString());
-                Gson gson = new Gson();
-                ChatRoomResponse response = gson.fromJson(mJson, ChatRoomResponse.class);
-                System.out.println("Message :" + object.toString());
+        android.os.Message msg = mServiceHandler.obtainMessage();
+
+        if (event.equals(Socket.EVENT_CONNECT)) {
+            msg.arg1 = 1;
+            mServiceHandler.sendMessage(msg);
+            isConnected = true;
+        } else if (event.equals(Socket.EVENT_DISCONNECT)) {
+            Log.w(TAG, "socket disconnected");
+            isConnected = false;
+            msg = mServiceHandler.obtainMessage();
+            msg.arg1 = 2;
+            mServiceHandler.sendMessage(msg);
+        } else if (event.equals(Socket.EVENT_DISCONNECT)) {
+            msg = mServiceHandler.obtainMessage();
+            msg.arg1 = 3;
+            mServiceHandler.sendMessage(msg);
+            // reconnect
+            mSocket.connect();
+        } else if (event.equals(Socket.EVENT_CONNECT_ERROR)) {
+            isConnected = false;
+            msg = mServiceHandler.obtainMessage();
+            msg.arg1 = 3;
+            mServiceHandler.sendMessage(msg);
+            // reconnect
+            mSocket.connect();
+
+
+        } else if (event.equals(Socket.EVENT_CONNECT_TIMEOUT)) {
+            if (!mTyping) return;
+
+            mTyping = false;
+            mSocket.emit("stop typing");
+
+        } else if (event.equals(SOCKET_PRIVATE_CHAT + ROOM_ID)) {
+            JSONObject object = (JSONObject) args[0];
+            JsonParser parser = new JsonParser();
+            JsonElement mJson = parser.parse(object.toString());
+            Gson gson = new Gson();
+            ChatRoomResponse response = gson.fromJson(mJson, ChatRoomResponse.class);
+            System.out.println("Message :" + object.toString());
 //                EventBus.getDefault().post(new ChatEvent(roomId,response.getId(),response.getContent(),response.getSenderMemberId(),response.getTime()));
 
-                // TODO: 8.07.2021 Eventbusla mesaj güncelle
+            // TODO: 8.07.2021 Eventbusla mesaj güncelle
 
-                // TODO: 8.07.2021 match bildiri ile tekrar subscribinggg
+            // TODO: 8.07.2021 match bildiri ile tekrar subscribinggg
 
-                JSONObject data = (JSONObject) args[0];
-                Log.w(TAG, "message : " + data.toString());
+            JSONObject data = (JSONObject) args[0];
+            Log.w(TAG, "message : " + data.toString());
 //                Intent intent = new Intent();
 //                intent.setAction(KEY_BROADCAST_MESSAGE);
 //                intent.putExtra("test", "test");
@@ -398,12 +430,14 @@ public class SocketIOService extends Service implements SocketEventListener.List
 //                    intent.putExtra("message_type", messageType.getValue());
 //                sendBroadcast(intent);
 
-                EventBus.getDefault().post(new ChatEvent(9, response.getId(), response.getContent(), response.getSenderMemberId(), response.getTime()));
+            // TODO: 14.07.2021 rooma sub ol ama otekileri backgroundda al
+
+            EventBus.getDefault().post(new ChatEvent(9, response.getId(), response.getContent(), response.getSenderMemberId(), response.getTime()));
 
 //                Bekir bekir = new Bekir();
 //                bekir.notifyWithExtra(PethiioApplication.context,"3");
-                NotificationUtils notificationUtils = new NotificationUtils(PethiioApplication.context);
-                notificationUtils.showNotificationMessage(String.valueOf(response.getSenderMemberId()), response.getContent(), null, null);
+            NotificationUtils notificationUtils = new NotificationUtils(PethiioApplication.context);
+            notificationUtils.showNotificationMessage(String.valueOf(response.getSenderMemberId()), response.getContent(), null, null);
 //
 //                    int messageEvent = data.getInt("event");
 ////                    MessageType messageType = MessageType.getMessageType(data.getInt("message_type"));
@@ -427,14 +461,13 @@ public class SocketIOService extends Service implements SocketEventListener.List
 //                                .time(date)
 //                                .build();
 //                        QueryUtils.saveMessage(this, chat);
-                //MessageUtils.playNotificationRingtone(getApplicationContext()); // play notification sound
+            //MessageUtils.playNotificationRingtone(getApplicationContext()); // play notification sound
 //                        if (!Utils.isChatActivityRunning(ChatActivity.class.getClass())) {
 
-                //                NotificationHelper.generateNotification( "senderName", "message");
+            //                NotificationHelper.generateNotification( "senderName", "message");
 //                        }
 //                    }
 
-                break;
         }
     }
 }

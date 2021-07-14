@@ -316,7 +316,7 @@ class RegisterFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
 
                                 binding.progressBar.visibility = View.GONE
 
-                                if (!TextUtils.isEmpty(it.data?.emailVerificationToken)) {
+                                if (TextUtils.isEmpty(it.data?.emailVerificationToken)) {
                                     val bundle =
                                         bundleOf(
                                             "emailVerificationToken" to it.data?.emailVerificationToken,

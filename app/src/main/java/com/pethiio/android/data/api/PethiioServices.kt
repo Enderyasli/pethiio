@@ -304,4 +304,12 @@ interface PethiioServices {
 
     //endregion
 
+
+    //region ChatList SocketIO
+
+    @GET("page/chat-list")
+    fun getAllChatList(): Observable<List<ChatListResponse>>
+
+    //endregion
+
 }

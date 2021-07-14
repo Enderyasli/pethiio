@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.get
+import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
@@ -27,10 +28,14 @@ import com.google.android.gms.tasks.Task
 import com.google.android.material.bottomnavigation.BottomNavigationItemView
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.pethiio.android.PethiioApplication
 import com.pethiio.android.R
 import com.pethiio.android.data.socket.SocketIOService
+import com.pethiio.android.ui.main.viewmodel.ChatViewModel
+import com.pethiio.android.ui.main.viewmodel.MainActivityViewModel
 import com.pethiio.android.utils.CommonMethods
 import com.pethiio.android.utils.PreferenceHelper
+import com.pethiio.android.utils.Status
 
 
 class MainActivity : AppCompatActivity() {
@@ -41,6 +46,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var navView: BottomNavigationView
     lateinit var viewCustom: View
     var navController: NavController? = null
+    private lateinit var viewModel: MainActivityViewModel
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -88,11 +94,7 @@ class MainActivity : AppCompatActivity() {
 
 
         checkGpsPermission()
-
-        if (PreferenceHelper.SharedPreferencesManager.getInstance().isLoggedIn == true) {
-            val service = Intent(this, SocketIOService::class.java)
-            startService(service)
-        }
+//        setUpViewModel()
 
 
 //        try {
@@ -109,6 +111,37 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+
+    public fun getSocket() {
+
+    }
+
+    private fun setUpViewModel() {
+        viewModel = ViewModelProviders.of(this).get(MainActivityViewModel::class.java)
+
+        viewModel.getAllChatList().observe(this, {
+            when (it.status) {
+                Status.SUCCESS -> {
+
+                    if (PreferenceHelper.SharedPreferencesManager.getInstance().isLoggedIn == true) {
+
+                        var socketService: SocketIOService? = null
+                        socketService = SocketIOService()
+//                        socketService.setListenersMap(it.data)
+                        val service = Intent(this, socketService.javaClass)
+                        service.putExtra(
+                            SocketIOService.EXTRA_EVENT_TYPE,
+                            SocketIOService.EVENT_TYPE_MESSAGE
+                        )
+                        startService(service)
+
+                    }
+                }
+            }
+
+
+        })
+    }
 
     @SuppressLint("ResourceAsColor")
     fun setDashboardClickListener(dashboardClicked: Boolean) {

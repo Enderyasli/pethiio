@@ -15,7 +15,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <FrameLayout
+            <RelativeLayout
                 android:id="@+id/top_ly"
                 android:layout_width="match_parent"
                 android:layout_height="295dp">
@@ -31,25 +31,26 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/default_margin"
-                    android:layout_marginTop="@dimen/signup_title_top_margin"
+                    android:layout_marginTop="45dp"
                     android:layout_marginRight="@dimen/default_margin"
                     android:layout_marginBottom="3dp"
                     android:textColor="@color/orangeButton"
-                    android:textSize="@dimen/signup_title_size"
-                    tools:text="@string/enter_info" />
+                    android:textSize="37sp"
+                    tools:text="Enter Your Information " />
 
                 <TextView
+                    android:layout_below="@+id/signup_title"
                     android:id="@+id/signup_description"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/default_margin"
-                    android:layout_marginTop="123dp"
+                    android:layout_marginTop="10dp"
                     android:layout_marginRight="@dimen/default_margin"
                     android:textColor="@color/grey"
                     android:textSize="22sp"
-                    tools:text="@string/signup_description" />
+                    tools:text="Enter Your Information about yourself to register." />
 
-            </FrameLayout>
+            </RelativeLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"

@@ -7,4 +7,6 @@ class ChatListResponse(
     val id: Int,
     @SerializedName("name")
     val name: String,
+    @SerializedName("memberId")
+    val memberId: Int
 )

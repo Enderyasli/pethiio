@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.pethiio.android.PethiioApplication
 import com.pethiio.android.data.EventBus.ChatEvent
 import com.pethiio.android.data.model.socket.ChatSendMessage
 import com.pethiio.android.data.socket.SocketIO
@@ -52,7 +53,6 @@ class ChatScreenFragment : BaseFragment() {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: ChatEvent) {
 
-
         adapter?.addMessage(event)
         adapter?.listSize?.let { binding.recyclerView.smoothScrollToPosition(it) }
 //
@@ -72,7 +72,7 @@ class ChatScreenFragment : BaseFragment() {
         memberId = arguments?.getInt("memberId", 0)!!
 
         // TODO: 13.07.2021 aç bunu
-//        socketIO.connectSocket(roomId)
+        socketIO.connectSocket(roomId)
 
 
 
@@ -88,13 +88,23 @@ class ChatScreenFragment : BaseFragment() {
 
             if (binding.etMessage.text.isNotEmpty()) {
 
+                /*
                 activity?.let {
-                    val service = Intent(it, SocketIOService::class.java)
+                     var socketService: SocketIOService? = null
+                    socketService = SocketIOService()
+                    socketService.changeRoomId(roomId)
+                    val service = Intent(it, socketService.javaClass)
+
+
+
+//                    val service = Intent(it, SocketIOService::class.java)
                     service.putExtra(
                         SocketIOService.EXTRA_EVENT_TYPE,
                         SocketIOService.EVENT_TYPE_MESSAGE
                     )
 
+
+                    // TODO: 14.07.2021 burda roomID yolla
                     service.putExtra(
                         SocketIOService.EXTRA_DATA,
                         ChatSendMessage(
@@ -106,18 +116,20 @@ class ChatScreenFragment : BaseFragment() {
                     it.startService(service)
 
                 }
+                */
+
 //                val service = Intent(this@ChatScreenFragment, SocketIOService::class.java)
 //                service.putExtra(SocketIOService.EXTRA_EVENT_TYPE, SocketIOService.EVENT_TYPE_JOIN)
 ////                service.putExtra(SocketIOService.EXTRA_USER_NAME, response.getData().getId())
 //                requireContext().startService(service)
 
-//                socketIO.sendMessage(
-//                    ChatSendMessage(
-//                        binding.etMessage.text.trim().toString(),
-//                        roomId,
-//                        memberId
-//                    )
-//                )
+                socketIO.sendMessage(
+                    ChatSendMessage(
+                        binding.etMessage.text.trim().toString(),
+                        roomId,
+                        memberId
+                    )
+                )
                 binding.etMessage.setText("")
             }
 
