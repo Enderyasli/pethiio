@@ -31,7 +31,7 @@ public class SocketIO {
         IO.Options options = new IO.Options();
         String token = "Bearer " + PreferenceHelper.SharedPreferencesManager.Companion.getInstance().getAccessToken();
         try {
-            socket = IO.socket(Constants.SOCKET_URL + URLEncoder.encode(token, StandardCharsets.UTF_8.toString()), options);
+            socket = IO.socket(Constants.SOCKET_URL + URLEncoder.encode(token, StandardCharsets.UTF_8.displayName()), options);
         } catch (URISyntaxException | UnsupportedEncodingException e) {
             e.printStackTrace();
         }

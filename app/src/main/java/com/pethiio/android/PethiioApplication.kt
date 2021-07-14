@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
+import androidx.appcompat.app.AppCompatDelegate
 import com.pethiio.android.data.socket.SocketIOService
 import com.pethiio.android.utils.PreferenceHelper
 
@@ -44,6 +45,8 @@ class PethiioApplication : Application() {
 
 
     override fun onCreate() {
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+
         super.onCreate()
         // initialize for any
 
