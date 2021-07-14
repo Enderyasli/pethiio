@@ -89,10 +89,11 @@ class MainActivity : AppCompatActivity() {
 
         checkGpsPermission()
 
-//        val service = Intent(this, SocketIOService::class.java)
-//        service.putExtra(SocketIOService.EXTRA_EVENT_TYPE, SocketIOService.EVENT_TYPE_JOIN)
-//        service.putExtra(SocketIOService.EXTRA_USER_NAME, response.getData().getId())
-//        startService(service) todo ac
+        if (PreferenceHelper.SharedPreferencesManager.getInstance().isLoggedIn == true) {
+            val service = Intent(this, SocketIOService::class.java)
+            startService(service)
+        }
+
 
 //        try {
 //            val db = Room.databaseBuilder(
@@ -185,12 +186,12 @@ class MainActivity : AppCompatActivity() {
         ) {
             if (PreferenceHelper.SharedPreferencesManager.getInstance().isLoggedIn == true)
                 navController?.navigate(R.id.navigation_location)
-        }
-        else{
+        } else {
             createLocationRequest()
 
         }
     }
+
     @SuppressLint("MissingPermission")
     fun createLocationRequest() {
 

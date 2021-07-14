@@ -71,7 +71,10 @@ class ChatScreenFragment : BaseFragment() {
         roomId = arguments?.getInt("roomId", 0)!!
         memberId = arguments?.getInt("memberId", 0)!!
 
-        socketIO.connectSocket(roomId)
+        // TODO: 13.07.2021 aç bunu
+//        socketIO.connectSocket(roomId)
+
+
 
 
         binding.backIv.setOnClickListener {
@@ -85,33 +88,36 @@ class ChatScreenFragment : BaseFragment() {
 
             if (binding.etMessage.text.isNotEmpty()) {
 
-//                activity?.let {
-//                    val service = Intent(it, SocketIOService::class.java)
-//                    service.putExtra(SocketIOService.EXTRA_EVENT_TYPE, 2)
-//
-//                    service.putExtra(
-//                        SocketIOService.EXTRA_DATA,
-//                        ChatSendMessage(
-//                            binding.etMessage.text.trim().toString(),
-//                            roomId,
-//                            memberId
-//                        )
-//                    )
-//                    it.startService(service)
-//
-//                }
+                activity?.let {
+                    val service = Intent(it, SocketIOService::class.java)
+                    service.putExtra(
+                        SocketIOService.EXTRA_EVENT_TYPE,
+                        SocketIOService.EVENT_TYPE_MESSAGE
+                    )
+
+                    service.putExtra(
+                        SocketIOService.EXTRA_DATA,
+                        ChatSendMessage(
+                            binding.etMessage.text.trim().toString(),
+                            roomId,
+                            memberId
+                        )
+                    )
+                    it.startService(service)
+
+                }
 //                val service = Intent(this@ChatScreenFragment, SocketIOService::class.java)
 //                service.putExtra(SocketIOService.EXTRA_EVENT_TYPE, SocketIOService.EVENT_TYPE_JOIN)
 ////                service.putExtra(SocketIOService.EXTRA_USER_NAME, response.getData().getId())
 //                requireContext().startService(service)
 
-                socketIO.sendMessage(
-                    ChatSendMessage(
-                        binding.etMessage.text.trim().toString(),
-                        roomId,
-                        memberId
-                    )
-                )
+//                socketIO.sendMessage(
+//                    ChatSendMessage(
+//                        binding.etMessage.text.trim().toString(),
+//                        roomId,
+//                        memberId
+//                    )
+//                )
                 binding.etMessage.setText("")
             }
 

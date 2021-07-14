@@ -112,9 +112,10 @@
         </androidx.cardview.widget.CardView>
 
         <ImageView
+            android:padding="8dp"
             android:id="@+id/btn_send"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
             android:layout_gravity="center"
             android:layout_marginStart="@dimen/default_margin"
             android:layout_marginEnd="@dimen/medium_size"

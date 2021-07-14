@@ -2,14 +2,12 @@ package com.pethiio.android.data.socket;
 
 import android.app.Service;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.IBinder;
 import android.os.Looper;
 import android.text.TextUtils;
 import android.util.Log;
-import android.widget.Toast;
 
 
 import androidx.annotation.Nullable;
@@ -19,7 +17,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.pethiio.android.PethiioApplication;
 import com.pethiio.android.data.EventBus.ChatEvent;
-import com.pethiio.android.data.api.PethiioServices;
 import com.pethiio.android.data.model.chat.ChatRoomResponse;
 import com.pethiio.android.data.model.socket.ChatSendMessage;
 import com.pethiio.android.ui.main.util.NotificationUtils;
@@ -35,14 +32,10 @@ import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
-import java.util.Queue;
 import java.util.concurrent.ConcurrentHashMap;
 
 import io.socket.client.IO;
 import io.socket.client.Socket;
-import io.socket.emitter.Emitter;
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
 
 import static android.os.Process.THREAD_PRIORITY_BACKGROUND;
 
@@ -61,7 +54,7 @@ public class SocketIOService extends Service implements SocketEventListener.List
     public static final String EXTRA_DATA = "extra_data_message";
     public static final String EXTRA_USER_NAME = "extra_user_name";
     public static final String EXTRA_EVENT_TYPE = "extra_event_type";
-    public static final String SOCKET_PRIVATE_CHAT= "/app/private.chat";
+    public static final String SOCKET_PRIVATE_CHAT = "/topic/private.chat.9";
 
     private static final String TAG = SocketIOService.class.getSimpleName();
     private Socket mSocket;
@@ -122,7 +115,7 @@ public class SocketIOService extends Service implements SocketEventListener.List
         String token = "Bearer " + PreferenceHelper.SharedPreferencesManager.Companion.getInstance().getAccessToken();
 
         try {
-            mSocket = IO.socket(Constants.SOCKET_URL + URLEncoder.encode(token, StandardCharsets.UTF_8.toString()), options);
+            mSocket = IO.socket(Constants.SOCKET_URL + URLEncoder.encode(token, StandardCharsets.UTF_8.displayName()), options);
         } catch (URISyntaxException | UnsupportedEncodingException e) {
             throw new RuntimeException(e);
         }
@@ -334,15 +327,15 @@ public class SocketIOService extends Service implements SocketEventListener.List
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mSocket.disconnect();
-        heartBeat.stop();
-        mUserId = null;
-        // clear chat queue if service stop
-        //chatQueue.clear();
-        for (Map.Entry<String, SocketEventListener> entry : listenersMap.entrySet()) {
-            mSocket.off(entry.getKey(), entry.getValue());
-        }
-        Log.w(TAG, "onStop Service");
+//        mSocket.disconnect();
+//        heartBeat.stop();
+//        mUserId = null;
+//        // clear chat queue if service stop
+//        //chatQueue.clear();
+//        for (Map.Entry<String, SocketEventListener> entry : listenersMap.entrySet()) {
+//            mSocket.off(entry.getKey(), entry.getValue());
+//        }
+//        Log.w(TAG, "onStop Service");
         /*mSocket.off("user joined", new SocketEventListener("user joined", this));
         mSocket.off("user left", new SocketEventListener("user left", this));
         mSocket.off("typing", new SocketEventListener("typing", this));
@@ -396,8 +389,22 @@ public class SocketIOService extends Service implements SocketEventListener.List
 
                 JSONObject data = (JSONObject) args[0];
                 Log.w(TAG, "message : " + data.toString());
-                Intent intent = new Intent();
-                intent.setAction(KEY_BROADCAST_MESSAGE);
+//                Intent intent = new Intent();
+//                intent.setAction(KEY_BROADCAST_MESSAGE);
+//                intent.putExtra("test", "test");
+//                    intent.putExtra("sender_id", senderId);
+//                    intent.putExtra("sender_name", senderName);
+//                    intent.putExtra("event", messageEvent);
+//                    intent.putExtra("message_type", messageType.getValue());
+//                sendBroadcast(intent);
+
+                EventBus.getDefault().post(new ChatEvent(9, response.getId(), response.getContent(), response.getSenderMemberId(), response.getTime()));
+
+//                Bekir bekir = new Bekir();
+//                bekir.notifyWithExtra(PethiioApplication.context,"3");
+                NotificationUtils notificationUtils = new NotificationUtils(PethiioApplication.context);
+                notificationUtils.showNotificationMessage(String.valueOf(response.getSenderMemberId()), response.getContent(), null, null);
+//
 //                    int messageEvent = data.getInt("event");
 ////                    MessageType messageType = MessageType.getMessageType(data.getInt("message_type"));
 //                    String messageId = data.has("message_id") ? data.getString("message_id") : "";
@@ -423,17 +430,10 @@ public class SocketIOService extends Service implements SocketEventListener.List
                 //MessageUtils.playNotificationRingtone(getApplicationContext()); // play notification sound
 //                        if (!Utils.isChatActivityRunning(ChatActivity.class.getClass())) {
 
-//                NotificationUtils notificationUtils = new NotificationUtils(PethiioApplication.context);
-//                notificationUtils.showNotificationMessage("notificationTitle", "notificationMessage", null, null);
-//                NotificationHelper.generateNotification( "senderName", "message");
+                //                NotificationHelper.generateNotification( "senderName", "message");
 //                        }
 //                    }
-                intent.putExtra("test", "test");
-//                    intent.putExtra("sender_id", senderId);
-//                    intent.putExtra("sender_name", senderName);
-//                    intent.putExtra("event", messageEvent);
-//                    intent.putExtra("message_type", messageType.getValue());
-                sendBroadcast(intent);
+
                 break;
         }
     }

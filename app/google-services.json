@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "212171068749",
+    "project_id": "pethiio-c9a20",
+    "storage_bucket": "pethiio-c9a20.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:212171068749:android:472648574da1027eff5304",
+        "android_client_info": {
+          "package_name": "com.pethiio.android"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "212171068749-t9epbkdvvj4njk49u915e2jv9hardgth.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBzYc6oTL6zx8iiQKBdr0FXpWwfswEAGM8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "212171068749-t9epbkdvvj4njk49u915e2jv9hardgth.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

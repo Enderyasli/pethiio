@@ -3,22 +3,13 @@ package com.pethiio.android.ui.main.util
 import android.app.*
 import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.graphics.drawable.Drawable
 import android.media.RingtoneManager
 import android.os.Build
-import android.os.Handler
 import android.text.TextUtils
-import android.util.Log
-import android.util.Patterns
-import android.view.View
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import androidx.core.text.HtmlCompat
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.target.SimpleTarget
 import com.pethiio.android.R
 import java.text.SimpleDateFormat
 import java.util.*
@@ -37,7 +28,6 @@ class NotificationUtils(private val mContext: Context) {
         imageUrl: String?
     ) {
         // notification icon
-        val icon = R.mipmap.ic_launcher
         var resultPendingIntent: PendingIntent? = null
         if (intent != null) {
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
@@ -49,22 +39,20 @@ class NotificationUtils(private val mContext: Context) {
             )
         }
         if (!TextUtils.isEmpty(title) && !TextUtils.isEmpty(message)) {
-            showSmallNotification(icon, title!!, message!!, resultPendingIntent)
+            showSmallNotification(title!!, message!!, resultPendingIntent)
         }
     }
 
     private fun showSmallNotification(
-        icon: Int,
         title: String,
         message: String,
         resultPendingIntent: PendingIntent?
     ) {
-        val notificationManager =
-            mContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
         val mBuilder = NotificationCompat.Builder(mContext, CHANNEL_ID)
         mBuilder
             .setChannelId(CHANNEL_ID)
-            .setSmallIcon(R.drawable.notification)
+            .setSmallIcon(R.drawable.app_icon)
             .setColor(ContextCompat.getColor(mContext, android.R.color.transparent))
 //            .setLargeIcon(BitmapFactory.decodeResource(mContext.resources, icon))
             .setContentTitle(HtmlCompat.fromHtml(title, HtmlCompat.FROM_HTML_MODE_LEGACY))
@@ -84,17 +72,23 @@ class NotificationUtils(private val mContext: Context) {
         if (resultPendingIntent != null) mBuilder.setContentIntent(resultPendingIntent)
         mBuilder.setSound(RingtoneManager.getDefaultUri(2))
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+
+            val notificationManager =
+                mContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             val mChannel = NotificationChannel(
                 CHANNEL_ID,
                 "Pethiio",
                 NotificationManager.IMPORTANCE_DEFAULT
             )
             notificationManager.createNotificationChannel(mChannel)
+            notificationManager.notify(createID(), mBuilder.build())
+
+        } else {
+            val notificationManager =
+                NotificationManagerCompat.from(mContext)
+            notificationManager.notify(createID(), mBuilder.build())
         }
-        notificationManager.notify(createID(), mBuilder.build())
     }
-
-
 
 
     fun createID(): Int {
