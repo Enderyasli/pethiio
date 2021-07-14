@@ -1,6 +1,7 @@
 package com.pethiio.android.ui.main.view.login
 
 import android.os.Bundle
+import android.os.Handler
 import android.text.Editable
 import android.text.TextWatcher
 import android.text.method.HideReturnsTransformationMethod
@@ -14,6 +15,7 @@ import androidx.core.os.bundleOf
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.pethiio.android.R
+import com.pethiio.android.data.EventBus.LoginEvent
 import com.pethiio.android.data.model.login.LoginRequest
 import com.pethiio.android.databinding.FragmentLoginBinding
 import com.pethiio.android.ui.base.RegisterBaseFragment
@@ -21,6 +23,7 @@ import com.pethiio.android.ui.main.viewmodel.signup.RegisterBaseViewModel
 import com.pethiio.android.utils.CommonMethods
 import com.pethiio.android.utils.Constants
 import com.pethiio.android.utils.Status
+import org.greenrobot.eventbus.EventBus
 
 
 class LoginFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
@@ -153,6 +156,10 @@ class LoginFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
 
                             if (it.data.registrationCompleted) {
                                 activity?.runOnUiThread {
+                                    Handler().postDelayed({
+                                        EventBus.getDefault().post(LoginEvent())
+                                    }, 500)
+
                                     if (findNavController().currentDestination?.id == R.id.navigation_login)
                                         findNavController().navigate(R.id.action_navigation_login_to_navigation_main)
                                 }

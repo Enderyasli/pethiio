@@ -52,8 +52,8 @@ public class FilterBottomSheet extends BottomSheetDialogFragment {
     TextView distanceTitleTv, ageTv, ageValueTv, genderTitle, purposeTitle, animalTitle, filterClearButton, distanceTv;
 
     int distance = 1, age = 1;
-    RadioGroup purposeRadioGroup, animalRadioGroup;
-    NoDefaultSpinner genderSpinner;
+    RadioGroup purposeRadioGroup;
+    NoDefaultSpinner genderSpinner, typeSpinner;
     Button filterButton;
 
     TickSeekBar distanceSeekBar, ageSeekBar;
@@ -117,6 +117,7 @@ public class FilterBottomSheet extends BottomSheetDialogFragment {
                     filterButton.setText(getLocalizedString(Constants.petSearchFilterButton, pethiioResponse));
                     filterClearButton.setText(getLocalizedString(Constants.petSearchFilterCleanButton, pethiioResponse));
                     genderSpinner.setPrompt(getLocalizedString(Constants.petSearchFilterGenderTitle, pethiioResponse));
+                    typeSpinner.setPrompt(getLocalizedString(Constants.petSearchFilterAnimalTitle, pethiioResponse));
 
                 }
 
@@ -139,9 +140,7 @@ public class FilterBottomSheet extends BottomSheetDialogFragment {
             purpose = CommonMethods.getLookUps(Constants.lookUpPurpose, lookUpsResponses);
             purposeKeys = CommonMethods.getLookUpKeys(Constants.lookUpPurpose, lookUpsResponses);
 
-            for (String str : animal) {
-                CommonMethods.addRadioButton(str, animalRadioGroup, requireContext());
-            }
+
             for (String str : purpose) {
                 CommonMethods.addRadioButton(str, purposeRadioGroup, requireContext());
             }
@@ -151,6 +150,10 @@ public class FilterBottomSheet extends BottomSheetDialogFragment {
             genderAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             genderSpinner.setAdapter(genderAdapter);
 
+            ArrayAdapter typeAdapter = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_item, animal);
+            genderAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            typeSpinner.setAdapter(typeAdapter);
+
 
             viewModel.getSearchFilterList().observe(this, petSearchFilterResponseResource -> {
 
@@ -159,6 +162,7 @@ public class FilterBottomSheet extends BottomSheetDialogFragment {
                 if (petSearchFilterResponse != null) {
 
                     genderSpinner.setSelection(genderKeys.indexOf(petSearchFilterResponse.getGender()));
+                    typeSpinner.setSelection(animalKeys.indexOf(String.valueOf(petSearchFilterResponse.getAnimalId())));
                     distanceSeekBar.setMax(10000);
                     distanceSeekBar.setProgress(petSearchFilterResponse.getMaximumDistance());
                     distanceTv.setText(String.valueOf(petSearchFilterResponse.getMaximumDistance()));
@@ -171,10 +175,6 @@ public class FilterBottomSheet extends BottomSheetDialogFragment {
                     if (purposeKeys.size() >= purposeKeys.indexOf(petSearchFilterResponse.getPurpose())) {
                         RadioButton purposeRadioButton = (RadioButton) purposeRadioGroup.getChildAt(purposeKeys.indexOf(petSearchFilterResponse.getPurpose()));
                         purposeRadioButton.setChecked(true);
-                    }
-                    if (animalKeys.size() >= animalKeys.indexOf(petSearchFilterResponse.getAnimalId())) {
-                        RadioButton typeRadioButton = (RadioButton) animalRadioGroup.getChildAt(animalKeys.indexOf(String.valueOf(petSearchFilterResponse.getAnimalId())));
-                        typeRadioButton.setChecked(true);
                     }
 
 
@@ -192,12 +192,10 @@ public class FilterBottomSheet extends BottomSheetDialogFragment {
         int purposeSelectedId = purposeRadioGroup.getCheckedRadioButtonId();
         RadioButton purposeRadioButton = (RadioButton) view.findViewById(purposeSelectedId);
 
-        int animalSelectedId = animalRadioGroup.getCheckedRadioButtonId();
-        RadioButton animalRadioButton = (RadioButton) view.findViewById(animalSelectedId);
 
         String purpose = CommonMethods.getLookUpKey(Constants.lookUpPurpose, purposeRadioButton.getText().toString(), lookUpsResponses);
-        String animal = CommonMethods.getLookUpKey(Constants.lookUpAnimals, animalRadioButton.getText().toString(), lookUpsResponses);
         String gender = CommonMethods.getLookUpKey(Constants.lookUpGender, genderSpinner.getSelectedItem().toString(), lookUpsResponses);
+        String animal = CommonMethods.getLookUpKey(Constants.lookUpAnimals, typeSpinner.getSelectedItem().toString(), lookUpsResponses);
 
 
         if (!TextUtils.isEmpty(purpose) && !TextUtils.isEmpty(animal) && !TextUtils.isEmpty(gender)) {
@@ -246,8 +244,8 @@ public class FilterBottomSheet extends BottomSheetDialogFragment {
         animalTitle = root.findViewById(R.id.breed_tv);
         genderTitle = root.findViewById(R.id.genderLy).findViewById(R.id.title_tv);
         purposeRadioGroup = root.findViewById(R.id.radio_group_purpose);
-        animalRadioGroup = root.findViewById(R.id.radio_group_breed);
         genderSpinner = root.findViewById(R.id.genderLy).findViewById(R.id.spinner);
+        typeSpinner = root.findViewById(R.id.typeSpinner);
         filterButton = root.findViewById(R.id.filter_button);
         filterClearButton = root.findViewById(R.id.filter_clear_button);
         ageSeekBar = root.findViewById(R.id.age_seek_bar);

@@ -2,6 +2,7 @@ package com.pethiio.android.ui.main.view
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.ComponentName
 import android.content.Intent
 import android.content.IntentSender
 import android.content.pm.PackageManager
@@ -12,14 +13,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.get
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.gms.common.api.ApiException
@@ -29,14 +28,18 @@ import com.google.android.gms.tasks.Task
 import com.google.android.material.bottomnavigation.BottomNavigationItemView
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.pethiio.android.PethiioApplication
+import com.judemanutd.autostarter.AutoStartPermissionHelper
 import com.pethiio.android.R
+import com.pethiio.android.data.EventBus.FilterEvent
+import com.pethiio.android.data.EventBus.LoginEvent
 import com.pethiio.android.data.socket.SocketIOService
-import com.pethiio.android.ui.main.viewmodel.ChatViewModel
 import com.pethiio.android.ui.main.viewmodel.MainActivityViewModel
-import com.pethiio.android.utils.CommonMethods
 import com.pethiio.android.utils.PreferenceHelper
 import com.pethiio.android.utils.Status
+import com.thelittlefireman.appkillermanager.managers.KillerManager
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 
 class MainActivity : AppCompatActivity() {
@@ -50,17 +53,31 @@ class MainActivity : AppCompatActivity() {
     private lateinit var viewModel: MainActivityViewModel
 
 
+    override fun onDestroy() {
+        EventBus.getDefault().unregister(this)
+        super.onDestroy()
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 //        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         setTheme(R.style.AppTheme)
         setContentView(R.layout.activity_main)
 
+        EventBus.getDefault().register(this)
+
+
+
         //change statusbar color
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
             window.statusBarColor = Color.WHITE
         }
+
+
+//        if(AutoStartPermissionHelper.getInstance().isAutoStartPermissionAvailable(this))
+//        AutoStartPermissionHelper.getInstance().getAutoStartPermission(this)
+
+//        KillerManager.doActionAutoStart(this)
 
 
         navView = findViewById<BottomNavigationView>(R.id.bottomNav_view)
@@ -113,9 +130,53 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: LoginEvent?) {
+        checkGpsPermission()
+
+    }
 
     public fun getSocket() {
 
+    }
+    private fun addAutoStartup() {
+        try {
+            val intent = Intent()
+            val manufacturer = Build.MANUFACTURER
+            if ("xiaomi".equals(manufacturer, ignoreCase = true)) {
+                intent.component = ComponentName(
+                    "com.miui.securitycenter",
+                    "com.miui.permcenter.autostart.AutoStartManagementActivity"
+                )
+            } else if ("oppo".equals(manufacturer, ignoreCase = true)) {
+                intent.component = ComponentName(
+                    "com.coloros.safecenter",
+                    "com.coloros.safecenter.permission.startup.StartupAppListActivity"
+                )
+            } else if ("vivo".equals(manufacturer, ignoreCase = true)) {
+                intent.component = ComponentName(
+                    "com.vivo.permissionmanager",
+                    "com.vivo.permissionmanager.activity.BgStartUpManagerActivity"
+                )
+            } else if ("Letv".equals(manufacturer, ignoreCase = true)) {
+                intent.component = ComponentName(
+                    "com.letv.android.letvsafe",
+                    "com.letv.android.letvsafe.AutobootManageActivity"
+                )
+            } else if ("Honor".equals(manufacturer, ignoreCase = true)) {
+                intent.component = ComponentName(
+                    "com.huawei.systemmanager",
+                    "com.huawei.systemmanager.optimize.process.ProtectActivity"
+                )
+            }
+            val list =
+                packageManager.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY)
+            if (list.size > 0) {
+                startActivity(intent)
+            }
+        } catch (e: Exception) {
+            Log.e("exc", e.toString())
+        }
     }
 
     private fun setUpViewModel() {

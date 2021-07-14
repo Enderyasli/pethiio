@@ -119,6 +119,9 @@ dependencies {
 
     implementation 'com.github.zcweng:switch-button:0.0.3@aar'
 
+    implementation 'com.github.judemanutd:autostarter:1.1.0'
+    implementation 'com.thelittlefireman:AppKillerManager:2.1.1'
+
 
 
 }

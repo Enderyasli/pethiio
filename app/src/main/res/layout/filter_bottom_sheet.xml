@@ -114,7 +114,8 @@
                 android:layout_marginStart="-10dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="-8dp"
-                app:tsb_progress="25"
+                app:tsb_max="20"
+                app:tsb_progress="8"
                 app:tsb_thumb_color="@color/whitegrey"
                 app:tsb_thumb_size="@dimen/medium_size"
                 app:tsb_track_background_size="6dp"
@@ -172,17 +173,26 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/medium_size"
+                    android:layout_marginBottom="10dp"
                     android:fontFamily="@font/typo_round_bold"
                     android:gravity="center_vertical"
                     android:textColor="@color/black"
                     android:textSize="16sp"
                     tools:text="Tür" />
 
-                <RadioGroup
-                    android:id="@+id/radio_group_breed"
+                <com.pethiio.android.ui.main.view.customViews.NoDefaultSpinner
+                    android:id="@+id/typeSpinner"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp" />
+                    android:layout_height="40dp"
+                    android:layout_margin="3dp"
+                    android:background="@drawable/bg_spinner"
+                    android:elevation="1dp"
+                    android:fontFamily="@font/typo_round_regular"
+                    android:gravity="center_vertical"
+                    android:paddingStart="15dp"
+                    android:spinnerMode="dropdown"
+                    android:textColor="@color/hint_text_color" />
+
 
             </LinearLayout>
         </LinearLayout>

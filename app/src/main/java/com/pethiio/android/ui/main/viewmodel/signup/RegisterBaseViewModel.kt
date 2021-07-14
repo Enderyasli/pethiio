@@ -1,9 +1,12 @@
 package com.pethiio.android.ui.main.viewmodel.signup
 
+import android.os.Handler
 import androidx.annotation.Nullable
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.pethiio.android.data.EventBus.LikeEvent
+import com.pethiio.android.data.EventBus.LoginEvent
 import com.pethiio.android.data.api.ResponseHandler
 import com.pethiio.android.data.api.ServiceBuilder
 import com.pethiio.android.data.model.*
@@ -17,6 +20,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import okhttp3.MultipartBody
+import org.greenrobot.eventbus.EventBus
 import retrofit2.Response
 
 
@@ -83,6 +87,9 @@ class RegisterBaseViewModel : ViewModel() {
                                 loginData.accessToken
                             PreferenceHelper.SharedPreferencesManager.getInstance().isLoggedIn =
                                 true
+
+
+
                         }
                         postLogin.postValue(Resource.success(loginData))
                     },

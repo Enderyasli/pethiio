@@ -1,6 +1,7 @@
 package com.pethiio.android.ui.main
 
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import com.google.firebase.messaging.FirebaseMessagingService
@@ -18,6 +19,15 @@ class FcmMessageService : FirebaseMessagingService() {
         Log.d(TAG, "Refreshed token: $token")
         // If required send token to your app server.
 //        sendRegistrationToServer(token)
+    }
+
+
+    override fun handleIntent(intent: Intent) {
+        super.handleIntent(intent)
+        intent.extras
+    }
+    override fun onMessageReceived(p0: RemoteMessage) {
+        super.onMessageReceived(p0)
     }
 //    /**
 //     * Called when message is received.

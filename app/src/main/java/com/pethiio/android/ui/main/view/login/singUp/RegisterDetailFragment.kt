@@ -3,6 +3,7 @@ package com.pethiio.android.ui.main.view.login.singUp
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
 import android.text.TextUtils
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -15,6 +16,7 @@ import androidx.navigation.fragment.findNavController
 import com.bigkoo.pickerview.builder.TimePickerBuilder
 import com.bumptech.glide.Glide
 import com.pethiio.android.R
+import com.pethiio.android.data.EventBus.LoginEvent
 import com.pethiio.android.data.model.signup.RegisterInfo
 import com.pethiio.android.databinding.FragmentRegisterDetailBinding
 import com.pethiio.android.ui.base.RegisterBaseFragment
@@ -27,6 +29,7 @@ import com.theartofdev.edmodo.cropper.CropImage
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
+import org.greenrobot.eventbus.EventBus
 import java.io.File
 import java.util.*
 
@@ -269,6 +272,9 @@ class RegisterDetailFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
                                                 Status.SUCCESS -> {
                                                     PreferenceHelper.SharedPreferencesManager.getInstance().isLoggedIn =
                                                         true
+                                                    Handler().postDelayed({
+                                                        EventBus.getDefault().post(LoginEvent())
+                                                    }, 1000)
                                                     if (findNavController().currentDestination?.id == R.id.navigation_register_detail)
                                                         findNavController().navigate(R.id.action_navigation_register_detail_to_navigation_welcome)
                                                 }

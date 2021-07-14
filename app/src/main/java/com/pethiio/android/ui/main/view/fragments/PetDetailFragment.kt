@@ -178,6 +178,10 @@ class PetDetailFragment : BaseFragment() {
                         )
                     }
 
+                    if (petDetail?.personalities?.size == 0) {
+                        binding.characterRv.visibility = View.GONE
+                    }
+
                     binding.characterRv.adapter = adapterCharacter
 
                     binding.petNameTv.text = petDetail?.name

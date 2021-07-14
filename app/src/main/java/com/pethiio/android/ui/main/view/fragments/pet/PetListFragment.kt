@@ -1,18 +1,21 @@
 package com.pethiio.android.ui.main.view.fragments.pet
 
 import android.os.Bundle
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.pethiio.android.R
+import com.pethiio.android.data.EventBus.LoginEvent
 import com.pethiio.android.data.model.PetListResponse
 import com.pethiio.android.databinding.FragmentPetListBinding
 import com.pethiio.android.ui.base.RegisterBaseFragment
 import com.pethiio.android.ui.main.adapter.PetListAdapter
 import com.pethiio.android.ui.main.viewmodel.signup.RegisterBaseViewModel
 import com.pethiio.android.utils.Constants
+import org.greenrobot.eventbus.EventBus
 
 class PetListFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
 
@@ -38,6 +41,11 @@ class PetListFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
         val view = binding.root
 
         binding.completeBtn.setOnClickListener {
+
+            Handler().postDelayed({
+                EventBus.getDefault()
+                    .post(LoginEvent())
+            }, 1000)
             findNavController().navigate(R.id.action_navigation_animal_list_to_navigation_main)
         }
 
@@ -50,7 +58,7 @@ class PetListFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
         super.setUpViews()
 
 
-        viewModel.petListPageData.observe(viewLifecycleOwner, {petData->
+        viewModel.petListPageData.observe(viewLifecycleOwner, { petData ->
 
             setPethiioResponseList(petData.data)
             binding.petlistTitle.text = getLocalizedString(Constants.animalListTitle)
@@ -60,11 +68,16 @@ class PetListFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
 
             viewModel.getPetList().observe(viewLifecycleOwner, {
 
-                if(it.data!=null){
+                if (it.data != null) {
                     val list2 = ArrayList<PetListResponse>(it.data)
 
                     binding.petlistRv.layoutManager = GridLayoutManager(requireContext(), 2)
-                    val adapter = PetListAdapter(requireContext(),findNavController(), list2, getLocalizedString(Constants.animalListAddNewTitle))
+                    val adapter = PetListAdapter(
+                        requireContext(),
+                        findNavController(),
+                        list2,
+                        getLocalizedString(Constants.animalListAddNewTitle)
+                    )
                     binding.petlistRv.adapter = adapter
                 }
 

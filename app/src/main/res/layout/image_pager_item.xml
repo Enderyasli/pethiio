@@ -5,6 +5,7 @@
 
     <!-- image viwer to view the images -->
     <ImageView
+        android:scaleType="center"
         android:id="@+id/imageViewMain"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
