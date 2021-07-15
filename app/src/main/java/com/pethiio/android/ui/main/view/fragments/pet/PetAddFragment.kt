@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.res.ColorStateList
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.text.TextUtils
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -17,6 +18,7 @@ import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.pethiio.android.R
+import com.pethiio.android.data.EventBus.LoginEvent
 import com.pethiio.android.data.model.PetAdd
 import com.pethiio.android.data.model.PetEdit
 import com.pethiio.android.databinding.FragmentPetAddBinding
@@ -30,6 +32,8 @@ import com.pethiio.android.utils.Status
 import kotlinx.android.synthetic.*
 import kotlinx.android.synthetic.main.common_rounded_input_tv.view.*
 import kotlinx.android.synthetic.main.fragment_home.*
+import kotlinx.android.synthetic.main.fragment_pet_add.view.*
+import org.greenrobot.eventbus.EventBus
 
 
 class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
@@ -51,6 +55,8 @@ class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
     private val COLOR_ID = 4
     var adapterCharacter: CharacterAdapter? = null
     var selectedCharacters: ArrayList<String> = ArrayList()
+    var firstRadioButtonId: Int = 0
+    var isRadioButtonAdded = false
 
     private var petId: String? = ""
 
@@ -523,9 +529,10 @@ class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
                                             petAdd?.animalPersonalities?.forEach {
                                                 selectedList.add(getAnimalPersonality(it.toString()))
                                             }
-                                            adapterCharacter?.setSelectedItems(selectedList)
+                                            Handler().postDelayed({
+                                                adapterCharacter?.setSelectedItems(selectedList)
+                                            }, 200)
 
-                                            // TODO: 15.07.2021 animalpersonalities set et
                                             val genderIndex = petAdd?.gender?.let { it1 ->
                                                 getLookUpIndex(
                                                     Constants.lookUpGender,
@@ -568,11 +575,14 @@ class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
                                                     it1.toString()
                                                 )
                                             }
-                                            breedIndex?.let { it1 ->
-                                                binding.breedLy.spinner.setSelection(
-                                                    it1
-                                                )
-                                            }
+                                            Handler().postDelayed({
+                                                breedIndex?.let { it1 ->
+                                                    binding.breedLy.spinner.setSelection(
+                                                        it1
+                                                    )
+                                                }
+                                            }, 200)
+
 
 
                                             petAdd?.year?.let { it1 ->
@@ -592,7 +602,12 @@ class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
                                                     it1.toString()
                                                 )
                                             }
-                                            purposeIndex?.let { it1 -> binding.radioGroup.check(it1 + 1) }
+
+                                            Handler().postDelayed({
+                                                purposeIndex?.let { it1 ->
+                                                    binding.radioGroup.check(firstRadioButtonId + it1)
+                                                }
+                                            }, 200)
 
                                         }
 
@@ -675,6 +690,11 @@ class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
         radioButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.grey))
 
         binding.radioGroup.addView(radioButton)
+
+        if (!isRadioButtonAdded) {
+            firstRadioButtonId = radioButton.id
+            isRadioButtonAdded = true
+        }
     }
 
 

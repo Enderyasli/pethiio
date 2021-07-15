@@ -23,8 +23,7 @@ class CharacterAdapter(
             itemView.character_title_tv.text = character
 
             selectedCharacters.forEach {
-                if (it == character)
-                {
+                if (it == character) {
                     itemView.character_title_tv.setBackgroundResource(R.drawable.character_item_selected_bg)
                     itemView.character_title_tv.setTextColor(
                         ContextCompat.getColor(

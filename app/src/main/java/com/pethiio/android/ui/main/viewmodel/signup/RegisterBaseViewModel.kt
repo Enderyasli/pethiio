@@ -44,9 +44,9 @@ class RegisterBaseViewModel : ViewModel() {
     private val registerDetailFields = MutableLiveData<List<PethiioResponse>>()
     private val registerDetailLookUps = MutableLiveData<List<LookUpsResponse>>()
     private val addAnimalImageFields = MutableLiveData<List<PethiioResponse>>()
-    private val addAnimalResponse = MutableLiveData<Resource<PageData>>()
+    private val addAnimalResponse = SingleLiveEvent<Resource<PageData>>()
     private val petAddDetail = MutableLiveData<AnimalDetailResponse>()
-    private val petDetail = MutableLiveData<Resource<PetAdd>>()
+    private val petDetail = SingleLiveEvent<Resource<PetAdd>>()
     private val petAddPhotos = MutableLiveData<Resource<List<PetImageResponse>>>()
 
 
