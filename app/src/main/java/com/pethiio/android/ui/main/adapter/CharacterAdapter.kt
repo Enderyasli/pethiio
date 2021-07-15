@@ -12,7 +12,7 @@ import kotlinx.android.synthetic.main.item_layout.view.*
 class CharacterAdapter(
     val context: Context,
     private val characterList: ArrayList<String>,
-    private val selectedCharacterList: ArrayList<String>
+    private var selectedCharacterList: ArrayList<String>
 ) : RecyclerView.Adapter<CharacterAdapter.DataViewHolder>() {
 
 
@@ -21,6 +21,23 @@ class CharacterAdapter(
         fun bind(context: Context, character: String, selectedCharacters: ArrayList<String>) {
 
             itemView.character_title_tv.text = character
+
+            selectedCharacters.forEach {
+                if (it == character)
+                {
+                    itemView.character_title_tv.setBackgroundResource(R.drawable.character_item_selected_bg)
+                    itemView.character_title_tv.setTextColor(
+                        ContextCompat.getColor(
+                            context,
+                            R.color.white
+                        )
+                    )
+                    itemView.isSelected = true
+                }
+
+            }
+
+
 
             itemView.setOnClickListener {
 
@@ -74,5 +91,10 @@ class CharacterAdapter(
 
     open fun getSelectedItems(): ArrayList<String> {
         return selectedCharacterList
+    }
+
+    open fun setSelectedItems(selectedCharacters: ArrayList<String>) {
+        this.selectedCharacterList = selectedCharacters
+        notifyDataSetChanged()
     }
 }

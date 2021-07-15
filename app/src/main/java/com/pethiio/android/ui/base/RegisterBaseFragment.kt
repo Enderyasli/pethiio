@@ -104,12 +104,19 @@ abstract class RegisterBaseFragment<VModel : RegisterBaseViewModel> : Fragment()
     }
 
     fun getAnimalPersonalities(): ArrayList<String> {
-
         val arrayList = arrayListOf<String>()
         animalDetailResponse?.personalities?.forEach {
             arrayList.add(it.value)
         }
         return arrayList
+    }
+    fun getAnimalPersonality(key:String): String {
+
+        animalDetailResponse?.personalities?.forEach {
+            if(it.key==key)
+                return it.value
+        }
+        return ""
     }
 
     fun getSelectedAnimalPersonality(value: ArrayList<String>): ArrayList<Int> {

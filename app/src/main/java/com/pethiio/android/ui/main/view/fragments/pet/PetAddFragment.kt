@@ -174,12 +174,12 @@ class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
 
 
             var selectedPersonalities = emptyList<Int>()
-                selectedPersonalities =
-                    adapterCharacter?.getSelectedItems()?.let { it1 ->
-                        getSelectedAnimalPersonality(
-                            it1
-                        )
-                    }!!
+            selectedPersonalities =
+                adapterCharacter?.getSelectedItems()?.let { it1 ->
+                    getSelectedAnimalPersonality(
+                        it1
+                    )
+                }!!
 
 
             var purpose = ""
@@ -480,7 +480,7 @@ class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
                     }
 
                     viewModel.getAddAnimalDetails().observe(this,
-                        {
+                        { it ->
                             setAnimalDetail(it)
 
                             binding.characterRc.layoutManager =
@@ -511,7 +511,7 @@ class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
 
 
                             if (!TextUtils.isEmpty(petId))
-                                viewModel.getUserPetDetail().observe(viewLifecycleOwner, {
+                                viewModel.getUserPetDetail().observe(viewLifecycleOwner, { it ->
 
                                     when (it.status) {
                                         Status.SUCCESS -> {
@@ -519,6 +519,13 @@ class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
                                             binding.nameLy.placeholderTv.setText(petAdd?.name)
                                             binding.aboutPlaceholderTv.setText(petAdd?.about)
 
+                                            var selectedList: ArrayList<String> = ArrayList()
+                                            petAdd?.animalPersonalities?.forEach {
+                                                selectedList.add(getAnimalPersonality(it.toString()))
+                                            }
+                                            adapterCharacter?.setSelectedItems(selectedList)
+
+                                            // TODO: 15.07.2021 animalpersonalities set et
                                             val genderIndex = petAdd?.gender?.let { it1 ->
                                                 getLookUpIndex(
                                                     Constants.lookUpGender,
