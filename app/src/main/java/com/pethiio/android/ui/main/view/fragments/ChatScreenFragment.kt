@@ -72,7 +72,8 @@ class ChatScreenFragment : BaseFragment() {
         memberId = arguments?.getInt("memberId", 0)!!
 
         // TODO: 13.07.2021 aç bunu
-        socketIO.connectSocket(roomId)
+        socketIO.connectSocket()
+        socketIO.setRooms(roomId)
 
 
 
@@ -129,6 +130,7 @@ class ChatScreenFragment : BaseFragment() {
                         roomId,
                         memberId
                     )
+                ,roomId
                 )
                 binding.etMessage.setText("")
             }
@@ -168,8 +170,11 @@ class ChatScreenFragment : BaseFragment() {
                         )
                     }
                     binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
+                    (binding.recyclerView.layoutManager as LinearLayoutManager).stackFromEnd = true
+                    (binding.recyclerView.layoutManager as LinearLayoutManager).reverseLayout = false
                     binding.recyclerView.adapter = adapter
-                    it.data?.let { it1 -> binding.recyclerView.smoothScrollToPosition(it1.size) }
+
+//                    it.data?.let { it1 -> binding.recyclerView.smoothScrollToPosition(it1.size) }
 
 
                 }

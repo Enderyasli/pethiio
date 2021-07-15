@@ -27,7 +27,7 @@ import java.nio.charset.StandardCharsets;
 public class SocketIO {
     Socket socket;
 
-    public void connectSocket(int roomId) throws JSONException, InterruptedException {
+    public void connectSocket() {
         IO.Options options = new IO.Options();
         String token = "Bearer " + PreferenceHelper.SharedPreferencesManager.Companion.getInstance().getAccessToken();
         try {
@@ -35,71 +35,52 @@ public class SocketIO {
         } catch (URISyntaxException | UnsupportedEncodingException e) {
             e.printStackTrace();
         }
+
+    }
+
+    public void setRooms(int roomId) {
         socket.on(Constants.SOCKET_TOPIC + roomId, new Emitter.Listener() {
             @Override
             public void call(Object... objects) {
-                JSONObject object = (JSONObject) objects[0];
-                JsonParser parser = new JsonParser();
-                JsonElement mJson = parser.parse(object.toString());
-                Gson gson = new Gson();
-                ChatRoomResponse response = gson.fromJson(mJson, ChatRoomResponse.class);
-                System.out.println("Message :" + object.toString());
-                EventBus.getDefault().post(new ChatEvent(roomId, response.getId(), response.getContent(), response.getSenderMemberId(), response.getTime()));
-
-                NotificationUtils notificationUtils = new NotificationUtils(PethiioApplication.context);
-                notificationUtils.showNotificationMessage("notificationTitle", "notificationMessage", null, null);
-//                NotificationHelper.generateNotification("senderName", "message");
-
-                // TODO: 8.07.2021 Eventbusla mesaj güncelle
-
-                // TODO: 8.07.2021 match bildiri ile tekrar subscribinggg
+                parseMessage(objects[0], roomId);
 
             }
         });// TODO: 8.07.2021 forla roomlist
-        socket.on(Socket.EVENT_CONNECT, new Emitter.Listener() {
-            @Override
-            public void call(Object... objects) {
-                System.out.println(socket);
-                System.out.println("Message :" + Socket.EVENT_CONNECT);
-            }
+
+        socket.on(Socket.EVENT_CONNECT, objects -> {
+            System.out.println(socket);
+            System.out.println("Message :" + Socket.EVENT_CONNECT);
         });
-        socket.on(Socket.EVENT_CONNECT_ERROR, new Emitter.Listener() {
-            @Override
-            public void call(Object... objects) {
-                System.out.println("Message :" + Socket.EVENT_CONNECT_ERROR + " " + objects);
-            }
-        });
-        socket.on(Socket.EVENT_DISCONNECT, new Emitter.Listener() {
-            @Override
-            public void call(Object... objects) {
-                System.out.println(socket);
-                System.out.println("Message :" + Socket.EVENT_DISCONNECT + " " + objects);
-            }
+        socket.on(Socket.EVENT_CONNECT_ERROR, objects -> System.out.println("Message :" + Socket.EVENT_CONNECT_ERROR + " " + objects));
+        socket.on(Socket.EVENT_DISCONNECT, objects -> {
+            System.out.println(socket);
+            System.out.println("Message :" + Socket.EVENT_DISCONNECT + " " + objects);
         });
         socket.connect();
 
 
-//        int count = 0;
-//        while (true) {
-//            if (count > 1_000_000) {
-//                break;
-//            }
-//            if (count % 1 == 0) {
-//                Gson gson = new Gson();
-//                String obj = gson.toJson(new ChatSendMessage("content", 4, 382), ChatSendMessage.class);
-//
-//                socket.emit(Constants.SOCKET_PRIVATE_CHAT, new JSONObject(obj));
-//            }
-//            Thread.sleep(60000);
-//            count++;
-//        }
+    }
+
+    private void parseMessage(Object object1, int roomId) {
+        JSONObject object = (JSONObject) object1;
+        JsonParser parser = new JsonParser();
+        JsonElement mJson = parser.parse(object.toString());
+        Gson gson = new Gson();
+        ChatRoomResponse response = gson.fromJson(mJson, ChatRoomResponse.class);
+        System.out.println("Message :" + object.toString());
+        EventBus.getDefault().post(new ChatEvent(roomId, response.getId(), response.getContent(), response.getSenderMemberId(), response.getTime()));
+
+        NotificationUtils notificationUtils = new NotificationUtils(PethiioApplication.context);
+        notificationUtils.showNotificationMessage("notificationTitle", "notificationMessage", null, null);
+//                NotificationHelper.generateNotification("senderName", "message");
+
 
     }
 
-    public void sendMessage(ChatSendMessage message) throws JSONException {
+    public void sendMessage(ChatSendMessage message,int roomId) throws JSONException {
         Gson gson = new Gson();
         String obj = gson.toJson(message, ChatSendMessage.class);
-        socket.emit(Constants.SOCKET_PRIVATE_CHAT, new JSONObject(obj));
+        socket.emit(Constants.SOCKET_TOPIC + roomId, new JSONObject(obj));
     }
 
 
