@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.pethiio.android.R
@@ -35,6 +36,8 @@ class ChangePasswordFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
+
 
 
     }
@@ -246,7 +249,7 @@ class ChangePasswordFragment : BaseFragment() {
                         )
                     else {
                         binding.newPasswordAgainPlaceholder.error =
-                            getLocalizedString(Constants.newPasswordEmtpyError, pageDataFields)
+                            getLocalizedString(Constants.passwordDoNotMatch, pageDataFields)
 
                         binding.newPasswordAgainPlaceholder.requestFocus()
                     }

@@ -173,13 +173,13 @@ class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
                 ).toIntOrNull()
 
 
-            var selectedPersonalities: ArrayList<Int>? = null
-            selectedPersonalities =
-                adapterCharacter?.getSelectedItems()?.let { it1 ->
-                    getSelectedAnimalPersonality(
-                        it1
-                    )
-                }
+            var selectedPersonalities = emptyList<Int>()
+                selectedPersonalities =
+                    adapterCharacter?.getSelectedItems()?.let { it1 ->
+                        getSelectedAnimalPersonality(
+                            it1
+                        )
+                    }!!
 
 
             var purpose = ""
@@ -196,7 +196,7 @@ class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
 
 
 
-            if (selectedPersonalities?.size!! > 0 && breedId != null && animalId != null && !TextUtils.isEmpty(
+            if (breedId != null && animalId != null && !TextUtils.isEmpty(
                     purpose
                 )
             ) {
@@ -209,7 +209,7 @@ class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
                             animalId =
                             animalId,
                             breedId = breedId,
-                            animalPersonalities = selectedPersonalities,
+                            animalPersonalities = selectedPersonalities as ArrayList<Int>,
                             color = getLookUpKey(
                                 Constants.lookUpColor,
                                 binding.colorLy.spinner.selectedItem.toString()
@@ -234,7 +234,7 @@ class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
                         animalId =
                         animalId,
                         breedId = breedId,
-                        animalPersonalities = selectedPersonalities,
+                        animalPersonalities = selectedPersonalities as ArrayList<Int>,
                         color = getLookUpKey(
                             Constants.lookUpColor,
                             binding.colorLy.spinner.selectedItem.toString()

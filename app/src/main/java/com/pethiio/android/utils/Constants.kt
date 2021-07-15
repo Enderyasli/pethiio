@@ -139,7 +139,9 @@ class Constants {
         const val aboutEmtpyError: String = "aboutEmtpyError"
         const val currentPasswordEmtpyError: String = "currentPasswordEmtpyError"
         const val newPasswordEmtpyError: String = "newPasswordEmtpyError"
+        const val passwordDoNotMatch: String = "passwordDoNotMatch"
         const val detailEmtpyError: String = "detailEmtpyError"
+
 
         //endregion
 

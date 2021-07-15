@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
+import android.os.Handler
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -27,6 +28,7 @@ import com.google.android.gms.tasks.Task
 import com.pethiio.android.R
 import com.pethiio.android.data.EventBus.FilterEvent
 import com.pethiio.android.data.EventBus.LikeEvent
+import com.pethiio.android.data.EventBus.LoginEvent
 import com.pethiio.android.data.model.member.LocationsRequest
 import com.pethiio.android.data.model.member.MemberListResponse
 import com.pethiio.android.data.model.member.PetSearchRequest
@@ -582,17 +584,20 @@ class DashboardFragment : BaseFragment(), CardStackListener,
         removeFirst()
 
         if (direction != null && memberId > 0) {
-            petSearch?.memberId?.let {
-                PetSearchRequest(
-                    memberId,
-                    it,
-                    direction == Direction.Right
-                )
-            }?.let {
-                viewModel.postPetSearch(
-                    it
-                )
-            }
+            Handler().postDelayed({
+                petSearch?.memberId?.let {
+                    PetSearchRequest(
+                        memberId,
+                        it,
+                        direction == Direction.Right
+                    )
+                }?.let {
+                    viewModel.postPetSearch(
+                        it
+                    )
+                }
+            }, 2000)
+
 
         }
 
