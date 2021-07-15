@@ -155,6 +155,8 @@ class Constants {
         //endregion
 
         //region ChangePass
+
+        const val subTitleForEmail: String = "subTitleForEmail"
         const val currentPasswordTitle: String = "currentPasswordTitle"
         const val currentPasswordPlaceholder: String = "currentPasswordPlaceholder"
         const val newPasswordTitle: String = "newPasswordTitle"

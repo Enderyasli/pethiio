@@ -37,6 +37,7 @@
             android:fontFamily="@font/typo_round_regular"
             android:gravity="center_vertical"
             tools:hint="Ad"
+            android:maxLength="30"
             android:paddingStart="15dp"
             android:textColor="@color/black"
             android:textColorHint="@color/hint_text_color"

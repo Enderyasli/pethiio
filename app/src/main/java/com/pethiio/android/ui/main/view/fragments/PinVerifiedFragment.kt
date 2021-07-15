@@ -207,8 +207,14 @@ class PinVerifiedFragment : BaseFragment() {
 
             binding.pinTitle.text =
                 getLocalizedString(Constants.registerTitle, pageDataFields)
-            binding.pinDescription.text =
-                getLocalizedString(Constants.registerSubTitle, pageDataFields)
+            if (fromLogin == true) {
+                binding.pinDescription.text =
+                    getLocalizedString(Constants.subTitleForEmail, pageDataFields)
+            } else {
+                binding.pinDescription.text =
+                    getLocalizedString(Constants.registerSubTitle, pageDataFields)
+            }
+
 
             binding.pinPlaceholderTv.hint =
                 getLocalizedString(Constants.pinPlaceholder, pageDataFields)

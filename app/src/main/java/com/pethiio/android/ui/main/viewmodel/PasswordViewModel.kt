@@ -3,6 +3,8 @@ package com.pethiio.android.ui.main.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.pethiio.android.PethiioApplication
+import com.pethiio.android.R
 import com.pethiio.android.data.api.ResponseHandler
 import com.pethiio.android.data.api.ServiceBuilder
 import com.pethiio.android.data.model.resetPass.PinVerificationRequest
@@ -79,6 +81,14 @@ class PasswordViewModel : ViewModel() {
                     { loginData ->
                         if (loginData.code().toString().startsWith("2"))
                             emailVerificationResponse.postValue(Resource.success(loginData))
+                        else
+                            emailVerificationResponse.postValue(
+                                Resource.error(
+                                    PethiioApplication.applicationContext()
+                                        .getString(R.string.something_went_wrong), null
+                                )
+                            )
+
                     },
                     {
                         emailVerificationResponse.postValue(responseHandler.handleException(it))
@@ -204,6 +214,7 @@ class PasswordViewModel : ViewModel() {
     fun getPinVerificationResponse(): LiveData<Resource<Response<Void>>> {
         return pinVerificationResponse
     }
+
     fun getEmailVerificationResponse(): LiveData<Resource<Response<Void>>> {
         return emailVerificationResponse
     }
@@ -215,6 +226,7 @@ class PasswordViewModel : ViewModel() {
     fun getPinResetPasswordPageData(): LiveData<Resource<PageData>> {
         return pinResetPasswordPageData
     }
+
     fun getResetPasswordDonePageData(): LiveData<Resource<PageData>> {
         return resetPasswordDonePageData
     }

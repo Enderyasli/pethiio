@@ -32,9 +32,11 @@ class ChatScreenFragment : BaseFragment() {
     override var bottomNavigationViewVisibility = View.GONE
     private var roomId: Int = 0
     var memberId: Int = 0
+    var messageTitle: String = ""
     private var adapter: ChatAdapter? = null
 
     val socketIO = SocketIO()
+
 
 
     override fun onDestroy() {
@@ -70,6 +72,9 @@ class ChatScreenFragment : BaseFragment() {
 
         roomId = arguments?.getInt("roomId", 0)!!
         memberId = arguments?.getInt("memberId", 0)!!
+        messageTitle = arguments?.getString("memberName", "")!!
+
+        binding.nameTv.text = messageTitle
 
         // TODO: 13.07.2021 aç bunu
         socketIO.connectSocket()
