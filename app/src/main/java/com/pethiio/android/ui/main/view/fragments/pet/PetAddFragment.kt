@@ -348,7 +348,7 @@ class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
                     binding.breedLy.titleTv.text = getLocalizedSpan(Constants.animalAddBreedTitle)
                     binding.colorLy.titleTv.text = getLocalizedSpan(Constants.animalAddColorTitle)
                     binding.characterTitleTv.text =
-                        getLocalizedSpan(Constants.animalAddCharacterTitle)
+                        getLocalizedString(Constants.animalAddCharacterTitle)
                     binding.aboutTitleTv.text = getLocalizedSpan(Constants.petaboutTitle)
                     binding.aboutPlaceholderTv.hint =
                         getLocalizedString(Constants.petaboutPlaceholder)

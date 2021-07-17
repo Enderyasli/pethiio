@@ -43,31 +43,38 @@ class FcmMessageService : FirebaseMessagingService() {
         if (PreferenceHelper.SharedPreferencesManager.getInstance().isLoggedIn == false) {
             return
         } else if (remoteMessage.data.isNotEmpty()) {
-            val notificationUtils = NotificationUtils(PethiioApplication.context)
-
-            val notification = remoteMessage.notification
-
-            //region Message
 
             if (remoteMessage.data["type"].equals("message")) {
 
-                notificationUtils.showNotificationMessage(
-                    notification?.title,
-                    notification?.body,
-                    "message",
-                    null
-                )
+
+                if (PethiioApplication.getCurrentRoom() != 0 || remoteMessage.data["roomId"] == PethiioApplication.getCurrentRoom()
+                        .toString()
+                ) {
+
+
+                } else {
+
+                    val notificationUtils = NotificationUtils(PethiioApplication.context)
+                    val notification = remoteMessage.notification
+
+                    //region Message
+
+                    if (remoteMessage.data["type"].equals("message")) {
+
+                        notificationUtils.showNotificationMessage(
+                            notification?.title,
+                            notification?.body,
+                            "message",
+                            null
+                        )
+                    }
+
+                }
             }
+
 
             //endregion
-            val extras = Bundle()
-            for ((key, value) in remoteMessage.data) {
-                extras.putString(key, value)
-            }
-            if (extras.containsKey("data") && !extras.getString("data").isNullOrBlank()) {
 
-
-            }
         }
     }
 

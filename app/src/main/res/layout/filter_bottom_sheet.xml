@@ -53,7 +53,7 @@
                     tools:text="0 km" />
             </LinearLayout>
 
-            <com.warkiz.tickseekbar.TickSeekBar
+            <com.warkiz.widget.IndicatorSeekBar
 
                 android:id="@+id/distance_seek_bar"
                 android:layout_width="match_parent"
@@ -61,13 +61,17 @@
                 android:layout_marginStart="-10dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="-8dp"
-                app:tsb_progress="25"
-                app:tsb_thumb_color="@color/whitegrey"
-                app:tsb_thumb_size="@dimen/medium_size"
-                app:tsb_track_background_size="6dp"
-                app:tsb_track_progress_color="@color/orangeButton"
-                app:tsb_track_progress_size="6dp"
-                app:tsb_track_rounded_corners="true" />
+                app:isb_indicator_color="@android:color/transparent"
+                app:isb_indicator_text_color="@android:color/transparent"
+                app:isb_progress="25"
+                app:isb_show_thumb_text="false"
+                app:isb_show_tick_texts="false"
+                app:isb_thumb_color="@color/whitegrey"
+                app:isb_thumb_size="@dimen/medium_size"
+                app:isb_track_background_size="6dp"
+                app:isb_track_progress_color="@color/orangeButton"
+                app:isb_track_progress_size="6dp"
+                app:isb_track_rounded_corners="true" />
         </LinearLayout>
 
         <LinearLayout
@@ -107,21 +111,24 @@
                     tools:text="8" />
             </LinearLayout>
 
-            <com.warkiz.tickseekbar.TickSeekBar
+            <com.warkiz.widget.IndicatorSeekBar
                 android:id="@+id/age_seek_bar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="-10dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="-8dp"
-                app:tsb_max="20"
-                app:tsb_progress="8"
-                app:tsb_thumb_color="@color/whitegrey"
-                app:tsb_thumb_size="@dimen/medium_size"
-                app:tsb_track_background_size="6dp"
-                app:tsb_track_progress_color="@color/orangeButton"
-                app:tsb_track_progress_size="6dp"
-                app:tsb_track_rounded_corners="true" />
+                app:isb_indicator_color="@android:color/transparent"
+                app:isb_indicator_text_color="@android:color/transparent"
+                app:isb_max="20"
+                app:isb_min="5"
+                app:isb_progress="18"
+                app:isb_thumb_color="@color/whitegrey"
+                app:isb_thumb_size="@dimen/medium_size"
+                app:isb_track_background_size="6dp"
+                app:isb_track_progress_color="@color/orangeButton"
+                app:isb_track_progress_size="6dp"
+                app:isb_track_rounded_corners="true" />
         </LinearLayout>
 
         <include

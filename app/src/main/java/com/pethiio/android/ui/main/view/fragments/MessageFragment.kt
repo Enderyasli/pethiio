@@ -10,6 +10,7 @@ import android.widget.AdapterView
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.pethiio.android.PethiioApplication
 import com.pethiio.android.data.model.member.MemberListResponse
 import com.pethiio.android.data.model.socket.ChatSendMessage
 import com.pethiio.android.data.socket.SocketIO
@@ -66,6 +67,7 @@ class MessageFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
         setupViewModel()
         setUpObserver()
 
+        PethiioApplication.getCurrentRoom()
 
 
         return view

@@ -14,6 +14,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.google.android.gms.common.internal.service.Common
 import com.pethiio.android.R
 import com.pethiio.android.data.EventBus.LikeEvent
 import com.pethiio.android.data.model.petDetail.PetSearchDetailResponse
@@ -25,6 +26,7 @@ import com.pethiio.android.ui.main.adapter.PetSearchDetailCharacterAdapter
 import com.pethiio.android.ui.main.adapter.ViewPagerAdapter
 import com.pethiio.android.ui.main.view.customViews.MaximobileDialog
 import com.pethiio.android.ui.main.viewmodel.PetDetailViewModel
+import com.pethiio.android.utils.CommonMethods
 import com.pethiio.android.utils.Constants
 import com.pethiio.android.utils.Status
 import org.greenrobot.eventbus.EventBus
@@ -203,7 +205,8 @@ class PetDetailFragment : BaseFragment() {
 
                 }
                 Status.ERROR -> {
-                    binding.progressBar.visibility = View.VISIBLE
+                    binding.progressBar.visibility = View.GONE
+                    CommonMethods.onSNACK(binding.root, it.message.toString())
 
                 }
             }

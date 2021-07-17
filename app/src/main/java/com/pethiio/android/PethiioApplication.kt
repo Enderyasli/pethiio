@@ -1,5 +1,6 @@
 package com.pethiio.android
 
+import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
 import android.content.Intent
@@ -9,14 +10,25 @@ import androidx.appcompat.app.AppCompatDelegate
 import com.pethiio.android.data.socket.SocketIOService
 import com.pethiio.android.utils.PreferenceHelper
 
+
 class PethiioApplication : Application() {
 
     companion object {
         private var instance: Application? = null
         private var sharedPreferences: SharedPreferences? = null
-        private var socketService: SocketIOService? = null
         private var isActive: Boolean = false
+        private var currentRoom: Int = 0
+
+        @SuppressLint("StaticFieldLeak")
         lateinit var context: Context
+
+        fun setCurrentRoom(roomId: Int) {
+            currentRoom = roomId
+        }
+
+        fun getCurrentRoom(): Int {
+            return currentRoom
+        }
 
 
         fun applicationContext(): Context {
@@ -33,16 +45,6 @@ class PethiioApplication : Application() {
 
 
     }
-
-    fun ConnectSocketIO() {
-        if (PreferenceHelper.SharedPreferencesManager.getInstance().isLoggedIn == true) {
-            socketService = SocketIOService()
-            val service = Intent(this, socketService!!.javaClass)
-            applicationContext().startService(service)
-        }
-    }
-
-
 
     override fun onCreate() {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)

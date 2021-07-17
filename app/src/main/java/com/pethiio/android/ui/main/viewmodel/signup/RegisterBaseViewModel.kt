@@ -85,9 +85,11 @@ class RegisterBaseViewModel : ViewModel() {
                         if (loginData.emailVerified && loginData.registrationCompleted) {
                             PreferenceHelper.SharedPreferencesManager.getInstance().accessToken =
                                 loginData.accessToken
+                            PreferenceHelper.SharedPreferencesManager.getInstance().topicUserId =
+                                loginData.userId
+
                             PreferenceHelper.SharedPreferencesManager.getInstance().isLoggedIn =
                                 true
-
 
 
                         }
@@ -148,6 +150,8 @@ class RegisterBaseViewModel : ViewModel() {
                         accessToken = registerData.accessToken
                         PreferenceHelper.SharedPreferencesManager.getInstance().accessToken =
                             accessToken
+                        PreferenceHelper.SharedPreferencesManager.getInstance().topicUserId =
+                            registerData.userId
 
                     },
                     {
@@ -191,7 +195,7 @@ class RegisterBaseViewModel : ViewModel() {
                             registerData.accessToken
                         PreferenceHelper.SharedPreferencesManager.getInstance().isLoggedIn =
                             true
-                        postRegisterAvatar.postValue(Resource.success(registerData))
+// postRegisterAvatar.postValue(Resource.success(registerData))
                     },
                     {
                         postRegisterAvatar.postValue(responseHandler.handleException(it))

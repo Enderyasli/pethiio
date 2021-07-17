@@ -1,6 +1,5 @@
 package com.pethiio.android.ui.main.view.fragments
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,7 +11,6 @@ import com.pethiio.android.PethiioApplication
 import com.pethiio.android.data.EventBus.ChatEvent
 import com.pethiio.android.data.model.socket.ChatSendMessage
 import com.pethiio.android.data.socket.SocketIO
-import com.pethiio.android.data.socket.SocketIOService
 import com.pethiio.android.databinding.FragmentChatScreenBinding
 import com.pethiio.android.ui.base.BaseFragment
 import com.pethiio.android.ui.main.adapter.ChatAdapter
@@ -38,10 +36,11 @@ class ChatScreenFragment : BaseFragment() {
     val socketIO = SocketIO()
 
 
-
     override fun onDestroy() {
         //unregister event bus
         EventBus.getDefault().unregister(this)
+        PethiioApplication.setCurrentRoom(0)
+        socketIO.disconnect(roomId)
         super.onDestroy()
     }
 
@@ -58,8 +57,6 @@ class ChatScreenFragment : BaseFragment() {
         adapter?.addMessage(event)
         adapter?.listSize?.let { binding.recyclerView.smoothScrollToPosition(it) }
 //
-
-
     }
 
     override fun onCreateView(
@@ -79,6 +76,7 @@ class ChatScreenFragment : BaseFragment() {
         // TODO: 13.07.2021 aç bunu
         socketIO.connectSocket()
         socketIO.setRooms(roomId)
+        PethiioApplication.setCurrentRoom(roomId)
 
 
 
@@ -135,7 +133,6 @@ class ChatScreenFragment : BaseFragment() {
                         roomId,
                         memberId
                     )
-                ,roomId
                 )
                 binding.etMessage.setText("")
             }
@@ -176,7 +173,8 @@ class ChatScreenFragment : BaseFragment() {
                     }
                     binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
                     (binding.recyclerView.layoutManager as LinearLayoutManager).stackFromEnd = true
-                    (binding.recyclerView.layoutManager as LinearLayoutManager).reverseLayout = false
+                    (binding.recyclerView.layoutManager as LinearLayoutManager).reverseLayout =
+                        false
                     binding.recyclerView.adapter = adapter
 
 //                    it.data?.let { it1 -> binding.recyclerView.smoothScrollToPosition(it1.size) }

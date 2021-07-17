@@ -33,9 +33,9 @@ import com.pethiio.android.ui.main.viewmodel.DashBoardViewModel;
 import com.pethiio.android.utils.CommonMethods;
 import com.pethiio.android.utils.Constants;
 import com.pethiio.android.utils.Resource;
-import com.warkiz.tickseekbar.OnSeekChangeListener;
-import com.warkiz.tickseekbar.SeekParams;
-import com.warkiz.tickseekbar.TickSeekBar;
+import com.warkiz.widget.IndicatorSeekBar;
+import com.warkiz.widget.OnSeekChangeListener;
+import com.warkiz.widget.SeekParams;
 
 import org.greenrobot.eventbus.EventBus;
 import org.jetbrains.annotations.NotNull;
@@ -57,7 +57,7 @@ public class FilterBottomSheet extends BottomSheetDialogFragment {
     NoDefaultSpinner genderSpinner, typeSpinner;
     Button filterButton;
 
-    TickSeekBar distanceSeekBar, ageSeekBar;
+    IndicatorSeekBar distanceSeekBar, ageSeekBar;
     List<String> gender, genderKeys, animal, animalKeys, purpose, purposeKeys;
     PetSearchFilterResponse petSearchFilterResponse;
     List<LookUpsResponse> lookUpsResponses;
@@ -257,19 +257,21 @@ public class FilterBottomSheet extends BottomSheetDialogFragment {
 
 
         distanceSeekBar.setOnSeekChangeListener(new OnSeekChangeListener() {
-            @SuppressLint("SetTextI18n")
             @Override
             public void onSeeking(SeekParams seekParams) {
+
                 distanceTv.setText(seekParams.progress + " km");
                 distance = seekParams.progress;
             }
 
             @Override
-            public void onStartTrackingTouch(TickSeekBar seekBar) {
+            public void onStartTrackingTouch(IndicatorSeekBar seekBar) {
+
             }
 
             @Override
-            public void onStopTrackingTouch(TickSeekBar seekBar) {
+            public void onStopTrackingTouch(IndicatorSeekBar seekBar) {
+
             }
         });
 
@@ -277,21 +279,22 @@ public class FilterBottomSheet extends BottomSheetDialogFragment {
         ageValueTv.setText(String.valueOf(ageSeekBar.getProgress()));
         age = ageSeekBar.getProgress();
 
-
         ageSeekBar.setOnSeekChangeListener(new OnSeekChangeListener() {
-            @SuppressLint("SetTextI18n")
             @Override
             public void onSeeking(SeekParams seekParams) {
+
                 ageValueTv.setText(String.valueOf(seekParams.progress));
                 age = seekParams.progress;
             }
 
             @Override
-            public void onStartTrackingTouch(TickSeekBar seekBar) {
+            public void onStartTrackingTouch(IndicatorSeekBar seekBar) {
+
             }
 
             @Override
-            public void onStopTrackingTouch(TickSeekBar seekBar) {
+            public void onStopTrackingTouch(IndicatorSeekBar seekBar) {
+
             }
         });
 

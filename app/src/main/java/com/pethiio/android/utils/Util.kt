@@ -41,7 +41,8 @@ public object PreferenceHelper {
 
         public var isApplanguageSelected: Boolean
             get() = sharedPreferences.getBoolean(IS_APP_LANGUAGE_SELECTED, false)
-            set(value) = sharedPreferences.edit().putBoolean(IS_APP_LANGUAGE_SELECTED, value).apply()
+            set(value) = sharedPreferences.edit().putBoolean(IS_APP_LANGUAGE_SELECTED, value)
+                .apply()
 
         public var accessToken: String
             get() = sharedPreferences.getString(ACCESS_TOKEN, "").toString()
@@ -59,6 +60,10 @@ public object PreferenceHelper {
             get() = sharedPreferences.getInt(SPINNER_ID, 0)
             set(value) = sharedPreferences.edit().putInt(SPINNER_ID, value).apply()
 
+        public var topicUserId: Int //main tabs spinners
+            get() = sharedPreferences.getInt(TOPIC_USER_ID, 0)
+            set(value) = sharedPreferences.edit().putInt(TOPIC_USER_ID, value).apply()
+
 
         public var isLoggedIn: Boolean?
             get() = sharedPreferences.getBoolean(IS_LOGGED_IN, false)
@@ -75,6 +80,7 @@ public object PreferenceHelper {
             private const val PET_ID = "pet_id"
             private const val MEMBER_ID = "member_id"
             private const val SPINNER_ID = "spinner_id"
+            private const val TOPIC_USER_ID = "topic_user_id"
             private var instance: SharedPreferencesManager? = null
 
             @Synchronized

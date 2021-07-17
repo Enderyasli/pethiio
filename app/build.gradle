@@ -106,7 +106,9 @@ dependencies {
     implementation "com.yuyakaido.android:card-stack-view:2.3.4"
 
     //seekbar
-    implementation 'com.github.warkiz.tickseekbar:tickseekbar:0.1.4'
+//    implementation 'com.github.warkiz.tickseekbar:tickseekbar:0.1.4'
+    implementation 'com.github.warkiz.widget:indicatorseekbar:2.1.2'
+
     //Event
     implementation 'org.greenrobot:eventbus:3.2.0'
 

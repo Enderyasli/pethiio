@@ -6,6 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.ktx.messaging
 import com.pethiio.android.R
 import com.pethiio.android.databinding.FragmentSettingsBinding
 import com.pethiio.android.ui.base.BaseFragment
@@ -79,6 +81,9 @@ class SettingsFragment : BaseFragment() {
             maximobileDialog.dissmiss()
             PreferenceHelper.SharedPreferencesManager.getInstance().isLoggedIn = false
             PreferenceHelper.SharedPreferencesManager.getInstance().accessToken = ""
+            PreferenceHelper.SharedPreferencesManager.getInstance().topicUserId = 0
+            unSubscribeToTopic()
+
             findNavController().navigate(R.id.action_global_navigation_welcome)
         }
         maximobileDialog.getNegativeButton().setOnClickListener {
@@ -86,6 +91,21 @@ class SettingsFragment : BaseFragment() {
         }
         maximobileDialog.getPositiveButton().visibility = View.VISIBLE
 
+    }
+
+    private fun unSubscribeToTopic() {
+        Firebase.messaging.unsubscribeFromTopic("topic-user-" + PreferenceHelper.SharedPreferencesManager.getInstance().topicUserId)
+            .addOnFailureListener {
+                it
+            }
+            .addOnCompleteListener { task ->
+//                var msg = getString(com.google.android.gms.location.R.string.msg_subscribed)
+                if (!task.isSuccessful) {
+//                    msg = getString(com.google.android.gms.location.R.string.msg_subscribe_failed)
+                }
+//                Log.d(TAG, msg)
+//                Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
+            }
     }
 
     private fun setupViewModel() {

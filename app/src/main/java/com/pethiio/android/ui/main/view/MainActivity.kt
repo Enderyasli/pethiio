@@ -31,15 +31,12 @@ import com.google.android.material.bottomnavigation.BottomNavigationMenuView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.ktx.messaging
-import com.judemanutd.autostarter.AutoStartPermissionHelper
 import com.pethiio.android.R
-import com.pethiio.android.data.EventBus.FilterEvent
 import com.pethiio.android.data.EventBus.LoginEvent
 import com.pethiio.android.data.socket.SocketIOService
 import com.pethiio.android.ui.main.viewmodel.MainActivityViewModel
 import com.pethiio.android.utils.PreferenceHelper
 import com.pethiio.android.utils.Status
-import com.thelittlefireman.appkillermanager.managers.KillerManager
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -60,6 +57,7 @@ class MainActivity : AppCompatActivity() {
         EventBus.getDefault().unregister(this)
         super.onDestroy()
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 //        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
@@ -67,7 +65,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         EventBus.getDefault().register(this)
-
 
 
         //change statusbar color
@@ -114,7 +111,24 @@ class MainActivity : AppCompatActivity() {
         }
         itemView.addView(viewCustom)
 
-        Firebase.messaging.subscribeToTopic("topic-user-297") // TODO: 17.07.2021 login veya registerda userId dönüyor. aynı topic logout unsub olacaksın.
+
+        subscribeToTopic()
+        checkGpsPermission()
+
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: LoginEvent?) {
+        checkGpsPermission()
+        subscribeToTopic()
+    }
+
+    public fun getSocket() {
+
+    }
+
+    private fun subscribeToTopic() {
+        Firebase.messaging.subscribeToTopic("topic-user-" + PreferenceHelper.SharedPreferencesManager.getInstance().topicUserId) // TODO: 17.07.2021 login veya registerda userId dönüyor. aynı topic logout unsub olacaksın.
             .addOnFailureListener {
                 it
             }
@@ -126,36 +140,8 @@ class MainActivity : AppCompatActivity() {
 //                Log.d(TAG, msg)
 //                Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
             }
-            
-
-
-        checkGpsPermission()
-//        setUpViewModel()
-
-
-//        try {
-//            val db = Room.databaseBuilder(
-//                this,
-//                AppDatabase::class.java, "user.db"
-//            ).build()
-//
-//            val userDao = db.userDao()
-//            val users: List<User> = userDao.getAll()
-//        } catch (e: Exception) {
-//        }
-
-
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onEvent(event: LoginEvent?) {
-        checkGpsPermission()
-
-    }
-
-    public fun getSocket() {
-
-    }
     private fun addAutoStartup() {
         try {
             val intent = Intent()
@@ -196,32 +182,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun setUpViewModel() {
-        viewModel = ViewModelProviders.of(this).get(MainActivityViewModel::class.java)
-
-        viewModel.getAllChatList().observe(this, {
-            when (it.status) {
-                Status.SUCCESS -> {
-
-                    if (PreferenceHelper.SharedPreferencesManager.getInstance().isLoggedIn == true) {
-
-                        var socketService: SocketIOService? = null
-                        socketService = SocketIOService()
-//                        socketService.setListenersMap(it.data)
-                        val service = Intent(this, socketService.javaClass)
-                        service.putExtra(
-                            SocketIOService.EXTRA_EVENT_TYPE,
-                            SocketIOService.EVENT_TYPE_MESSAGE
-                        )
-                        startService(service)
-
-                    }
-                }
-            }
-
-
-        })
-    }
 
     @SuppressLint("ResourceAsColor")
     fun setDashboardClickListener(dashboardClicked: Boolean) {
@@ -261,7 +221,7 @@ class MainActivity : AppCompatActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
         when (requestCode) {
-            99 -> {
+            MY_PERMISSIONS_REQUEST_LOCATION -> {
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.isNotEmpty()
                     && grantResults[0] == PackageManager.PERMISSION_GRANTED

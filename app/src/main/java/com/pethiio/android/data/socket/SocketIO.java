@@ -1,5 +1,7 @@
 package com.pethiio.android.data.socket;
 
+import android.widget.Toast;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
@@ -36,26 +38,8 @@ public class SocketIO {
     Socket socket;
 
     public void connectSocket() {
-//        final TrustManager[] trustAllCerts= new TrustManager[] { new X509TrustManager() {
-//            public java.security.cert.X509Certificate[] getAcceptedIssuers() {
-//                return new java.security.cert.X509Certificate[] {};
-//            }
-//
-//            public void checkClientTrusted(X509Certificate[] chain,
-//                                           String authType) throws CertificateException {
-//            }
-//
-//            public void checkServerTrusted(X509Certificate[] chain,
-//                                           String authType) throws CertificateException {
-//            }
-//        } };
-
-
         String token = "Bearer " + PreferenceHelper.SharedPreferencesManager.Companion.getInstance().getAccessToken();
         try {
-//            SSLContext mySSLContext = SSLContext.getInstance("TLS");
-//            mySSLContext.init(null, trustAllCerts, null);
-
             IO.Options options = new IO.Options();
             SocketSSL.set(options);
 
@@ -73,7 +57,7 @@ public class SocketIO {
                 parseMessage(objects[0], roomId);
 
             }
-        });// TODO: 8.07.2021 forla roomlist
+        });
 
         socket.on(Socket.EVENT_CONNECT, objects -> {
             System.out.println(socket);
@@ -91,6 +75,11 @@ public class SocketIO {
 
     }
 
+    public void disconnect(int roomId){
+        socket.disconnect();
+        socket.off(Constants.SOCKET_TOPIC + roomId);
+    }
+
     private void parseMessage(Object object1, int roomId) {
         JSONObject object = (JSONObject) object1;
         JsonParser parser = new JsonParser();
@@ -100,14 +89,10 @@ public class SocketIO {
         System.out.println("Message :" + object.toString());
         EventBus.getDefault().post(new ChatEvent(roomId, response.getId(), response.getContent(), response.getSenderMemberId(), response.getTime()));
 
-//        NotificationUtils notificationUtils = new NotificationUtils(PethiioApplication.context);
-//        notificationUtils.showNotificationMessage("notificationTitle", "notificationMessage", null, null);
-//                NotificationHelper.generateNotification("senderName", "message");
-
 
     }
 
-    public void sendMessage(ChatSendMessage message, int roomId) throws JSONException {
+    public void sendMessage(ChatSendMessage message ) throws JSONException {
         Gson gson = new Gson();
         String obj = gson.toJson(message, ChatSendMessage.class);
         socket.emit(Constants.SOCKET_PRIVATE_CHAT, new JSONObject(obj));
