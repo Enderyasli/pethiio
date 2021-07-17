@@ -10,7 +10,7 @@
         android:id="@+id/navigation_dashboard"
         android:title="" />
     <item
-        android:id="@+id/navigation_search"
+        android:id="@+id/navigation_message"
         android:icon="@drawable/message_icon"
         android:title="@string/bottom_menu_message" />
 

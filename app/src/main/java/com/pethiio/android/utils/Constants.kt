@@ -25,7 +25,7 @@ class Constants {
         val datePickerFormat: SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd")
 
         const val BASE_URL: String = "http://api.pawtind.com/api/"
-        const val SOCKET_URL: String = "http://api.pawtind.com:9092/chat?token="
+        const val SOCKET_URL: String = "http://api.pawtind.com:10443/chat?token="
         const val SOCKET_TOPIC: String = "/topic/private.chat."
         const val SOCKET_PRIVATE_CHAT: String = "/app/private.chat"
 

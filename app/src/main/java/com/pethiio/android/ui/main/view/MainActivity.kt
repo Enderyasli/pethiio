@@ -12,6 +12,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -28,6 +29,8 @@ import com.google.android.gms.tasks.Task
 import com.google.android.material.bottomnavigation.BottomNavigationItemView
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.ktx.messaging
 import com.judemanutd.autostarter.AutoStartPermissionHelper
 import com.pethiio.android.R
 import com.pethiio.android.data.EventBus.FilterEvent
@@ -110,6 +113,20 @@ class MainActivity : AppCompatActivity() {
             navController!!.navigate(R.id.navigation_dashboard)
         }
         itemView.addView(viewCustom)
+
+        Firebase.messaging.subscribeToTopic("topic-user-297") // TODO: 17.07.2021 login veya registerda userId dönüyor. aynı topic logout unsub olacaksın.
+            .addOnFailureListener {
+                it
+            }
+            .addOnCompleteListener { task ->
+//                var msg = getString(com.google.android.gms.location.R.string.msg_subscribed)
+                if (!task.isSuccessful) {
+//                    msg = getString(com.google.android.gms.location.R.string.msg_subscribe_failed)
+                }
+//                Log.d(TAG, msg)
+//                Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
+            }
+            
 
 
         checkGpsPermission()

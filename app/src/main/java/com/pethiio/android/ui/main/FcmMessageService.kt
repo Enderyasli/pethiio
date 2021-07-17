@@ -13,8 +13,6 @@ import com.pethiio.android.utils.PreferenceHelper
 class FcmMessageService : FirebaseMessagingService() {
 
 
-
-
     override fun onNewToken(token: String) {
         Log.d(TAG, "Refreshed token: $token")
         // If required send token to your app server.
@@ -26,39 +24,52 @@ class FcmMessageService : FirebaseMessagingService() {
         super.handleIntent(intent)
         intent.extras
     }
-    override fun onMessageReceived(p0: RemoteMessage) {
-        super.onMessageReceived(p0)
-    }
+
+    //    override fun onMessageReceived(p0: RemoteMessage) {
+//        super.onMessageReceived(p0)
+//    }
 //    /**
 //     * Called when message is received.
 //     *
 //     * @param remoteMessage Object representing the message received from Firebase Cloud Messaging.
 //     */
-//    override fun onMessageReceived(remoteMessage: RemoteMessage) {
-//        super.onMessageReceived(remoteMessage)
-//        Log.d(TAG, "From: ${remoteMessage.from}")
-//
-//        //Use this condition to validation login
-//        if (PreferenceHelper.SharedPreferencesManager.getInstance().isLoggedIn == false) {
-//            return
-//        } else if (remoteMessage.data.isNotEmpty()) {
-//            val extras = Bundle()
-//            for ((key, value) in remoteMessage.data) {
-//                extras.putString(key, value)
-//            }
-//            if (extras.containsKey("message") && !extras.getString("message").isNullOrBlank()) {
-//
-//                val notificationUtils = NotificationUtils(PethiioApplication.context)
-//                notificationUtils.showNotificationMessage(
-//                    extras.getString("message"),
-//                    extras.getString("message"),
-//                    null,
-//                    null
-//                )
-//
-//            }
-//        }
-//    }
+// TODO: 17.07.2021 socketRoomun içinde değilse kapat
+    override fun onMessageReceived(remoteMessage: RemoteMessage) {
+        super.onMessageReceived(remoteMessage)
+        Log.d(TAG, "From: ${remoteMessage.from}")
+
+        // TODO: 17.07.2021   notification dan data alınacak type a göre (sadece roomu kapa) currentRoomID, ondestroyda sikişşşşşşşşşş
+        //Use this condition to validation login
+        if (PreferenceHelper.SharedPreferencesManager.getInstance().isLoggedIn == false) {
+            return
+        } else if (remoteMessage.data.isNotEmpty()) {
+            val notificationUtils = NotificationUtils(PethiioApplication.context)
+
+            val notification = remoteMessage.notification
+
+            //region Message
+
+            if (remoteMessage.data["type"].equals("message")) {
+
+                notificationUtils.showNotificationMessage(
+                    notification?.title,
+                    notification?.body,
+                    "message",
+                    null
+                )
+            }
+
+            //endregion
+            val extras = Bundle()
+            for ((key, value) in remoteMessage.data) {
+                extras.putString(key, value)
+            }
+            if (extras.containsKey("data") && !extras.getString("data").isNullOrBlank()) {
+
+
+            }
+        }
+    }
 
 
     companion object {

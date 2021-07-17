@@ -23,14 +23,42 @@ import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
+
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 
 public class SocketIO {
     Socket socket;
 
     public void connectSocket() {
-        IO.Options options = new IO.Options();
+//        final TrustManager[] trustAllCerts= new TrustManager[] { new X509TrustManager() {
+//            public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+//                return new java.security.cert.X509Certificate[] {};
+//            }
+//
+//            public void checkClientTrusted(X509Certificate[] chain,
+//                                           String authType) throws CertificateException {
+//            }
+//
+//            public void checkServerTrusted(X509Certificate[] chain,
+//                                           String authType) throws CertificateException {
+//            }
+//        } };
+
+
         String token = "Bearer " + PreferenceHelper.SharedPreferencesManager.Companion.getInstance().getAccessToken();
         try {
+//            SSLContext mySSLContext = SSLContext.getInstance("TLS");
+//            mySSLContext.init(null, trustAllCerts, null);
+
+            IO.Options options = new IO.Options();
+            SocketSSL.set(options);
+
             socket = IO.socket(Constants.SOCKET_URL + URLEncoder.encode(token, StandardCharsets.UTF_8.displayName()), options);
         } catch (URISyntaxException | UnsupportedEncodingException e) {
             e.printStackTrace();
@@ -51,7 +79,9 @@ public class SocketIO {
             System.out.println(socket);
             System.out.println("Message :" + Socket.EVENT_CONNECT);
         });
-        socket.on(Socket.EVENT_CONNECT_ERROR, objects -> System.out.println("Message :" + Socket.EVENT_CONNECT_ERROR + " " + objects));
+        socket.on(Socket.EVENT_CONNECT_ERROR, objects ->
+                System.out.println("Message :" + Socket.EVENT_CONNECT_ERROR + " " + objects)
+        );
         socket.on(Socket.EVENT_DISCONNECT, objects -> {
             System.out.println(socket);
             System.out.println("Message :" + Socket.EVENT_DISCONNECT + " " + objects);
@@ -70,17 +100,17 @@ public class SocketIO {
         System.out.println("Message :" + object.toString());
         EventBus.getDefault().post(new ChatEvent(roomId, response.getId(), response.getContent(), response.getSenderMemberId(), response.getTime()));
 
-        NotificationUtils notificationUtils = new NotificationUtils(PethiioApplication.context);
-        notificationUtils.showNotificationMessage("notificationTitle", "notificationMessage", null, null);
+//        NotificationUtils notificationUtils = new NotificationUtils(PethiioApplication.context);
+//        notificationUtils.showNotificationMessage("notificationTitle", "notificationMessage", null, null);
 //                NotificationHelper.generateNotification("senderName", "message");
 
 
     }
 
-    public void sendMessage(ChatSendMessage message,int roomId) throws JSONException {
+    public void sendMessage(ChatSendMessage message, int roomId) throws JSONException {
         Gson gson = new Gson();
         String obj = gson.toJson(message, ChatSendMessage.class);
-        socket.emit(Constants.SOCKET_TOPIC + roomId, new JSONObject(obj));
+        socket.emit(Constants.SOCKET_PRIVATE_CHAT, new JSONObject(obj));
     }
 
 

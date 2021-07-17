@@ -2,14 +2,17 @@ package com.pethiio.android.ui.main.util
 
 import android.app.*
 import android.content.Context
-import android.content.Intent
 import android.media.RingtoneManager
 import android.os.Build
 import android.text.TextUtils
+import android.util.Patterns
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import androidx.core.text.HtmlCompat
+import androidx.navigation.NavDeepLinkBuilder
+import com.bumptech.glide.Glide
+import com.pethiio.android.PethiioApplication
 import com.pethiio.android.R
 import java.text.SimpleDateFormat
 import java.util.*
@@ -18,34 +21,44 @@ import java.util.*
 /**
  * Created by sem0025 on 23.03.2017.
  */
+
+
 class NotificationUtils(private val mContext: Context) {
     var CHANNEL_ID: String = "Pethiio"
 
     fun showNotificationMessage(
         title: String?,
         message: String?,
-        intent: Intent?,
+        intent: String?,
         imageUrl: String?
     ) {
+
+
         // notification icon
+//        var resultPendingIntent: PendingIntent? = null
+//        if (intent != null) {
+//            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+//            resultPendingIntent = PendingIntent.getActivity(
+//                mContext,
+//                0,
+//                intent,
+//                PendingIntent.FLAG_CANCEL_CURRENT
+//            )
+//        }
+
         var resultPendingIntent: PendingIntent? = null
-        if (intent != null) {
-            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
-            resultPendingIntent = PendingIntent.getActivity(
-                mContext,
-                0,
-                intent,
-                PendingIntent.FLAG_CANCEL_CURRENT
-            )
-        }
+        if (intent.equals("message"))
+            resultPendingIntent = pendingIntentMessage(PethiioApplication.context)
+
         if (!TextUtils.isEmpty(title) && !TextUtils.isEmpty(message)) {
-            showSmallNotification(title!!, message!!, resultPendingIntent)
+            showSmallNotification(title!!, message!!,imageUrl, resultPendingIntent)
         }
     }
 
     private fun showSmallNotification(
         title: String,
         message: String,
+        imageUrl: String?,
         resultPendingIntent: PendingIntent?
     ) {
 
@@ -96,5 +109,11 @@ class NotificationUtils(private val mContext: Context) {
         return SimpleDateFormat("ddHHmmss", Locale.US).format(now).toInt()
     }
 
+    fun pendingIntentMessage(context: Context): PendingIntent {
+        return NavDeepLinkBuilder(context)
+            .setGraph(R.navigation.nav_graph)
+            .setDestination(R.id.navigation_message)
+            .createPendingIntent()
+    }
 
 }

@@ -47,6 +47,7 @@ import retrofit2.Response;
 
 public class FilterBottomSheet extends BottomSheetDialogFragment {
 
+    // TODO: 17.07.2021 yas, km range koy
     DashBoardViewModel viewModel;
 
     TextView distanceTitleTv, ageTv, ageValueTv, genderTitle, purposeTitle, animalTitle, filterClearButton, distanceTv;

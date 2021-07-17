@@ -216,9 +216,9 @@
         </fragment>
 
         <fragment
-            android:id="@+id/navigation_search"
+            android:id="@+id/navigation_message"
             android:name="com.pethiio.android.ui.main.view.fragments.MessageFragment"
-            android:label="Search"
+            android:label="Message"
             tools:layout="@layout/fragment_message" />
 
 
