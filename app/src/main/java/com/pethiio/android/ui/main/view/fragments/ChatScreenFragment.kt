@@ -4,10 +4,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.pethiio.android.PethiioApplication
+import com.pethiio.android.R
 import com.pethiio.android.data.EventBus.ChatEvent
 import com.pethiio.android.data.model.socket.ChatSendMessage
 import com.pethiio.android.data.socket.SocketIO
@@ -16,6 +20,7 @@ import com.pethiio.android.ui.base.BaseFragment
 import com.pethiio.android.ui.main.adapter.ChatAdapter
 import com.pethiio.android.ui.main.viewmodel.ChatViewModel
 import com.pethiio.android.utils.Constants
+import com.pethiio.android.utils.PreferenceHelper
 import com.pethiio.android.utils.Status
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -28,7 +33,9 @@ class ChatScreenFragment : BaseFragment() {
     private val binding get() = _binding!!
     private lateinit var viewModel: ChatViewModel
     override var bottomNavigationViewVisibility = View.GONE
+    private var petAvatar: String = ""
     private var roomId: Int = 0
+    private var petId: Int = 0
     var memberId: Int = 0
     var messageTitle: String = ""
     private var adapter: ChatAdapter? = null
@@ -67,16 +74,26 @@ class ChatScreenFragment : BaseFragment() {
         _binding = FragmentChatScreenBinding.inflate(inflater, container, false)
         val view = binding.root
 
+        petAvatar = arguments?.getString("petAvatar", "")!!
         roomId = arguments?.getInt("roomId", 0)!!
+        petId = arguments?.getInt("petId", 0)!!
         memberId = arguments?.getInt("memberId", 0)!!
         messageTitle = arguments?.getString("memberName", "")!!
 
         binding.nameTv.text = messageTitle
 
+        Glide.with(binding.profileImage)
+            .load(petAvatar)
+            .apply(RequestOptions().override(200, 200))
+            .into(binding.profileImage)
+
+
         // TODO: 13.07.2021 aç bunu
         socketIO.connectSocket()
         socketIO.setRooms(roomId)
         PethiioApplication.setCurrentRoom(roomId)
+
+
 
 
 
@@ -88,45 +105,10 @@ class ChatScreenFragment : BaseFragment() {
         setupViewModel()
         setUpObserver()
 
+
         binding.btnSend.setOnClickListener {
 
             if (binding.etMessage.text.isNotEmpty()) {
-
-                /*
-                activity?.let {
-                     var socketService: SocketIOService? = null
-                    socketService = SocketIOService()
-                    socketService.changeRoomId(roomId)
-                    val service = Intent(it, socketService.javaClass)
-
-
-
-//                    val service = Intent(it, SocketIOService::class.java)
-                    service.putExtra(
-                        SocketIOService.EXTRA_EVENT_TYPE,
-                        SocketIOService.EVENT_TYPE_MESSAGE
-                    )
-
-
-                    // TODO: 14.07.2021 burda roomID yolla
-                    service.putExtra(
-                        SocketIOService.EXTRA_DATA,
-                        ChatSendMessage(
-                            binding.etMessage.text.trim().toString(),
-                            roomId,
-                            memberId
-                        )
-                    )
-                    it.startService(service)
-
-                }
-                */
-
-//                val service = Intent(this@ChatScreenFragment, SocketIOService::class.java)
-//                service.putExtra(SocketIOService.EXTRA_EVENT_TYPE, SocketIOService.EVENT_TYPE_JOIN)
-////                service.putExtra(SocketIOService.EXTRA_USER_NAME, response.getData().getId())
-//                requireContext().startService(service)
-
                 socketIO.sendMessage(
                     ChatSendMessage(
                         binding.etMessage.text.trim().toString(),
@@ -163,14 +145,40 @@ class ChatScreenFragment : BaseFragment() {
         viewModel.getChatRoomList().observe(viewLifecycleOwner, {
 
             when (it.status) {
+                Status.ERROR -> {
+                    binding.progressBar.visibility = View.GONE
+                }
+                Status.LOADING -> {
+                    binding.progressBar.visibility = View.VISIBLE
+                }
 
                 Status.SUCCESS -> {
+                    binding.progressBar.visibility = View.GONE
 
                     adapter = it.data?.let { it1 ->
                         ChatAdapter(
                             requireContext(), it1, memberId
                         )
                     }
+
+                    it.data?.forEach { chat ->
+
+                        binding.reportIv.setOnClickListener {
+
+                            val bundle =
+                                bundleOf(
+                                    "memberId" to chat.senderMemberId,
+                                    "animalId" to petId.toString(),
+                                    "isOwner" to true,
+                                    "fromChat" to true
+                                )
+                            findNavController().navigate(R.id.navigation_pet_detail, bundle)
+                        }
+                    }
+
+
+
+
                     binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
                     (binding.recyclerView.layoutManager as LinearLayoutManager).stackFromEnd = true
                     (binding.recyclerView.layoutManager as LinearLayoutManager).reverseLayout =

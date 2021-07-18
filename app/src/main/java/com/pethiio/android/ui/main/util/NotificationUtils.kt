@@ -9,6 +9,7 @@ import android.util.Patterns
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.core.text.HtmlCompat
 import androidx.navigation.NavDeepLinkBuilder
 import com.bumptech.glide.Glide
@@ -29,6 +30,8 @@ class NotificationUtils(private val mContext: Context) {
     fun showNotificationMessage(
         title: String?,
         message: String?,
+        roomId: Int,
+        memberId: Int,
         intent: String?,
         imageUrl: String?
     ) {
@@ -48,10 +51,10 @@ class NotificationUtils(private val mContext: Context) {
 
         var resultPendingIntent: PendingIntent? = null
         if (intent.equals("message"))
-            resultPendingIntent = pendingIntentMessage(PethiioApplication.context)
+            resultPendingIntent = pendingIntentMessage(PethiioApplication.context, roomId, memberId)
 
         if (!TextUtils.isEmpty(title) && !TextUtils.isEmpty(message)) {
-            showSmallNotification(title!!, message!!,imageUrl, resultPendingIntent)
+            showSmallNotification(title!!, message!!, imageUrl, resultPendingIntent)
         }
     }
 
@@ -109,10 +112,17 @@ class NotificationUtils(private val mContext: Context) {
         return SimpleDateFormat("ddHHmmss", Locale.US).format(now).toInt()
     }
 
-    fun pendingIntentMessage(context: Context): PendingIntent {
+    fun pendingIntentMessage(context: Context, roomId: Int, memberId: Int): PendingIntent {
+        val bundle =
+            bundleOf(
+                "fromNotification" to true, "roomId" to roomId, "memberId" to memberId
+            )
+
+        // TODO: 19.07.2021 mesaja at ordan içeri al
         return NavDeepLinkBuilder(context)
             .setGraph(R.navigation.nav_graph)
             .setDestination(R.id.navigation_message)
+            .setArguments(bundle)
             .createPendingIntent()
     }
 

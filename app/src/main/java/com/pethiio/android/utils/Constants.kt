@@ -23,6 +23,7 @@ class Constants {
 
 
         val datePickerFormat: SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd")
+        val datePickerFormatTv: SimpleDateFormat = SimpleDateFormat("dd-MM-yyyy")
 
         const val BASE_URL: String = "https://devapi.pethiio.com/api/"
         const val SOCKET_URL: String = "https://devapi.pethiio.com:10443/chat?token="
@@ -85,6 +86,7 @@ class Constants {
         const val petSearchDetailAboutOwnerAgeTitle: String = "ownerAgeTitle"
         const val petSearchDetailAboutColorTitle: String = "colorTitle"
         const val petSearchDetailDelete: String = "delete"
+        const val petSearchDetailAnimal: String = "animal"
         const val petSearchDetailDetailTitle: String = "detailTitle"
         const val petSearchDetailListTypeTitle: String = "listTypeTitle"
         const val petSearchDetailOwner: String = "owner"
@@ -152,6 +154,7 @@ class Constants {
         const val supportTitle: String = "supportTitle"
         const val aboutAppTitle: String = "aboutAppTitle"
         const val logoutTitle: String = "logoutTitle"
+
         //endregion
 
         //region ChangePass
@@ -192,6 +195,7 @@ class Constants {
 
         //region Logout
 
+        const val addPet: String = "addPetAndroid"
         const val logoutAlertTitle: String = "logoutAlertTitle"
         const val logoutAlertDone: String = "logoutAlertDone"
         const val logoutAlertCancel: String = "logoutAlertCancel"

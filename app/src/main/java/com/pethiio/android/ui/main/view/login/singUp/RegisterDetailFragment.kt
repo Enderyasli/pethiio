@@ -1,5 +1,6 @@
 package com.pethiio.android.ui.main.view.login.singUp
 
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -9,9 +10,11 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.bigkoo.pickerview.builder.TimePickerBuilder
 import com.bumptech.glide.Glide
@@ -41,6 +44,7 @@ class RegisterDetailFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
     private var _binding: FragmentRegisterDetailBinding? = null
 
     override var useSharedViewModel = true
+    private var formattedString = ""
 
 
     private val binding get() = _binding!!
@@ -122,13 +126,21 @@ class RegisterDetailFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
                 return@setOnClickListener
 
             }
+            if (TextUtils.isEmpty(profileUri)) {
+                CommonMethods.onSNACK(
+                    binding.root,
+                    getLocalizedString(Constants.imageEmtpyError)
+                )
+                return@setOnClickListener
+
+            }
 
             if (validSpinner && valid) {
 
                 postRegisterInfo(
                     RegisterInfo(
                         aboutMe = binding.aboutPlaceholderTv.text.trim().toString(),
-                        dateOfBirth = binding.birthPlaceholderTv.text.trim().toString(),
+                        dateOfBirth = formattedString,
                         gender = getLookUpKey(
                             Constants.lookUpGender,
                             binding.genderLy.spinner.selectedItem.toString()
@@ -232,13 +244,21 @@ class RegisterDetailFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
                 return@setOnClickListener
 
             }
+            if (TextUtils.isEmpty(profileUri)) {
+                CommonMethods.onSNACK(
+                    binding.root,
+                    getLocalizedString(Constants.imageEmtpyError)
+                )
+                return@setOnClickListener
+
+            }
 
             if (validSpinner && valid) {
 
                 postRegisterInfo(
                     RegisterInfo(
                         aboutMe = binding.aboutPlaceholderTv.text.trim().toString(),
-                        dateOfBirth = binding.birthPlaceholderTv.text.trim().toString(),
+                        dateOfBirth = formattedString,
                         gender = getLookUpKey(
                             Constants.lookUpGender,
                             binding.genderLy.spinner.selectedItem.toString()
@@ -322,14 +342,22 @@ class RegisterDetailFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
 
         binding.birthPlaceholderTv.setOnClickListener {
 
+            val imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(requireView().windowToken, 0)
+
             val startDate = Calendar.getInstance()
             startDate.set(1900, 0, 1)
             val endDate = Calendar.getInstance()
+            endDate.add(Calendar.YEAR, -18)
+            endDate.add(Calendar.DATE, -1)
             //TimePicker
             val pvTime = TimePickerBuilder(requireContext()) { date, v ->
                 val newDate = Constants.datePickerFormat.format(date)
+                val newDateTv = Constants.datePickerFormatTv.format(date)
 
-                binding.birthPlaceholderTv.text = newDate.toString()
+
+                formattedString = newDate.toString()
+                binding.birthPlaceholderTv.text = newDateTv.toString()
                 binding.birthPlaceholderTv.error = null
 
             }
@@ -404,5 +432,7 @@ class RegisterDetailFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
 
     override fun onNothingSelected(parent: AdapterView<*>?) {
     }
+
+
 
 }

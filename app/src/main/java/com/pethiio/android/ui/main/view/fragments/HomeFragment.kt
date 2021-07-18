@@ -94,6 +94,7 @@ class HomeFragment : BaseFragment(), FilterItemClickListener {
                 Status.SUCCESS -> {
                     val fields = it.data?.fields
                     binding.titleTv.text = getLocalizedString(Constants.petSearchTitle, fields)
+                    binding.addAnimalTv.text = getLocalizedString(Constants.addPet, fields)
                     binding.petEmptyErrorTv.text =
                         getLocalizedString(Constants.petSearchEmptyMessageTitle, fields)
 

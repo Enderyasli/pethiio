@@ -24,6 +24,12 @@ class SettingsFragment : BaseFragment() {
     private val binding get() = _binding!!
     private lateinit var viewModel: FAQViewModel
 
+    private var logOutTitle =""
+    private var logoutAlertTitle =""
+    private var logoutAlertDone =""
+    private var logoutAlertCancel =""
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,9 +78,9 @@ class SettingsFragment : BaseFragment() {
             MaximobileDialog(
                 requireContext(),
                 true,
-                getString(R.string.sure_logout),
-                getString(R.string.logout),
-                getString(R.string.lcl_cancel_datepicker)
+               logoutAlertTitle,
+                logoutAlertDone,
+                logoutAlertCancel
             )
 
         maximobileDialog.getPositiveButton().setOnClickListener {
@@ -138,6 +144,11 @@ class SettingsFragment : BaseFragment() {
                         getLocalizedString(Constants.aboutAppTitle, pageDataFields)
                     binding.logoutTv.text =
                         getLocalizedString(Constants.logoutTitle, pageDataFields)
+
+                    logOutTitle = getLocalizedString(Constants.logoutTitle, pageDataFields)
+                    logoutAlertDone = getLocalizedString(Constants.logoutAlertDone, pageDataFields)
+                    logoutAlertCancel = getLocalizedString(Constants.logoutAlertCancel, pageDataFields)
+                    logoutAlertTitle = getLocalizedString(Constants.logoutAlertTitle, pageDataFields)
 
                     binding.progressBar.visibility = View.GONE
 

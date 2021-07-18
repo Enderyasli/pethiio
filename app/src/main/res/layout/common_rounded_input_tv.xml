@@ -30,6 +30,8 @@
         app:cardElevation="2dp">
 
         <EditText
+            android:singleLine="true"
+            android:imeOptions="actionNext"
             android:id="@+id/placeholder_tv"
             android:layout_width="match_parent"
             android:layout_height="50dp"

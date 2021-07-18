@@ -51,6 +51,7 @@ class PetDetailFragment : BaseFragment() {
 
 
     private var isOwner: Boolean = false
+    private var fromChat: Boolean = false
 
     private var hasOwnerInfo: Boolean = false
     private var ownerSelected: Boolean = false
@@ -82,12 +83,18 @@ class PetDetailFragment : BaseFragment() {
         super.setUpViews()
 
 
+        // TODO: 19.07.2021 animal owner textlerini ayarla
         memberId = arguments?.getInt("memberId", 0)!!
         animalId = arguments?.getString("animalId", "")!!
         isOwner = arguments?.getBoolean("isOwner", false)!!
+        fromChat = arguments?.getBoolean("fromChat", false)!!
 
         if (isOwner) {
-            viewModel.fetchPetDetailPageData()
+            if (fromChat)
+                viewModel.fetchPetSearchDetailPageData()
+            else
+                viewModel.fetchPetDetailPageData()
+
 
             binding.scrollView.setBackgroundColor(Color.WHITE)
             binding.mainLayout.setBackgroundColor(Color.WHITE)
@@ -113,15 +120,15 @@ class PetDetailFragment : BaseFragment() {
                         getLocalizedString(Constants.petSearchDetailListTypeTitle, fields)
                     binding.detailLy.title.text =
                         getLocalizedString(Constants.petSearchDetailDetailTitle, fields)
-                    owner = if (isOwner)
+                    owner = if (isOwner && !fromChat)
                         getLocalizedString(Constants.petSearchDetailUpdate, fields)
                     else
                         getLocalizedString(Constants.petSearchDetailOwner, fields)
 
-                    report = if (isOwner)
-                        getLocalizedString(Constants.petSearchDetailDelete, fields)
+                    report = if (isOwner && !fromChat)
+                    getLocalizedString(Constants.petSearchDetailDelete, fields)
                     else
-                        getLocalizedString(Constants.petSearchDetailReport, fields)
+                    getLocalizedString(Constants.petSearchDetailReport, fields)
 
 
                     binding.ownerAboutTv.text =
@@ -260,7 +267,7 @@ class PetDetailFragment : BaseFragment() {
 
     private fun openPopUpMenu() {
         val popUpMenu = PopupMenu(requireContext(), binding.popupMenu)
-        if (isOwner)
+        if (isOwner && !fromChat)
             popUpMenu.inflate(R.menu.pop_up_menu)
         else
             popUpMenu.inflate(R.menu.pop_up_owner)
@@ -276,6 +283,7 @@ class PetDetailFragment : BaseFragment() {
                     R.id.owner -> {
                         if (!isOwner) {
                             if (!ownerSelected) {
+
                                 if (!hasOwnerInfo)
                                     getOwnerDetail()
                                 else
@@ -284,8 +292,20 @@ class PetDetailFragment : BaseFragment() {
                                 changeUserType(false)
                             }
                         } else {
-                            val bundle = bundleOf("animalId" to animalId)
-                            findNavController().navigate(R.id.navigation_pet_add, bundle)
+                            if (!fromChat) {
+                                val bundle = bundleOf("animalId" to animalId)
+                                findNavController().navigate(R.id.navigation_pet_add, bundle)
+                            } else {
+                                if (!ownerSelected) {
+                                    if (!hasOwnerInfo)
+                                        getOwnerDetail()
+                                    else
+                                        changeUserType(true)
+                                } else {
+                                    changeUserType(false)
+                                }
+                            }
+
 
                             // TODO: 7.07.2021 düzenle
                         }
@@ -295,8 +315,11 @@ class PetDetailFragment : BaseFragment() {
                         if (!isOwner) {
                             findNavController().navigate(R.id.navigation_report)
                         } else {
+                            if (!fromChat)
+                                openDelete(report, petDeleteAlert)
+                            else
+                                findNavController().navigate(R.id.navigation_report)
 
-                            openDelete(report, petDeleteAlert)
                         }
 
                     }

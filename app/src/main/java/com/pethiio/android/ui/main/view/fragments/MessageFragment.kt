@@ -7,10 +7,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
+import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.pethiio.android.PethiioApplication
+import com.pethiio.android.R
 import com.pethiio.android.data.model.member.MemberListResponse
 import com.pethiio.android.data.model.socket.ChatSendMessage
 import com.pethiio.android.data.socket.SocketIO
@@ -38,6 +40,8 @@ class MessageFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
     private var isSelectedMemberFirstTime = true
     private var selectedMemberId = 0
     var memberId: Int = 0
+    var roomId: Int = 0
+    private var fromNotification = false
 
 
     private var adapter: MessageAdapter? = null
@@ -64,6 +68,15 @@ class MessageFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
 
         binding.noMsgAnim.setAnimation("mesaj_yok.json")
 
+        fromNotification = arguments?.getBoolean("fromNotification", false) == false
+
+        if (fromNotification) {
+            roomId = arguments?.getInt("roomId", 0)!!
+            memberId = arguments?.getInt("memberId", 0)!!
+        }
+
+
+
         setupViewModel()
         setUpObserver()
 
@@ -86,7 +99,7 @@ class MessageFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
     fun setMembeListSpinner(memberListResponse: List<MemberListResponse>) {
         val customAdapter = MemberListSpinner(requireContext(), memberListResponse)
 
-        if (PreferenceHelper.SharedPreferencesManager.getInstance().selectedSpinnerId <= memberListResponse.size-1)
+        if (PreferenceHelper.SharedPreferencesManager.getInstance().selectedSpinnerId <= memberListResponse.size - 1)
             selectedMemberId =
                 PreferenceHelper.SharedPreferencesManager.getInstance().selectedSpinnerId
         if (isSelectedMemberFirstTime)
@@ -140,7 +153,7 @@ class MessageFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
 
         })
 
-        viewModel.getChatList().observe(viewLifecycleOwner, {
+        viewModel.getChatList().observe(viewLifecycleOwner, { it ->
 
             when (it.status) {
                 Status.SUCCESS -> {
@@ -150,6 +163,19 @@ class MessageFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
                             requireContext(), findNavController(),
                             it1, memberId
                         )
+                    }
+
+                    it.data?.forEach {
+                        if (fromNotification)
+                            if (it.id == roomId) {
+                                val bundle =
+                                    bundleOf(
+                                        "roomId" to roomId,
+                                        "memberId" to memberId,
+                                        "memberName" to it.name
+                                    )
+                                findNavController().navigate(R.id.navigation_chat, bundle)
+                            }
                     }
                     binding.messagesRv.layoutManager = LinearLayoutManager(requireContext())
                     binding.messagesRv.adapter = adapter
@@ -206,7 +232,8 @@ class MessageFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
                     memberId = it
                     PreferenceHelper.SharedPreferencesManager.getInstance().memberId = it
                     selectedMemberId = position
-                    PreferenceHelper.SharedPreferencesManager.getInstance().selectedSpinnerId = selectedMemberId
+                    PreferenceHelper.SharedPreferencesManager.getInstance().selectedSpinnerId =
+                        selectedMemberId
 
                 }
 

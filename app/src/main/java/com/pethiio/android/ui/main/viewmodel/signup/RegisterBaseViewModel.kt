@@ -195,7 +195,7 @@ class RegisterBaseViewModel : ViewModel() {
                             registerData.accessToken
                         PreferenceHelper.SharedPreferencesManager.getInstance().isLoggedIn =
                             true
-// postRegisterAvatar.postValue(Resource.success(registerData))
+                        postRegisterAvatar.postValue(Resource.success(registerData))
                     },
                     {
                         postRegisterAvatar.postValue(responseHandler.handleException(it))

@@ -160,6 +160,7 @@
                             app:cardElevation="2dp">
 
                             <EditText
+                                android:singleLine="true"
                                 android:id="@+id/about_placeholder_tv"
                                 android:layout_width="match_parent"
                                 android:layout_height="120dp"

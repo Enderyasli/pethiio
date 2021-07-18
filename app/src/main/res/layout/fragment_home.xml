@@ -62,6 +62,7 @@
                     tools:ignore="RtlSymmetry" />
 
                 <TextView
+                    android:id="@+id/add_animal_tv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -69,7 +70,7 @@
                     android:layout_marginEnd="15dp"
                     android:fontFamily="@font/typo_round_regular"
                     android:gravity="center"
-                    android:text="Hayvan Ekle"
+                    tools:text="Hayvan Ekle"
                     android:textColor="@color/grey"
                     android:textSize="14sp"
                     app:background="@color/light_button"

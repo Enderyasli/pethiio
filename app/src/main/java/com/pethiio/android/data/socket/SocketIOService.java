@@ -436,8 +436,8 @@ public class SocketIOService extends Service implements SocketEventListener.List
 
 //                Bekir bekir = new Bekir();
 //                bekir.notifyWithExtra(PethiioApplication.context,"3");
-            NotificationUtils notificationUtils = new NotificationUtils(PethiioApplication.context);
-            notificationUtils.showNotificationMessage(String.valueOf(response.getSenderMemberId()), response.getContent(), null, null);
+//            NotificationUtils notificationUtils = new NotificationUtils(PethiioApplication.context);
+//            notificationUtils.showNotificationMessage(String.valueOf(response.getSenderMemberId()), response.getContent(), null, null);
 //
 //                    int messageEvent = data.getInt("event");
 ////                    MessageType messageType = MessageType.getMessageType(data.getInt("message_type"));

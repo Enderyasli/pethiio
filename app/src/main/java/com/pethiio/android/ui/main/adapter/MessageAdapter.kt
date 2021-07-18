@@ -66,10 +66,16 @@ class MessageAdapter(
 
         holder.itemView.setOnClickListener {
             val bundle =
-                bundleOf("roomId" to chat.id, "memberId" to memberId, "memberName" to chat.name)
+                bundleOf(
+                    "petId" to chat.petId,
+                    "petAvatar" to chat.avatar,
+                    "roomId" to chat.id,
+                    "memberId" to memberId,
+                    "memberName" to chat.name
+                )
 
 
-            navController.navigate(R.id.navigation_chat, bundle)
+            navController.navigate(R.id.action_navigation_message_to_navigation_chat, bundle)
         }
 
 

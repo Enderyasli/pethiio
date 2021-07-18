@@ -5,6 +5,8 @@ import com.google.gson.annotations.SerializedName
 class ChatListResponse(
     @SerializedName("id")
     val id: Int,
+    @SerializedName("petId")
+    val petId: Int,
     @SerializedName("name")
     val name: String,
     @SerializedName("avatar")
