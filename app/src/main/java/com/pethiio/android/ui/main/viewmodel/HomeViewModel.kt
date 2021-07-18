@@ -50,7 +50,7 @@ class HomeViewModel : ViewModel() {
         homePageData.postValue(Resource.loading(null))
         compositeDisposable.add(
             ServiceBuilder.buildService()
-                .getPetSearchPageData()
+                .getHomePageData()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
@@ -58,9 +58,7 @@ class HomeViewModel : ViewModel() {
                         homePageData.postValue(Resource.success(loginData))
                     },
                     {
-                        homePageData.postValue(
-                            Resource.error(it.message, null)
-                        )
+                        homePageData.postValue(responseHandler.handleException(it))
                     }
                 )
         )
@@ -74,6 +72,7 @@ class HomeViewModel : ViewModel() {
     fun getPetList(): LiveData<Resource<List<PetListResponse>>> {
         return petList
     }
+
     fun getHomePageData(): LiveData<Resource<PageData>> {
         return homePageData
     }

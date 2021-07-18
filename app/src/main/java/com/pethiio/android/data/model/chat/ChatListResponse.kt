@@ -7,6 +7,12 @@ class ChatListResponse(
     val id: Int,
     @SerializedName("name")
     val name: String,
+    @SerializedName("avatar")
+    val avatar: String,
+    @SerializedName("lastMessage")
+    val lastMessage: String,
+    @SerializedName("lastMessageTime")
+    val lastMessageTime: String,
     @SerializedName("memberId")
     val memberId: Int
 )

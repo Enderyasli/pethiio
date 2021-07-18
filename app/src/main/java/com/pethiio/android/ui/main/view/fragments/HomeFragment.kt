@@ -80,7 +80,7 @@ class HomeFragment : BaseFragment(), FilterItemClickListener {
 
     private fun setupUI() {
 
-//        viewModel.fetchHomePageData() // TODO: 13.07.2021 evim pagedata servisi eklenecek.
+        viewModel.fetchHomePageData()
 
         binding.noAnimalAnim.setAnimation("evim.json")
 

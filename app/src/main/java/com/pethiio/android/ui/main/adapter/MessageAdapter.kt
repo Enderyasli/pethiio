@@ -8,11 +8,13 @@ import androidx.core.os.bundleOf
 import androidx.navigation.NavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.pethiio.android.R
 import com.pethiio.android.data.model.Message
 import com.pethiio.android.data.model.chat.ChatListResponse
 import com.pethiio.android.data.model.socket.ChatSendMessage
 import com.pethiio.android.data.socket.SocketIO
+import com.pethiio.android.utils.GlideApp
 import com.pethiio.android.utils.PreferenceHelper
 import com.pethiio.android.utils.Resource
 import kotlinx.android.synthetic.main.message_list_item.view.*
@@ -27,16 +29,13 @@ class MessageAdapter(
     class DataViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(context: Context, chatList: ChatListResponse) {
 
-            itemView.name_tv.text = chatList.name
-//            itemView.message_tv.text = user.message
-
+//            itemView.name_tv.text = chatList.name
+//            itemView.message_tv.text = chatList.lastMessage
+//
 //            Glide.with(itemView.profile_image)
-//                .load(user.url)
+//                .load(chatList.avatar)
+//                .apply(RequestOptions().override(200, 200))
 //                .into(itemView.profile_image)
-
-
-            itemView.setOnClickListener {
-            }
 
         }
     }
@@ -56,11 +55,13 @@ class MessageAdapter(
         val chat: ChatListResponse = chatList[position]
 
         holder.itemView.name_tv.text = chat.name
-//            itemView.message_tv.text = user.message
+        holder.itemView.message_tv.text = chat.lastMessage
 
-//            Glide.with(itemView.profile_image)
-//                .load(user.url)
-//                .into(itemView.profile_image)
+        GlideApp.with(holder.itemView.profile_image)
+            .load(chat.avatar)
+            .apply(RequestOptions().override(200, 200))
+            .into(holder.itemView.profile_image)
+
 
 
         holder.itemView.setOnClickListener {

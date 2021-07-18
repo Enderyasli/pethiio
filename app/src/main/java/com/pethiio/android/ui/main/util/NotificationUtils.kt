@@ -67,7 +67,7 @@ class NotificationUtils(private val mContext: Context) {
             .setChannelId(CHANNEL_ID)
             .setSmallIcon(R.drawable.app_icon)
             .setColor(ContextCompat.getColor(mContext, android.R.color.transparent))
-//            .setLargeIcon(BitmapFactory.decodeResource(mContext.resources, icon))
+            .setLargeIcon(null)
             .setContentTitle(HtmlCompat.fromHtml(title, HtmlCompat.FROM_HTML_MODE_LEGACY))
             .setContentText(HtmlCompat.fromHtml(message, HtmlCompat.FROM_HTML_MODE_LEGACY))
             .setStyle(

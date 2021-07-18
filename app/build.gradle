@@ -97,6 +97,12 @@ dependencies {
 
     //UI Components
     implementation 'com.github.bumptech.glide:glide:4.11.0'
+    implementation 'com.github.bumptech.glide:annotations:4.11.0'
+    kapt 'com.github.bumptech.glide:compiler:4.11.0'
+    compile ('com.github.bumptech.glide:okhttp3-integration:4.11.0'){
+        exclude group: 'glide-parent'
+    }
+
     implementation 'com.romandanylyk:pageindicatorview:1.0.2@aar'
     implementation 'com.contrarywind:Android-PickerView:4.1.9'
     api 'com.theartofdev.edmodo:android-image-cropper:2.8.0'
@@ -123,6 +129,9 @@ dependencies {
 
     implementation 'com.github.judemanutd:autostarter:1.1.0'
     implementation 'com.thelittlefireman:AppKillerManager:2.1.1'
+
+    implementation 'com.github.Jay-Goo:RangeSeekBar:v3.0.0'
+
 
 
 

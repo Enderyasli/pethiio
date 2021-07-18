@@ -14,8 +14,21 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import com.google.android.material.snackbar.Snackbar
+import com.pethiio.android.PethiioApplication
 import com.pethiio.android.R
+import com.pethiio.android.data.api.ServiceBuilder
 import com.pethiio.android.data.model.LookUpsResponse
+import okhttp3.OkHttpClient
+import java.io.InputStream
+import java.security.KeyStore
+import java.security.cert.Certificate
+import java.security.cert.CertificateException
+import java.security.cert.CertificateFactory
+import java.util.*
+import java.util.concurrent.TimeUnit
+import javax.net.ssl.SSLContext
+import javax.net.ssl.TrustManagerFactory
+import javax.net.ssl.X509TrustManager
 
 
 class CommonMethods {
@@ -150,6 +163,60 @@ class CommonMethods {
             }
         }
 
+
+
+        fun getClient(): OkHttpClient? {
+
+            var builder: OkHttpClient.Builder? = null
+
+
+
+            try {
+                val certificate: Int = R.raw.pethiio
+                val cf = CertificateFactory.getInstance("X.509")
+                val cert: InputStream =
+                    PethiioApplication.context.resources.openRawResource(certificate)
+                var ca: Certificate? = null
+                try {
+                    ca = cf.generateCertificate(cert)
+                } catch (e: CertificateException) {
+                    e.printStackTrace()
+                } finally {
+                    cert.close()
+                }
+
+                // creating a KeyStore containing our trusted CAs
+                val keyStoreType = KeyStore.getDefaultType()
+                val keyStore = KeyStore.getInstance(keyStoreType)
+                keyStore.load(null, null)
+                keyStore.setCertificateEntry("ca", ca)
+
+                // creating a TrustManager that trusts the CAs in our KeyStore
+                val tmfAlgorithm = TrustManagerFactory.getDefaultAlgorithm()
+                val tmf = TrustManagerFactory.getInstance(tmfAlgorithm)
+                tmf.init(keyStore)
+                val trustManagers = tmf.trustManagers
+                check(!(trustManagers.size != 1 || trustManagers[0] !is X509TrustManager)) {
+                    "Unexpected default trust managers:" + Arrays.toString(
+                        trustManagers
+                    )
+                }
+                val trustManager = trustManagers[0] as X509TrustManager
+                val sslContext = SSLContext.getInstance("TLS")
+                sslContext.init(null, tmf.trustManagers, null)
+                builder = OkHttpClient.Builder().addInterceptor(ServiceBuilder.interceptor)
+                    .addNetworkInterceptor(ServiceBuilder.interceptor2)
+                    .connectTimeout(180, TimeUnit.SECONDS)
+                    .readTimeout(180, TimeUnit.SECONDS)
+                    .sslSocketFactory(sslContext.socketFactory, trustManager)
+
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+
+            return builder?.build()
+
+        }
     }
 
 

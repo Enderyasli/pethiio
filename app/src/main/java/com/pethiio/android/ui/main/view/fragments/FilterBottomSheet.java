@@ -164,7 +164,7 @@ public class FilterBottomSheet extends BottomSheetDialogFragment {
 
                     genderSpinner.setSelection(genderKeys.indexOf(petSearchFilterResponse.getGender()));
                     typeSpinner.setSelection(animalKeys.indexOf(String.valueOf(petSearchFilterResponse.getAnimalId())));
-                    distanceSeekBar.setMax(10000);
+                    distanceSeekBar.setMax(2000);
                     distanceSeekBar.setProgress(petSearchFilterResponse.getMaximumDistance());
                     distanceTv.setText(String.valueOf(petSearchFilterResponse.getMaximumDistance()));
 

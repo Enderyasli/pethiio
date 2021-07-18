@@ -304,6 +304,13 @@ interface PethiioServices {
 
     //endregion
 
+    //region Home
+
+    @GET("page/home/info")
+    fun getHomePageData(): Observable<PageData>
+
+    //endregion
+
 
     //region ChatList SocketIO
 
