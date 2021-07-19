@@ -53,25 +53,20 @@
                     tools:text="0 km" />
             </LinearLayout>
 
-            <com.warkiz.widget.IndicatorSeekBar
-
+            <com.mohammedalaa.seekbar.DoubleValueSeekBarView
                 android:id="@+id/distance_seek_bar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="-10dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="-8dp"
-                app:isb_indicator_color="@android:color/transparent"
-                app:isb_indicator_text_color="@android:color/transparent"
-                app:isb_progress="25"
-                app:isb_show_thumb_text="false"
-                app:isb_show_tick_texts="false"
-                app:isb_thumb_color="@color/whitegrey"
-                app:isb_thumb_size="@dimen/medium_size"
-                app:isb_track_background_size="6dp"
-                app:isb_track_progress_color="@color/orangeButton"
-                app:isb_track_progress_size="6dp"
-                app:isb_track_rounded_corners="true" />
+                app:r2CurrentMaxValue="0"
+                app:r2CurrentMinValue="0"
+                app:r2barHeight="5dp"
+                app:r2baseColor="@color/progress_color"
+                app:r2circleFillColor="@color/whitegrey"
+                app:r2circleRadius="8dp"
+                app:r2circleTextColor="@color/white"
+                app:r2fillColor="@color/orangeButton"
+                app:r2maxValue="2000"
+                app:r2minValue="0" />
         </LinearLayout>
 
         <LinearLayout
@@ -111,24 +106,20 @@
                     tools:text="8" />
             </LinearLayout>
 
-            <com.warkiz.widget.IndicatorSeekBar
+            <com.mohammedalaa.seekbar.DoubleValueSeekBarView
                 android:id="@+id/age_seek_bar"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="-10dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="-8dp"
-                app:isb_indicator_color="@android:color/transparent"
-                app:isb_indicator_text_color="@android:color/transparent"
-                app:isb_max="20"
-                app:isb_min="5"
-                app:isb_progress="18"
-                app:isb_thumb_color="@color/whitegrey"
-                app:isb_thumb_size="@dimen/medium_size"
-                app:isb_track_background_size="6dp"
-                app:isb_track_progress_color="@color/orangeButton"
-                app:isb_track_progress_size="6dp"
-                app:isb_track_rounded_corners="true" />
+                android:layout_height="match_parent"
+                app:r2CurrentMaxValue="0"
+                app:r2CurrentMinValue="0"
+                app:r2barHeight="5dp"
+                app:r2baseColor="@color/progress_color"
+                app:r2circleFillColor="@color/whitegrey"
+                app:r2circleRadius="8dp"
+                app:r2circleTextColor="@color/white"
+                app:r2fillColor="@color/orangeButton"
+                app:r2maxValue="20"
+                app:r2minValue="0" />
         </LinearLayout>
 
         <include

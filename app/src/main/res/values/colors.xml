@@ -24,6 +24,7 @@
     <color name="receiver_color">#f0d1ba</color>
     <color name="alert_success">#22B573</color>
     <color name="alert_error">#c1272d</color>
+    <color name="progress_color">#d7d7d7</color>
 
 
 </resources>

@@ -143,6 +143,8 @@ class Constants {
         const val newPasswordEmtpyError: String = "newPasswordEmtpyError"
         const val passwordDoNotMatch: String = "passwordDoNotMatch"
         const val detailEmtpyError: String = "detailEmtpyError"
+        const val petEmpty: String = "petEmpty"
+
 
 
         //endregion

@@ -339,6 +339,10 @@ class PetAddImageFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
 
     private fun setImages(images: List<PetImageResponse>) {
 
+        val filesDir = requireActivity().filesDir.toString() + "/petImages"
+        CommonFunctions.deleteImage(filesDir, "uri1.png")
+        CommonFunctions.deleteImage(filesDir, "uri2.png")
+        CommonFunctions.deleteImage(filesDir, "uri3.png")
         if (images.isNotEmpty()) {
             if (images[0].indexOrder == 0) {
 

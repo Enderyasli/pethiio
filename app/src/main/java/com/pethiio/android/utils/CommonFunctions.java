@@ -65,6 +65,20 @@ public class CommonFunctions {
         return savedImagePath;
     }
 
+    public static void deleteImage(String fileDir, String savePath) {
+
+        File storageDir = new File(fileDir);
+        boolean success = true;
+        if (!storageDir.exists()) {
+            success = storageDir.mkdirs();
+        } else {
+        }
+        if (success) {
+            File imageFile = new File(storageDir, savePath);
+            imageFile.delete();
+        }
+    }
+
     public static int dpToPx(int dp, Context context) {
         DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
         int px = Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));

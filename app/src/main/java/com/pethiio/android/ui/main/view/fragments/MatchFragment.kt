@@ -61,10 +61,8 @@ class MatchFragment : BaseFragment() {
             targetAvatar = arguments?.getString("targetAvatar", "")!!
         }
         if (purpose == "DATING") {
-            binding.animBelow.setAnimation("kalp_match.json")
             binding.animTop.setAnimation("kalp_match.json")
         } else {
-            binding.animBelow.setAnimation("arkadas_match.json")
             binding.animTop.setAnimation("arkadas_match.json")
         }
 

@@ -21,6 +21,8 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.mohammedalaa.seekbar.DoubleValueSeekBarView;
+import com.mohammedalaa.seekbar.OnDoubleValueSeekBarChangeListener;
 import com.pethiio.android.R;
 import com.pethiio.android.data.EventBus.FilterEvent;
 import com.pethiio.android.data.model.LookUpsResponse;
@@ -33,9 +35,6 @@ import com.pethiio.android.ui.main.viewmodel.DashBoardViewModel;
 import com.pethiio.android.utils.CommonMethods;
 import com.pethiio.android.utils.Constants;
 import com.pethiio.android.utils.Resource;
-import com.warkiz.widget.IndicatorSeekBar;
-import com.warkiz.widget.OnSeekChangeListener;
-import com.warkiz.widget.SeekParams;
 
 import org.greenrobot.eventbus.EventBus;
 import org.jetbrains.annotations.NotNull;
@@ -52,12 +51,14 @@ public class FilterBottomSheet extends BottomSheetDialogFragment {
 
     TextView distanceTitleTv, ageTv, ageValueTv, genderTitle, purposeTitle, animalTitle, filterClearButton, distanceTv;
 
-    int distance = 1, age = 1;
+    int maxDistance = 1, minDistance = 0, minAge = 0, maxAge = 1;
     RadioGroup purposeRadioGroup;
     NoDefaultSpinner genderSpinner, typeSpinner;
     Button filterButton;
 
-    IndicatorSeekBar distanceSeekBar, ageSeekBar;
+
+    DoubleValueSeekBarView distanceSeekBar;
+    DoubleValueSeekBarView ageSeekBar;
     List<String> gender, genderKeys, animal, animalKeys, purpose, purposeKeys;
     PetSearchFilterResponse petSearchFilterResponse;
     List<LookUpsResponse> lookUpsResponses;
@@ -89,18 +90,20 @@ public class FilterBottomSheet extends BottomSheetDialogFragment {
         return "";
     }
 
-    @SuppressLint("ResourceType")
+    @SuppressLint({"ResourceType", "SetTextI18n"})
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.filter_bottom_sheet, container, false);
-        init(root);
 
         viewModel =
                 ViewModelProviders.of(this, new ViewModelFactory()).get(DashBoardViewModel.class);
 
         viewModel.fetchSearchFilterListPageData();
         viewModel.fetchFilterList();
+
+        init(root);
+
 
         viewModel.getSearchFilterListFields().observe(getViewLifecycleOwner(), new Observer<Resource<List<PethiioResponse>>>() {
             @Override
@@ -164,18 +167,43 @@ public class FilterBottomSheet extends BottomSheetDialogFragment {
 
                     genderSpinner.setSelection(genderKeys.indexOf(petSearchFilterResponse.getGender()));
                     typeSpinner.setSelection(animalKeys.indexOf(String.valueOf(petSearchFilterResponse.getAnimalId())));
-                    distanceSeekBar.setMax(2000);
-                    distanceSeekBar.setProgress(petSearchFilterResponse.getMaximumDistance());
-                    distanceTv.setText(String.valueOf(petSearchFilterResponse.getMaximumDistance()));
 
-                    ageSeekBar.setMax(20);
-                    ageSeekBar.setProgress(petSearchFilterResponse.getMaximumAge());
-                    ageValueTv.setText(String.valueOf(petSearchFilterResponse.getMaximumAge()));
+                    distanceSeekBar.setCurrentMaxValue(petSearchFilterResponse.getMaximumDistance());
+
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            distanceSeekBar.setCurrentMinValue(petSearchFilterResponse.getMinimumDistance());
+                        }
+                    }, 100);
 
 
-                    if (purposeKeys.size() >= purposeKeys.indexOf(petSearchFilterResponse.getPurpose())) {
+                    maxDistance = petSearchFilterResponse.getMaximumDistance();
+                    minDistance = petSearchFilterResponse.getMinimumDistance();
+                    distanceTv.setText(petSearchFilterResponse.getMinimumDistance() + " - " + petSearchFilterResponse.getMaximumDistance() + " km");
+
+                    ageSeekBar.setCurrentMaxValue(petSearchFilterResponse.getMaximumAge());
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            ageSeekBar.setCurrentMinValue(petSearchFilterResponse.getMinimumAge());
+                        }
+                    }, 100);
+                    minAge = petSearchFilterResponse.getMinimumAge();
+                    maxAge = petSearchFilterResponse.getMaximumAge();
+                    ageValueTv.setText(petSearchFilterResponse.getMinimumAge() + " - " + petSearchFilterResponse.getMaximumAge());
+
+
+                    if (purposeKeys.size() > purposeKeys.indexOf(petSearchFilterResponse.getPurpose())) {
                         RadioButton purposeRadioButton = (RadioButton) purposeRadioGroup.getChildAt(purposeKeys.indexOf(petSearchFilterResponse.getPurpose()));
-                        purposeRadioButton.setChecked(true);
+                        if (purposeRadioButton != null)
+                            purposeRadioButton.setChecked(true);
+                        else {
+                            RadioButton purposeRadioButton1 = (RadioButton) purposeRadioGroup.getChildAt(0);
+                            if (purposeRadioButton1 != null)
+                                purposeRadioButton1.setChecked(true);
+
+                        }
                     }
 
 
@@ -206,7 +234,7 @@ public class FilterBottomSheet extends BottomSheetDialogFragment {
                     animalId,
                     purpose,
                     gender,
-                    0, age, 0, distance
+                    minAge, maxAge, minDistance, maxDistance
             );
 
             viewModel.postSearhFilter(searchFilterRequest);
@@ -233,7 +261,7 @@ public class FilterBottomSheet extends BottomSheetDialogFragment {
         return new FilterBottomSheet();
     }
 
-    @SuppressLint("CutPasteId")
+    @SuppressLint({"CutPasteId", "SetTextI18n"})
     private void init(View root) {
         distanceSeekBar = root.findViewById(R.id.distance_seek_bar);
         distanceTv = root.findViewById(R.id.distance_km_tv);
@@ -249,54 +277,50 @@ public class FilterBottomSheet extends BottomSheetDialogFragment {
         typeSpinner = root.findViewById(R.id.typeSpinner);
         filterButton = root.findViewById(R.id.filter_button);
         filterClearButton = root.findViewById(R.id.filter_clear_button);
-        ageSeekBar = root.findViewById(R.id.age_seek_bar);
+        ageSeekBar = (DoubleValueSeekBarView) root.findViewById(R.id.age_seek_bar);
 
 
-        distanceTv.setText(distanceSeekBar.getProgress() + " km");
-        distance = distanceSeekBar.getProgress();
-
-
-        distanceSeekBar.setOnSeekChangeListener(new OnSeekChangeListener() {
+        distanceSeekBar.setOnRangeSeekBarViewChangeListener(new OnDoubleValueSeekBarChangeListener() {
             @Override
-            public void onSeeking(SeekParams seekParams) {
+            public void onValueChanged(@Nullable DoubleValueSeekBarView seekBar, int min, int max, boolean fromUser) {
 
-                distanceTv.setText(seekParams.progress + " km");
-                distance = seekParams.progress;
+                distanceTv.setText(min + " - " + max + " km");
+                maxDistance = max;
+                minDistance = min;
             }
 
             @Override
-            public void onStartTrackingTouch(IndicatorSeekBar seekBar) {
+            public void onStartTrackingTouch(@Nullable DoubleValueSeekBarView seekBar, int min, int max) {
 
             }
 
             @Override
-            public void onStopTrackingTouch(IndicatorSeekBar seekBar) {
+            public void onStopTrackingTouch(@Nullable DoubleValueSeekBarView seekBar, int min, int max) {
 
             }
         });
 
-
-        ageValueTv.setText(String.valueOf(ageSeekBar.getProgress()));
-        age = ageSeekBar.getProgress();
-
-        ageSeekBar.setOnSeekChangeListener(new OnSeekChangeListener() {
+        ageSeekBar.setOnRangeSeekBarViewChangeListener(new OnDoubleValueSeekBarChangeListener() {
             @Override
-            public void onSeeking(SeekParams seekParams) {
+            public void onValueChanged(@Nullable DoubleValueSeekBarView seekBar, int min, int max, boolean fromUser) {
 
-                ageValueTv.setText(String.valueOf(seekParams.progress));
-                age = seekParams.progress;
+                ageValueTv.setText(min + " - " + max);
+                maxAge = max;
+                minAge = min;
             }
 
             @Override
-            public void onStartTrackingTouch(IndicatorSeekBar seekBar) {
+            public void onStartTrackingTouch(@Nullable DoubleValueSeekBarView seekBar, int min, int max) {
 
             }
 
             @Override
-            public void onStopTrackingTouch(IndicatorSeekBar seekBar) {
+            public void onStopTrackingTouch(@Nullable DoubleValueSeekBarView seekBar, int min, int max) {
 
             }
         });
+
+        viewModel.fetchFilterList();
 
 
     }

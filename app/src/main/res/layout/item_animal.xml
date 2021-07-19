@@ -29,6 +29,8 @@
             android:background="@color/pet_name_bg" />
 
         <TextView
+            android:maxLines="1"
+            android:ellipsize="end"
             android:id="@+id/pet_name_tv"
             android:layout_width="wrap_content"
             android:layout_height="27dp"

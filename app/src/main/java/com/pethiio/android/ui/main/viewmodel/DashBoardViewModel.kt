@@ -32,7 +32,7 @@ class DashBoardViewModel : ViewModel() {
     private val petSearchResult = MutableLiveData<Resource<List<PetSearchResponse>>>()
     private val postPetSearchResult = MutableLiveData<Resource<Response<Void>>>()
     private val postSearchFilter = MutableLiveData<Resource<Response<Void>>>()
-    private val petSearchFilter = MutableLiveData<Resource<PetSearchFilterResponse>>()
+    private val petSearchFilter = SingleLiveEvent<Resource<PetSearchFilterResponse>>()
     private val petSearchFilterPageData = MutableLiveData<Resource<List<PethiioResponse>>>()
     private val petSearchFilterPageDataLookUps = MutableLiveData<Resource<List<LookUpsResponse>>>()
     private val responseHandler: ResponseHandler = ResponseHandler()

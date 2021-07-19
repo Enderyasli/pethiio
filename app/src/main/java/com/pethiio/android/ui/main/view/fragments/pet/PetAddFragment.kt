@@ -414,7 +414,7 @@ class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
                         arrayYear.add(i.toString())
                     }
                     val arrayMonth = arrayListOf<String>()
-                    for (i in 1..12) {
+                    for (i in 0..12) {
                         arrayMonth.add(i.toString())
                     }
                     val yearAdapter =
@@ -592,7 +592,7 @@ class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
                                             }
                                             petAdd?.month?.let { it1 ->
                                                 binding.monthLy.spinner.setSelection(
-                                                    it1 - 1
+                                                    it1
                                                 )
                                             }
 
