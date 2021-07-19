@@ -22,6 +22,14 @@
         android:textSize="@dimen/signup_title_size"
         tools:text="It's a Match " />
 
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/anim_top"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerHorizontal="true"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="false" />
+
     <RelativeLayout
         android:id="@+id/center_ly"
         android:layout_width="wrap_content"
@@ -93,15 +101,6 @@
 
         </RelativeLayout>
     </RelativeLayout>
-
-    <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/anim_top"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_centerHorizontal="true"
-        app:lottie_autoPlay="true"
-        app:lottie_loop="false" />
-
 
     <Button
         android:id="@+id/go_chat_btn"

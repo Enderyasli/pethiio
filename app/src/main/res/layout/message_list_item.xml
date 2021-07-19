@@ -35,15 +35,19 @@
 
         <TextView
             android:id="@+id/time_tv"
-            android:layout_width="0dp"
+            android:layout_width="40dp"
             android:layout_height="wrap_content"
             android:layout_marginRight="20dp"
             android:layout_weight="1"
+            android:maxLines="1"
+            android:gravity="right"
+            android:ellipsize="end"
             android:fontFamily="@font/typo_round_bold"
-            android:text="2 sn"
+            android:text="30 dk önce"
             android:textColor="@color/marineButton"
             android:textSize="12sp"
-            android:visibility="gone" />
+            android:maxLength="20"
+            android:visibility="visible" />
     </LinearLayout>
 
     <TextView

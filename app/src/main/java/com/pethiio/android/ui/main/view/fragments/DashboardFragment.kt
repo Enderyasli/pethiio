@@ -295,6 +295,8 @@ class DashboardFragment : BaseFragment(), CardStackListener,
     }
 
     private fun setupUI() {
+        findNavController().navigate(R.id.navigation_match)
+
 
         fromNotification = arguments?.getBoolean("fromNotification", false) == true
         if (fromNotification) {

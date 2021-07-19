@@ -56,6 +56,7 @@ class MessageAdapter(
 
         holder.itemView.name_tv.text = chat.name
         holder.itemView.message_tv.text = chat.lastMessage
+        holder.itemView.time_tv.text = chat.lastMessageTime
 
         GlideApp.with(holder.itemView.profile_image)
             .load(chat.avatar)
