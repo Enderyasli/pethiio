@@ -219,11 +219,12 @@
             android:id="@+id/navigation_message"
             android:name="com.pethiio.android.ui.main.view.fragments.MessageFragment"
             android:label="Message"
-            tools:layout="@layout/fragment_message" >
+            tools:layout="@layout/fragment_message">
             <action
-                app:enterAnim="@anim/slide_left"
                 android:id="@+id/action_navigation_message_to_navigation_chat"
-                app:destination="@id/navigation_chat" />
+                app:destination="@id/navigation_chat"
+                app:enterAnim="@anim/slide_left"
+                app:popUpTo="@id/navigation_message" />
         </fragment>
 
 

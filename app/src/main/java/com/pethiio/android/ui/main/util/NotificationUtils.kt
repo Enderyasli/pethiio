@@ -5,14 +5,12 @@ import android.content.Context
 import android.media.RingtoneManager
 import android.os.Build
 import android.text.TextUtils
-import android.util.Patterns
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.core.text.HtmlCompat
 import androidx.navigation.NavDeepLinkBuilder
-import com.bumptech.glide.Glide
 import com.pethiio.android.PethiioApplication
 import com.pethiio.android.R
 import java.text.SimpleDateFormat
@@ -54,14 +52,44 @@ class NotificationUtils(private val mContext: Context) {
             resultPendingIntent = pendingIntentMessage(PethiioApplication.context, roomId, memberId)
 
         if (!TextUtils.isEmpty(title) && !TextUtils.isEmpty(message)) {
-            showSmallNotification(title!!, message!!, imageUrl, resultPendingIntent)
+            showSmallNotification(title!!, message!!, resultPendingIntent)
         }
+    }
+
+
+    fun showNotificationMatch(
+        title: String?,
+        message: String?,
+        purpose: String?,
+        memberId: Int?,
+        roomId: Int?,
+        sourceName: String?,
+        sourceAvatar: String?,
+        targetName: String?,
+        targetAvatar: String?
+    ) {
+
+        var resultPendingIntent: PendingIntent? = null
+        resultPendingIntent = pendingIntentMatch(
+            PethiioApplication.context,
+            purpose,
+            memberId,
+            roomId,
+            sourceName,
+            sourceAvatar,
+            targetName,
+            targetAvatar
+        )
+
+        if (!TextUtils.isEmpty(title) && !TextUtils.isEmpty(message)) {
+            showSmallNotification(title!!, message!!, resultPendingIntent)
+        }
+
     }
 
     private fun showSmallNotification(
         title: String,
         message: String,
-        imageUrl: String?,
         resultPendingIntent: PendingIntent?
     ) {
 
@@ -112,7 +140,7 @@ class NotificationUtils(private val mContext: Context) {
         return SimpleDateFormat("ddHHmmss", Locale.US).format(now).toInt()
     }
 
-    fun pendingIntentMessage(context: Context, roomId: Int, memberId: Int): PendingIntent {
+    fun pendingIntentMessage(context: Context, roomId: Int?, memberId: Int): PendingIntent {
         val bundle =
             bundleOf(
                 "fromNotification" to true, "roomId" to roomId, "memberId" to memberId
@@ -122,6 +150,38 @@ class NotificationUtils(private val mContext: Context) {
         return NavDeepLinkBuilder(context)
             .setGraph(R.navigation.nav_graph)
             .setDestination(R.id.navigation_message)
+            .setArguments(bundle)
+            .createPendingIntent()
+    }
+
+    fun pendingIntentMatch(
+        context: Context,
+        purpose: String?,
+        memberId: Int?,
+        roomId: Int?,
+        sourceName: String?,
+        sourceAvatar: String?,
+        targetName: String?,
+        targetAvatar: String?
+    ): PendingIntent {
+
+
+        val bundle =
+            bundleOf(
+                "fromNotification" to true,
+                "purpose" to purpose,
+                "memberId" to memberId,
+                "roomId" to roomId,
+                "sourceName" to sourceName,
+                "sourceAvatar" to sourceAvatar,
+                "targetName" to targetName,
+                "targetAvatar" to targetAvatar
+            )
+
+        // TODO: 19.07.2021 mesaja at ordan içeri al
+        return NavDeepLinkBuilder(context)
+            .setGraph(R.navigation.nav_graph)
+            .setDestination(R.id.navigation_dashboard)
             .setArguments(bundle)
             .createPendingIntent()
     }

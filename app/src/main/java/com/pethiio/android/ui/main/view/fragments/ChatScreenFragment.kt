@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
@@ -71,6 +72,15 @@ class ChatScreenFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View {
 
+        val callback: OnBackPressedCallback =
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    onDestroy()
+                    findNavController().navigate(R.id.navigation_message)
+                }
+            }
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
+
         _binding = FragmentChatScreenBinding.inflate(inflater, container, false)
         val view = binding.root
 
@@ -88,7 +98,6 @@ class ChatScreenFragment : BaseFragment() {
             .into(binding.profileImage)
 
 
-        // TODO: 13.07.2021 aç bunu
         socketIO.connectSocket()
         socketIO.setRooms(roomId)
         PethiioApplication.setCurrentRoom(roomId)
@@ -99,7 +108,8 @@ class ChatScreenFragment : BaseFragment() {
 
 
         binding.backIv.setOnClickListener {
-            findNavController().navigateUp()
+            onDestroy()
+            findNavController().navigate(R.id.navigation_message)
         }
 
         setupViewModel()

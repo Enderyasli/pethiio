@@ -200,6 +200,14 @@ class Constants {
         const val logoutAlertDone: String = "logoutAlertDone"
         const val logoutAlertCancel: String = "logoutAlertCancel"
 
+        //endregion
+
+        //region Match
+
+        const val chatButton: String = "chatButton"
+        const val matchSkipButton: String = "skipButton"
+
+
 
         //endregion
 

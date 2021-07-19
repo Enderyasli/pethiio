@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
+import androidx.activity.OnBackPressedCallback
 import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
@@ -65,16 +66,23 @@ class MessageFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
         _binding = FragmentMessageBinding.inflate(inflater, container, false)
         val view = binding.root
 
+        val callback: OnBackPressedCallback =
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    onDestroy()
+                    findNavController().navigate(R.id.navigation_dashboard)
+                }
+            }
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
 
         binding.noMsgAnim.setAnimation("mesaj_yok.json")
 
-        fromNotification = arguments?.getBoolean("fromNotification", false) == false
+        fromNotification = arguments?.getBoolean("fromNotification", false) == true
 
         if (fromNotification) {
             roomId = arguments?.getInt("roomId", 0)!!
             memberId = arguments?.getInt("memberId", 0)!!
         }
-
 
 
         setupViewModel()
@@ -172,7 +180,8 @@ class MessageFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
                                     bundleOf(
                                         "roomId" to roomId,
                                         "memberId" to memberId,
-                                        "memberName" to it.name
+                                        "memberName" to it.name,
+                                        "petAvatar" to it.avatar
                                     )
                                 findNavController().navigate(R.id.navigation_chat, bundle)
                             }

@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/default_margin"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="50dp"
         android:layout_marginEnd="@dimen/default_margin"
         android:fontFamily="@font/typo_round_bold"
         android:gravity="center"
@@ -23,30 +23,84 @@
         tools:text="It's a Match " />
 
     <RelativeLayout
-        android:id="@+id/anim_ly"
+        android:id="@+id/center_ly"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true">
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:src="@drawable/dog_placeholder" />
+        <RelativeLayout
+            android:id="@+id/anim_ly"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp">
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:layout_marginStart="110dp"
-            android:src="@drawable/dog" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/target_avatar"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:src="@drawable/dog_placeholder" />
+
+                <TextView
+                    android:id="@+id/target_name_tv"
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="@dimen/margin_minimum"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="@dimen/margin_minimum"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/typo_round_bold"
+                    android:maxLines="2"
+                    android:textColor="@color/black"
+                    android:textSize="24sp"
+                    tools:text="Kont Kont v Kont Kont " />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="110dp"
+                android:orientation="vertical">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/source_avatar"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:src="@drawable/dog" />
+
+                <TextView
+
+                    android:id="@+id/source_name_tv"
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="@dimen/margin_minimum"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="@dimen/margin_minimum"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/typo_round_bold"
+                    android:gravity="center"
+                    android:maxLines="2"
+                    android:textColor="@color/black"
+                    android:textSize="24sp"
+                    tools:text="Konadasdsadat" />
+            </LinearLayout>
+
+
+        </RelativeLayout>
     </RelativeLayout>
 
     <com.airbnb.lottie.LottieAnimationView
+        android:layout_above="@id/center_ly"
         android:id="@+id/anim_top"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:layout_above="@+id/anim_ly"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="@dimen/medium_size"
         app:lottie_autoPlay="true"
         app:lottie_loop="false" />
 
@@ -54,12 +108,27 @@
         android:id="@+id/anim_below"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:layout_below="@+id/anim_ly"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/medium_size"
+        android:visibility="gone"
         app:lottie_autoPlay="true"
         app:lottie_loop="false" />
 
+
+    <Button
+        android:id="@+id/go_chat_btn"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/common_button_height"
+        android:layout_above="@+id/continue_btn"
+        android:layout_marginLeft="@dimen/default_margin"
+        android:layout_marginRight="@dimen/default_margin"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/orange_button_bg"
+        android:fontFamily="@font/typo_round_bold"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="@dimen/medium_size"
+        tools:text="konuşmaya Başla" />
 
     <Button
         android:id="@+id/continue_btn"
@@ -69,13 +138,14 @@
         android:layout_gravity="bottom"
         android:layout_marginLeft="@dimen/default_margin"
         android:layout_marginRight="@dimen/default_margin"
-        android:layout_marginBottom="100dp"
-        android:background="@drawable/orange_button_bg"
+        android:layout_marginBottom="40dp"
+        android:background="@drawable/marine_button_bg"
         android:fontFamily="@font/typo_round_bold"
         android:textAllCaps="false"
         android:textColor="@color/white"
         android:textSize="@dimen/medium_size"
         tools:text="Aramaya Devam et" />
+
 
     <ProgressBar
         android:id="@+id/progressBar"

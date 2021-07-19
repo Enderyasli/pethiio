@@ -24,7 +24,6 @@ class FcmMessageService : FirebaseMessagingService() {
         super.onMessageReceived(remoteMessage)
         Log.d(TAG, "From: ${remoteMessage.from}")
 
-        // TODO: 17.07.2021   notification dan data alınacak type a göre (sadece roomu kapa) currentRoomID, ondestroyda sikişşşşşşşşşş
         //Use this condition to validation login
         if (PreferenceHelper.SharedPreferencesManager.getInstance().isLoggedIn == false) {
             return
@@ -51,22 +50,24 @@ class FcmMessageService : FirebaseMessagingService() {
                         }
                     }
 
-            //                    val notificationUtils = NotificationUtils(PethiioApplication.context)
-            //                    val notification = remoteMessage.notification
-            //
-            //                    //region Message
-            //
-            //                    if (remoteMessage.data["type"].equals("message")) {
-            //
-            //                        notificationUtils.showNotificationMessage(
-            //                            notification?.title,
-            //                            notification?.body,
-            //                            "message",
-            //                            null
-            //                        )
-            //                    }
-
                 }
+            } else if (remoteMessage.data["type"].equals("match")) {
+
+                val notificationUtils = NotificationUtils(PethiioApplication.context)
+
+                notificationUtils.showNotificationMatch(
+                    remoteMessage.data["title"],
+                    remoteMessage.data["body"],
+                    remoteMessage.data["purpose"],
+                    remoteMessage.data["memberId"]?.toInt(),
+                    remoteMessage.data["roomId"]?.toInt(),
+                    remoteMessage.data["sourceName"],
+                    remoteMessage.data["sourceAvatar"],
+                    remoteMessage.data["targetName"],
+                    remoteMessage.data["targetAvatar"]
+                )
+
+
             }
 
 

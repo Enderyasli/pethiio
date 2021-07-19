@@ -18,6 +18,7 @@ import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DefaultItemAnimator
@@ -66,14 +67,12 @@ class DashboardFragment : BaseFragment(), CardStackListener,
     override var bottomNavigationViewVisibility = View.VISIBLE
     override var dashboardClicked: Boolean = true
 
-
     private lateinit var viewModel: DashBoardViewModel
-
     private var memberListResponse = emptyList<MemberListResponse>()
     private var isSelectedMemberFirstTime = true
     private var isLocationSended = false // TODO: 8.07.2021 false yap
-
     private var selectedMemberId = 0
+    private var fromNotification = false
 
 
     var searchList: List<PetSearchResponse>? = null
@@ -122,13 +121,7 @@ class DashboardFragment : BaseFragment(), CardStackListener,
         isSelectedMemberFirstTime = true
 
 
-// TODO: 12.07.2021 aç
-
         setupUI()
-
-
-//        val socketIO = SocketIO()
-//        socketIO.main()
 
 
         val callback: OnBackPressedCallback =
@@ -140,7 +133,6 @@ class DashboardFragment : BaseFragment(), CardStackListener,
             }
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
 
-// TODO: 12.07.2021 aç
         requestCurrentLocation()
 
         return view
@@ -303,6 +295,25 @@ class DashboardFragment : BaseFragment(), CardStackListener,
     }
 
     private fun setupUI() {
+
+        fromNotification = arguments?.getBoolean("fromNotification", false) == true
+        if (fromNotification) {
+            val bundle =
+                bundleOf(
+                    "fromNotification" to true,
+                    "purpose" to arguments?.getString("purpose", "")!!,
+                    "memberId" to arguments?.getInt("memberId", 0)!!,
+                    "roomId" to arguments?.getInt("roomId", 0)!!,
+                    "sourceName" to arguments?.getString("sourceName", "")!!,
+                    "sourceAvatar" to arguments?.getString("sourceAvatar", "")!!,
+                    "targetName" to arguments?.getString("targetName", "")!!,
+                    "targetAvatar" to arguments?.getString("targetAvatar", "")!!
+                )
+
+            findNavController().navigate(R.id.navigation_match, bundle)
+
+
+        }
 
 
         binding.progressBar.visibility = View.VISIBLE
