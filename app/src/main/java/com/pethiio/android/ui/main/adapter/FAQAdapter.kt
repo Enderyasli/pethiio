@@ -8,8 +8,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.pethiio.android.R
 import com.pethiio.android.data.model.settings.FAQResponse
 import kotlinx.android.synthetic.main.item_expanded.view.*
-import kotlinx.android.synthetic.main.message_list_item.view.*
-import net.cachapa.expandablelayout.ExpandableLayout.OnExpansionUpdateListener
 
 
 class FAQAdapter(
@@ -17,28 +15,17 @@ class FAQAdapter(
 ) : RecyclerView.Adapter<FAQAdapter.DataViewHolder>() {
 
 
-    class DataViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView),
-        OnExpansionUpdateListener {
+    class DataViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val UNSELECTED = -1
         private var selectedItem = UNSELECTED
 
 
         @SuppressLint("SetTextI18n")
         fun bind(faq: FAQResponse) {
-
-
-
-            itemView.titleTextView.text = ""+faq.id+". "+faq.question
-            itemView.description.text =faq.answer
-
-
+            itemView.titleTextView.text = "" + faq.id + ". " + faq.question
+            itemView.description.text = faq.answer
         }
 
-        override fun onExpansionUpdate(expansionFraction: Float, state: Int) {
-//            if (state == ExpandableLayout.State.EXPANDING) {
-//                smoothScrollToPosition(adapterPosition)
-//            }
-        }
     }
 
 

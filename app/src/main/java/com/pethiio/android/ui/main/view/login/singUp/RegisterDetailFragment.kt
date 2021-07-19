@@ -349,7 +349,6 @@ class RegisterDetailFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
             startDate.set(1900, 0, 1)
             val endDate = Calendar.getInstance()
             endDate.add(Calendar.YEAR, -18)
-            endDate.add(Calendar.DATE, -1)
             //TimePicker
             val pvTime = TimePickerBuilder(requireContext()) { date, v ->
                 val newDate = Constants.datePickerFormat.format(date)

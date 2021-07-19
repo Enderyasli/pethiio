@@ -9,6 +9,7 @@
     <color name="marineButton">#04d2b9</color>
     <color name="orangeButton">#d25d04</color>
     <color name="grey">#828282</color>
+    <color name="filtergrey">#b6b6b6</color>
     <color name="whitegrey">#FAFAFA</color>
     <color name="bordergrey">#E0E0E0</color>
     <color name="hint_text_color">#C7C7C7</color>

@@ -113,22 +113,22 @@ dependencies {
 
     //seekbar
 //    implementation 'com.github.warkiz.tickseekbar:tickseekbar:0.1.4'
-    implementation 'com.github.warkiz.widget:indicatorseekbar:2.1.2'
+//    implementation 'com.github.warkiz.widget:indicatorseekbar:2.1.2'
 
     //Event
     implementation 'org.greenrobot:eventbus:3.2.0'
 
     //expandview
-    implementation "com.ms-square:expandableTextView:0.1.4"
+//    implementation "com.ms-square:expandableTextView:0.1.4"
 
-    api 'com.github.cachapa:ExpandableLayout:2.9.2'
+//    api 'com.github.cachapa:ExpandableLayout:2.9.2'
 
     implementation 'com.airbnb.android:lottie:3.7.0'
 
     implementation 'com.github.zcweng:switch-button:0.0.3@aar'
 
-    implementation 'com.github.judemanutd:autostarter:1.1.0'
-    implementation 'com.thelittlefireman:AppKillerManager:2.1.1'
+//    implementation 'com.github.judemanutd:autostarter:1.1.0'
+//    implementation 'com.thelittlefireman:AppKillerManager:2.1.1'
 
 //    implementation 'com.github.Jay-Goo:RangeSeekBar:v3.0.0'
     implementation 'com.github.MohammedAlaaMorsi:RangeSeekBar:1.0.6'

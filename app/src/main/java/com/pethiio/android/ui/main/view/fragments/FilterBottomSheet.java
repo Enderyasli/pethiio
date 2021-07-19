@@ -155,7 +155,7 @@ public class FilterBottomSheet extends BottomSheetDialogFragment {
             genderSpinner.setAdapter(genderAdapter);
 
             ArrayAdapter typeAdapter = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_item, animal);
-            genderAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            typeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             typeSpinner.setAdapter(typeAdapter);
 
 
@@ -170,12 +170,7 @@ public class FilterBottomSheet extends BottomSheetDialogFragment {
 
                     distanceSeekBar.setCurrentMaxValue(petSearchFilterResponse.getMaximumDistance());
 
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            distanceSeekBar.setCurrentMinValue(petSearchFilterResponse.getMinimumDistance());
-                        }
-                    }, 100);
+                    new Handler().postDelayed(() -> distanceSeekBar.setCurrentMinValue(petSearchFilterResponse.getMinimumDistance()), 100);
 
 
                     maxDistance = petSearchFilterResponse.getMaximumDistance();
@@ -183,12 +178,7 @@ public class FilterBottomSheet extends BottomSheetDialogFragment {
                     distanceTv.setText(petSearchFilterResponse.getMinimumDistance() + " - " + petSearchFilterResponse.getMaximumDistance() + " km");
 
                     ageSeekBar.setCurrentMaxValue(petSearchFilterResponse.getMaximumAge());
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            ageSeekBar.setCurrentMinValue(petSearchFilterResponse.getMinimumAge());
-                        }
-                    }, 100);
+                    new Handler().postDelayed(() -> ageSeekBar.setCurrentMinValue(petSearchFilterResponse.getMinimumAge()), 100);
                     minAge = petSearchFilterResponse.getMinimumAge();
                     maxAge = petSearchFilterResponse.getMaximumAge();
                     ageValueTv.setText(petSearchFilterResponse.getMinimumAge() + " - " + petSearchFilterResponse.getMaximumAge());
