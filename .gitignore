@@ -13,6 +13,8 @@
 *.apk
 local.properties
 
+/app/release
+
 ./gradle
 
 **/build/
