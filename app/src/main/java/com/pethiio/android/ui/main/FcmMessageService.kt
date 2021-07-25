@@ -1,8 +1,6 @@
 package com.pethiio.android.ui.main
 
 
-import android.content.Intent
-import android.os.Bundle
 import android.util.Log
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
@@ -23,6 +21,14 @@ class FcmMessageService : FirebaseMessagingService() {
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         super.onMessageReceived(remoteMessage)
         Log.d(TAG, "From: ${remoteMessage.from}")
+
+        var userIdIndex = remoteMessage.from.toString().indexOf("user-")
+        userIdIndex += 5
+
+        val userId = remoteMessage.from.toString().substring(userIdIndex)
+
+        if (PreferenceHelper.SharedPreferencesManager.getInstance().topicUserId.toString() != userId)
+            return
 
         //Use this condition to validation login
         if (PreferenceHelper.SharedPreferencesManager.getInstance().isLoggedIn == false) {
