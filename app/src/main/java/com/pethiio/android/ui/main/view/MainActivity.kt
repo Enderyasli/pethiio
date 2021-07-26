@@ -31,6 +31,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationMenuView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.ktx.messaging
+import com.pethiio.android.PethiioApplication
 import com.pethiio.android.R
 import com.pethiio.android.data.EventBus.LoginEvent
 import com.pethiio.android.data.socket.SocketIOService
@@ -95,7 +96,7 @@ class MainActivity : AppCompatActivity() {
         findViewById<BottomNavigationView>(R.id.bottomNav_view)
             .setupWithNavController(navController!!)
 
-
+        PethiioApplication.setNavController(navController!!)
         //Add custom tab menu
         val bottomMenuView = navView.getChildAt(0) as BottomNavigationMenuView
         val view = bottomMenuView.getChildAt(1)

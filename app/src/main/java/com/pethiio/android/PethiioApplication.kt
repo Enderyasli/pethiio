@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.navigation.NavController
 import com.pethiio.android.data.socket.SocketIOService
 import com.pethiio.android.utils.PreferenceHelper
 
@@ -18,9 +19,21 @@ class PethiioApplication : Application() {
         private var sharedPreferences: SharedPreferences? = null
         private var isActive: Boolean = false
         private var currentRoom: Int = 0
+        private var navController: NavController? = null
+
 
         @SuppressLint("StaticFieldLeak")
         lateinit var context: Context
+
+        fun getNavController(): NavController? {
+            return navController
+        }
+
+        fun setNavController(navController: NavController) {
+            this.navController = navController
+
+        }
+
 
         fun setCurrentRoom(roomId: Int) {
             currentRoom = roomId
@@ -43,6 +56,10 @@ class PethiioApplication : Application() {
             return isActive
         }
 
+
+    }
+
+    fun checkLogin() {
 
     }
 

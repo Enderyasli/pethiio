@@ -1,10 +1,12 @@
 package com.pethiio.android.data.api
 
+import androidx.navigation.fragment.findNavController
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.pethiio.android.PethiioApplication
 import com.pethiio.android.R
 import com.pethiio.android.data.model.error.PethiioErrorHandler
+import com.pethiio.android.utils.PreferenceHelper
 import com.pethiio.android.utils.Resource
 import retrofit2.HttpException
 import java.net.SocketTimeoutException
@@ -26,6 +28,13 @@ open class ResponseHandler {
         return when (e) {
 
             is HttpException -> {
+                if (e.code() == 403) {
+                    PreferenceHelper.SharedPreferencesManager.getInstance().isLoggedIn = false
+                    PreferenceHelper.SharedPreferencesManager.getInstance().accessToken = ""
+                    PreferenceHelper.SharedPreferencesManager.getInstance().topicUserId = 0
+                    PethiioApplication.getNavController()
+                        ?.navigate(R.id.action_global_navigation_welcome)
+                }
 
 //                if (ErrorCodes.UnAuthorized.code != e.code()) {
 //                    Resource.error(
