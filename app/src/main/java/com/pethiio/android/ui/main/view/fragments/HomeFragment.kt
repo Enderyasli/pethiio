@@ -1,35 +1,30 @@
 package com.pethiio.android.ui.main.view.fragments
 
-import android.Manifest
-import android.content.IntentSender
-import android.content.pm.PackageManager
 import android.os.Bundle
-import android.util.Log
+import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import com.google.android.gms.common.api.Api
-import com.google.android.gms.common.api.ApiException
-import com.google.android.gms.common.api.ResolvableApiException
-import com.google.android.gms.location.*
-import com.google.android.gms.tasks.Task
 import com.pethiio.android.R
+import com.pethiio.android.data.model.PetListResponse
+import com.pethiio.android.data.model.PethiioResponse
 import com.pethiio.android.data.model.User
 import com.pethiio.android.databinding.FragmentHomeBinding
 import com.pethiio.android.ui.base.BaseFragment
 import com.pethiio.android.ui.base.ViewModelFactory
-import com.pethiio.android.ui.main.adapter.*
+import com.pethiio.android.ui.main.adapter.FilterItemClickListener
+import com.pethiio.android.ui.main.adapter.HomePetListAdapter
+import com.pethiio.android.ui.main.adapter.MainAdapter
 import com.pethiio.android.ui.main.viewmodel.HomeViewModel
 import com.pethiio.android.utils.Constants
 import com.pethiio.android.utils.Status
+import java.util.*
 
 
+@Suppress("UNCHECKED_CAST")
 class HomeFragment : BaseFragment(), FilterItemClickListener {
 
 
@@ -43,6 +38,8 @@ class HomeFragment : BaseFragment(), FilterItemClickListener {
     override var bottomNavigationViewVisibility = View.VISIBLE
     override var dashboardClicked: Boolean = false
 
+    var petList: List<PetListResponse>? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,9 +47,13 @@ class HomeFragment : BaseFragment(), FilterItemClickListener {
 
     }
 
+//    override fun onSaveInstanceState(outState: Bundle) {
+//        outState.putParcelableArrayList("key", petList as ArrayList<PetListResponse>)
+//        super.onSaveInstanceState(outState)
+//    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
     }
 
     override fun onResume() {
@@ -67,6 +68,11 @@ class HomeFragment : BaseFragment(), FilterItemClickListener {
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val view = binding.root
+
+        if (savedInstanceState != null) {
+            // Restore last state for checked position.
+            val pet = savedInstanceState.getParcelableArrayList<Parcelable>("key")
+        }
 
         setupViewModel()
         setupUI()
@@ -132,6 +138,7 @@ class HomeFragment : BaseFragment(), FilterItemClickListener {
 
         viewModel.getPetList().observe(viewLifecycleOwner, {
 
+
             when (it.status) {
                 Status.LOADING -> {
                     binding.progressBar.visibility = View.VISIBLE
@@ -139,6 +146,8 @@ class HomeFragment : BaseFragment(), FilterItemClickListener {
                 Status.SUCCESS -> {
 
                     if (it.data != null) {
+
+                        petList = it.data
                         binding.animalListRv.layoutManager = GridLayoutManager(requireContext(), 2)
                         val adapter =
                             HomePetListAdapter(findNavController(), requireContext(), it.data)
@@ -179,7 +188,7 @@ class HomeFragment : BaseFragment(), FilterItemClickListener {
 
     private fun setupViewModel() {
         viewModel = ViewModelProviders.of(
-            this,
+            requireActivity(),
             ViewModelFactory()
         ).get(HomeViewModel::class.java)
     }

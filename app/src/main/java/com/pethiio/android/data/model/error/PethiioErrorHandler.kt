@@ -6,7 +6,7 @@ data class
 PethiioErrorHandler(
 
     @SerializedName("apierror")
-    val apierror: PethiioError
+    val apiError: PethiioError
 
 
 )

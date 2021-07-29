@@ -16,8 +16,8 @@ import io.reactivex.schedulers.Schedulers
 
 class HomeViewModel : ViewModel() {
 
-    val petList = MutableLiveData<Resource<List<PetListResponse>>>()
-    private val homePageData = MutableLiveData<Resource<PageData>>()
+    val petList = SingleLiveEvent<Resource<List<PetListResponse>>>()
+    private val homePageData = SingleLiveEvent<Resource<PageData>>()
     private val responseHandler: ResponseHandler = ResponseHandler()
 
 

@@ -3,13 +3,10 @@ package com.pethiio.android
 import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
-import android.content.Intent
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.navigation.NavController
-import com.pethiio.android.data.socket.SocketIOService
-import com.pethiio.android.utils.PreferenceHelper
 
 
 class PethiioApplication : Application() {
@@ -19,9 +16,8 @@ class PethiioApplication : Application() {
         private var sharedPreferences: SharedPreferences? = null
         private var isActive: Boolean = false
         private var currentRoom: Int = 0
+        @SuppressLint("StaticFieldLeak")
         private var navController: NavController? = null
-
-
         @SuppressLint("StaticFieldLeak")
         lateinit var context: Context
 
