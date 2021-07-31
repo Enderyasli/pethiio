@@ -252,6 +252,13 @@
             android:name="com.pethiio.android.ui.main.view.fragments.settings.SettingsFragment"
             android:label="Settings"
             tools:layout="@layout/fragment_settings" />
+
+        <fragment
+            android:id="@+id/navigation_user_edit"
+            android:name="com.pethiio.android.ui.main.view.user.UserEditFragment"
+            android:label="User Edit"
+            tools:layout="@layout/fragment_user_edit" />
+
         <fragment
             android:id="@+id/navigation_change_password"
             android:name="com.pethiio.android.ui.main.view.fragments.ChangePasswordFragment"

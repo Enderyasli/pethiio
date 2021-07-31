@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.main.view.login.singUp.RegisterDetailFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/top_ly"
+                android:layout_width="match_parent"
+                android:layout_height="295dp">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:alpha="0.11"
+                    android:background="#d25d04" />
+
+                <TextView
+                    android:id="@+id/signup_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/default_margin"
+                    android:layout_marginTop="45dp"
+                    android:layout_marginRight="@dimen/default_margin"
+                    android:layout_marginBottom="3dp"
+                    android:textColor="@color/orangeButton"
+                    android:textSize="37sp"
+                    tools:text="Profilini Düzenle" />
+
+                <TextView
+                    android:id="@+id/signup_description"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/signup_title"
+                    android:layout_marginLeft="@dimen/default_margin"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="@dimen/default_margin"
+                    android:textColor="@color/grey"
+                    android:textSize="22sp"
+                    tools:text="Enter Your Information about yourself to register." />
+
+            </RelativeLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/top_ly"
+                android:layout_marginTop="-45dp"
+                android:background="@drawable/save_info_top_rounded"
+                android:elevation="10dp"
+                android:orientation="vertical">
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="41dp"
+                    android:layout_marginRight="20dp"
+                    android:orientation="vertical">
+
+                    <include
+                        android:id="@+id/nameLy"
+                        layout="@layout/common_rounded_input_tv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="25dp" />
+
+                    <include
+                        android:id="@+id/surnameLy"
+                        layout="@layout/common_rounded_input_tv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="25dp" />
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="25dp"
+                        android:orientation="vertical">
+
+
+                        <TextView
+                            android:id="@+id/birth_title_tv"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/margin_minimum"
+                            android:layout_marginRight="@dimen/margin_minimum"
+                            android:fontFamily="@font/typo_round_bold"
+                            android:textColor="@color/input_text_color"
+                            android:textSize="14sp"
+                            tools:text="Doğum Tarihi *" />
+
+
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/margin_minimum"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginRight="@dimen/margin_minimum"
+                            android:layout_marginBottom="5dp"
+                            app:cardBackgroundColor="@color/whitegrey"
+                            app:cardCornerRadius="@dimen/commonButtonRadius"
+                            app:cardElevation="2dp">
+
+                            <TextView
+                                android:id="@+id/birth_placeholder_tv"
+                                android:layout_width="match_parent"
+                                android:layout_height="50dp"
+                                android:layout_marginTop="8dp"
+                                android:background="@drawable/common_input_btn_bg"
+                                android:fontFamily="@font/typo_round_regular"
+                                android:gravity="center_vertical"
+                                android:paddingStart="15dp"
+                                android:textColor="@color/black"
+                                android:textColorHint="@color/hint_text_color"
+                                android:textSize="14sp"
+                                tools:hint="Doğum tarihi" />
+                        </androidx.cardview.widget.CardView>
+                    </LinearLayout>
+
+                    <include
+                        android:id="@+id/genderLy"
+                        layout="@layout/common_spinner_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="25dp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="25dp"
+                        android:orientation="vertical">
+
+
+                        <TextView
+                            android:id="@+id/about_title_tv"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/margin_minimum"
+                            android:layout_marginRight="@dimen/margin_minimum"
+                            android:fontFamily="@font/typo_round_bold"
+                            android:textColor="@color/input_text_color"
+                            android:textSize="14sp"
+                            tools:text="Hakkında" />
+
+
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/margin_minimum"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginRight="@dimen/margin_minimum"
+                            android:layout_marginBottom="5dp"
+                            app:cardBackgroundColor="@color/whitegrey"
+                            app:cardCornerRadius="@dimen/commonButtonRadius"
+                            app:cardElevation="2dp">
+
+                            <EditText
+                                android:id="@+id/about_placeholder_tv"
+                                android:layout_width="match_parent"
+                                android:layout_height="120dp"
+                                android:background="@drawable/common_input_btn_bg"
+                                android:fontFamily="@font/typo_round_regular"
+                                android:gravity="left"
+                                android:maxLength="500"
+                                android:paddingStart="15dp"
+                                android:paddingTop="5dp"
+                                android:singleLine="true"
+                                android:textColor="@color/black"
+                                android:textColorHint="@color/hint_text_color"
+                                android:textSize="14sp"
+                                tools:hint="Doğum tarihi" />
+                        </androidx.cardview.widget.CardView>
+                    </LinearLayout>
+
+
+                    <Button
+                        android:id="@+id/save_btn"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/common_button_height"
+                        android:layout_marginTop="48dp"
+                        android:layout_marginBottom="50dp"
+                        android:background="@drawable/orange_button_bg"
+                        android:fontFamily="@font/typo_round_bold"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/medium_size"
+                        tools:text="Kaydet" />
+
+
+                </LinearLayout>
+            </LinearLayout>
+
+
+        </RelativeLayout>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/imagelY"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="212.5dp"
+            app:cardBackgroundColor="#F0F0F0"
+            app:cardCornerRadius="37.5dp"
+            app:cardElevation="2dp">
+
+            <ImageView
+                android:id="@+id/image_profile"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="222.5dp"
+            android:layout_toEndOf="@id/imagelY"
+            android:text="*"
+            android:textColor="@color/red"
+            android:textSize="14sp" />
+
+    </RelativeLayout>
+</ScrollView>

@@ -146,7 +146,6 @@ class Constants {
         const val petEmpty: String = "petEmpty"
 
 
-
         //endregion
 
         //region Settings
@@ -209,7 +208,11 @@ class Constants {
         const val chatButton: String = "chatButton"
         const val matchSkipButton: String = "skipButton"
 
+        //endregion
 
+        //region User Edit
+
+        const val saveButtonTitle: String = "saveButtonTitle"
 
         //endregion
 

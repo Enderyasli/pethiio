@@ -30,31 +30,37 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private class MessageInViewHolder extends RecyclerView.ViewHolder {
 
-        TextView messageTV, dateTV;
+        TextView messageTv, timeTv;
 
         MessageInViewHolder(final View itemView) {
             super(itemView);
-            messageTV = itemView.findViewById(R.id.message_text);
+            messageTv = itemView.findViewById(R.id.message_text);
+            timeTv = itemView.findViewById(R.id.time_text);
         }
 
         void bind(int position) {
             ChatRoomResponse messageModel = list.get(position);
-            messageTV.setText(messageModel.getContent());
+            messageTv.setText(messageModel.getContent());
+            timeTv.setText(messageModel.getTime());
+
         }
     }
 
     private class MessageOutViewHolder extends RecyclerView.ViewHolder {
 
-        TextView messageTV, dateTV;
+        TextView messageTv, timeTv;
 
         MessageOutViewHolder(final View itemView) {
             super(itemView);
-            messageTV = itemView.findViewById(R.id.message_text);
+            messageTv = itemView.findViewById(R.id.message_text);
+            timeTv = itemView.findViewById(R.id.time_text);
+
         }
 
         void bind(int position) {
             ChatRoomResponse messageModel = list.get(position);
-            messageTV.setText(messageModel.getContent());
+            messageTv.setText(messageModel.getContent());
+            timeTv.setText(messageModel.getTime());
         }
     }
 

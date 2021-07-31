@@ -22,6 +22,8 @@ import com.pethiio.android.data.model.resetPass.ResetPassDemandResponse
 import com.pethiio.android.data.model.resetPass.ResetPasswordRequest
 import com.pethiio.android.data.model.settings.FAQResponse
 import com.pethiio.android.data.model.signup.*
+import com.pethiio.android.data.model.user.UserDetailResponse
+import com.pethiio.android.data.model.user.UserEditRequest
 import io.reactivex.Observable
 import okhttp3.MultipartBody
 import retrofit2.Response
@@ -316,6 +318,27 @@ interface PethiioServices {
 
     @GET("page/chat-list")
     fun getAllChatList(): Observable<List<ChatListResponse>>
+
+    //endregion
+
+    //region User Edit
+
+    @GET("page/user-profile-edit/info")
+    fun getUserEditPageData(): Observable<PageData>
+
+    @GET("page/user-profile-edit")
+    fun getUserDetail(): Observable<UserDetailResponse>
+
+
+    @POST("page/user-profile-edit")
+    fun postUserEdit(@Body userEdit: UserEditRequest): Observable<Response<Void>>
+
+    @Multipart
+    @POST("page/user-profile-edit/avatar")
+    fun postUserAvatar(
+        @Part file: MultipartBody.Part
+    ): Observable<Response<Void>>
+
 
     //endregion
 

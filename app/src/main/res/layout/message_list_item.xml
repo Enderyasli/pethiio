@@ -37,34 +37,73 @@
             android:id="@+id/time_tv"
             android:layout_width="40dp"
             android:layout_height="wrap_content"
-            android:layout_marginRight="20dp"
+            android:layout_marginEnd="20dp"
             android:layout_weight="1"
-            android:maxLines="1"
-            android:gravity="right"
             android:ellipsize="end"
             android:fontFamily="@font/typo_round_bold"
-            android:text="30 dk önce"
+            android:gravity="right"
+            android:maxLength="20"
+            android:maxLines="1"
             android:textColor="@color/marineButton"
             android:textSize="12sp"
-            android:maxLength="20"
-            android:visibility="visible" />
+            android:visibility="visible"
+            tools:text="30 dk önce" />
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/message_tv"
+    <LinearLayout
+        android:id="@+id/message_ly"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/title_ly"
-        android:layout_marginStart="18dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="20dp"
         android:layout_toEndOf="@+id/profile_image"
-        android:ellipsize="end"
-        android:fontFamily="@font/typo_round_regular"
-        android:maxLines="2"
-        android:textColor="@color/grey"
-        android:textSize="12sp"
-        tools:text="Lorem ipsum dolor sit amet" />
+        android:orientation="horizontal"
+        android:weightSum="6">
+
+        <TextView
+            android:id="@+id/message_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="18dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="6dp"
+            android:layout_weight="5"
+            android:ellipsize="end"
+            android:fontFamily="@font/typo_round_regular"
+            android:maxLines="2"
+            android:textColor="@color/grey"
+            android:textSize="12sp"
+            tools:text="Lorem ipsum dolor sit amet" />
+
+        <RelativeLayout
+            android:id="@+id/unseen_ly"
+            android:layout_marginTop="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:layout_weight="1">
+
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@color/marineButton" />
+            <TextView
+                android:id="@+id/unseen_tv"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:gravity="center"
+                android:fontFamily="@font/typo_round_regular"
+                android:maxLength="20"
+                android:maxLines="1"
+                android:textColor="@color/black"
+                android:textSize="8sp"
+                tools:text="3"
+                tools:ignore="SmallSp" />
+
+        </RelativeLayout>
+
+
+    </LinearLayout>
 
     <View
         android:id="@+id/divider"

@@ -16,5 +16,8 @@ class ChatListResponse(
     @SerializedName("lastMessageTime")
     val lastMessageTime: String,
     @SerializedName("memberId")
-    val memberId: Int
+    val memberId: Int,
+    @SerializedName("unSeenMessagesCount")
+    val unSeenMessagesCount: Int
+
 )

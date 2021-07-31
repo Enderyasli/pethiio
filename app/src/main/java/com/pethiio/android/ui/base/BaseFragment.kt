@@ -118,6 +118,32 @@ abstract class BaseFragment : Fragment() {
         return ""
     }
 
+    fun getLookUpIndex(lookUpKey: String, key: String): Int {
+
+        getLookUpKeys(lookUpKey).forEachIndexed { index, s ->
+            if (s == key)
+                return index
+        }
+
+        return 0
+    }
+    fun getLookUpKeys(key: String): List<String> {
+
+        lookUpsResponse?.forEach { it ->
+            if (it.key == key) {
+
+                val arrayList = arrayListOf<String>()
+                it.value.forEach {
+                    arrayList.add(it.key)
+                }
+
+                return arrayList
+
+            }
+        }
+        return emptyList()
+    }
+
     fun getViewError(editText: EditText, message: String): Boolean {
         var valid = true
         if (TextUtils.isEmpty(editText.text.trim())) {

@@ -7,16 +7,10 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.navigation.NavController
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.pethiio.android.R
-import com.pethiio.android.data.model.Message
 import com.pethiio.android.data.model.chat.ChatListResponse
-import com.pethiio.android.data.model.socket.ChatSendMessage
-import com.pethiio.android.data.socket.SocketIO
 import com.pethiio.android.utils.GlideApp
-import com.pethiio.android.utils.PreferenceHelper
-import com.pethiio.android.utils.Resource
 import kotlinx.android.synthetic.main.message_list_item.view.*
 
 class MessageAdapter(
@@ -29,13 +23,6 @@ class MessageAdapter(
     class DataViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(context: Context, chatList: ChatListResponse) {
 
-//            itemView.name_tv.text = chatList.name
-//            itemView.message_tv.text = chatList.lastMessage
-//
-//            Glide.with(itemView.profile_image)
-//                .load(chatList.avatar)
-//                .apply(RequestOptions().override(200, 200))
-//                .into(itemView.profile_image)
 
         }
     }
@@ -57,6 +44,13 @@ class MessageAdapter(
         holder.itemView.name_tv.text = chat.name
         holder.itemView.message_tv.text = chat.lastMessage
         holder.itemView.time_tv.text = chat.lastMessageTime
+
+        if(chat.unSeenMessagesCount>0) {
+            holder.itemView.unseen_tv.text = chat.unSeenMessagesCount.toString()
+            holder.itemView.unseen_ly.visibility = View.VISIBLE
+        } else{
+            holder.itemView.unseen_ly.visibility=View.GONE
+        }
 
         GlideApp.with(holder.itemView.profile_image)
             .load(chat.avatar)
