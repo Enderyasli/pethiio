@@ -3,6 +3,7 @@ package com.pethiio.android.data.api
 import com.pethiio.android.data.model.*
 import com.pethiio.android.data.model.chat.ChatListResponse
 import com.pethiio.android.data.model.chat.ChatRoomResponse
+import com.pethiio.android.data.model.chat.ChatUpdateStateRequest
 import com.pethiio.android.data.model.filter.PetSearchFilterResponse
 import com.pethiio.android.data.model.filter.SearchFilterRequest
 import com.pethiio.android.data.model.login.ChangePassRequest
@@ -304,6 +305,10 @@ interface PethiioServices {
         @Path("roomId") roomId: Int,
     ): Observable<List<ChatRoomResponse>>
 
+    @POST("page/chat/update-state")
+    fun postChatState(@Body chatUpdateStateRequest: ChatUpdateStateRequest): Observable<Response<Void>>
+
+
     //endregion
 
     //region Home
@@ -329,7 +334,6 @@ interface PethiioServices {
     @GET("page/user-profile-edit")
     fun getUserDetail(): Observable<UserDetailResponse>
 
-
     @POST("page/user-profile-edit")
     fun postUserEdit(@Body userEdit: UserEditRequest): Observable<Response<Void>>
 
@@ -339,7 +343,7 @@ interface PethiioServices {
         @Part file: MultipartBody.Part
     ): Observable<Response<Void>>
 
-
     //endregion
+
 
 }

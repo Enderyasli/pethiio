@@ -99,7 +99,7 @@ class MainActivity : AppCompatActivity() {
         PethiioApplication.setNavController(navController!!)
         //Add custom tab menu
         val bottomMenuView = navView.getChildAt(0) as BottomNavigationMenuView
-        val view = bottomMenuView.getChildAt(1)
+        val view = bottomMenuView.getChildAt(2)
 
         val itemView = view as BottomNavigationItemView
         viewCustom =

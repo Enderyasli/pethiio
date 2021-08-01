@@ -14,6 +14,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.pethiio.android.PethiioApplication
 import com.pethiio.android.R
 import com.pethiio.android.data.EventBus.ChatEvent
+import com.pethiio.android.data.model.chat.ChatUpdateStateRequest
 import com.pethiio.android.data.model.socket.ChatSendMessage
 import com.pethiio.android.data.socket.SocketIO
 import com.pethiio.android.databinding.FragmentChatScreenBinding
@@ -21,7 +22,6 @@ import com.pethiio.android.ui.base.BaseFragment
 import com.pethiio.android.ui.main.adapter.ChatAdapter
 import com.pethiio.android.ui.main.viewmodel.ChatViewModel
 import com.pethiio.android.utils.Constants
-import com.pethiio.android.utils.PreferenceHelper
 import com.pethiio.android.utils.Status
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -40,8 +40,9 @@ class ChatScreenFragment : BaseFragment() {
     var memberId: Int = 0
     var messageTitle: String = ""
     private var adapter: ChatAdapter? = null
+    var lastMessageId: Int = 0
 
-    val socketIO = SocketIO()
+    private val socketIO = SocketIO()
 
 
     override fun onDestroy() {
@@ -49,6 +50,15 @@ class ChatScreenFragment : BaseFragment() {
         EventBus.getDefault().unregister(this)
         PethiioApplication.setCurrentRoom(0)
         socketIO.disconnect(roomId)
+
+        viewModel.updateChatState(
+            ChatUpdateStateRequest(
+                lastMessageId,
+                roomId,
+                senderMemberId = memberId,
+                "SEEN"
+            )
+        )
         super.onDestroy()
     }
 
@@ -62,9 +72,9 @@ class ChatScreenFragment : BaseFragment() {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: ChatEvent) {
 
+        lastMessageId = event.id
         adapter?.addMessage(event)
         adapter?.listSize?.let { binding.recyclerView.smoothScrollToPosition(it) }
-//
     }
 
     override fun onCreateView(
@@ -170,6 +180,17 @@ class ChatScreenFragment : BaseFragment() {
                             requireContext(), it1, memberId
                         )
                     }
+
+
+
+                    it.data?.get(it.data.size - 1)?.id?.let { it1 ->
+                        ChatUpdateStateRequest(
+                            it1,
+                            roomId,
+                            senderMemberId = memberId,
+                            "SEEN"
+                        )
+                    }?.let { it2 -> viewModel.updateChatState(it2) }
 
                     it.data?.forEach { chat ->
 

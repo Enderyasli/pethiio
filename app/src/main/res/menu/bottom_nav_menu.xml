@@ -7,8 +7,16 @@
         android:icon="@drawable/home_unselected"
         android:title="@string/bottom_menu_home" />
     <item
+        android:id="@+id/navigation_shop"
+        android:icon="@drawable/shop_icon"
+        android:title="Shop" />
+    <item
         android:id="@+id/navigation_dashboard"
         android:title="" />
+    <item
+        android:id="@+id/navigation_vet"
+        android:icon="@drawable/vet_icon"
+        android:title="Vet" />
     <item
         android:id="@+id/navigation_message"
         android:icon="@drawable/message_icon"
