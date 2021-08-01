@@ -24,11 +24,10 @@ class SettingsFragment : BaseFragment() {
     private val binding get() = _binding!!
     private lateinit var viewModel: FAQViewModel
 
-    private var logOutTitle =""
-    private var logoutAlertTitle =""
-    private var logoutAlertDone =""
-    private var logoutAlertCancel =""
-
+    private var logOutTitle = ""
+    private var logoutAlertTitle = ""
+    private var logoutAlertDone = ""
+    private var logoutAlertCancel = ""
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,6 +41,10 @@ class SettingsFragment : BaseFragment() {
     ): View {
         _binding = FragmentSettingsBinding.inflate(inflater, container, false)
         val view = binding.root
+
+        binding.editProfileLy.setOnClickListener {
+            findNavController().navigate(R.id.navigation_user_edit)
+        }
 
         binding.supportLy.setOnClickListener {
             findNavController().navigate(R.id.navigation_support)
@@ -78,7 +81,7 @@ class SettingsFragment : BaseFragment() {
             MaximobileDialog(
                 requireContext(),
                 true,
-               logoutAlertTitle,
+                logoutAlertTitle,
                 logoutAlertDone,
                 logoutAlertCancel
             )
@@ -135,9 +138,10 @@ class SettingsFragment : BaseFragment() {
                     binding.supportTv.text =
                         getLocalizedString(Constants.supportTitle, pageDataFields)
 
+                    binding.editProfileTv.text =
+                        getLocalizedString(Constants.profileEditTitle, pageDataFields)
                     binding.passwordChangeTv.text =
                         getLocalizedString(Constants.changePasswordTitle, pageDataFields)
-
                     binding.notificationTv.text =
                         getLocalizedString(Constants.notificationTitle, pageDataFields)
                     binding.aboutTv.text =
@@ -147,8 +151,10 @@ class SettingsFragment : BaseFragment() {
 
                     logOutTitle = getLocalizedString(Constants.logoutTitle, pageDataFields)
                     logoutAlertDone = getLocalizedString(Constants.logoutAlertDone, pageDataFields)
-                    logoutAlertCancel = getLocalizedString(Constants.logoutAlertCancel, pageDataFields)
-                    logoutAlertTitle = getLocalizedString(Constants.logoutAlertTitle, pageDataFields)
+                    logoutAlertCancel =
+                        getLocalizedString(Constants.logoutAlertCancel, pageDataFields)
+                    logoutAlertTitle =
+                        getLocalizedString(Constants.logoutAlertTitle, pageDataFields)
 
                     binding.progressBar.visibility = View.GONE
 

@@ -513,9 +513,7 @@ class DashboardFragment : BaseFragment(), CardStackListener,
 
         binding.searchFilterButton.setOnClickListener {
             if (findNavController().currentDestination?.id == R.id.navigation_dashboard)
-//                findNavController().navigate(R.id.action_navigation_dashboard_to_bottomSheetDialog)
-                findNavController().navigate(R.id.navigation_user_edit)
-            // TODO: 30.07.2021 aç
+                findNavController().navigate(R.id.action_navigation_dashboard_to_bottomSheetDialog)
         }
 
 

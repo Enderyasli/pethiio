@@ -155,6 +155,8 @@ class Constants {
         const val supportTitle: String = "supportTitle"
         const val aboutAppTitle: String = "aboutAppTitle"
         const val logoutTitle: String = "logoutTitle"
+        const val profileEditTitle: String = "profileEditTitle"
+
 
         //endregion
 

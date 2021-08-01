@@ -23,6 +23,30 @@
             tools:text="Ayarlar" />
 
         <LinearLayout
+            android:id="@+id/edit_profile_ly"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/default_margin"
+            android:layout_marginTop="40dp"
+            android:layout_marginRight="@dimen/default_margin">
+
+            <ImageView
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/owner" />
+
+            <TextView
+                android:id="@+id/edit_profile_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/default_margin"
+                android:fontFamily="@font/typo_round_bold"
+                android:textColor="@color/grey"
+                android:textSize="22sp"
+                tools:text="Profilini Düzenle" />
+        </LinearLayout>
+
+        <LinearLayout
             android:id="@+id/password_ly"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
