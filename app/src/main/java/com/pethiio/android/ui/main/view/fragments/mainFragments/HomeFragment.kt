@@ -1,4 +1,4 @@
-package com.pethiio.android.ui.main.view.fragments
+package com.pethiio.android.ui.main.view.fragments.mainFragments
 
 import android.os.Bundle
 import android.os.Parcelable
@@ -10,7 +10,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.pethiio.android.R
 import com.pethiio.android.data.model.PetListResponse
-import com.pethiio.android.data.model.PethiioResponse
 import com.pethiio.android.data.model.User
 import com.pethiio.android.databinding.FragmentHomeBinding
 import com.pethiio.android.ui.base.BaseFragment
@@ -21,11 +20,10 @@ import com.pethiio.android.ui.main.adapter.MainAdapter
 import com.pethiio.android.ui.main.viewmodel.HomeViewModel
 import com.pethiio.android.utils.Constants
 import com.pethiio.android.utils.Status
-import java.util.*
 
 
 @Suppress("UNCHECKED_CAST")
-class HomeFragment : BaseFragment(), FilterItemClickListener {
+class HomeFragment : BaseFragment() {
 
 
     private var _binding: FragmentHomeBinding? = null
@@ -41,11 +39,7 @@ class HomeFragment : BaseFragment(), FilterItemClickListener {
     var petList: List<PetListResponse>? = null
 
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-
-    }
+    override fun onCreate(savedInstanceState: Bundle?) { super.onCreate(savedInstanceState) }
 
 //    override fun onSaveInstanceState(outState: Bundle) {
 //        outState.putParcelableArrayList("key", petList as ArrayList<PetListResponse>)
@@ -76,7 +70,6 @@ class HomeFragment : BaseFragment(), FilterItemClickListener {
 
         setupViewModel()
         setupUI()
-        setupObserver()
 
 
 
@@ -116,25 +109,6 @@ class HomeFragment : BaseFragment(), FilterItemClickListener {
                 findNavController().navigate(R.id.navigation_pet_add)
         }
 
-
-//        recyclerView.layoutManager = LinearLayoutManager(requireContext())
-//        adapter = MainAdapter(arrayListOf())
-//        recyclerView.addItemDecoration(
-//            DividerItemDecoration(
-//                recyclerView.context,
-//                (recyclerView.layoutManager as LinearLayoutManager).orientation
-//            )
-//        )
-//        recyclerView.adapter = adapter
-
-
-//        binding.animalRv.layoutManager = GridLayoutManager(requireContext(), 3)
-//        val adapter = FilterAdapter(
-//            requireContext(),
-//            arrayListOf("All", "Cat", "Dog"),
-//            this@HomeFragment
-//        )
-//        binding.animalRv.adapter = adapter
 
         viewModel.getPetList().observe(viewLifecycleOwner, {
 
@@ -176,16 +150,6 @@ class HomeFragment : BaseFragment(), FilterItemClickListener {
 
     }
 
-    private fun setupObserver() {
-
-    }
-
-
-    private fun renderList(users: List<User>) {
-        adapter.addData(users)
-        adapter.notifyDataSetChanged()
-    }
-
     private fun setupViewModel() {
         viewModel = ViewModelProviders.of(
             requireActivity(),
@@ -193,18 +157,7 @@ class HomeFragment : BaseFragment(), FilterItemClickListener {
         ).get(HomeViewModel::class.java)
     }
 
-    override fun onFilterItemClick(item: String?) {
-//        if (!item.equals("All")) {
-//            binding.noAnimalImg.visibility = View.VISIBLE
-//            binding.noAnimalTv.visibility = View.VISIBLE
-//            binding.animalListRv.visibility = View.GONE
-//        } else {
-//            binding.noAnimalImg.visibility = View.GONE
-//            binding.noAnimalTv.visibility = View.GONE
-//            binding.animalListRv.visibility = View.VISIBLE
-//
-//        }
-    }
+
 
 
 }

@@ -26,6 +26,10 @@
     <color name="alert_success">#22B573</color>
     <color name="alert_error">#c1272d</color>
     <color name="progress_color">#d7d7d7</color>
+    <color name="vet_bg_color">#e6e6e6</color>
+    <color name="vet_line_color">#fc5720</color>
+
+
 
 
 </resources>

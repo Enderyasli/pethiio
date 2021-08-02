@@ -8,7 +8,7 @@
 
         <fragment
             android:id="@+id/navigation_dashboard"
-            android:name="com.pethiio.android.ui.main.view.fragments.DashboardFragment"
+            android:name="com.pethiio.android.ui.main.view.fragments.mainFragments.DashboardFragment"
             android:label="Favori"
             tools:layout="@layout/fragment_dashboard" />
 

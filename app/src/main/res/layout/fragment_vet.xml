@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".ui.main.view.fragments.mainFragments.VetFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/top_ly"
+                android:layout_width="match_parent"
+                android:layout_height="295dp">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:alpha="0.11"
+                    android:background="#d25d04" />
+
+                <TextView
+                    android:id="@+id/signup_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/default_margin"
+                    android:layout_marginTop="45dp"
+                    android:layout_marginRight="@dimen/default_margin"
+                    android:layout_marginBottom="3dp"
+                    android:textColor="@color/orangeButton"
+                    android:textSize="37sp"
+                    android:text="Veteriner" />
+
+                <TextView
+                    android:id="@+id/signup_description"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/signup_title"
+                    android:layout_marginLeft="@dimen/default_margin"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="@dimen/default_margin"
+                    android:textColor="@color/grey"
+                    android:textSize="22sp"
+                    android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Semper dolor suscipit cras in at nam. Quam sed eget dui, elit sit." />
+
+            </RelativeLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/top_ly"
+                android:layout_marginTop="-45dp"
+                android:background="@drawable/save_info_top_rounded"
+                android:elevation="10dp"
+                android:orientation="vertical">
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="41dp"
+                    android:layout_marginRight="20dp"
+                    android:orientation="vertical">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/vet_recycler"
+                        android:paddingBottom="100dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+
+                </LinearLayout>
+            </LinearLayout>
+
+
+        </RelativeLayout>
+
+
+    </RelativeLayout>
+</ScrollView>

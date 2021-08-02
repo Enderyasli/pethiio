@@ -8,7 +8,7 @@
 
         <fragment
             android:id="@+id/navigation_message"
-            android:name="com.pethiio.android.ui.main.view.fragments.MessageFragment"
+            android:name="com.pethiio.android.ui.main.view.fragments.mainFragments.MessageFragment"
             android:label="Search"
             tools:layout="@layout/fragment_message" />
 </navigation>

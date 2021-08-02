@@ -1,4 +1,4 @@
-package com.pethiio.android.ui.main.view.fragments
+package com.pethiio.android.ui.main.view.fragments.mainFragments
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -15,8 +15,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.pethiio.android.PethiioApplication
 import com.pethiio.android.R
 import com.pethiio.android.data.model.member.MemberListResponse
-import com.pethiio.android.data.model.socket.ChatSendMessage
-import com.pethiio.android.data.socket.SocketIO
 import com.pethiio.android.databinding.FragmentMessageBinding
 import com.pethiio.android.ui.base.BaseFragment
 import com.pethiio.android.ui.main.adapter.MessageAdapter

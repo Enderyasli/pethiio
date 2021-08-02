@@ -193,21 +193,32 @@
 
         <fragment
             android:id="@+id/navigation_home"
-            android:name="com.pethiio.android.ui.main.view.fragments.HomeFragment"
+            android:name="com.pethiio.android.ui.main.view.fragments.mainFragments.HomeFragment"
             android:label="Home"
             tools:layout="@layout/fragment_home" />
+
+        <fragment
+            android:id="@+id/navigation_shop"
+            android:name="com.pethiio.android.ui.main.view.fragments.mainFragments.ShopFragment"
+            android:label="Shop"
+            tools:layout="@layout/fragment_shop" />
+
+        <fragment
+            android:id="@+id/navigation_vet"
+            android:name="com.pethiio.android.ui.main.view.fragments.mainFragments.VetFragment"
+            android:label="Vet"
+            tools:layout="@layout/fragment_vet" />
 
         <dialog
             android:id="@+id/bottomSheetDialog"
             android:name="com.pethiio.android.ui.main.view.fragments.FilterBottomSheet"
             android:label="bottom_sheet"
             tools:layout="@layout/filter_bottom_sheet">
-
         </dialog>
 
         <fragment
             android:id="@+id/navigation_dashboard"
-            android:name="com.pethiio.android.ui.main.view.fragments.DashboardFragment"
+            android:name="com.pethiio.android.ui.main.view.fragments.mainFragments.DashboardFragment"
             android:label="Favori"
             tools:layout="@layout/fragment_dashboard">
             <action
@@ -217,7 +228,7 @@
 
         <fragment
             android:id="@+id/navigation_message"
-            android:name="com.pethiio.android.ui.main.view.fragments.MessageFragment"
+            android:name="com.pethiio.android.ui.main.view.fragments.mainFragments.MessageFragment"
             android:label="Message"
             tools:layout="@layout/fragment_message">
             <action

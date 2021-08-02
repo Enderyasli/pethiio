@@ -56,7 +56,7 @@ class ChatScreenFragment : BaseFragment() {
                 lastMessageId,
                 roomId,
                 senderMemberId = memberId,
-                "SEEN"
+                Constants.chatSeen
             )
         )
         super.onDestroy()

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.pethiio.android.ui.main.view.fragments.DashboardFragment">
+    tools:context="com.pethiio.android.ui.main.view.fragments.mainFragments.DashboardFragment">
 
 
     <TextView
@@ -15,7 +15,7 @@
         android:layout_marginTop="@dimen/signup_title_top_margin"
         android:layout_marginBottom="3dp"
         android:fontFamily="@font/typo_round_bold"
-        android:text="Bul"
+        tools:text="Bul"
         android:textColor="@color/orangeButton"
         android:textSize="@dimen/signup_title_size" />
 

@@ -6,6 +6,8 @@ class Constants {
 
     companion object {
 
+        const val chatSeen:String ="SEEN"
+
         const val lookUpAnimals: String = "animals"
         const val lookUpGender: String = "gender"
         const val lookUpColor: String = "color"

@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="18dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="18dp"
+        app:cardBackgroundColor="@color/vet_bg_color"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="0dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:weightSum="5">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp">
+
+                    <View
+                        android:id="@+id/line_vet"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_centerInParent="true"
+                        android:background="@color/vet_line_color" />
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/profile_vet"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginLeft="18dp"
+                        android:src="@color/white" />
+
+                    <TextView
+                        android:id="@+id/name_tv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="14dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="45dp"
+                        android:layout_toEndOf="@+id/profile_vet"
+                        android:fontFamily="@font/typo_round_bold"
+                        android:text="Ceren Keskin"
+                        android:textColor="@color/grey"
+                        android:textSize="10sp"
+                        tools:ignore="SmallSp" />
+
+                    <TextView
+                        android:id="@+id/title_tv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/name_tv"
+                        android:layout_marginStart="14dp"
+                        android:layout_marginEnd="45dp"
+                        android:layout_toEndOf="@+id/profile_vet"
+                        android:fontFamily="@font/typo_round_bold"
+                        android:text="Veteriner Hekim"
+                        android:textColor="@color/grey"
+                        android:textSize="10sp"
+                        tools:ignore="SmallSp" />
+
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="15dp"
+                        android:background="@color/vet_bg_color"
+                        android:src="@drawable/vet_inside" />
+
+
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/description_tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="14dp"
+                    android:layout_marginTop="@dimen/default_margin"
+                    android:layout_marginEnd="45dp"
+                    android:layout_marginBottom="@dimen/medium_size"
+                    android:fontFamily="@font/typo_round_bold"
+                    android:text="consectetuer adipiscing elit, sed diam nonummy nibh euismod "
+                    android:textColor="@color/grey"
+                    android:textSize="10sp"
+                    tools:ignore="SmallSp" />
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="4"
+                android:orientation="vertical">
+
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/vet_question" />
+
+            </RelativeLayout>
+
+
+        </LinearLayout>
+
+
+    </androidx.cardview.widget.CardView>
+
+</RelativeLayout>

@@ -1,8 +1,7 @@
-package com.pethiio.android.ui.main.view.fragments
+package com.pethiio.android.ui.main.view.fragments.mainFragments
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
@@ -14,7 +13,6 @@ import android.view.ViewGroup
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.LinearInterpolator
 import android.widget.AdapterView
-import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -29,7 +27,6 @@ import com.google.android.gms.tasks.Task
 import com.pethiio.android.R
 import com.pethiio.android.data.EventBus.FilterEvent
 import com.pethiio.android.data.EventBus.LikeEvent
-import com.pethiio.android.data.EventBus.LoginEvent
 import com.pethiio.android.data.model.member.LocationsRequest
 import com.pethiio.android.data.model.member.MemberListResponse
 import com.pethiio.android.data.model.member.PetSearchRequest
@@ -182,6 +179,8 @@ class DashboardFragment : BaseFragment(), CardStackListener,
                         )
                     )
             } ?: kotlin.run {
+                viewModel.fetchMemberList()
+                viewModel.fetchFilterList()
                 // Handle Null case or Request periodic location update https://developer.android.com/training/location/receive-location-updates
             }
         }
