@@ -6,7 +6,7 @@ class Constants {
 
     companion object {
 
-        const val chatSeen:String ="SEEN"
+        const val chatSeen: String = "SEEN"
 
         const val lookUpAnimals: String = "animals"
         const val lookUpGender: String = "gender"
@@ -219,6 +219,7 @@ class Constants {
         const val saveButtonTitle: String = "saveButtonTitle"
 
         //endregion
+        const val whatsappError: String = "whatsappError"
 
     }
 

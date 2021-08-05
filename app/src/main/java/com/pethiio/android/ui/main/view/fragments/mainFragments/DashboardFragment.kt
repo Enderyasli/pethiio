@@ -13,6 +13,7 @@ import android.view.ViewGroup
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.LinearInterpolator
 import android.widget.AdapterView
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -21,6 +22,11 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.DiffUtil
+import co.mobiwise.materialintro.animation.MaterialIntroListener
+import co.mobiwise.materialintro.shape.Focus
+import co.mobiwise.materialintro.shape.FocusGravity
+import co.mobiwise.materialintro.shape.ShapeType
+import co.mobiwise.materialintro.view.MaterialIntroView
 import com.google.android.gms.location.*
 import com.google.android.gms.tasks.CancellationTokenSource
 import com.google.android.gms.tasks.Task
@@ -40,6 +46,7 @@ import com.pethiio.android.ui.main.view.customViews.MemberListSpinner
 import com.pethiio.android.ui.main.viewmodel.DashBoardViewModel
 import com.pethiio.android.utils.*
 import com.yuyakaido.android.cardstackview.*
+import kotlinx.android.synthetic.main.fragment_pet_detail.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -47,7 +54,7 @@ import java.util.*
 
 
 class DashboardFragment : BaseFragment(), CardStackListener,
-    AdapterView.OnItemSelectedListener {
+    AdapterView.OnItemSelectedListener, MaterialIntroListener {
 
     private var manager: CardStackLayoutManager? = null
     private var adapter: CardStackAdapter? = null
@@ -103,6 +110,63 @@ class DashboardFragment : BaseFragment(), CardStackListener,
 
     }
 
+    override fun onUserClicked(materialIntroViewId: String?) {
+    }
+
+    private fun spotlightMemberList() {
+
+        MaterialIntroView.Builder(requireActivity())
+            .enableIcon(false)
+            .setFocusGravity(FocusGravity.CENTER)
+            .setFocusType(Focus.MINIMUM)
+            .setDelayMillis(500)
+            .enableFadeAnimation(true)
+            .performClick(true)
+            .setInfoText("Bu bölümden tüm hayvanlar için ayrı ayrı arama yapabilirsin")
+            .setShape(ShapeType.RECTANGLE)
+            .setTarget(binding.memberlistSpinner)
+            .setUsageId(TUTORIAL_MEMBER) //THIS SHOULD BE UNIQUE ID
+            .setListener(this)
+            .show()
+
+        PreferenceHelper.SharedPreferencesManager.getInstance().isLikedOnce = true
+
+    }
+
+    private fun spotlightLike() {
+
+        MaterialIntroView.Builder(requireActivity())
+            .enableIcon(false)
+            .setFocusGravity(FocusGravity.CENTER)
+            .setFocusType(Focus.MINIMUM)
+            .setDelayMillis(500)
+            .enableFadeAnimation(true)
+            .performClick(true)
+            .setInfoText("Profili sağa kaydırıp beğenebilir veya sola kaydırıp diğer profillere bakmaya devam edebilirsiniz")
+            .setShape(ShapeType.RECTANGLE)
+            .setTarget(binding.cardStackView)
+            .setUsageId(TUTORIAL_LIKE)
+            .setListener(this)
+            .show()
+
+    }
+
+    private fun spotlightSettings() {
+
+        MaterialIntroView.Builder(requireActivity())
+            .enableIcon(false)
+            .setFocusGravity(FocusGravity.CENTER)
+            .setFocusType(Focus.MINIMUM)
+            .setDelayMillis(500)
+            .enableFadeAnimation(true)
+            .performClick(true)
+            .setInfoText("Buradan yaptığın aramaları özelleştirebilirsin.")
+            .setShape(ShapeType.RECTANGLE)
+            .setTarget(binding.searchFilterButton)
+            .setUsageId(TUTORIAL_SETTINGS)
+            .setListener(this)
+            .show()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -191,6 +255,9 @@ class DashboardFragment : BaseFragment(), CardStackListener,
 
     companion object {
         private const val MY_PERMISSIONS_REQUEST_LOCATION = 99
+        const val TUTORIAL_LIKE = "like"
+        const val TUTORIAL_MEMBER = "memberlist"
+        const val TUTORIAL_SETTINGS = "settings"
     }
 
     fun checkGpsPermission() {
@@ -416,6 +483,7 @@ class DashboardFragment : BaseFragment(), CardStackListener,
                         adapter = CardStackAdapter(findNavController(), it)
                         searchList = it
                         initialize()
+                        spotlightLike()
                     }
                     if (it.data?.size == 0) {
                         binding.noResultLayout.visibility = View.VISIBLE
@@ -587,6 +655,8 @@ class DashboardFragment : BaseFragment(), CardStackListener,
 
     override fun onCardSwiped(direction: Direction?) {
 
+        spotlightMemberList()
+
 
         if (adapter?.getPetSearchList()?.isEmpty() == true) {
             return
@@ -609,7 +679,7 @@ class DashboardFragment : BaseFragment(), CardStackListener,
                         it
                     )
                 }
-            }, 2000)
+            }, 3000)
 
 
         }
@@ -642,6 +712,9 @@ class DashboardFragment : BaseFragment(), CardStackListener,
                     selectedMemberId = position
                     PreferenceHelper.SharedPreferencesManager.getInstance().selectedSpinnerId =
                         selectedMemberId
+
+                    spotlightSettings()
+
 
                 }
 

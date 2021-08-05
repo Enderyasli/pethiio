@@ -22,7 +22,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="26dp"
-            android:layout_marginTop="@dimen/signup_title_top_margin"
+            android:layout_marginTop="20dp"
             android:layout_marginBottom="3dp"
             android:fontFamily="@font/typo_round_bold"
             android:text="Evim"
@@ -34,7 +34,7 @@
             android:layout_width="wrap_content"
             android:layout_height="36dp"
             android:layout_marginLeft="@dimen/margin_minimum"
-            android:layout_marginTop="60dp"
+            android:layout_marginTop="30dp"
             android:layout_marginEnd="24dp"
             android:layout_marginRight="@dimen/margin_minimum"
             android:layout_marginBottom="5dp"
@@ -84,7 +84,7 @@
             android:layout_height="32dp"
             android:layout_alignParentEnd="true"
             android:layout_gravity="right"
-            android:layout_marginTop="62dp"
+            android:layout_marginTop="32dp"
             android:layout_marginRight="17dp"
             android:src="@drawable/gear" />
 
@@ -143,7 +143,7 @@
             android:layout_height="match_parent"
             android:layout_below="@+id/animal_rv"
             android:layout_marginLeft="10dp"
-            android:layout_marginTop="70dp"
+            android:layout_marginTop="40dp"
             android:layout_marginRight="10dp"
             android:layout_marginBottom="50dp"
             android:orientation="horizontal" />

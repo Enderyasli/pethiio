@@ -44,6 +44,11 @@ public object PreferenceHelper {
             set(value) = sharedPreferences.edit().putBoolean(IS_APP_LANGUAGE_SELECTED, value)
                 .apply()
 
+        public var isLikedOnce: Boolean
+            get() = sharedPreferences.getBoolean(IS_LIKED, false)
+            set(value) = sharedPreferences.edit().putBoolean(IS_LIKED, value)
+                .apply()
+
         public var accessToken: String
             get() = sharedPreferences.getString(ACCESS_TOKEN, "").toString()
             set(value) = sharedPreferences.edit().putString(ACCESS_TOKEN, value).apply()
@@ -73,6 +78,8 @@ public object PreferenceHelper {
         companion object {
             private const val APP_LANGUAGE = "app_lang"
             private const val IS_APP_LANGUAGE_SELECTED = "app_lang_selected"
+            private const val IS_LIKED = "is_liked_once"
+
             private const val MY_APP_PREFERENCES = "Pawtind-Android"
             private const val IS_FIRST = "isFirstDownload"
             private const val ACCESS_TOKEN = "accessToken"

@@ -25,6 +25,7 @@ import com.pethiio.android.data.model.settings.FAQResponse
 import com.pethiio.android.data.model.signup.*
 import com.pethiio.android.data.model.user.UserDetailResponse
 import com.pethiio.android.data.model.user.UserEditRequest
+import com.pethiio.android.data.model.vet.VetResponse
 import io.reactivex.Observable
 import okhttp3.MultipartBody
 import retrofit2.Response
@@ -342,6 +343,17 @@ interface PethiioServices {
     fun postUserAvatar(
         @Part file: MultipartBody.Part
     ): Observable<Response<Void>>
+
+    //endregion
+
+    //region Vet
+
+    @GET("page/veterinary/info")
+    fun getVetPageData(): Observable<PageData>
+
+    @GET("page/veterinary")
+    fun getVetInfos(): Observable<List<VetResponse>>
+
 
     //endregion
 

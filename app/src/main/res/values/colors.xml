@@ -28,8 +28,7 @@
     <color name="progress_color">#d7d7d7</color>
     <color name="vet_bg_color">#e6e6e6</color>
     <color name="vet_line_color">#fc5720</color>
-
-
+    <color name="transparent">#80000000</color>
 
 
 </resources>

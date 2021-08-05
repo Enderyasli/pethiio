@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/selectableItemBackground"
+    android:foreground="?attr/selectableItemBackground"
+    app:cardBackgroundColor="@android:color/white"
+    app:cardCornerRadius="20dp"
+    app:cardPreventCornerOverlap="false"
+    app:cardUseCompatPadding="true">
+
+
+    <com.makeramen.roundedimageview.RoundedImageView
+        android:id="@+id/item_pet_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"
+        app:riv_corner_radius="20dp" />
+
+    <!--    <RelativeLayout-->
+    <!--        android:layout_width="120dp"-->
+    <!--        android:layout_height="40dp"-->
+    <!--        android:layout_gravity="end"-->
+    <!--        android:layout_marginStart="@dimen/default_margin"-->
+    <!--        android:layout_marginTop="@dimen/default_margin"-->
+    <!--        android:layout_marginEnd="@dimen/default_margin"-->
+    <!--        android:layout_marginBottom="@dimen/default_margin"-->
+    <!--        android:orientation="vertical">-->
+
+    <!--        <com.makeramen.roundedimageview.RoundedImageView-->
+    <!--            android:id="@+id/owner_ly"-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="match_parent"-->
+    <!--            android:scaleType="centerCrop"-->
+    <!--            android:src="@color/white"-->
+    <!--            app:riv_corner_radius="8dp" />-->
+
+    <!--        <LinearLayout-->
+    <!--            android:layout_alignParentEnd="true"-->
+    <!--            android:layout_width="wrap_content"-->
+    <!--            android:layout_height="match_parent"-->
+    <!--            android:gravity="center">-->
+
+    <!--            <de.hdodenhof.circleimageview.CircleImageView-->
+    <!--                android:id="@+id/owner_image"-->
+    <!--                android:layout_width="30dp"-->
+    <!--                android:layout_height="30dp"-->
+    <!--                android:layout_marginStart="10dp" />-->
+
+    <!--            <TextView-->
+    <!--                android:id="@+id/item_owner_name"-->
+    <!--                android:layout_width="match_parent"-->
+    <!--                android:layout_height="wrap_content"-->
+    <!--                android:layout_marginStart="10dp"-->
+    <!--                android:layout_marginEnd="10dp"-->
+    <!--                android:fontFamily="@font/typo_round_bold"-->
+    <!--                android:maxLines="1"-->
+    <!--                tools:text="B"-->
+    <!--                android:textColor="@color/black"-->
+    <!--                android:textSize="@dimen/medium_size" />-->
+
+    <!--        </LinearLayout>-->
+
+
+    <!--    </RelativeLayout>-->
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_gravity="bottom"
+        android:background="@drawable/dashboard_bg"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/default_margin"
+            android:layout_marginEnd="@dimen/default_margin"
+            android:layout_marginBottom="@dimen/default_margin">
+
+
+            <!--        <com.makeramen.roundedimageview.RoundedImageView-->
+            <!--            android:id="@+id/name_ly_bg"-->
+            <!--            android:layout_width="match_parent"-->
+            <!--            android:layout_height="match_parent"-->
+            <!--            android:scaleType="centerCrop"-->
+            <!--            android:src="@color/white"-->
+            <!--            app:riv_corner_radius="8dp" />-->
+
+            <TextView
+                android:id="@+id/item_pet_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="15dp"
+                android:ellipsize="end"
+                android:fontFamily="@font/typo_round_bold"
+                android:maxLines="1"
+                android:textColor="@color/white"
+                android:textSize="@dimen/large_size" />
+
+            <TextView
+                android:id="@+id/item_breed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/item_pet_name"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="10dp"
+                android:ellipsize="end"
+                android:fontFamily="@font/typo_round_regular"
+                android:maxLines="1"
+                android:textColor="@color/white"
+                android:textSize="@dimen/medium_size" />
+
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/tutorial_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:src="@drawable/tutorial_image" />
+
+
+    <FrameLayout
+        android:id="@+id/left_overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/overlay_black">
+
+        <ImageView
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_gravity="center"
+            android:src="@drawable/x_btn" />
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/right_overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/overlay_black">
+
+        <ImageView
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_gravity="center"
+            android:backgroundTint="@color/white"
+            android:src="@drawable/hearth" />
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/top_overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <FrameLayout
+        android:id="@+id/bottom_overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+
+</androidx.cardview.widget.CardView>

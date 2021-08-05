@@ -12,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="26dp"
-        android:layout_marginTop="@dimen/signup_title_top_margin"
+        android:layout_marginTop="20dp"
         android:layout_marginBottom="3dp"
         android:fontFamily="@font/typo_round_bold"
         tools:text="Bul"
@@ -25,7 +25,7 @@
         android:layout_width="150dp"
         android:layout_height="40dp"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="55dp"
+        android:layout_marginTop="25dp"
         android:layout_marginEnd="17dp"
         android:background="@drawable/common_input_btn_bg"
         android:elevation="1dp"
@@ -38,6 +38,7 @@
 
 
     <LinearLayout
+        android:layout_below="@+id/title_tv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -64,6 +65,7 @@
                     android:layout_height="70dp"
                     android:layout_marginEnd="90dp"
                     android:visibility="gone"
+                    app:cardElevation="0dp"
                     app:cardBackgroundColor="@color/tinder_btn_color"
                     app:cardCornerRadius="25dp">
 
@@ -81,6 +83,7 @@
                     android:layout_height="70dp"
                     android:layout_toEndOf="@id/skip_button"
                     android:visibility="gone"
+                    app:cardElevation="0dp"
                     app:cardBackgroundColor="@color/tinder_btn_color"
                     app:cardCornerRadius="25dp">
 
@@ -97,6 +100,7 @@
                     android:layout_width="45dp"
                     android:layout_height="45dp"
                     android:layout_centerHorizontal="true"
+                    app:cardElevation="0dp"
                     android:layout_marginTop="60dp"
                     app:cardBackgroundColor="@color/slider_bg_color"
                     app:cardCornerRadius="15dp">
@@ -113,12 +117,12 @@
 
 
             <com.yuyakaido.android.cardstackview.CardStackView
+                android:layout_marginTop="30dp"
                 android:id="@+id/card_stack_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_above="@+id/button_container"
                 android:layout_marginLeft="@dimen/default_margin"
-                android:layout_marginTop="150dp"
                 android:layout_marginRight="@dimen/default_margin"
                 android:layout_marginBottom="40dp"
                 android:clipToPadding="false" />
