@@ -483,13 +483,13 @@ class DashboardFragment : BaseFragment(), CardStackListener,
                         adapter = CardStackAdapter(findNavController(), it)
                         searchList = it
                         initialize()
-                        spotlightLike()
                     }
                     if (it.data?.size == 0) {
                         binding.noResultLayout.visibility = View.VISIBLE
                         binding.skipButton.visibility = View.GONE
                         binding.likeButton.visibility = View.GONE
                     } else {
+                        spotlightLike()
                         binding.noResultLayout.visibility = View.GONE
                         binding.skipButton.visibility = View.VISIBLE
                         binding.likeButton.visibility = View.VISIBLE
@@ -713,6 +713,7 @@ class DashboardFragment : BaseFragment(), CardStackListener,
                     PreferenceHelper.SharedPreferencesManager.getInstance().selectedSpinnerId =
                         selectedMemberId
 
+                    // TODO: 6.08.2021 ilkinde yapma
                     spotlightSettings()
 
 

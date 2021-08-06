@@ -36,10 +36,15 @@ class VetAdapter(
             itemView.description_tv.text = pet.detail
 //            itemView.name_tv.text = pet.name
 
-//            itemView.whatsapp.setOnClickListener {
-//                val url = "https://api.whatsapp.com/send?phone=${pet.phone}"
-//                navController.navigate(Uri.parse(url))
-//            }
+            itemView.whatsapp.setOnClickListener {
+
+                    val url = "https://api.whatsapp.com/send?phone=${pet.phone}"
+                    val i = Intent(Intent.ACTION_VIEW)
+                    i.data = Uri.parse(url)
+                    startActivity(context,i,null)
+
+
+            }
 
 
         }
