@@ -6,8 +6,9 @@
         android:icon="@drawable/home_unselected"
         android:title="@string/bottom_menu_home" />
     <item
-        android:id="@+id/navigation_shop"
-        android:icon="@drawable/shop_icon" />
+        android:id="@+id/navigation_message"
+        android:icon="@drawable/message_icon"
+        android:title="@string/bottom_menu_message" />
     <item
         android:id="@+id/navigation_dashboard"
         android:title="" />
@@ -16,10 +17,9 @@
         android:icon="@drawable/vet_icon"
         android:title="Vet" />
     <item
-        android:id="@+id/navigation_message"
-        android:icon="@drawable/message_icon"
-        android:title="@string/bottom_menu_message" />
-
+        android:id="@+id/navigation_shop"
+        android:icon="@drawable/shop_icon"
+        android:title="" />
 
 
 </menu>
