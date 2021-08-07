@@ -1,5 +1,6 @@
 package com.pethiio.android.ui.main.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,6 +8,10 @@ import android.view.ViewGroup;
 
 import android.widget.TextView;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.pethiio.android.R;
 import com.pethiio.android.data.EventBus.ChatEvent;
 import com.pethiio.android.data.model.chat.ChatRoomResponse;
+import com.pethiio.android.utils.Constants;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -41,8 +47,7 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         void bind(int position) {
             ChatRoomResponse messageModel = list.get(position);
             messageTv.setText(messageModel.getContent());
-            timeTv.setText(messageModel.getTime());
-
+            timeTv.setText(getClock(messageModel));
         }
     }
 
@@ -60,7 +65,7 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         void bind(int position) {
             ChatRoomResponse messageModel = list.get(position);
             messageTv.setText(messageModel.getContent());
-            timeTv.setText(messageModel.getTime());
+            timeTv.setText(getClock(messageModel));
         }
     }
 
@@ -94,9 +99,28 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         notifyItemInserted(list.size() - 1);
     }
 
-    public int getListSize(){
-       return list.size();
+    private String getClock(ChatRoomResponse messageModel) {
+        try {
+            Calendar cal = Calendar.getInstance();
+            Date convertedDate;
+            @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
+            convertedDate = dateFormat.parse(messageModel.getTime());
+
+            cal.setTime(convertedDate);
+            int hours = cal.get(Calendar.HOUR_OF_DAY);
+            int mins = cal.get(Calendar.MINUTE);
+            return hours + ":" + mins;
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return "";
     }
+
+    public int getListSize() {
+        return list.size();
+    }
+
     @Override
     public int getItemCount() {
         return list.size();
