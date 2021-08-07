@@ -3,9 +3,9 @@
     <string name="app_name">Pethiio</string>
     <string name="Welcome" translatable="false">Welcome!</string>
     <string name="next" translatable="false">Next</string>
-    <string name="title_onboarding_3">Find a Companion</string>
-    <string name="title_onboarding_1" translatable="false">Find a Partner</string>
-    <string name="title_onboarding_2">Appropriate</string>
+    <string name="title_onboarding1">Find a Companion</string>
+    <string name="title_onboarding2" translatable="false">Find a Partner</string>
+    <string name="title_onboarding3">Appropriate</string>
     <string name="skip" translatable="false">Skip</string>
     <string name="welcome_description">To register, enter your information about yourself.</string>
     <string name="login">Login</string>

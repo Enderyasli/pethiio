@@ -23,16 +23,16 @@ class OnboardingViewPagerAdapter(
     override fun getItem(position: Int): Fragment {
         return when (position) {
             0 -> OnBoardingInsideFragment.newInstance(
-                context.resources.getString(R.string.title_onboarding_1),
-                R.drawable.onboard1
+                context.resources.getString(R.string.title_onboarding1),
+                R.drawable.onboardfirst
             )
             1 -> OnBoardingInsideFragment.newInstance(
-                context.resources.getString(R.string.title_onboarding_2),
-                R.drawable.onboard2
+                context.resources.getString(R.string.title_onboarding2),
+                R.drawable.onboardmid
             )
             2 -> OnBoardingInsideFragment.newInstance(
-                context.resources.getString(R.string.title_onboarding_3),
-                R.drawable.onboard3,
+                context.resources.getString(R.string.title_onboarding3),
+                R.drawable.onboardlast,
             )
             else -> null
         }!!

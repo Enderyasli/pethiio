@@ -3,8 +3,8 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
     <string name="skip">Skip</string>
-    <string name="title_onboarding_2">Appropriate</string>
-    <string name="title_onboarding_3">Find a Companion</string>
+    <string name="title_onboarding3">Appropriate</string>
+    <string name="title_onboarding1">Find a Companion</string>
     <string name="next">Next</string>
     <string name="Welcome">Welcome!</string>
     <string name="welcome_description">To register, enter your information about yourself.</string>
@@ -18,7 +18,7 @@
     <string name="select_purpose">Select Purpose</string>
     <string name="bottom_menu_message">Mesajlar</string>
     <string name="bottom_menu_home">Home</string>
-    <string name="title_onboarding_1">Find a Partner</string>
+    <string name="title_onboarding2">Find a Partner</string>
     <string name="ok">Ok</string>
     <string name="sure_logout">Are you sure you want to log out?</string>
     <string name="logout">Log Out</string>

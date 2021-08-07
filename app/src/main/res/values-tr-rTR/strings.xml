@@ -4,9 +4,9 @@
     <string name="select_character">Karakter Seçiniz</string>
     <string name="Welcome" translatable="false">Hoşgeldin!</string>
     <string name="next" translatable="false">Sonraki</string>
-    <string name="title_onboarding_3">Arkadaş Bul</string>
-    <string name="title_onboarding_1" translatable="false">Çiftleştir</string>
-    <string name="title_onboarding_2">Sahiplen</string>
+    <string name="title_onboarding1">Arkadaş Bul</string>
+    <string name="title_onboarding2" translatable="false">Eş Bul</string>
+    <string name="title_onboarding3">Sahiplen</string>
     <string name="skip" translatable="false">Geç</string>
     <string name="welcome_description" translatable="false">Kayıt olmak için kendinle ilgili bilgilerini gir.</string>
     <string name="login" translatable="false">Giriş Yap</string>
