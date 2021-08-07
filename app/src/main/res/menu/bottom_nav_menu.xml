@@ -15,11 +15,11 @@
     <item
         android:id="@+id/navigation_vet"
         android:icon="@drawable/vet_icon"
-        android:title="Vet" />
+        android:title="@string/bottom_menu_vet" />
     <item
         android:id="@+id/navigation_shop"
         android:icon="@drawable/shop_icon"
-        android:title="" />
+        android:title="@string/bottom_menu_shop" />
 
 
 </menu>

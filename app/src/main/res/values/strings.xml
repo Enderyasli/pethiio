@@ -23,5 +23,10 @@
     <string name="sure_logout">Are you sure you want to log out?</string>
     <string name="logout">Log Out</string>
     <string name="something_went_wrong">Something went wrong.Please try again</string>
+    <string name="bottom_menu_vet">Vet</string>
+    <string name="bottom_menu_shop">Shop</string>
+    <string name="spotlight_memberlist">Bu bölümden tüm hayvanlar için ayrı ayrı arama yapabilirsin.</string>
+    <string name="spotlight_like">Profili sağa kaydırıp beğenebilir veya sola kaydırıp diğer profillere bakmaya devam edebilirsiniz.</string>
+    <string name="spotlight_settings">Buradan yaptığın aramaları özelleştirebilirsin.</string>
 
 </resources>

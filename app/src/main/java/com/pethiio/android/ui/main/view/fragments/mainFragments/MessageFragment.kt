@@ -77,10 +77,7 @@ class MessageFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
 
         fromNotification = arguments?.getBoolean("fromNotification", false) == true
 
-        if (fromNotification) {
-            roomId = arguments?.getInt("roomId", 0)!!
-            memberId = arguments?.getInt("memberId", 0)!!
-        }
+
 
 
         setupViewModel()
@@ -105,9 +102,21 @@ class MessageFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
     fun setMembeListSpinner(memberListResponse: List<MemberListResponse>) {
         val customAdapter = MemberListSpinner(requireContext(), memberListResponse)
 
+
+
+
         if (PreferenceHelper.SharedPreferencesManager.getInstance().selectedSpinnerId <= memberListResponse.size - 1)
             selectedMemberId =
                 PreferenceHelper.SharedPreferencesManager.getInstance().selectedSpinnerId
+
+        if (fromNotification) {
+            roomId = arguments?.getInt("roomId", 0)!!
+            memberId = arguments?.getInt("memberId", 0)!!
+            memberListResponse.forEachIndexed { index, memberListResponse ->
+                if (memberListResponse.id == memberId)
+                    selectedMemberId = index
+            }
+        }
         if (isSelectedMemberFirstTime)
             with(binding.memberlistSpinner)
             {

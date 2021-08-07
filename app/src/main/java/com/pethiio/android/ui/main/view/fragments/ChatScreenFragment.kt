@@ -183,16 +183,15 @@ class ChatScreenFragment : BaseFragment() {
 
 
 
-                    it.data?.get(it.data.size - 1)?.id?.let { it1 ->
+                    if (it.data?.size!! > 0)
                         ChatUpdateStateRequest(
-                            it1,
+                            it.data[it.data.size - 1].id,
                             roomId,
                             senderMemberId = memberId,
                             "SEEN"
-                        )
-                    }?.let { it2 -> viewModel.updateChatState(it2) }
+                        ).let { it2 -> viewModel.updateChatState(it2) }
 
-                    it.data?.forEach { chat ->
+                    it.data.forEach { chat ->
 
                         binding.reportIv.setOnClickListener {
 
