@@ -713,7 +713,7 @@ class DashboardFragment : BaseFragment(), CardStackListener,
                     PreferenceHelper.SharedPreferencesManager.getInstance().selectedSpinnerId =
                         selectedMemberId
 
-                    // TODO: 6.08.2021 ilkinde yapma
+                    if(PreferenceHelper.SharedPreferencesManager.getInstance().isLikedOnce)
                     spotlightSettings()
 
 
