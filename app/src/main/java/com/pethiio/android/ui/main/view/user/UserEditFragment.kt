@@ -16,6 +16,7 @@ import android.widget.ArrayAdapter
 import android.widget.ImageView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import com.bigkoo.pickerview.builder.TimePickerBuilder
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.SimpleTarget
@@ -126,6 +127,11 @@ class UserEditFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
                             Constants.saveButtonTitle,
                             pageDataFields
                         )
+                    binding.cancelBtn.text =
+                        getLocalizedString(
+                            Constants.cancelButtonTitle,
+                            pageDataFields
+                        )
 
                     val gender = getLookUps(Constants.lookUpGender, lookUps)
                     val genderAdapter =
@@ -199,6 +205,9 @@ class UserEditFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
                     })
 
 
+                    binding.cancelBtn.setOnClickListener {
+                        findNavController().popBackStack()
+                    }
                     binding.saveBtn.setOnClickListener {
 
                         val validSpinner = binding.genderLy.spinner.selectedItem != null
@@ -264,75 +273,77 @@ class UserEditFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
                             )
                         }
 
-                viewModel.getUserEditResponse().observe(viewLifecycleOwner, {
-                    when (it.status) {
-                        Status.SUCCESS -> {
-                            activity?.runOnUiThread {
+                        viewModel.getUserEditResponse().observe(viewLifecycleOwner, {
+                            when (it.status) {
+                                Status.SUCCESS -> {
+                                    activity?.runOnUiThread {
 
-                                if (!TextUtils.isEmpty(profileUri)) {
+                                        if (!TextUtils.isEmpty(profileUri)) {
 
-                                    val file = File(profileUri)
-                                    val requestBody =
-                                        file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
-                                    val filePart =
-                                        MultipartBody.Part.createFormData(
-                                            "file",
-                                            file.name,
-                                            requestBody
-                                        )
+                                            val file = File(profileUri)
+                                            val requestBody =
+                                                file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
+                                            val filePart =
+                                                MultipartBody.Part.createFormData(
+                                                    "file",
+                                                    file.name,
+                                                    requestBody
+                                                )
 
-                                    viewModel.postUserAvatar(filePart)
-                                    viewModel.getUserAvatarResponse().observe(
-                                        viewLifecycleOwner,
-                                        { it1 ->
-                                            when (it1.status) {
-                                                Status.SUCCESS -> {
-                                                    activity?.runOnUiThread {
+                                            viewModel.postUserAvatar(filePart)
+                                            viewModel.getUserAvatarResponse().observe(
+                                                viewLifecycleOwner,
+                                                { it1 ->
+                                                    when (it1.status) {
+                                                        Status.SUCCESS -> {
+                                                            activity?.runOnUiThread {
 
-                                                        // TODO: 31.07.2021 ansayfaya dönke
+                                                                // TODO: 31.07.2021 ansayfaya dönke
+                                                            }
+
+                                                        }
+                                                        Status.ERROR -> {
+                                                            CommonMethods.onSNACK(
+                                                                binding.root,
+                                                                it1.message.toString()
+                                                            )
+
+
+                                                        }
+                                                        Status.LOADING -> {
+                                                        }
                                                     }
+                                                })
 
-                                                }
-                                                Status.ERROR -> {
-                                                    CommonMethods.onSNACK(
-                                                        binding.root,
-                                                        it1.message.toString()
-                                                    )
+                                        } else {
+                                            CommonMethods.onSNACK(
+                                                binding.root,
+                                                getLocalizedString(
+                                                    Constants.imageEmtpyError,
+                                                    pageDataFields
+                                                )
+                                            )
 
 
-                                                }
-                                                Status.LOADING -> {
-                                                }
-                                            }
-                                        })
+                                        }
 
-                                } else {
-                                    CommonMethods.onSNACK(
-                                        binding.root,
-                                        getLocalizedString(Constants.imageEmtpyError,pageDataFields)
-                                    )
-
+                                    }
 
                                 }
+                                Status.ERROR -> {
+                                    CommonMethods.onSNACK(binding.root, it.message.toString())
 
+                                }
+                                Status.LOADING -> {
+                                }
                             }
-
-                        }
-                        Status.ERROR -> {
-                            CommonMethods.onSNACK(binding.root, it.message.toString())
-
-                        }
-                        Status.LOADING -> {
-                        }
-                    }
-                })
-
-            }
+                        })
 
                     }
 
                 }
 
+            }
 
 
         })

@@ -193,13 +193,23 @@
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/common_button_height"
                         android:layout_marginTop="48dp"
-                        android:layout_marginBottom="50dp"
                         android:background="@drawable/orange_button_bg"
                         android:fontFamily="@font/typo_round_bold"
                         android:textAllCaps="false"
                         android:textColor="@color/white"
                         android:textSize="@dimen/medium_size"
                         tools:text="Kaydet" />
+                    <TextView
+                        android:id="@+id/cancel_btn"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="32dp"
+                        android:layout_marginBottom="50dp"
+                        android:fontFamily="@font/typo_round_bold"
+                        android:gravity="center"
+                        android:textColor="@color/orangeButton"
+                        android:textSize="@dimen/medium_size"
+                        tools:text="@string/lcl_cancel_datepicker" />
 
 
                 </LinearLayout>

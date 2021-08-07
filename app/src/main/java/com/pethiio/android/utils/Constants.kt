@@ -217,6 +217,8 @@ class Constants {
         //region User Edit
 
         const val saveButtonTitle: String = "saveButtonTitle"
+        const val cancelButtonTitle: String = "cancelButtonTitle"
+
 
         //endregion
         const val whatsappError: String = "whatsappError"

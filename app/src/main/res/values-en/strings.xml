@@ -10,7 +10,7 @@
     <string name="welcome_description">To register, enter your information about yourself.</string>
     <string name="login">Login</string>
     <string name="sign_up">Register</string>
-    <string name="bottom_menu_message">Messages</string>
+    <string name="bottom_menu_message">Chat</string>
     <string name="select_purpose">Select Purpose</string>
     <string name="select_character">Select Character</string>
     <string name="lcl_apply_datepicker">Done</string>
