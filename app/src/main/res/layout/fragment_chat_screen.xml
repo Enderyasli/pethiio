@@ -24,13 +24,21 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center">
 
-                <ImageView
-                    android:id="@+id/backIv"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_gravity="center"
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/back_btn"
+                    android:layout_width="34dp"
+                    android:layout_height="34dp"
+                    android:layout_marginBottom="2dp"
+                    android:layout_marginTop="2dp"
                     android:layout_marginStart="@dimen/default_margin"
-                    android:src="@drawable/back_arrow" />
+                    app:cardCornerRadius="17dp">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/back_arrow" />
+                </androidx.cardview.widget.CardView>
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/profile_image"

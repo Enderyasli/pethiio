@@ -117,7 +117,7 @@ class ChatScreenFragment : BaseFragment() {
 
 
 
-        binding.backIv.setOnClickListener {
+        binding.backBtn.setOnClickListener {
             onDestroy()
             findNavController().navigate(R.id.navigation_message)
         }

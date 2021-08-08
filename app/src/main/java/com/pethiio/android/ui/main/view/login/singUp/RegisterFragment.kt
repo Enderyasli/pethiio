@@ -50,6 +50,10 @@ class RegisterFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
 
         isSelectedFirstTime = true
 
+           binding.backBtn.setOnClickListener {
+            findNavController().navigateUp()
+        }
+
 
         binding.passwordPlaceholderTv.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {

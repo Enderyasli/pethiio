@@ -10,7 +10,7 @@
         android:id="@+id/bottomNav_view"
         android:layout_width="0dp"
         android:layout_height="60dp"
-        app:labelVisibilityMode="labeled"
+        app:labelVisibilityMode="unlabeled"
         android:theme="@style/Widget.BottomNavigationView"
         android:labelFor="@+id/navigation_home"
         android:layout_marginStart="0dp"

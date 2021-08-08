@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:expandableTextView="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,13 +8,20 @@
     android:orientation="vertical"
     tools:context=".ui.main.view.fragments.settings.SupportFragment">
 
-    <ImageView
+    <androidx.cardview.widget.CardView
         android:id="@+id/back_btn"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_marginLeft="@dimen/default_margin"
+        android:layout_width="34dp"
+        android:layout_height="34dp"
+        android:layout_marginStart="@dimen/default_margin"
         android:layout_marginTop="50dp"
-        android:src="@drawable/back_arrow" />
+        app:cardCornerRadius="17dp">
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center"
+            android:src="@drawable/back_arrow" />
+    </androidx.cardview.widget.CardView>
 
     <TextView
         android:id="@+id/title_tv"
@@ -29,10 +37,10 @@
 
 
     <androidx.recyclerview.widget.RecyclerView
-        android:layout_below="@id/title_tv"
         android:id="@+id/faqRecycler"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/title_tv"
         android:layout_marginLeft="@dimen/default_margin"
         android:layout_marginTop="40dp"
         android:layout_marginRight="@dimen/default_margin" />
@@ -40,9 +48,9 @@
 
     <LinearLayout
         android:id="@+id/go_report_ly"
-        android:layout_below="@+id/faqRecycler"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/faqRecycler"
         android:layout_marginLeft="@dimen/default_margin"
         android:layout_marginTop="34dp"
         android:layout_marginRight="@dimen/default_margin"

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -10,13 +11,20 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <ImageView
+        <androidx.cardview.widget.CardView
             android:id="@+id/back_btn"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="34dp"
+            android:layout_height="34dp"
             android:layout_marginStart="@dimen/default_margin"
             android:layout_marginTop="50dp"
-            android:src="@drawable/back_arrow" />
+            app:cardCornerRadius="17dp">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center"
+                android:src="@drawable/back_arrow" />
+        </androidx.cardview.widget.CardView>
 
         <TextView
             android:id="@+id/title_tv"
@@ -39,10 +47,10 @@
             android:layout_marginTop="200dp"
             android:layout_marginRight="@dimen/default_margin"
             android:fontFamily="@font/typo_round_regular"
-            tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Semper dolor suscipit cras in at nam. Quam sed eget dui, elit sit. Senectus augue integer volutpat sed fames. A, orci, cras ridiculus id at feugiat euismod neque. Volutpat amet nulla massa velit libero, eget mi, diam condimentum. A mauris sagittis ante euismod. Tellus et libero tempor feugiat et et.
-Molestie odio scelerisque dictum et sagittis. Sit aliquam sagittis aliquam sed a, nibh lorem at. Malesuada eros, interdum et eget sollicitudin aliquet sociis. Ultrices turpis orci, ipsum consectetur turpis. Quis maecenas vitae massa egestas congue. Aliquam enim justo, tellus donec sed id imperdiet vitae. Lectus euismod et nisl non, nunc magna lobortis ullamcorper quisque. "
             android:textColor="@color/grey"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Semper dolor suscipit cras in at nam. Quam sed eget dui, elit sit. Senectus augue integer volutpat sed fames. A, orci, cras ridiculus id at feugiat euismod neque. Volutpat amet nulla massa velit libero, eget mi, diam condimentum. A mauris sagittis ante euismod. Tellus et libero tempor feugiat et et.
+Molestie odio scelerisque dictum et sagittis. Sit aliquam sagittis aliquam sed a, nibh lorem at. Malesuada eros, interdum et eget sollicitudin aliquet sociis. Ultrices turpis orci, ipsum consectetur turpis. Quis maecenas vitae massa egestas congue. Aliquam enim justo, tellus donec sed id imperdiet vitae. Lectus euismod et nisl non, nunc magna lobortis ullamcorper quisque. " />
 
     </RelativeLayout>
 </ScrollView>

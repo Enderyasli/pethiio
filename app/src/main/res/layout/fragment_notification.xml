@@ -8,13 +8,21 @@
     tools:context=".ui.main.view.fragments.NotificationFragment">
 
 
-    <ImageView
+    <androidx.cardview.widget.CardView
         android:id="@+id/back_btn"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
+        android:layout_width="34dp"
+        android:layout_height="34dp"
         android:layout_marginStart="@dimen/default_margin"
         android:layout_marginTop="50dp"
-        android:src="@drawable/back_arrow" />
+        app:cardCornerRadius="17dp">
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center"
+            android:src="@drawable/back_arrow" />
+
+    </androidx.cardview.widget.CardView>
 
     <TextView
         android:id="@+id/title_tv"
