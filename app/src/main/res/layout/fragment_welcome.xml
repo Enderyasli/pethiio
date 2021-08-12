@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.main.view.login.WelcomeFragment">
 
     <ImageView
@@ -35,6 +36,20 @@
         android:text="@string/welcome_description"
         android:textColor="@color/white"
         android:textSize="22sp" />
+
+    <com.google.android.gms.common.SignInButton
+        android:id="@+id/sign_in_btn"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_above="@+id/signup_btn"
+        android:layout_marginLeft="@dimen/default_margin"
+        android:layout_marginRight="@dimen/default_margin"
+        android:layout_marginBottom="25dp"
+        android:background="@drawable/orange_button_bg"
+        android:fontFamily="@font/typo_round_bold"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="@dimen/medium_size" />
 
     <Button
         android:id="@+id/signup_btn"
