@@ -8,17 +8,28 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+
+                <ImageView
+                    android:id="@+id/back_btn"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginStart="@dimen/default_margin"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/back_arrow" />
+
+
             <RelativeLayout
                 android:id="@+id/top_ly"
                 android:layout_width="match_parent"
-                android:layout_height="295dp">
+                android:layout_height="190dp">
 
                 <FrameLayout
                     android:layout_width="match_parent"
@@ -38,18 +49,6 @@
                     android:textSize="37sp"
                     tools:text="Profilini Düzenle" />
 
-                <TextView
-                    android:id="@+id/signup_description"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/signup_title"
-                    android:layout_marginLeft="@dimen/default_margin"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginRight="@dimen/default_margin"
-                    android:textColor="@color/grey"
-                    android:textSize="22sp"
-                    tools:text="Enter Your Information about yourself to register." />
-
             </RelativeLayout>
 
 
@@ -67,29 +66,39 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
-                    android:layout_marginTop="41dp"
+                    android:layout_marginTop="25dp"
                     android:layout_marginRight="20dp"
                     android:orientation="vertical">
-
-                    <include
-                        android:id="@+id/nameLy"
-                        layout="@layout/common_rounded_input_tv"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="25dp" />
-
-                    <include
-                        android:id="@+id/surnameLy"
-                        layout="@layout/common_rounded_input_tv"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="25dp" />
-
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="25dp"
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+
+                        <include
+                            android:id="@+id/nameLy"
+                            layout="@layout/common_rounded_input_tv"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="5dp"
+                            android:layout_weight="1" />
+
+                        <include
+                            android:id="@+id/surnameLy"
+                            layout="@layout/common_rounded_input_tv"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="5dp"
+                            android:layout_weight="1" />
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
                         android:orientation="vertical">
 
 
@@ -137,12 +146,12 @@
                         layout="@layout/common_spinner_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="25dp" />
+                        android:layout_marginTop="16dp" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="25dp"
+                        android:layout_marginTop="16dp"
                         android:orientation="vertical">
 
 
@@ -172,7 +181,7 @@
                             <EditText
                                 android:id="@+id/about_placeholder_tv"
                                 android:layout_width="match_parent"
-                                android:layout_height="120dp"
+                                android:layout_height="100dp"
                                 android:background="@drawable/common_input_btn_bg"
                                 android:fontFamily="@font/typo_round_regular"
                                 android:gravity="left"
@@ -192,24 +201,13 @@
                         android:id="@+id/save_btn"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/common_button_height"
-                        android:layout_marginTop="48dp"
+                        android:layout_marginTop="16dp"
                         android:background="@drawable/orange_button_bg"
                         android:fontFamily="@font/typo_round_bold"
                         android:textAllCaps="false"
                         android:textColor="@color/white"
                         android:textSize="@dimen/medium_size"
                         tools:text="Kaydet" />
-                    <TextView
-                        android:id="@+id/cancel_btn"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="32dp"
-                        android:layout_marginBottom="50dp"
-                        android:fontFamily="@font/typo_round_bold"
-                        android:gravity="center"
-                        android:textColor="@color/orangeButton"
-                        android:textSize="@dimen/medium_size"
-                        tools:text="@string/lcl_cancel_datepicker" />
 
 
                 </LinearLayout>
@@ -224,7 +222,7 @@
             android:layout_height="75dp"
             android:layout_centerHorizontal="true"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="212.5dp"
+            android:layout_marginTop="107.5dp"
             app:cardBackgroundColor="#F0F0F0"
             app:cardCornerRadius="37.5dp"
             app:cardElevation="2dp">
@@ -240,7 +238,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="222.5dp"
+            android:layout_marginTop="117.5dp"
             android:layout_toEndOf="@id/imagelY"
             android:text="*"
             android:textColor="@color/red"

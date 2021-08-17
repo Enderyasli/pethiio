@@ -104,8 +104,6 @@ class UserEditFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
                     lookUps?.let { it1 -> setLookUps(it1) }
                     binding.signupTitle.text =
                         getLocalizedString(Constants.registerTitle, pageDataFields)
-                    binding.signupDescription.text =
-                        getLocalizedString(Constants.registerSubTitle, pageDataFields)
                     binding.nameLy.titleTv.text =
                         getLocalizedString(Constants.registerNameTitle, pageDataFields)
                     binding.surnameLy.titleTv.text =
@@ -127,11 +125,7 @@ class UserEditFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
                             Constants.saveButtonTitle,
                             pageDataFields
                         )
-                    binding.cancelBtn.text =
-                        getLocalizedString(
-                            Constants.cancelButtonTitle,
-                            pageDataFields
-                        )
+
 
                     val gender = getLookUps(Constants.lookUpGender, lookUps)
                     val genderAdapter =
@@ -205,7 +199,7 @@ class UserEditFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
                     })
 
 
-                    binding.cancelBtn.setOnClickListener {
+                    binding.backBtn.setOnClickListener {
                         findNavController().popBackStack()
                     }
                     binding.saveBtn.setOnClickListener {
@@ -298,7 +292,7 @@ class UserEditFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
                                                         Status.SUCCESS -> {
                                                             activity?.runOnUiThread {
 
-                                                                // TODO: 31.07.2021 ansayfaya dönke
+                                                                findNavController().navigateUp()
                                                             }
 
                                                         }
