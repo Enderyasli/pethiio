@@ -6,7 +6,7 @@
     android:id="@+id/scrollView"
     android:layout_height="match_parent"
     android:background="@color/marineButton"
-    tools:context=".ui.main.view.fragments.PetDetailFragment">
+    tools:context=".ui.main.view.fragments.pet.PetDetailFragment">
 
     <RelativeLayout
         android:id="@+id/main_layout"

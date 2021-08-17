@@ -4,19 +4,35 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.main.view.login.singUp.PetAddImageFragment">
+    tools:context=".ui.main.view.fragments.pet.PetAddImageFragment">
+
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+        <androidx.cardview.widget.CardView
+            android:id="@+id/back_btn"
+            android:layout_width="34dp"
+            android:layout_height="34dp"
+            android:layout_marginStart="@dimen/default_margin"
+            android:layout_marginTop="20dp"
+            app:cardCornerRadius="17dp">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center"
+                android:src="@drawable/back_arrow" />
+
+        </androidx.cardview.widget.CardView>
 
         <TextView
             android:id="@+id/animal_add_photo_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/default_margin"
-            android:layout_marginTop="@dimen/signup_title_top_margin"
+            android:layout_marginTop="10dp"
             android:layout_marginRight="@dimen/default_margin"
             android:fontFamily="@font/typo_round_bold"
             tools:text="Fotograf ekle"

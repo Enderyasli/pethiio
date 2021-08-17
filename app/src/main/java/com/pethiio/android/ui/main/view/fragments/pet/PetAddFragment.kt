@@ -78,7 +78,9 @@ class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
 
         if (!TextUtils.isEmpty(petId)) {
 
-            petId?.let { viewModel.getUserPetDetail(it) }
+            petId?.let {
+                viewModel.getUserPetDetail(it)
+            }
         }
 
         val callback: OnBackPressedCallback =
@@ -97,7 +99,15 @@ class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
             }
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
 
+        binding.backBtn.setOnClickListener {
 
+            if (PreferenceHelper.SharedPreferencesManager.getInstance().isLoggedIn == false) {
+                if (findNavController().currentDestination?.id == R.id.navigation_pet_add)
+                    findNavController().navigate(R.id.navigation_welcome)
+            } else {
+                findNavController().navigateUp()
+            }
+        }
     }
 
 
@@ -115,8 +125,14 @@ class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
         _binding = FragmentPetAddBinding.inflate(inflater, container, false)
         val view = binding.root
 
+        if(petId.equals(""))
         petId = arguments?.getString("animalId", "")
 
+        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<String>("petId")
+            ?.observe(viewLifecycleOwner) {
+                petId = it
+                setUpViews()
+            }
 
         binding.skipBtn.setOnClickListener {
 
@@ -130,27 +146,45 @@ class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
                 return@setOnClickListener
 
             if (binding.yearLy.spinner.selectedItem == null) {
-                CommonMethods.onSNACK(binding.root, getLocalizedString(Constants.yearEmtpyError))
+                CommonMethods.onSNACK(
+                    binding.root,
+                    getLocalizedString(Constants.yearEmtpyError)
+                )
                 return@setOnClickListener
             }
             if (binding.monthLy.spinner.selectedItem == null) {
-                CommonMethods.onSNACK(binding.root, getLocalizedString(Constants.monthEmtpyError))
+                CommonMethods.onSNACK(
+                    binding.root,
+                    getLocalizedString(Constants.monthEmtpyError)
+                )
                 return@setOnClickListener
             }
             if (binding.genderLy.spinner.selectedItem == null) {
-                CommonMethods.onSNACK(binding.root, getLocalizedString(Constants.genderEmtpyError))
+                CommonMethods.onSNACK(
+                    binding.root,
+                    getLocalizedString(Constants.genderEmtpyError)
+                )
                 return@setOnClickListener
             }
             if (binding.typeLy.spinner.selectedItem == null) {
-                CommonMethods.onSNACK(binding.root, getLocalizedString(Constants.typeEmtpyError))
+                CommonMethods.onSNACK(
+                    binding.root,
+                    getLocalizedString(Constants.typeEmtpyError)
+                )
                 return@setOnClickListener
             }
             if (binding.breedLy.spinner.selectedItem == null) {
-                CommonMethods.onSNACK(binding.root, getLocalizedString(Constants.breedEmtpyError))
+                CommonMethods.onSNACK(
+                    binding.root,
+                    getLocalizedString(Constants.breedEmtpyError)
+                )
                 return@setOnClickListener
             }
             if (binding.colorLy.spinner.selectedItem == null) {
-                CommonMethods.onSNACK(binding.root, getLocalizedString(Constants.colorEmtpyError))
+                CommonMethods.onSNACK(
+                    binding.root,
+                    getLocalizedString(Constants.colorEmtpyError)
+                )
                 return@setOnClickListener
             }
 
@@ -191,7 +225,8 @@ class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
             var purpose = ""
             val purposeId = binding.radioGroup.checkedRadioButtonId
             if (purposeId != -1) {
-                val selectedRadioButton = binding.radioGroup.findViewById<RadioButton>(purposeId)
+                val selectedRadioButton =
+                    binding.radioGroup.findViewById<RadioButton>(purposeId)
 
                 if (selectedRadioButton != null)
                     purpose = getLookUpKey(
@@ -291,7 +326,12 @@ class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
                     }
                 }
                 Status.ERROR -> {
-                    it.message?.let { it1 -> CommonMethods.onSNACK(binding.root, it1.toString()) }
+                    it.message?.let { it1 ->
+                        CommonMethods.onSNACK(
+                            binding.root,
+                            it1.toString()
+                        )
+                    }
 
                 }
                 Status.LOADING -> {
@@ -311,7 +351,12 @@ class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
                     }
                 }
                 Status.ERROR -> {
-                    it.message?.let { it1 -> CommonMethods.onSNACK(binding.root, it1.toString()) }
+                    it.message?.let { it1 ->
+                        CommonMethods.onSNACK(
+                            binding.root,
+                            it1.toString()
+                        )
+                    }
                 }
                 Status.LOADING -> {
                 }
@@ -335,7 +380,8 @@ class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
 
                     binding.petAddTitle.text = getLocalizedString(Constants.petaboutTitle)
 
-                    binding.skipBtn.text = getLocalizedString(Constants.animalAddNextButtonTitle)
+                    binding.skipBtn.text =
+                        getLocalizedString(Constants.animalAddNextButtonTitle)
                     binding.nameLy.titleTv.text = getLocalizedSpan(Constants.registerNameTitle)
                     binding.nameLy.placeholderTv.hint =
                         getLocalizedString(Constants.registerNamePlaceholder)
@@ -343,10 +389,13 @@ class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
 
                     binding.yearLy.titleTv.text = getLocalizedSpan(Constants.animalAddYearTitle)
                     binding.monthLy.titleTv.visibility = View.INVISIBLE
-                    binding.genderLy.titleTv.text = getLocalizedSpan(Constants.animalAddGenderTitle)
+                    binding.genderLy.titleTv.text =
+                        getLocalizedSpan(Constants.animalAddGenderTitle)
                     binding.typeLy.titleTv.text = getLocalizedSpan(Constants.animalAddTypeTitle)
-                    binding.breedLy.titleTv.text = getLocalizedSpan(Constants.animalAddBreedTitle)
-                    binding.colorLy.titleTv.text = getLocalizedSpan(Constants.animalAddColorTitle)
+                    binding.breedLy.titleTv.text =
+                        getLocalizedSpan(Constants.animalAddBreedTitle)
+                    binding.colorLy.titleTv.text =
+                        getLocalizedSpan(Constants.animalAddColorTitle)
                     binding.characterTitleTv.text =
                         getLocalizedString(Constants.animalAddCharacterTitle)
                     binding.aboutTitleTv.text = getLocalizedSpan(Constants.petaboutTitle)

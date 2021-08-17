@@ -225,6 +225,8 @@ class DashboardFragment : BaseFragment(), CardStackListener,
                         )
                     )
             } else {
+                viewModel.fetchMemberList()
+                viewModel.fetchFilterList()
                 val exception = task.exception
                 "Location (failure): $exception"
             }

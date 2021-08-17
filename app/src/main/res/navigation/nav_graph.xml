@@ -107,23 +107,19 @@
         android:id="@+id/navigation_pet_add"
         android:name="com.pethiio.android.ui.main.view.fragments.pet.PetAddFragment"
         android:label="AddAnimal"
-        app:launchSingleTop="true"
         tools:layout="@layout/fragment_pet_add">
         <action
             android:id="@+id/action_navigation_pet_add_to_navigation_photo"
             app:destination="@id/navigation_pet_add_photo"
             app:enterAnim="@anim/slide_left"
-            app:launchSingleTop="true"
-            app:popUpTo="@id/navigation_home"
             app:popUpToInclusive="true" />
     </fragment>
 
     <fragment
         android:id="@+id/navigation_pet_add_photo"
-        android:name="com.pethiio.android.ui.main.view.login.singUp.PetAddImageFragment"
+        android:name="com.pethiio.android.ui.main.view.fragments.pet.PetAddImageFragment"
         android:label="PetAddImage"
         app:launchSingleTop="true"
-        app:popUpTo="@id/navigation_home"
         tools:layout="@layout/fragment_pet_add_image">
         <action
             android:id="@+id/action_navigation_pet_add_image_to_navigation_animal_list"
@@ -247,7 +243,7 @@
 
         <fragment
             android:id="@+id/navigation_pet_detail"
-            android:name="com.pethiio.android.ui.main.view.fragments.PetDetailFragment"
+            android:name="com.pethiio.android.ui.main.view.fragments.pet.PetDetailFragment"
             android:label="PetDetail"
             tools:layout="@layout/fragment_pet_detail" />
 

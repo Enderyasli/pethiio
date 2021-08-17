@@ -1,10 +1,9 @@
-package com.pethiio.android.ui.main.view.login.singUp
+package com.pethiio.android.ui.main.view.fragments.pet
 
 import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
-import android.os.Handler
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
@@ -18,7 +17,6 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
 import com.pethiio.android.R
-import com.pethiio.android.data.EventBus.LoginEvent
 import com.pethiio.android.data.model.petDetail.PetImageResponse
 import com.pethiio.android.databinding.FragmentPetAddImageBinding
 import com.pethiio.android.ui.base.RegisterBaseFragment
@@ -31,7 +29,6 @@ import com.theartofdev.edmodo.cropper.CropImage
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
-import org.greenrobot.eventbus.EventBus
 import java.io.File
 
 
@@ -100,13 +97,12 @@ class PetAddImageFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
         _binding = FragmentPetAddImageBinding.inflate(inflater, container, false)
         val view = binding.root
 
-        val callback: OnBackPressedCallback =
-            object : OnBackPressedCallback(false) {
-                override fun handleOnBackPressed() {
 
-                }
-            }
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
+        binding.backBtn.setOnClickListener {
+                findNavController().previousBackStackEntry?.savedStateHandle?.set("petId", petId)
+                findNavController().popBackStack()
+
+        }
 
         binding.photoAddAnim.setAnimation("foto_ekle.json")
 

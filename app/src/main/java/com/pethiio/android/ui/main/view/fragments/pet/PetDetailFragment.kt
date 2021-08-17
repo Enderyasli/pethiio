@@ -1,4 +1,4 @@
-package com.pethiio.android.ui.main.view.fragments
+package com.pethiio.android.ui.main.view.fragments.pet
 
 import android.annotation.SuppressLint
 import android.graphics.Color
@@ -7,14 +7,12 @@ import android.os.Bundle
 import android.os.Handler
 import android.view.*
 import android.widget.PopupMenu
-import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.google.android.gms.common.internal.service.Common
 import com.pethiio.android.R
 import com.pethiio.android.data.EventBus.LikeEvent
 import com.pethiio.android.data.model.petDetail.PetSearchDetailResponse
