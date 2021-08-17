@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">Pethiio</string>
-    <string name="server_client_id" translatable="false">800041216855-bt5ujgp18onmk7s98adp0f57sgd845ec.apps.googleusercontent.com</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
     <string name="skip">Skip</string>
