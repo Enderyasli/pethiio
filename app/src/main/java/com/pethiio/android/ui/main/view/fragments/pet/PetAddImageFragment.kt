@@ -99,7 +99,7 @@ class PetAddImageFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
 
 
         binding.backBtn.setOnClickListener {
-                findNavController().previousBackStackEntry?.savedStateHandle?.set("petId", petId)
+                findNavController().previousBackStackEntry?.savedStateHandle?.set("petId", PreferenceHelper.SharedPreferencesManager.getInstance().petId.toString())
                 findNavController().popBackStack()
 
         }

@@ -7,7 +7,7 @@
     tools:context=".ui.main.view.fragments.mainFragments.ShopFragment">
 
     <RelativeLayout
-        android:background="#a11c29"
+        android:background="#ba1d2a"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:orientation="horizontal"

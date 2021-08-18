@@ -8,6 +8,7 @@ import com.pethiio.android.data.api.ServiceBuilder
 import com.pethiio.android.data.model.petDetail.PetSearchDetailResponse
 import com.pethiio.android.data.model.petDetail.PetSearchOwnerDetailResponse
 import com.pethiio.android.data.model.signup.PageData
+import com.pethiio.android.utils.PreferenceHelper
 import com.pethiio.android.utils.Resource
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -24,12 +25,12 @@ class PetDetailViewModel : ViewModel() {
     private val responseHandler: ResponseHandler = ResponseHandler()
 
 
-    fun fetchPetDetail(animalId: String, memberId: Int) {
+    fun fetchPetDetail(animalId: String) {
 
         petDetailResponse.postValue(Resource.loading(null))
         compositeDisposable.add(
             ServiceBuilder.buildService()
-                .getPetSearchDetail(animalId, memberId)
+                .getPetSearchDetail(animalId, PreferenceHelper.SharedPreferencesManager.getInstance().memberId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(

@@ -5,6 +5,7 @@ import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
@@ -39,7 +40,9 @@ class HomeFragment : BaseFragment() {
     var petList: List<PetListResponse>? = null
 
 
-    override fun onCreate(savedInstanceState: Bundle?) { super.onCreate(savedInstanceState) }
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+    }
 
 //    override fun onSaveInstanceState(outState: Bundle) {
 //        outState.putParcelableArrayList("key", petList as ArrayList<PetListResponse>)
@@ -105,8 +108,10 @@ class HomeFragment : BaseFragment() {
         })
 
         binding.addAnimal.setOnClickListener {
+            val bundle = bundleOf("from" to false)
+
             if (findNavController().currentDestination?.id == R.id.navigation_home)
-                findNavController().navigate(R.id.navigation_pet_add)
+                findNavController().navigate(R.id.navigation_pet_add, bundle)
         }
 
 
@@ -156,8 +161,6 @@ class HomeFragment : BaseFragment() {
             ViewModelFactory()
         ).get(HomeViewModel::class.java)
     }
-
-
 
 
 }

@@ -57,6 +57,7 @@ class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
     var selectedCharacters: ArrayList<String> = ArrayList()
     var firstRadioButtonId: Int = 0
     var isRadioButtonAdded = false
+    var fromRegister: Boolean = true
 
     private var petId: String? = ""
 
@@ -125,9 +126,14 @@ class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
         _binding = FragmentPetAddBinding.inflate(inflater, container, false)
         val view = binding.root
 
-        if(petId.equals(""))
-        petId = arguments?.getString("animalId", "")
+        if (petId.equals(""))
+            petId = arguments?.getString("animalId", "")
 
+        fromRegister = arguments?.getBoolean("from", true) == true
+
+        if (fromRegister) {
+            binding.backBtn.visibility = View.GONE
+        }
         findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<String>("petId")
             ?.observe(viewLifecycleOwner) {
                 petId = it

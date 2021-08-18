@@ -100,7 +100,7 @@ class PetDetailFragment : BaseFragment() {
         } else {
             viewModel.fetchPetSearchDetailPageData()
         }
-        viewModel.fetchPetDetail(animalId, memberId)
+        viewModel.fetchPetDetail(animalId)
 
         binding.popupMenu.setOnClickListener {
             openPopUpMenu()
@@ -124,9 +124,9 @@ class PetDetailFragment : BaseFragment() {
                         getLocalizedString(Constants.petSearchDetailOwner, fields)
 
                     report = if (isOwner && !fromChat)
-                    getLocalizedString(Constants.petSearchDetailDelete, fields)
+                        getLocalizedString(Constants.petSearchDetailDelete, fields)
                     else
-                    getLocalizedString(Constants.petSearchDetailReport, fields)
+                        getLocalizedString(Constants.petSearchDetailReport, fields)
 
 
                     binding.ownerAboutTv.text =
@@ -291,7 +291,7 @@ class PetDetailFragment : BaseFragment() {
                             }
                         } else {
                             if (!fromChat) {
-                                val bundle = bundleOf("animalId" to animalId)
+                                val bundle = bundleOf("animalId" to animalId, "from" to false)
                                 findNavController().navigate(R.id.navigation_pet_add, bundle)
                             } else {
                                 if (!ownerSelected) {
