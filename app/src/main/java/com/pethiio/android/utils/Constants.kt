@@ -27,8 +27,13 @@ class Constants {
         val datePickerFormat: SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd")
         val datePickerFormatTv: SimpleDateFormat = SimpleDateFormat("dd-MM-yyyy")
 
-        const val BASE_URL: String = "https://devapi.pethiio.com/api/"
-        const val SOCKET_URL: String = "https://devapi.pethiio.com:10443/chat?token="
+        //Test
+//        const val BASE_URL: String = "https://devapi.pethiio.com/api/"
+//        const val SOCKET_URL: String = "https://devapi.pethiio.com:10443/chat?token="
+
+        const val BASE_URL: String = "https://api.pethiio.com/api/"
+        const val SOCKET_URL: String = "https://api.pethiio.com:10443/chat?token="
+
         const val SOCKET_TOPIC: String = "/topic/private.chat."
         const val SOCKET_PRIVATE_CHAT: String = "/app/private.chat"
 
