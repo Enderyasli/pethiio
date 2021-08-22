@@ -200,7 +200,7 @@
             tools:layout="@layout/fragment_shop" />
 
         <fragment
-            android:id="@+id/navigation_vet"
+            android:id="@+id/navigation_vet_bottom"
             android:name="com.pethiio.android.ui.main.view.fragments.mainFragments.VetFragment"
             android:label="Vet"
             tools:layout="@layout/fragment_vet" />

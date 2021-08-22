@@ -12,12 +12,13 @@ import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.get
-import androidx.lifecycle.ViewModelProviders
+import androidx.core.widget.ImageViewCompat
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
@@ -34,10 +35,8 @@ import com.google.firebase.messaging.ktx.messaging
 import com.pethiio.android.PethiioApplication
 import com.pethiio.android.R
 import com.pethiio.android.data.EventBus.LoginEvent
-import com.pethiio.android.data.socket.SocketIOService
 import com.pethiio.android.ui.main.viewmodel.MainActivityViewModel
 import com.pethiio.android.utils.PreferenceHelper
-import com.pethiio.android.utils.Status
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -96,6 +95,7 @@ class MainActivity : AppCompatActivity() {
         findViewById<BottomNavigationView>(R.id.bottomNav_view)
             .setupWithNavController(navController!!)
 
+
         PethiioApplication.setNavController(navController!!)
         //Add custom tab menu
         val bottomMenuView = navView.getChildAt(0) as BottomNavigationMenuView
@@ -129,7 +129,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun subscribeToTopic() {
-        Firebase.messaging.subscribeToTopic("topic-user-" + PreferenceHelper.SharedPreferencesManager.getInstance().topicUserId) // TODO: 17.07.2021 login veya registerda userId dönüyor. aynı topic logout unsub olacaksın.
+        Firebase.messaging.subscribeToTopic("topic-user-" + PreferenceHelper.SharedPreferencesManager.getInstance().topicUserId)
             .addOnFailureListener {
                 it
             }
