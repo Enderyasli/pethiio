@@ -46,6 +46,10 @@ class ReportFragment : BaseFragment() {
 
         binding.msgAnim.setAnimation("zarf.json")
 
+        binding.backBtn.setOnClickListener {
+            findNavController().navigateUp()
+
+        }
 
         viewModel =
             ViewModelProviders.of(this).get(ReportViewModel::class.java)
