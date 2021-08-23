@@ -387,7 +387,7 @@ class DashboardFragment : BaseFragment(), CardStackListener,
         }
 
 
-        binding.progressBar.visibility = View.VISIBLE
+        binding.progressAvi.hide()
 
 
         binding.noResultImg.setAnimation("bulunamadi.json")
@@ -428,8 +428,7 @@ class DashboardFragment : BaseFragment(), CardStackListener,
 
             when (it.status) {
                 Status.LOADING -> {
-                    binding.progressBar.visibility = View.VISIBLE
-                }
+                    binding.progressAvi.show()                }
 
                 Status.SUCCESS -> {
                     val fields = it.data?.fields
@@ -449,16 +448,14 @@ class DashboardFragment : BaseFragment(), CardStackListener,
 
             when (it.status) {
                 Status.LOADING -> {
-                    binding.progressBar.visibility = View.VISIBLE
-                }
+                    binding.progressAvi.show()                }
 
                 Status.SUCCESS -> {
                     if (it.data != null)
                         memberListResponse = it.data
                     setMembeListSpinner(memberListResponse)
 //                    setMemberList(memberListResponse)
-                    binding.progressBar.visibility = View.GONE
-                }
+                    binding.progressAvi.hide()                }
                 Status.ERROR -> {
                     CommonFunctions.checkLogin(it.errorCode, findNavController())
 
@@ -498,8 +495,7 @@ class DashboardFragment : BaseFragment(), CardStackListener,
                     }
 
 
-                    binding.progressBar.visibility = View.GONE
-
+                    binding.progressAvi.hide()
                 }
             }
 

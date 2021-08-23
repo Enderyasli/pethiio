@@ -75,7 +75,6 @@ class HomeFragment : BaseFragment() {
         setupUI()
 
 
-
         return view
     }
 
@@ -90,7 +89,7 @@ class HomeFragment : BaseFragment() {
 
             when (it.status) {
                 Status.LOADING -> {
-                    binding.progressBar.visibility = View.VISIBLE
+                    binding.progressAvi.show()
                 }
 
                 Status.SUCCESS -> {
@@ -99,10 +98,7 @@ class HomeFragment : BaseFragment() {
                     binding.addAnimalTv.text = getLocalizedString(Constants.addPet, fields)
                     binding.petEmptyErrorTv.text =
                         getLocalizedString(Constants.petEmpty, fields)
-
-
                 }
-
             }
 
         })
@@ -120,7 +116,7 @@ class HomeFragment : BaseFragment() {
 
             when (it.status) {
                 Status.LOADING -> {
-                    binding.progressBar.visibility = View.VISIBLE
+                    binding.progressAvi.show()
                 }
                 Status.SUCCESS -> {
 
@@ -137,11 +133,7 @@ class HomeFragment : BaseFragment() {
                     } else {
                         binding.emptyLayout.visibility = View.GONE
                     }
-
-
-
-                    binding.progressBar.visibility = View.GONE
-
+                    binding.progressAvi.hide()
                 }
             }
 

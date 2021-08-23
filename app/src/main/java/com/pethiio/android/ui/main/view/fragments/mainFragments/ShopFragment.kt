@@ -53,10 +53,20 @@ class ShopFragment : BaseFragment() {
         binding.webView.settings.domStorageEnabled = true
 
 
+
+
         binding.webView.webViewClient = object : WebViewClient() {
             override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
-                url?.let { view?.loadUrl(it) }
+                url?.let {
+                    view?.loadUrl(it)
+                }
                 return true
+            }
+
+            override fun onPageFinished(view: WebView?, url: String?) {
+                super.onPageFinished(view, url)
+                binding.progressAvi.hide()
+
             }
         }
         binding.webView.loadUrl("https://shop.pethiio.com")

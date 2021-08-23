@@ -184,14 +184,15 @@
 
     </LinearLayout>
 
-    <ProgressBar
-        android:id="@+id/progressBar"
+
+
+    <com.wang.avi.AVLoadingIndicatorView
+        android:id="@+id/progressAvi"
+        app:indicatorColor="@color/orangeButton"
+        android:layout_centerInParent="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:alpha="0.9"
-        android:indeterminateTint="@color/orangeButton"
-        android:visibility="gone" />
+        app:indicatorName="BallScaleIndicator" />
 
 
 </RelativeLayout>

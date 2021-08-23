@@ -201,11 +201,11 @@ class MessageFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
                     else
                         binding.noMsjLayout.visibility = View.GONE
 
-                    binding.progressBar.visibility = View.GONE
+                    binding.progressAvi.hide()
                 }
 
                 Status.LOADING -> {
-                    binding.progressBar.visibility = View.VISIBLE
+                    binding.progressAvi.hide()
                 }
 
                 Status.ERROR -> {

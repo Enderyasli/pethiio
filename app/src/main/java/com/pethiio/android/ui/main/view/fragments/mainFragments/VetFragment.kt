@@ -56,18 +56,21 @@ class VetFragment : BaseFragment() {
 
             when (it.status) {
                 Status.LOADING -> {
-//                    binding.progressBar.visibility = View.VISIBLE
                 }
                 Status.SUCCESS -> {
 
-//                    binding.progressBar.visibility = View.GONE
-//
+                    binding.progressAvi.hide()
+
                     val pageDataFields = it.data?.fields
-//
+
                     binding.titleTv.text =
                         getLocalizedString(Constants.registerTitle, pageDataFields)
                     binding.descriptionTv.text =
                         getLocalizedString(Constants.registerSubTitle, pageDataFields)
+                }
+
+                Status.ERROR->{
+                    binding.progressAvi.hide()
                 }
             }
 
@@ -78,25 +81,23 @@ class VetFragment : BaseFragment() {
 
             when (it.status) {
                 Status.LOADING -> {
-//                    binding.progressBar.visibility = View.VISIBLE
                 }
                 Status.SUCCESS -> {
 
                     binding.vetRecycler.layoutManager = LinearLayoutManager(requireContext())
                     val adapter =
                         it.data?.let { it1 ->
-                            VetAdapter(findNavController(), requireContext(),
+                            VetAdapter(
+                                findNavController(), requireContext(),
                                 it1
                             )
                         }
                     binding.vetRecycler.adapter = adapter
 
-
-
-
-
-//                    binding.progressBar.visibility = View.GONE
-
+                    binding.progressAvi.hide()
+                }
+                Status.ERROR->{
+                    binding.progressAvi.hide()
                 }
             }
 

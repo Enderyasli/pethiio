@@ -54,7 +54,7 @@ class LocationFragment : BaseFragment() {
 
             when (it.status) {
                 Status.LOADING -> {
-                    binding.progressBar.visibility=View.VISIBLE
+                    binding.progressAvi.show()
                 }
 
                 Status.SUCCESS -> {
@@ -64,8 +64,7 @@ class LocationFragment : BaseFragment() {
                         getLocalizedString(Constants.registerSubTitle, fields)
                     binding.completeBtn.text = getLocalizedString(Constants.locationButton, fields)
 
-                    binding.progressBar.visibility=View.GONE
-
+                    binding.progressAvi.hide()
                 }
 
             }

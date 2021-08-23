@@ -114,15 +114,17 @@ class MatchFragment : BaseFragment() {
 
             when (it.status) {
                 Status.LOADING -> {
-                    binding.progressBar.visibility = View.VISIBLE
-
+                    binding.progressAvi.show()
+                }
+                Status.ERROR -> {
+                    binding.progressAvi.hide()
                 }
                 Status.SUCCESS -> {
 
-                    binding.progressBar.visibility = View.GONE
-//
+                    binding.progressAvi.hide()
+
                     val pageDataFields = it.data?.fields
-//
+
                     binding.titleTv.text =
                         getLocalizedString(Constants.registerTitle, pageDataFields)
                     binding.goChatBtn.text =

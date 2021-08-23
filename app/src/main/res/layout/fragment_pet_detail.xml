@@ -2,8 +2,8 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
     android:id="@+id/scrollView"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/marineButton"
     tools:context=".ui.main.view.fragments.pet.PetDetailFragment">
@@ -261,8 +261,8 @@ adipiscing elit. Dictumst sed dignissim duis vitae.  Diam pharetra, mauris." />
             android:id="@+id/back_button"
             android:layout_width="32dp"
             android:layout_height="32dp"
-            android:layout_marginStart="@dimen/default_margin"
             android:layout_alignParentStart="true"
+            android:layout_marginStart="@dimen/default_margin"
             android:layout_marginTop="50dp">
 
             <de.hdodenhof.circleimageview.CircleImageView
@@ -271,9 +271,9 @@ adipiscing elit. Dictumst sed dignissim duis vitae.  Diam pharetra, mauris." />
                 android:src="@color/white" />
 
             <ImageView
-                android:layout_gravity="center"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
+                android:layout_gravity="center"
                 android:src="@drawable/back_arrow" />
         </FrameLayout>
 
@@ -321,17 +321,14 @@ adipiscing elit. Dictumst sed dignissim duis vitae.  Diam pharetra, mauris." />
                     android:src="@drawable/hearth" />
             </androidx.cardview.widget.CardView>
 
-
         </RelativeLayout>
 
-
-        <ProgressBar
-            android:id="@+id/progressBar"
+        <com.wang.avi.AVLoadingIndicatorView
+            android:id="@+id/progressAvi"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:alpha="0.9"
-            android:indeterminateTint="@color/orangeButton"
-            android:visibility="gone" />
+            app:indicatorColor="@color/orangeButton"
+            app:indicatorName="BallScaleIndicator" />
     </RelativeLayout>
 </ScrollView>

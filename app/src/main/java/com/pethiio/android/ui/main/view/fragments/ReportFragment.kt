@@ -142,7 +142,7 @@ class ReportFragment : BaseFragment() {
         viewModel.getReportPageData().observe(viewLifecycleOwner, {
             when (it.status) {
                 Status.LOADING -> {
-                    binding.progressBar.visibility = View.VISIBLE
+                    binding.progressAvi.show()
                 }
                 Status.SUCCESS -> {
 
@@ -181,10 +181,8 @@ class ReportFragment : BaseFragment() {
                         gravity = android.view.Gravity.CENTER
                         setSelection(0)
                     }
-
-                    binding.progressBar.visibility = View.GONE
+                    binding.progressAvi.hide()
                 }
-
 
             }
 

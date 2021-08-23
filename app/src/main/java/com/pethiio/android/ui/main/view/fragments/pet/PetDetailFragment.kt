@@ -138,12 +138,12 @@ class PetDetailFragment : BaseFragment() {
                         )
 
                     petDeleteAlert = getLocalizedString(Constants.petDeleteAlert, fields)
-                    binding.progressBar.visibility = View.GONE
+                    binding.progressAvi.hide()
 
 
                 }
                 Status.LOADING -> {
-                    binding.progressBar.visibility = View.VISIBLE
+                    binding.progressAvi.show()
                 }
             }
 
@@ -206,11 +206,10 @@ class PetDetailFragment : BaseFragment() {
                     userId = petDetail?.userId
 
 
-                    binding.progressBar.visibility = View.GONE
-
+                    binding.progressAvi.hide()
                 }
                 Status.ERROR -> {
-                    binding.progressBar.visibility = View.GONE
+                    binding.progressAvi.hide()
                     CommonMethods.onSNACK(binding.root, it.message.toString())
 
                 }
@@ -250,12 +249,10 @@ class PetDetailFragment : BaseFragment() {
                     if (!isOwner)
                         changeUserType(true)
 
-                    binding.progressBar.visibility = View.GONE
-
+                    binding.progressAvi.hide()
                 }
                 Status.ERROR -> {
-                    binding.progressBar.visibility = View.VISIBLE
-
+                    binding.progressAvi.hide()
 
                 }
             }
@@ -374,7 +371,7 @@ class PetDetailFragment : BaseFragment() {
             maximobileDialog.dissmiss()
 
             animalId.toIntOrNull()?.let { viewModel.fetchPetDelete(it) }
-            binding.progressBar.visibility = View.VISIBLE
+            binding.progressAvi.show()
             Handler().postDelayed({ findNavController().navigateUp() }, 500)
         }
         maximobileDialog.getNegativeButton().setOnClickListener {

@@ -130,7 +130,7 @@ class SettingsFragment : BaseFragment() {
         viewModel.getSettingsPageData().observe(viewLifecycleOwner, {
             when (it.status) {
                 Status.LOADING -> {
-                    binding.progressBar.visibility = View.VISIBLE
+                    binding.progressAvi.hide()
 
                 }
                 Status.SUCCESS -> {
@@ -159,8 +159,7 @@ class SettingsFragment : BaseFragment() {
                     logoutAlertTitle =
                         getLocalizedString(Constants.logoutAlertTitle, pageDataFields)
 
-                    binding.progressBar.visibility = View.GONE
-
+                    binding.progressAvi.hide()
                 }
             }
 

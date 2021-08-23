@@ -374,15 +374,14 @@ class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
 
             when (it.status) {
                 Status.LOADING -> {
-                    binding.progressBar.visibility = View.VISIBLE
+                    binding.progressAvi.show()
 
                 }
                 Status.SUCCESS -> {
 
                     setPethiioResponseList(it.data?.fields)
                     it.data?.lookups?.let { it1 -> setLookUps(it1) }
-                    binding.progressBar.visibility = View.GONE
-
+                    binding.progressAvi.hide()
 
                     binding.petAddTitle.text = getLocalizedString(Constants.petaboutTitle)
 
@@ -540,7 +539,7 @@ class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
 
                     }
 
-                    viewModel.getAddAnimalDetails().observe(this,
+                    viewModel.getAddAnimalDetails().observe(viewLifecycleOwner,
                         { it ->
                             setAnimalDetail(it)
 

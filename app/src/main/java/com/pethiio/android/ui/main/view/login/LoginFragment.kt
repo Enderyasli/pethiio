@@ -146,15 +146,14 @@ class LoginFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
 
                 when (it.status) {
                     Status.LOADING -> {
-                        binding.progressBar.visibility = View.VISIBLE
+                        binding.progressAvi.show()
                     }
                     Status.ERROR -> {
                         CommonMethods.onSNACK(binding.root, it.message.toString())
-                        binding.progressBar.visibility = View.GONE
+                        binding.progressAvi.hide()
                     }
                     Status.SUCCESS -> {
-                        binding.progressBar.visibility = View.GONE
-
+                        binding.progressAvi.hide()
                         if (it.data?.emailVerified == true) {
 
                             if (it.data.registrationCompleted) {

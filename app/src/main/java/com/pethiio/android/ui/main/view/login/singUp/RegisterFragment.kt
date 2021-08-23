@@ -318,7 +318,7 @@ class RegisterFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
 
                                 fetchRegisterDetail()
 
-                                binding.progressBar.visibility = View.GONE
+                                binding.progressAvi.hide()
 
                                 if (!TextUtils.isEmpty(it.data?.emailVerificationToken)) { //todo ! ekle
                                     val bundle =
@@ -343,14 +343,14 @@ class RegisterFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
 
                         }
                         Status.ERROR -> {
-                            binding.progressBar.visibility = View.GONE
+                            binding.progressAvi.hide()
 
                             CommonMethods.onSNACK(binding.root, it.message.toString())
 
                         }
                         Status.LOADING -> {
 
-                            binding.progressBar.visibility = View.VISIBLE
+                            binding.progressAvi.show()
                         }
                     }
                 })

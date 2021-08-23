@@ -86,12 +86,11 @@ class NotificationFragment : BaseFragment() {
 
             when (it.status) {
                 Status.LOADING -> {
-                    binding.progressBar.visibility = View.VISIBLE
 
                 }
                 Status.SUCCESS -> {
 
-                    binding.progressBar.visibility = View.GONE
+                    binding.progressAvi.hide()
 
                     val pageDataFields = it.data?.fields
 
@@ -114,7 +113,7 @@ class NotificationFragment : BaseFragment() {
 
             when (it.status) {
                 Status.LOADING -> {
-                    binding.progressBar.visibility = View.VISIBLE
+                    binding.progressAvi.show()
 
                 }
                 Status.SUCCESS -> {
@@ -133,9 +132,7 @@ class NotificationFragment : BaseFragment() {
                         }
 
                     }
-
-
-                    binding.progressBar.visibility = View.GONE
+                    binding.progressAvi.hide()
 
 
                 }

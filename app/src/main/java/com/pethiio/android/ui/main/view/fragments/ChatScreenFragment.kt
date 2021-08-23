@@ -166,15 +166,14 @@ class ChatScreenFragment : BaseFragment() {
 
             when (it.status) {
                 Status.ERROR -> {
-                    binding.progressBar.visibility = View.GONE
+                    binding.progressAvi.hide()
                 }
                 Status.LOADING -> {
-                    binding.progressBar.visibility = View.VISIBLE
+                    binding.progressAvi.show()
                 }
 
                 Status.SUCCESS -> {
-                    binding.progressBar.visibility = View.GONE
-
+                    binding.progressAvi.hide()
                     adapter = it.data?.let { it1 ->
                         ChatAdapter(
                             requireContext(), it1, memberId

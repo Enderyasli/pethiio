@@ -137,7 +137,7 @@ class PinVerifiedFragment : BaseFragment() {
 
             when (it.status) {
                 Status.LOADING -> {
-                    binding.progressBar.visibility = View.VISIBLE
+                    binding.progressAvi.show()
                 }
                 Status.SUCCESS -> {
 
@@ -151,12 +151,11 @@ class PinVerifiedFragment : BaseFragment() {
                             R.id.action_navigation_pin_verified_to_navigation_register_detail,
                             bundle
                         )
-                    binding.progressBar.visibility = View.GONE
-
+                    binding.progressAvi.hide()
                 }
                 Status.ERROR -> {
                     CommonMethods.onSNACK(binding.root, it.message.toString())
-                    binding.progressBar.visibility = View.GONE
+                    binding.progressAvi.hide()
 
                 }
             }
@@ -166,7 +165,7 @@ class PinVerifiedFragment : BaseFragment() {
 
             when (it.status) {
                 Status.LOADING -> {
-                    binding.progressBar.visibility = View.VISIBLE
+                    binding.progressAvi.show()
                 }
                 Status.SUCCESS -> {
 
@@ -180,11 +179,11 @@ class PinVerifiedFragment : BaseFragment() {
                             R.id.action_navigation_pin_verified_to_navigation_reset_password_request,
                             bundle
                         )
-                    binding.progressBar.visibility = View.GONE
+                    binding.progressAvi.hide()
 
                 }
                 Status.ERROR -> {
-                    binding.progressBar.visibility = View.GONE
+                    binding.progressAvi.hide()
                     CommonMethods.onSNACK(binding.root, it.message.toString())
                 }
             }

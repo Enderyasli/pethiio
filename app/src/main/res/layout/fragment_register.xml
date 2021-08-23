@@ -14,9 +14,9 @@
             android:id="@+id/back_btn"
             android:layout_width="34dp"
             android:layout_height="34dp"
-            android:layout_marginBottom="2dp"
-            android:layout_marginTop="68dp"
             android:layout_marginStart="@dimen/default_margin"
+            android:layout_marginTop="68dp"
+            android:layout_marginBottom="2dp"
             app:cardCornerRadius="17dp">
 
             <ImageView
@@ -332,15 +332,16 @@
             </LinearLayout>
         </LinearLayout>
 
-        <ProgressBar
-            android:id="@+id/progressBar"
+
+        <com.wang.avi.AVLoadingIndicatorView
+            android:id="@+id/progressAvi"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:layout_gravity="center"
-            android:alpha="0.9"
-            android:indeterminateTint="@color/orangeButton"
-            android:visibility="gone" />
+            app:indicatorColor="@color/orangeButton"
+            app:indicatorName="BallScaleIndicator" />
+
     </RelativeLayout>
 
 </ScrollView>

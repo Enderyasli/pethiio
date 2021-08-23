@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -63,7 +64,6 @@
                     app:cardElevation="2dp">
 
                     <EditText
-                        android:maxLength="6"
                         android:id="@+id/pin_placeholder_tv"
                         android:layout_width="match_parent"
                         android:layout_height="60dp"
@@ -71,6 +71,7 @@
                         android:fontFamily="@font/typo_round_regular"
                         android:gravity="center_vertical"
                         android:inputType="number"
+                        android:maxLength="6"
                         android:paddingLeft="15dp"
                         android:textColor="@color/black"
                         android:textColorHint="@color/hint_text_color"
@@ -99,13 +100,11 @@
         android:textSize="@dimen/medium_size"
         tools:text="İlerle" />
 
-    <ProgressBar
-        android:id="@+id/progressBar"
+    <com.wang.avi.AVLoadingIndicatorView
+        android:id="@+id/progressAvi"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:layout_gravity="center"
-        android:alpha="0.9"
-        android:indeterminateTint="@color/orangeButton"
-        android:visibility="gone" />
+        app:indicatorColor="@color/orangeButton"
+        app:indicatorName="BallScaleIndicator" />
 </RelativeLayout>
