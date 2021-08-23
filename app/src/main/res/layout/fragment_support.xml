@@ -1,81 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:expandableTextView="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context=".ui.main.view.fragments.settings.SupportFragment">
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/back_btn"
-        android:layout_width="34dp"
-        android:layout_height="34dp"
-        android:layout_marginStart="@dimen/default_margin"
-        android:layout_marginTop="50dp"
-        app:cardCornerRadius="17dp">
-
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_gravity="center"
-            android:src="@drawable/back_arrow" />
-    </androidx.cardview.widget.CardView>
-
-    <TextView
-        android:id="@+id/title_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="26dp"
-        android:layout_marginTop="120dp"
-        android:layout_marginBottom="3dp"
-        android:fontFamily="@font/typo_round_bold"
-        android:text="Support"
-        android:textColor="@color/orangeButton"
-        android:textSize="@dimen/signup_title_size" />
-
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/faqRecycler"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/title_tv"
-        android:layout_marginLeft="@dimen/default_margin"
-        android:layout_marginTop="40dp"
-        android:layout_marginRight="@dimen/default_margin" />
+        android:layout_height="wrap_content">
 
+        <androidx.cardview.widget.CardView
+            android:id="@+id/back_btn"
+            android:layout_width="34dp"
+            android:layout_height="34dp"
+            android:layout_marginStart="@dimen/default_margin"
+            android:layout_marginTop="50dp"
+            app:cardCornerRadius="17dp">
 
-    <LinearLayout
-        android:id="@+id/go_report_ly"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/faqRecycler"
-        android:layout_marginLeft="@dimen/default_margin"
-        android:layout_marginTop="34dp"
-        android:layout_marginRight="@dimen/default_margin"
-        android:background="@drawable/support_ly_rounded_bg"
-        android:orientation="horizontal">
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center"
+                android:src="@drawable/back_arrow" />
 
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_gravity="center"
-            android:layout_marginStart="20dp"
-            android:src="@drawable/support" />
+        </androidx.cardview.widget.CardView>
 
         <TextView
-            android:id="@id/support_tv"
+            android:id="@+id/title_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="26dp"
+            android:layout_marginTop="120dp"
+            android:layout_marginBottom="3dp"
+            android:fontFamily="@font/typo_round_bold"
+            tools:text="Support"
+            android:textColor="@color/orangeButton"
+            android:textSize="@dimen/signup_title_size" />
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/faqRecycler"
+            android:nestedScrollingEnabled="false"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
-            android:layout_marginTop="@dimen/medium_size"
-            android:layout_marginEnd="@dimen/medium_size"
-            android:layout_marginBottom="@dimen/medium_size"
-            android:fontFamily="@font/typo_round_regular"
-            android:textColor="@color/darkGrey"
-            android:textSize="15sp"
-            tools:text="Teknik destek ve daha ayrıntılı destek almak için tıkla." />
-    </LinearLayout>
+            android:layout_below="@id/title_tv"
+            android:layout_marginLeft="@dimen/default_margin"
+            android:layout_marginTop="40dp"
+            android:layout_marginRight="@dimen/default_margin" />
 
-</RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/go_report_ly"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/faqRecycler"
+            android:layout_marginLeft="@dimen/default_margin"
+            android:layout_marginTop="34dp"
+            android:layout_marginRight="@dimen/default_margin"
+            android:background="@drawable/support_ly_rounded_bg"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center"
+                android:layout_marginStart="20dp"
+                android:src="@drawable/support" />
+
+            <TextView
+                android:id="@id/support_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="@dimen/medium_size"
+                android:layout_marginEnd="@dimen/medium_size"
+                android:layout_marginBottom="@dimen/medium_size"
+                android:fontFamily="@font/typo_round_regular"
+                android:textColor="@color/darkGrey"
+                android:textSize="15sp"
+                tools:text="Teknik destek ve daha ayrıntılı destek almak için tıkla." />
+        </LinearLayout>
+
+    </RelativeLayout>
+</ScrollView>

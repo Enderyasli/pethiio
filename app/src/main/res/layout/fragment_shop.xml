@@ -15,26 +15,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <LinearLayout
-            android:layout_centerHorizontal="true"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent">
 
-            <ImageView
-                android:layout_gravity="center"
-                android:src="@drawable/app_icon"
-                android:layout_width="30dp"
-                android:layout_height="30dp"/>
-            <TextView
-                android:layout_marginLeft="10dp"
-                android:textSize="24dp"
-                android:gravity="center"
-                android:fontFamily="@font/typo_round_bold"
-                android:textColor="@color/white"
-                android:text="@string/app_name"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"/>
-        </LinearLayout>
 
 
 

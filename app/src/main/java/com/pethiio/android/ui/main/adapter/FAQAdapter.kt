@@ -22,7 +22,7 @@ class FAQAdapter(
 
         @SuppressLint("SetTextI18n")
         fun bind(faq: FAQResponse) {
-            itemView.titleTextView.text = "" + faq.id + ". " + faq.question
+            itemView.titleTextView.text = "\u2022" + " " + faq.question
             itemView.description.text = faq.answer
         }
 
