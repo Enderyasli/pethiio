@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -34,7 +35,9 @@ import com.pethiio.android.ui.main.view.customViews.NoDefaultSpinner;
 import com.pethiio.android.ui.main.viewmodel.DashBoardViewModel;
 import com.pethiio.android.utils.CommonMethods;
 import com.pethiio.android.utils.Constants;
+import com.pethiio.android.utils.NoDefaultSearchSpinner;
 import com.pethiio.android.utils.Resource;
+import com.toptoche.searchablespinnerlibrary.SearchableSpinner;
 
 import org.greenrobot.eventbus.EventBus;
 import org.jetbrains.annotations.NotNull;
@@ -53,7 +56,8 @@ public class FilterBottomSheet extends BottomSheetDialogFragment {
 
     int maxDistance = 1, minDistance = 0, minAge = 0, maxAge = 1;
     RadioGroup purposeRadioGroup;
-    NoDefaultSpinner genderSpinner, typeSpinner;
+    NoDefaultSpinner genderSpinner;
+    SearchableSpinner typeSpinner;
     Button filterButton;
 
 
@@ -145,8 +149,10 @@ public class FilterBottomSheet extends BottomSheetDialogFragment {
             purposeKeys = CommonMethods.getLookUpKeys(Constants.lookUpPurpose, lookUpsResponses);
 
 
+            int i = 0;
             for (String str : purpose) {
-                CommonMethods.addRadioButton(str, purposeRadioGroup, requireContext());
+                CommonMethods.addRadioButtonwithId(i, str, purposeRadioGroup, requireContext());
+                i++;
             }
 
 
@@ -269,6 +275,17 @@ public class FilterBottomSheet extends BottomSheetDialogFragment {
         filterClearButton = root.findViewById(R.id.filter_clear_button);
         ageSeekBar = (DoubleValueSeekBarView) root.findViewById(R.id.age_seek_bar);
 
+        typeSpinner.setTitle("Cins Seç");
+        typeSpinner.setPositiveButton("kapat");
+
+
+        purposeRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                typeSpinner.setEnabled(checkedId != 1);
+                genderSpinner.setEnabled(checkedId != 1);
+            }
+        });
 
         distanceSeekBar.setOnRangeSeekBarViewChangeListener(new OnDoubleValueSeekBarChangeListener() {
             @Override

@@ -65,7 +65,44 @@ class CommonMethods {
             radioButton.textSize = 14F
             radioButton.typeface = typeface
             radioButton.setTextColor(ContextCompat.getColor(context, R.color.grey))
+            radioGroup.addView(radioButton)
+        }
 
+        @JvmStatic
+
+        fun addRadioButtonwithId(
+            id: Int,
+            string: String,
+            radioGroup: RadioGroup,
+            context: Context
+        ) {
+
+            val radioButton = RadioButton(context)
+
+            radioButton.text = string
+            val typeface = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                context.resources.getFont(R.font.typo_round_regular)
+            } else {
+                ResourcesCompat.getFont(context, R.font.typo_round_regular)
+            }
+
+
+            val colorStateList = ColorStateList(
+                arrayOf(
+                    intArrayOf(-android.R.attr.state_checked),
+                    intArrayOf(android.R.attr.state_enabled)
+                ), intArrayOf(
+                    ContextCompat.getColor(context, R.color.grey),  //disabled
+                    ContextCompat.getColor(context, R.color.orangeButton) //enabled
+                )
+            )
+
+            radioButton.buttonTintList = colorStateList
+
+            radioButton.textSize = 14F
+            radioButton.typeface = typeface
+            radioButton.setTextColor(ContextCompat.getColor(context, R.color.grey))
+            radioButton.id = id
             radioGroup.addView(radioButton)
         }
 
@@ -86,6 +123,7 @@ class CommonMethods {
             }
             return emptyList()
         }
+
         @JvmStatic
         fun getLookUpKeys(key: String, lookUpsResponse: List<LookUpsResponse>?): List<String> {
 
@@ -105,7 +143,11 @@ class CommonMethods {
         }
 
         @JvmStatic
-        fun getLookUpKey(key: String, value: String, lookUpsResponse: List<LookUpsResponse>?): String {
+        fun getLookUpKey(
+            key: String,
+            value: String,
+            lookUpsResponse: List<LookUpsResponse>?
+        ): String {
 
             lookUpsResponse?.forEach { it ->
                 if (it.key == key) {
@@ -120,7 +162,7 @@ class CommonMethods {
         }
 
 
-         fun onSNACK(view: View,snackText:String){
+        fun onSNACK(view: View, snackText: String) {
 //             Snackbar.make(
 //                 view,
 //                 snackText,
@@ -128,8 +170,10 @@ class CommonMethods {
 //             ).show()
 
 
-            val snackBar = Snackbar.make(view, snackText,
-                Snackbar.LENGTH_LONG)
+            val snackBar = Snackbar.make(
+                view, snackText,
+                Snackbar.LENGTH_LONG
+            )
 
 //            snackbar.setActionTextColor(Color.BLACK)
 //             val params = view.layoutParams as FrameLayout.LayoutParams
@@ -137,18 +181,18 @@ class CommonMethods {
 //             params.height= 135
 //             snackbar.view.layoutParams = params
 
-             val snackBarView = snackBar.view
+            val snackBarView = snackBar.view
             snackBarView.setBackgroundColor(Color.RED)
             val textView =
                 snackBarView.findViewById(com.google.android.material.R.id.snackbar_text) as TextView
             textView.setTextColor(Color.WHITE)
 
-             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-                 textView.textAlignment = View.TEXT_ALIGNMENT_CENTER
-             } else {
-                 textView.gravity = Gravity.CENTER_HORIZONTAL
-             }
-             textView.textSize = 16f
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                textView.textAlignment = View.TEXT_ALIGNMENT_CENTER
+            } else {
+                textView.gravity = Gravity.CENTER_HORIZONTAL
+            }
+            textView.textSize = 16f
             snackBar.show()
         }
 
@@ -162,7 +206,6 @@ class CommonMethods {
                 px / (metrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)
             }
         }
-
 
 
         fun getClient(): OkHttpClient? {
@@ -218,8 +261,6 @@ class CommonMethods {
 
         }
     }
-
-
 
 
 }

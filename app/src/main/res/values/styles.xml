@@ -19,8 +19,7 @@
         <item name="colorAccent">@color/orangeButton</item>
     </style>
 
-    <style name="Widget.BottomNavigationView"
-        parent="Widget.Design.BottomNavigationView">
+    <style name="Widget.BottomNavigationView" parent="Widget.Design.BottomNavigationView">
         <item name="android:textSize">15sp</item>
         <item name="fontFamily">@font/typo_round_bold</item>
     </style>
@@ -29,8 +28,17 @@
     <style name="DialogTheme" parent="Theme.AppCompat.Dialog">
         <item name="android:windowEnterAnimation">@anim/slide_up</item>
         <item name="android:windowExitAnimation">@anim/slide_out_down</item>
+    </style>
+
+    <style name="Theme.UserDialog" parent="@style/Theme.AppCompat.Dialog">
+        <item name="android:buttonStyle">@style/RobotoButtonStyle</item>
+        <item name="android:editTextColor">@android:color/holo_red_dark</item>
+    </style>
 
 
+    <style name="RobotoButtonStyle" parent="android:Widget.Holo.Button">
+        <item name="android:fontFamily">@font/poppins_medium</item>
+        <item name="android:color">@color/orangeButton</item>
     </style>
 
 </resources>
