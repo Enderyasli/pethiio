@@ -178,7 +178,7 @@
                     android:textSize="16sp"
                     tools:text="Tür" />
 
-                <com.toptoche.searchablespinnerlibrary.SearchableSpinner
+                <com.pethiio.android.ui.main.view.customViews.NoDefaultSpinner
                     android:id="@+id/typeSpinner"
                     style="@style/Theme.UserDialog"
                     android:layout_width="match_parent"

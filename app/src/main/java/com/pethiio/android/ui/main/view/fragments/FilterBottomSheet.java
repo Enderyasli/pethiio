@@ -56,8 +56,8 @@ public class FilterBottomSheet extends BottomSheetDialogFragment {
 
     int maxDistance = 1, minDistance = 0, minAge = 0, maxAge = 1;
     RadioGroup purposeRadioGroup;
-    NoDefaultSpinner genderSpinner;
-    SearchableSpinner typeSpinner;
+    NoDefaultSpinner genderSpinner,typeSpinner;
+//    SearchableSpinner typeSpinner;
     Button filterButton;
 
 
@@ -275,8 +275,8 @@ public class FilterBottomSheet extends BottomSheetDialogFragment {
         filterClearButton = root.findViewById(R.id.filter_clear_button);
         ageSeekBar = (DoubleValueSeekBarView) root.findViewById(R.id.age_seek_bar);
 
-        typeSpinner.setTitle("Cins Seç");
-        typeSpinner.setPositiveButton("kapat");
+//        typeSpinner.setTitle("Cins Seç");
+//        typeSpinner.setPositiveButton("kapat");
 
 
         purposeRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
