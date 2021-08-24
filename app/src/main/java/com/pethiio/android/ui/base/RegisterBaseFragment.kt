@@ -93,9 +93,35 @@ abstract class RegisterBaseFragment<VModel : RegisterBaseViewModel> : Fragment()
         return emptyList()
     }
 
+    fun getLookUpKeys(key: String,lookUpsResponse: List<LookUpsResponse>): List<String> {
+
+        lookUpsResponse.forEach { it ->
+            if (it.key == key) {
+
+                val arrayList = arrayListOf<String>()
+                it.value.forEach {
+                    arrayList.add(it.key)
+                }
+
+                return arrayList
+
+            }
+        }
+        return emptyList()
+    }
+
     fun getLookUpIndex(lookUpkey: String, key: String): Int {
 
         getLookUpKeys(lookUpkey).forEachIndexed { index, s ->
+            if (s == key)
+                return index
+        }
+
+        return 0
+    }
+    fun getLookUpBreeds(lookUpkey: String, key: String, lookUpsResponse: List<LookUpsResponse>): Int {
+
+        getLookUpKeys(lookUpkey,lookUpsResponse = lookUpsResponse).forEachIndexed { index, s ->
             if (s == key)
                 return index
         }
@@ -150,6 +176,17 @@ abstract class RegisterBaseFragment<VModel : RegisterBaseViewModel> : Fragment()
         }
         return ""
     }
+
+    fun getBreedIndex(key: String): Int {
+
+        animalDetailResponse?.breeds?.forEachIndexed { index, s ->
+            if (s.key == key)
+                return index
+        }
+
+        return 0
+    }
+
 
     fun getLookUpKey(key: String, value: String): String {
 

@@ -624,8 +624,7 @@ class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
                                             }
 
                                             val breedIndex = petAdd?.breedId?.let { it1 ->
-                                                getLookUpIndex(
-                                                    Constants.lookUpType,
+                                                getBreedIndex(
                                                     it1.toString()
                                                 )
                                             }

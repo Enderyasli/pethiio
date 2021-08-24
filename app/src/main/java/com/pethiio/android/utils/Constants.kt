@@ -14,6 +14,8 @@ class Constants {
         const val lookUpPurpose: String = "purpose"
         const val lookUpLanguage: String = "language"
         const val lookUpType: String = "type"
+        const val lookUpBreeds: String = "breeds"
+
 
         const val notificationNewMesage: String = "NEW_MESSAGE"
         const val notificationNewMatch: String = "NEW_MATCH"
