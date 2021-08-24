@@ -371,6 +371,7 @@ class UserEditFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
                 .setDate(endDate)
                 .setCancelText(getString(R.string.lcl_cancel_datepicker))
                 .setSubmitText(getString(R.string.lcl_apply_datepicker))
+                .setLabel("", "", "", "", "", "")
                 .setCancelColor(ContextCompat.getColor(requireContext(), R.color.orangeButton))
                 .setSubmitColor(ContextCompat.getColor(requireContext(), R.color.orangeButton))
                 .build()

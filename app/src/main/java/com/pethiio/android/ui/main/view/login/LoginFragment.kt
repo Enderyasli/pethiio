@@ -81,6 +81,8 @@ class LoginFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
 
         viewModel.getFields().observe(this, {
 
+            binding.progressAvi.hide()
+
             setPethiioResponseList(it)
             binding.signupTitle.text = getLocalizedString(Constants.registerTitle)
             binding.emailLayout.titleTv.text =
