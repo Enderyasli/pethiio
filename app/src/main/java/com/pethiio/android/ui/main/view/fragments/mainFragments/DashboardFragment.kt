@@ -77,7 +77,7 @@ class DashboardFragment : BaseFragment(), CardStackListener,
     private var isLocationSended = false // TODO: 8.07.2021 false yap
     private var selectedMemberId = 0
     private var fromNotification = false
-
+    var animalId = -1
 
     var searchList: List<PetSearchResponse>? = null
     var memberId: Int = 0
@@ -428,7 +428,8 @@ class DashboardFragment : BaseFragment(), CardStackListener,
 
             when (it.status) {
                 Status.LOADING -> {
-                    binding.progressAvi.show()                }
+                    binding.progressAvi.show()
+                }
 
                 Status.SUCCESS -> {
                     val fields = it.data?.fields
@@ -448,14 +449,16 @@ class DashboardFragment : BaseFragment(), CardStackListener,
 
             when (it.status) {
                 Status.LOADING -> {
-                    binding.progressAvi.show()                }
+                    binding.progressAvi.show()
+                }
 
                 Status.SUCCESS -> {
                     if (it.data != null)
                         memberListResponse = it.data
                     setMembeListSpinner(memberListResponse)
 //                    setMemberList(memberListResponse)
-                    binding.progressAvi.hide()                }
+                    binding.progressAvi.hide()
+                }
                 Status.ERROR -> {
                     CommonFunctions.checkLogin(it.errorCode, findNavController())
 
@@ -577,8 +580,17 @@ class DashboardFragment : BaseFragment(), CardStackListener,
 
 
         binding.searchFilterButton.setOnClickListener {
-            if (findNavController().currentDestination?.id == R.id.navigation_dashboard)
-                findNavController().navigate(R.id.action_navigation_dashboard_to_bottomSheetDialog)
+
+            if (animalId != -1) {
+                val bundle = bundleOf("animalId" to animalId)
+
+                if (findNavController().currentDestination?.id == R.id.navigation_dashboard)
+                    findNavController().navigate(
+                        R.id.action_navigation_dashboard_to_bottomSheetDialog,
+                        bundle
+                    )
+            }
+
         }
 
 
@@ -703,6 +715,10 @@ class DashboardFragment : BaseFragment(), CardStackListener,
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         when (parent?.id) {
             1 -> {
+                memberListResponse[position].animalId.let {
+                    animalId = it
+                }
+
                 memberListResponse[position].id.let {
                     viewModel.fetchPetSearch(it)
                     memberId = it
@@ -711,8 +727,8 @@ class DashboardFragment : BaseFragment(), CardStackListener,
                     PreferenceHelper.SharedPreferencesManager.getInstance().selectedSpinnerId =
                         selectedMemberId
 
-                    if(PreferenceHelper.SharedPreferencesManager.getInstance().isLikedOnce)
-                    spotlightSettings()
+                    if (PreferenceHelper.SharedPreferencesManager.getInstance().isLikedOnce)
+                        spotlightSettings()
 
 
                 }

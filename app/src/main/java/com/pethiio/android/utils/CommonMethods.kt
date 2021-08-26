@@ -18,6 +18,7 @@ import com.pethiio.android.PethiioApplication
 import com.pethiio.android.R
 import com.pethiio.android.data.api.ServiceBuilder
 import com.pethiio.android.data.model.LookUpsResponse
+import com.pethiio.android.data.model.PethiioResponse
 import okhttp3.OkHttpClient
 import java.io.InputStream
 import java.security.KeyStore
@@ -160,6 +161,49 @@ class CommonMethods {
             }
             return ""
         }
+
+        @JvmStatic
+        fun getAnimalBreeds(breedList: List<PethiioResponse>): ArrayList<String> {
+
+            val arrayList = arrayListOf<String>()
+            breedList.forEach {
+                arrayList.add(it.value)
+            }
+            return arrayList
+        }
+
+        @JvmStatic
+        fun getBreedKeys(breedList: List<PethiioResponse>): List<String> {
+
+            val arrayList = arrayListOf<String>()
+
+            breedList.forEach {
+                    arrayList.add(it.key)
+            }
+            return arrayList
+        }
+
+//        @JvmStatic
+//        fun getBreedsKey(value: String): String {
+//
+//            animalDetailResponse?.breeds?.forEach { it ->
+//                if (it.value == value)
+//                    return it.key
+//
+//            }
+//            return ""
+//        }
+//
+//        @JvmStatic
+//        fun getBreedIndex(key: String): Int {
+//
+//            animalDetailResponse?.breeds?.forEachIndexed { index, s ->
+//                if (s.key == key)
+//                    return index
+//            }
+//
+//            return 0
+//        }
 
 
         fun onSNACK(view: View, snackText: String) {

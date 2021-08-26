@@ -123,7 +123,7 @@
         </LinearLayout>
 
         <include
-            android:id="@+id/genderLy"
+            android:id="@+id/breedSpinner"
             layout="@layout/common_spinner_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -179,7 +179,7 @@
                     tools:text="Tür" />
 
                 <com.pethiio.android.ui.main.view.customViews.NoDefaultSpinner
-                    android:id="@+id/typeSpinner"
+                    android:id="@+id/genderSpinner"
                     style="@style/Theme.UserDialog"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"

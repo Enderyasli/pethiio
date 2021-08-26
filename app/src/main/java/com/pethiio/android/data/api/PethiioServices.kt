@@ -146,6 +146,9 @@ interface PethiioServices {
     @POST("page/pet-search-filter")
     fun postSearchFilter(@Body filterRequest: SearchFilterRequest): Observable<Response<Void>>
 
+    @GET("page/pet-search-filter/breeds/{animalId}")
+    fun getPetSearchBreeds(@Path("animalId") animalId: Int): Observable<List<PethiioResponse>>
+
 
     //endregion
 

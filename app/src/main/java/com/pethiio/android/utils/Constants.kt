@@ -108,7 +108,7 @@ class Constants {
         const val petSearchFilterAgeTitle: String = "ageTitle"
         const val petSearchFilterGenderTitle: String = "genderTitle"
         const val petSearchFilterPurposeTitle: String = "purposeTitle"
-        const val petSearchFilterAnimalTitle: String = "animalTitle"
+        const val petSearchFilterBreedTitle: String = "breedTitle"
         const val petSearchFilterButton: String = "filterButton"
         const val petSearchFilterCleanButton: String = "cleanButton"
 

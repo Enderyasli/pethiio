@@ -152,6 +152,19 @@ class ChatScreenFragment : BaseFragment() {
 
     private fun setUpObserver() {
 
+
+        binding.reportIv.setOnClickListener {
+
+            val bundle =
+                bundleOf(
+                    "memberId" to memberId, // TODO: 26.08.2021 önceki sayfadan petID ve selectedMemberId'yi al
+                    "animalId" to petId.toString(),
+                    "isOwner" to true,
+                    "fromChat" to true
+                )
+            findNavController().navigate(R.id.navigation_pet_detail, bundle)
+        }
+
         viewModel.fetchChatPageData()
         viewModel.fetchChatRoom(roomId)
         viewModel.getChatPageData().observe(viewLifecycleOwner, {
@@ -192,17 +205,6 @@ class ChatScreenFragment : BaseFragment() {
 
                     it.data.forEach { chat ->
 
-                        binding.reportIv.setOnClickListener {
-
-                            val bundle =
-                                bundleOf(
-                                    "memberId" to chat.senderMemberId,
-                                    "animalId" to petId.toString(),
-                                    "isOwner" to true,
-                                    "fromChat" to true
-                                )
-                            findNavController().navigate(R.id.navigation_pet_detail, bundle)
-                        }
                     }
 
 

@@ -14,7 +14,6 @@ import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -35,9 +34,8 @@ import com.pethiio.android.ui.main.view.customViews.NoDefaultSpinner;
 import com.pethiio.android.ui.main.viewmodel.DashBoardViewModel;
 import com.pethiio.android.utils.CommonMethods;
 import com.pethiio.android.utils.Constants;
-import com.pethiio.android.utils.NoDefaultSearchSpinner;
 import com.pethiio.android.utils.Resource;
-import com.toptoche.searchablespinnerlibrary.SearchableSpinner;
+import com.pethiio.android.utils.Status;
 
 import org.greenrobot.eventbus.EventBus;
 import org.jetbrains.annotations.NotNull;
@@ -52,18 +50,18 @@ public class FilterBottomSheet extends BottomSheetDialogFragment {
     // TODO: 17.07.2021 yas, km range koy
     DashBoardViewModel viewModel;
 
-    TextView distanceTitleTv, ageTv, ageValueTv, genderTitle, purposeTitle, animalTitle, filterClearButton, distanceTv;
+    TextView distanceTitleTv, ageTv, ageValueTv, genderTitle, purposeTitle, breedTitle, filterClearButton, distanceTv;
 
-    int maxDistance = 1, minDistance = 0, minAge = 0, maxAge = 1;
+    int maxDistance = 1, minDistance = 0, minAge = 0, maxAge = 1, animalId = -1;
     RadioGroup purposeRadioGroup;
-    NoDefaultSpinner genderSpinner,typeSpinner;
-//    SearchableSpinner typeSpinner;
+    NoDefaultSpinner genderSpinner, breedSpinner;
+    //    SearchableSpinner typeSpinner;
     Button filterButton;
 
 
     DoubleValueSeekBarView distanceSeekBar;
     DoubleValueSeekBarView ageSeekBar;
-    List<String> gender, genderKeys, animal, animalKeys, purpose, purposeKeys;
+    List<String> gender, genderKeys, breed, breedKeys, purpose, purposeKeys;
     PetSearchFilterResponse petSearchFilterResponse;
     List<LookUpsResponse> lookUpsResponses;
 
@@ -103,8 +101,10 @@ public class FilterBottomSheet extends BottomSheetDialogFragment {
         viewModel =
                 ViewModelProviders.of(this, new ViewModelFactory()).get(DashBoardViewModel.class);
 
+        animalId = getArguments().getInt("animalId");
         viewModel.fetchSearchFilterListPageData();
         viewModel.fetchFilterList();
+
 
         init(root);
 
@@ -120,12 +120,12 @@ public class FilterBottomSheet extends BottomSheetDialogFragment {
                     ageTv.setText(getLocalizedString(Constants.petSearchFilterAgeTitle, pethiioResponse));
                     genderTitle.setText(getLocalizedString(Constants.petSearchFilterGenderTitle, pethiioResponse));
                     purposeTitle.setText(getLocalizedString(Constants.petSearchFilterPurposeTitle, pethiioResponse));
-                    animalTitle.setText(getLocalizedString(Constants.petSearchFilterAnimalTitle, pethiioResponse));
+                    breedTitle.setText(getLocalizedString(Constants.petSearchFilterBreedTitle, pethiioResponse));
                     distanceTitleTv.setText(getLocalizedString(Constants.petSearchFilterDistanceTitle, pethiioResponse));
                     filterButton.setText(getLocalizedString(Constants.petSearchFilterButton, pethiioResponse));
                     filterClearButton.setText(getLocalizedString(Constants.petSearchFilterCleanButton, pethiioResponse));
                     genderSpinner.setPrompt(getLocalizedString(Constants.petSearchFilterGenderTitle, pethiioResponse));
-                    typeSpinner.setPrompt(getLocalizedString(Constants.petSearchFilterAnimalTitle, pethiioResponse));
+                    breedSpinner.setPrompt(getLocalizedString(Constants.petSearchFilterBreedTitle, pethiioResponse));
 
                 }
 
@@ -137,14 +137,14 @@ public class FilterBottomSheet extends BottomSheetDialogFragment {
             }
         });
 
+
         viewModel.getSearchFilterListLookUps().observe(getViewLifecycleOwner(), listResource -> {
 
             lookUpsResponses = listResource.getData();
 
             gender = CommonMethods.getLookUps(Constants.lookUpGender, lookUpsResponses);
             genderKeys = CommonMethods.getLookUpKeys(Constants.lookUpGender, lookUpsResponses);
-            animal = CommonMethods.getLookUps(Constants.lookUpAnimals, lookUpsResponses);
-            animalKeys = CommonMethods.getLookUpKeys(Constants.lookUpAnimals, lookUpsResponses);
+            breedKeys = CommonMethods.getLookUpKeys(Constants.lookUpAnimals, lookUpsResponses);
             purpose = CommonMethods.getLookUps(Constants.lookUpPurpose, lookUpsResponses);
             purposeKeys = CommonMethods.getLookUpKeys(Constants.lookUpPurpose, lookUpsResponses);
 
@@ -160,51 +160,94 @@ public class FilterBottomSheet extends BottomSheetDialogFragment {
             genderAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             genderSpinner.setAdapter(genderAdapter);
 
-            ArrayAdapter typeAdapter = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_item, animal);
-            typeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            typeSpinner.setAdapter(typeAdapter);
-
 
             viewModel.getSearchFilterList().observe(this, petSearchFilterResponseResource -> {
 
-                petSearchFilterResponse = petSearchFilterResponseResource.getData();
 
-                if (petSearchFilterResponse != null) {
+                if (petSearchFilterResponseResource.getStatus().equals(Status.SUCCESS)) {
 
-                    genderSpinner.setSelection(genderKeys.indexOf(petSearchFilterResponse.getGender()));
-                    typeSpinner.setSelection(animalKeys.indexOf(String.valueOf(petSearchFilterResponse.getAnimalId())));
+                    petSearchFilterResponse = petSearchFilterResponseResource.getData();
 
-                    distanceSeekBar.setCurrentMaxValue(petSearchFilterResponse.getMaximumDistance());
-
-                    new Handler().postDelayed(() -> distanceSeekBar.setCurrentMinValue(petSearchFilterResponse.getMinimumDistance()), 100);
+                    if (petSearchFilterResponse != null) {
 
 
-                    maxDistance = petSearchFilterResponse.getMaximumDistance();
-                    minDistance = petSearchFilterResponse.getMinimumDistance();
-                    distanceTv.setText(petSearchFilterResponse.getMinimumDistance() + " - " + petSearchFilterResponse.getMaximumDistance() + " km");
+                        genderSpinner.setSelection(genderKeys.indexOf(petSearchFilterResponse.getGender()));
 
-                    ageSeekBar.setCurrentMaxValue(petSearchFilterResponse.getMaximumAge());
-                    new Handler().postDelayed(() -> ageSeekBar.setCurrentMinValue(petSearchFilterResponse.getMinimumAge()), 100);
-                    minAge = petSearchFilterResponse.getMinimumAge();
-                    maxAge = petSearchFilterResponse.getMaximumAge();
-                    ageValueTv.setText(petSearchFilterResponse.getMinimumAge() + " - " + petSearchFilterResponse.getMaximumAge());
+                        viewModel.getSearchFilterBreeds().observe(getViewLifecycleOwner(), breedResponse -> {
+
+                            List<PethiioResponse> pethiioResponse = breedResponse.getData();
+
+                            if (pethiioResponse != null) {
+
+                                breed = CommonMethods.getAnimalBreeds(pethiioResponse);
+                                breedKeys = CommonMethods.getBreedKeys(pethiioResponse);
+
+                                ArrayAdapter typeAdapter = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_item, breed);
+                                typeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                breedSpinner.setAdapter(typeAdapter);
 
 
-                    if (purposeKeys.size() > purposeKeys.indexOf(petSearchFilterResponse.getPurpose())) {
-                        RadioButton purposeRadioButton = (RadioButton) purposeRadioGroup.getChildAt(purposeKeys.indexOf(petSearchFilterResponse.getPurpose()));
-                        if (purposeRadioButton != null)
-                            purposeRadioButton.setChecked(true);
-                        else {
-                            RadioButton purposeRadioButton1 = (RadioButton) purposeRadioGroup.getChildAt(0);
-                            if (purposeRadioButton1 != null)
-                                purposeRadioButton1.setChecked(true);
+                                if(petSearchFilterResponse!=null)
+                                breedSpinner.setSelection(breedKeys.indexOf(String.valueOf(petSearchFilterResponse.getBreedId())));
 
+                            }
+
+                        });
+
+                        distanceSeekBar.setCurrentMaxValue(petSearchFilterResponse.getMaximumDistance());
+
+//                    new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+//                        @Override
+//                        public void run() {
+                        distanceSeekBar.setCurrentMinValue(petSearchFilterResponse.getMinimumDistance());
+//                        }
+//                    }, 200);
+
+//                    new Handler().postDelayed(() -> distanceSeekBar.setCurrentMinValue(petSearchFilterResponse.getMinimumDistance()), 100);
+
+
+                        maxDistance = petSearchFilterResponse.getMaximumDistance();
+                        minDistance = petSearchFilterResponse.getMinimumDistance();
+                        distanceTv.setText(petSearchFilterResponse.getMinimumDistance() + " - " + petSearchFilterResponse.getMaximumDistance() + " km");
+
+                        ageSeekBar.setCurrentMaxValue(petSearchFilterResponse.getMaximumAge());
+
+//                    new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+//                        @Override
+//                        public void run() {
+                        ageSeekBar.setCurrentMinValue(petSearchFilterResponse.getMinimumAge());
+//                        }
+//                    }, 200);
+//                    new Handler().postDelayed(() -> ageSeekBar.setCurrentMinValue(petSearchFilterResponse.getMinimumAge()), 100);
+                        minAge = petSearchFilterResponse.getMinimumAge();
+                        maxAge = petSearchFilterResponse.getMaximumAge();
+                        ageValueTv.setText(petSearchFilterResponse.getMinimumAge() + " - " + petSearchFilterResponse.getMaximumAge());
+
+
+                        if (purposeKeys.size() > purposeKeys.indexOf(petSearchFilterResponse.getPurpose())) {
+                            RadioButton purposeRadioButton = (RadioButton) purposeRadioGroup.getChildAt(purposeKeys.indexOf(petSearchFilterResponse.getPurpose()));
+                            if (purposeRadioButton != null)
+                                purposeRadioButton.setChecked(true);
+                            else {
+                                RadioButton purposeRadioButton1 = (RadioButton) purposeRadioGroup.getChildAt(0);
+                                if (purposeRadioButton1 != null)
+                                    purposeRadioButton1.setChecked(true);
+
+                            }
                         }
+
+
+//                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+//                        @Override
+//                        public void run() {
+                        if (animalId > -1)
+                            viewModel.fetchFilterBreeds(animalId);
+//                        }
+//                    });
+
+
                     }
-
-
                 }
-
             });
 
         });
@@ -220,14 +263,15 @@ public class FilterBottomSheet extends BottomSheetDialogFragment {
 
         String purpose = CommonMethods.getLookUpKey(Constants.lookUpPurpose, purposeRadioButton.getText().toString(), lookUpsResponses);
         String gender = CommonMethods.getLookUpKey(Constants.lookUpGender, genderSpinner.getSelectedItem().toString(), lookUpsResponses);
-        String animal = CommonMethods.getLookUpKey(Constants.lookUpAnimals, typeSpinner.getSelectedItem().toString(), lookUpsResponses);
+        int animal = Integer.parseInt(breedKeys.get(breedSpinner.getSelectedItemPosition()));
 
 
-        if (!TextUtils.isEmpty(purpose) && !TextUtils.isEmpty(animal) && !TextUtils.isEmpty(gender)) {
-            int animalId = Integer.parseInt(animal);
+        if (!TextUtils.isEmpty(purpose) && animalId != -1 && animal != -1 && !TextUtils.isEmpty(gender)) {
+            int breedId = animal;
 
             SearchFilterRequest searchFilterRequest = new SearchFilterRequest(
                     animalId,
+                    breedId,
                     purpose,
                     gender,
                     minAge, maxAge, minDistance, maxDistance
@@ -266,11 +310,11 @@ public class FilterBottomSheet extends BottomSheetDialogFragment {
         ageTv = root.findViewById(R.id.age_tv);
         ageValueTv = root.findViewById(R.id.age_value_tv);
         purposeTitle = root.findViewById(R.id.purpose_tv);
-        animalTitle = root.findViewById(R.id.breed_tv);
-        genderTitle = root.findViewById(R.id.genderLy).findViewById(R.id.title_tv);
+        genderTitle = root.findViewById(R.id.breed_tv);
+        breedTitle = root.findViewById(R.id.breedSpinner).findViewById(R.id.title_tv);
         purposeRadioGroup = root.findViewById(R.id.radio_group_purpose);
-        genderSpinner = root.findViewById(R.id.genderLy).findViewById(R.id.spinner);
-        typeSpinner = root.findViewById(R.id.typeSpinner);
+        breedSpinner = root.findViewById(R.id.breedSpinner).findViewById(R.id.spinner);
+        genderSpinner = root.findViewById(R.id.genderSpinner);
         filterButton = root.findViewById(R.id.filter_button);
         filterClearButton = root.findViewById(R.id.filter_clear_button);
         ageSeekBar = (DoubleValueSeekBarView) root.findViewById(R.id.age_seek_bar);
@@ -282,8 +326,11 @@ public class FilterBottomSheet extends BottomSheetDialogFragment {
         purposeRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                typeSpinner.setEnabled(checkedId != 1);
-                genderSpinner.setEnabled(checkedId != 1);
+//                breedSpinner.setEnabled(checkedId != 1);
+//                genderSpinner.setEnabled(checkedId != 1);
+                genderSpinner.setVisibility(checkedId != 1 ? View.VISIBLE : View.GONE);
+                genderTitle.setVisibility(checkedId != 1 ? View.VISIBLE : View.GONE);
+
             }
         });
 

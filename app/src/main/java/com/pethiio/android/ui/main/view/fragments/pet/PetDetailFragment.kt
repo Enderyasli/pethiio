@@ -246,7 +246,7 @@ class PetDetailFragment : BaseFragment() {
                     binding.ownerAgeTv.text = petOwnerDetail?.age + ownerAgeTitle
 
 
-                    if (!isOwner)
+//                    if (!isOwner)
                         changeUserType(true)
 
                     binding.progressAvi.hide()

@@ -35,6 +35,8 @@ class DashBoardViewModel : ViewModel() {
     private val petSearchFilter = SingleLiveEvent<Resource<PetSearchFilterResponse>>()
     private val petSearchFilterPageData = MutableLiveData<Resource<List<PethiioResponse>>>()
     private val petSearchFilterPageDataLookUps = MutableLiveData<Resource<List<LookUpsResponse>>>()
+    private val petSearchBreeds = MutableLiveData<Resource<List<PethiioResponse>>>()
+
     private val responseHandler: ResponseHandler = ResponseHandler()
 
 
@@ -161,6 +163,25 @@ class DashBoardViewModel : ViewModel() {
         )
     }
 
+    fun fetchFilterBreeds(animalId: Int) {
+
+        petSearchFilter.postValue(Resource.loading(null))
+        compositeDisposable.add(
+            ServiceBuilder.buildService()
+                .getPetSearchBreeds(animalId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                    { loginData ->
+                        petSearchBreeds.postValue(Resource.success(loginData))
+                    },
+                    {
+                        petSearchBreeds.postValue(responseHandler.handleException(it))
+                    }
+                )
+        )
+    }
+
     fun fetchPetSearch(animalId: Int) {
 
         petSearchResult.postValue(Resource.loading(null))
@@ -258,6 +279,10 @@ class DashBoardViewModel : ViewModel() {
 
     fun getSearchFilterListFields(): LiveData<Resource<List<PethiioResponse>>> {
         return petSearchFilterPageData
+    }
+
+       fun getSearchFilterBreeds(): LiveData<Resource<List<PethiioResponse>>> {
+        return petSearchBreeds
     }
 
     fun getSearchFilterListLookUps(): LiveData<Resource<List<LookUpsResponse>>> {

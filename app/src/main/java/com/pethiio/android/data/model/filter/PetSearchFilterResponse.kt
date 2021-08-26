@@ -5,6 +5,8 @@ import com.google.gson.annotations.SerializedName
 class PetSearchFilterResponse(
     @SerializedName("animalId")
     val animalId: Int,
+    @SerializedName("breedId")
+    val breedId: Int,
     @SerializedName("purpose")
     val purpose: String,
     @SerializedName("gender")

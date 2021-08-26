@@ -5,6 +5,8 @@ import com.google.gson.annotations.SerializedName
 data class SearchFilterRequest(
     @SerializedName("animalId")
     val animalId: Int,
+    @SerializedName("breedId")
+    val breedId: Int,
     @SerializedName("purpose")
     val purpose: String,
     @SerializedName("gender")

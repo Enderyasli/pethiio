@@ -5,6 +5,8 @@ import com.google.gson.annotations.SerializedName
 class MemberListResponse {
     @SerializedName("id")
     val id: Int = 0
+    @SerializedName("animalId")
+    val animalId: Int = 0
     @SerializedName("type")
     val type: String = ""
     @SerializedName("name")
