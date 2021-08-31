@@ -194,6 +194,7 @@ class RegisterFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
 //                startActivity(intent)
 //            }
 
+            binding.progressAvi.hide()
 
         })
 //        binding.spinner.prompt = PreferenceHelper.SharedPreferencesManager.getInstance().appLanguage
@@ -229,6 +230,8 @@ class RegisterFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
                     setSelection(upperLanguage.indexOf(languageString.uppercase()))
                     isSelectedFirstTime = false
                 }
+            binding.progressAvi.hide()
+
 
         })
 

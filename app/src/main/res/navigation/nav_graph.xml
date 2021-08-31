@@ -6,6 +6,11 @@
     android:id="@+id/appStarterNavGraph"
     app:startDestination="@id/navigation_welcome">
 
+    <action
+        android:id="@+id/action_global_navigation_welcome"
+        app:destination="@id/navigation_welcome"
+        app:popUpTo="@id/navigation_welcome"
+        app:popUpToInclusive="true" />
     <fragment
         android:id="@+id/navigation_onboarding"
         android:name="com.pethiio.android.ui.main.view.onboarding.OnBoardingFragment"
