@@ -39,7 +39,9 @@ class PetDetailFragment : BaseFragment() {
 
     private lateinit var viewModel: PetDetailViewModel
 
+    private var ownerTitle: String = ""
     private var owner: String = ""
+    private var animal: String = ""
     private var report: String = ""
     private var userId: Int? = 0
     private var memberId: Int = 0
@@ -88,10 +90,15 @@ class PetDetailFragment : BaseFragment() {
         fromChat = arguments?.getBoolean("fromChat", false)!!
 
         if (isOwner) {
-            if (fromChat)
+            if (fromChat) {
                 viewModel.fetchPetSearchDetailPageData()
-            else
+                viewModel.fetchPetSearchDetail(animalId)
+            } else {
                 viewModel.fetchPetDetailPageData()
+                viewModel.fetchPetDetail(animalId)
+
+            }
+
 
 
             binding.scrollView.setBackgroundColor(Color.WHITE)
@@ -99,8 +106,9 @@ class PetDetailFragment : BaseFragment() {
             binding.buttonContainer.visibility = View.GONE
         } else {
             viewModel.fetchPetSearchDetailPageData()
+            viewModel.fetchPetSearchDetail(animalId)
+
         }
-        viewModel.fetchPetDetail(animalId)
 
         binding.popupMenu.setOnClickListener {
             openPopUpMenu()
@@ -122,6 +130,9 @@ class PetDetailFragment : BaseFragment() {
                         getLocalizedString(Constants.petSearchDetailUpdate, fields)
                     else
                         getLocalizedString(Constants.petSearchDetailOwner, fields)
+
+                    ownerTitle = owner
+                    animal = getLocalizedString(Constants.petSearchDetailAnimal, fields)
 
                     report = if (isOwner && !fromChat)
                         getLocalizedString(Constants.petSearchDetailDelete, fields)
@@ -247,7 +258,7 @@ class PetDetailFragment : BaseFragment() {
 
 
 //                    if (!isOwner)
-                        changeUserType(true)
+                    changeUserType(true)
 
                     binding.progressAvi.hide()
                 }
@@ -268,7 +279,7 @@ class PetDetailFragment : BaseFragment() {
             popUpMenu.inflate(R.menu.pop_up_owner)
 
 
-        popUpMenu.menu.getItem(0).title = owner
+        popUpMenu.menu.getItem(0).title = ownerTitle
         popUpMenu.menu.getItem(1).title = report
 
         popUpMenu.apply {
@@ -384,10 +395,13 @@ class PetDetailFragment : BaseFragment() {
 
     private fun changeUserType(isUser: Boolean) {
         if (isUser) {
+            ownerTitle = animal
             ownerSelected = true
             binding.petLayout.visibility = View.GONE
             binding.ownerLayout.visibility = View.VISIBLE
+
         } else {
+            ownerTitle = owner
             ownerSelected = false
             binding.petLayout.visibility = View.VISIBLE
             binding.ownerLayout.visibility = View.GONE

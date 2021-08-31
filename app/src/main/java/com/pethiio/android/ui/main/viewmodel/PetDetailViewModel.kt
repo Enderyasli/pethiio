@@ -25,7 +25,7 @@ class PetDetailViewModel : ViewModel() {
     private val responseHandler: ResponseHandler = ResponseHandler()
 
 
-    fun fetchPetDetail(animalId: String) {
+    fun fetchPetSearchDetail(animalId: String) {
 
         petDetailResponse.postValue(Resource.loading(null))
         compositeDisposable.add(
@@ -43,6 +43,25 @@ class PetDetailViewModel : ViewModel() {
                 )
         )
     }
+    fun fetchPetDetail(animalId: String) {
+
+        petDetailResponse.postValue(Resource.loading(null))
+        compositeDisposable.add(
+            ServiceBuilder.buildService()
+                .getPetDetail(animalId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                    { loginData ->
+                        petDetailResponse.postValue(Resource.success(loginData))
+                    },
+                    {
+                        petDetailResponse.postValue(responseHandler.handleException(it))
+                    }
+                )
+        )
+    }
+
 
     fun fetchPetOwnerDetail(userId: String) {
 

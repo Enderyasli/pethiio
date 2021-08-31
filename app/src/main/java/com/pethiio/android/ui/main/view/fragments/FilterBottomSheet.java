@@ -187,8 +187,8 @@ public class FilterBottomSheet extends BottomSheetDialogFragment {
                                 breedSpinner.setAdapter(typeAdapter);
 
 
-                                if(petSearchFilterResponse!=null)
-                                breedSpinner.setSelection(breedKeys.indexOf(String.valueOf(petSearchFilterResponse.getBreedId())));
+                                if (petSearchFilterResponse != null)
+                                    breedSpinner.setSelection(breedKeys.indexOf(String.valueOf(petSearchFilterResponse.getBreedId())));
 
                             }
 
@@ -267,7 +267,10 @@ public class FilterBottomSheet extends BottomSheetDialogFragment {
 
 
         if (!TextUtils.isEmpty(purpose) && animalId != -1 && animal != -1 && !TextUtils.isEmpty(gender)) {
-            int breedId = animal;
+            Integer breedId = animal;
+
+            if (breedId == 0)
+                breedId = null;
 
             SearchFilterRequest searchFilterRequest = new SearchFilterRequest(
                     animalId,

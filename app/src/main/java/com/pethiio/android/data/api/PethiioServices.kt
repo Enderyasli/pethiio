@@ -173,7 +173,7 @@ interface PethiioServices {
     @GET("page/pet-detail/{animalId}")
     fun getPetDetail(
         @Path("animalId") animalId: String
-    ): Observable<PetAdd>
+    ): Observable<PetSearchDetailResponse>
 
 
     @GET("page/pet-search/info")
