@@ -68,7 +68,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="105dp"
         android:layout_gravity="bottom"
         android:background="@drawable/dashboard_bg"
         android:orientation="vertical">
@@ -140,6 +140,11 @@
             android:layout_gravity="center"
             android:src="@drawable/x_btn" />
 
+        <FrameLayout
+            android:id="@+id/bottom_overlay"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
     </FrameLayout>
 
     <FrameLayout
@@ -159,11 +164,6 @@
 
     <FrameLayout
         android:id="@+id/top_overlay"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
-    <FrameLayout
-        android:id="@+id/bottom_overlay"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
