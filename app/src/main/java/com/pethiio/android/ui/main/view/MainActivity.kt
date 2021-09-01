@@ -259,7 +259,7 @@ class MainActivity : AppCompatActivity() {
             ) != PackageManager.PERMISSION_GRANTED
         ) {
             if (PreferenceHelper.SharedPreferencesManager.getInstance().isLoggedIn == true)
-                navController?.navigate(R.id.navigation_location)
+                navController?.navigate(R.id.navigation_location) // TODO: 2.09.2021 global yap
         } else {
             createLocationRequest()
 

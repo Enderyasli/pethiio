@@ -51,6 +51,7 @@ public class SocketIO {
     }
 
     public void setRooms(int roomId) {
+        socket.off();
         socket.on(Constants.SOCKET_TOPIC + roomId, new Emitter.Listener() {
             @Override
             public void call(Object... objects) {
@@ -76,8 +77,9 @@ public class SocketIO {
     }
 
     public void disconnect(int roomId){
+        socket.off();
         socket.disconnect();
-        socket.off(Constants.SOCKET_TOPIC + roomId);
+//        socket.off(Constants.SOCKET_TOPIC + roomId);
     }
 
     private void parseMessage(Object object1, int roomId) {

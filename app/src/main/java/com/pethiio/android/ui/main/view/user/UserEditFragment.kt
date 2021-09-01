@@ -6,6 +6,7 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -31,7 +32,10 @@ import com.theartofdev.edmodo.cropper.CropImage
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.internal.format
 import java.io.File
+import java.text.ParseException
+import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -165,22 +169,19 @@ class UserEditFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
 
                                 response?.avatar?.let { it1 -> setImage(it1, binding.imageProfile) }
 
+                                formattedString = response?.dateOfBirth.toString()
+
                                 binding.nameLy.placeholderTv.setText(response?.firstName)
                                 binding.surnameLy.placeholderTv.setText(response?.lastName)
                                 binding.aboutPlaceholderTv.setText(response?.aboutMe)
-                                binding.birthPlaceholderTv.text = response?.dateOfBirth
+                                binding.birthPlaceholderTv.text = parseDateToddMMyyyy(formattedString)
 
 
-                                var convertedDate = Date()
-                                try {
-                                    convertedDate =
-                                        Constants.datePickerFormatTv.parse(response?.dateOfBirth)
-                                    formattedString =
-                                        Constants.datePickerFormat.format(convertedDate)
 
-                                } catch (e: Exception) {
 
-                                }
+
+
+
 
                                 val genderIndex = response?.gender?.let { it1 ->
                                     getLookUpIndex(
@@ -379,6 +380,22 @@ class UserEditFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
             pvTime.show()
         }
 
+    }
+
+    fun parseDateToddMMyyyy(time: String?): String? {
+        val inputPattern = "yyyy-MM-dd"
+        val outputPattern = "dd-MM-yyyy"
+        val inputFormat = SimpleDateFormat(inputPattern)
+        val outputFormat = SimpleDateFormat(outputPattern)
+        var date: Date? = null
+        var str: String? = null
+        try {
+            date = inputFormat.parse(time)
+            str = outputFormat.format(date)
+        } catch (e: ParseException) {
+            e.printStackTrace()
+        }
+        return str
     }
 
     fun postRegisterDetail() {
