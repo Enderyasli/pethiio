@@ -101,6 +101,12 @@ class DashboardFragment : BaseFragment(), CardStackListener,
 
     }
 
+    override fun onDestroy() {
+        //unregister event bus
+        EventBus.getDefault().unregister(this)
+        super.onDestroy()
+    }
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
     }
@@ -532,10 +538,17 @@ class DashboardFragment : BaseFragment(), CardStackListener,
 
         }
 
-        if (new.isEmpty()) {
-            viewModel.fetchPetSearch(memberId)
+        viewModel.postSearchResponse().observe(viewLifecycleOwner,{
 
-        }
+            when(it.status){
+                Status.SUCCESS-> {
+                    if (new.isEmpty()) {
+                        viewModel.fetchPetSearch(memberId)
+                    }
+                }
+            }
+        })
+
 
         val callback = old?.let { CardSackDiffCallback(it, new) }
         val result = callback?.let { DiffUtil.calculateDiff(it) }
@@ -652,16 +665,8 @@ class DashboardFragment : BaseFragment(), CardStackListener,
 
     }
 
-    override fun onDestroy() {
-        //unregister event bus
-        EventBus.getDefault().unregister(this)
-        super.onDestroy()
-    }
-
-
     override fun onCardDragging(direction: Direction?, ratio: Float) {
     }
-
 
     override fun onCardSwiped(direction: Direction?) {
 
@@ -677,7 +682,6 @@ class DashboardFragment : BaseFragment(), CardStackListener,
         removeFirst()
 
         if (direction != null && memberId > 0) {
-            Handler().postDelayed({
                 petSearch?.memberId?.let {
                     PetSearchRequest(
                         memberId,
@@ -689,8 +693,6 @@ class DashboardFragment : BaseFragment(), CardStackListener,
                         it
                     )
                 }
-            }, 3000)
-
 
         }
 
