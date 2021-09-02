@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.main.view.fragments.settings.SettingsFragment">
 
     <LinearLayout
@@ -15,8 +15,8 @@
             android:id="@+id/back_btn"
             android:layout_width="34dp"
             android:layout_height="34dp"
-            android:layout_marginTop="@dimen/signup_title_top_margin"
             android:layout_marginStart="@dimen/default_margin"
+            android:layout_marginTop="@dimen/signup_title_top_margin"
             app:cardCornerRadius="17dp">
 
             <ImageView
@@ -26,12 +26,13 @@
                 android:src="@drawable/back_arrow" />
 
         </androidx.cardview.widget.CardView>
+
         <TextView
-            android:layout_marginTop="@dimen/medium_size"
             android:id="@+id/title_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="26dp"
+            android:layout_marginTop="@dimen/medium_size"
             android:layout_marginBottom="3dp"
             android:fontFamily="@font/typo_round_bold"
             android:textColor="@color/orangeButton"
@@ -55,6 +56,7 @@
                 android:id="@+id/edit_profile_tv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_marginStart="@dimen/default_margin"
                 android:fontFamily="@font/typo_round_bold"
                 android:textColor="@color/grey"
@@ -67,7 +69,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/default_margin"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="30dp"
             android:layout_marginRight="@dimen/default_margin">
 
             <ImageView
@@ -79,6 +81,7 @@
                 android:id="@+id/password_change_tv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_marginStart="@dimen/default_margin"
                 android:fontFamily="@font/typo_round_bold"
                 android:textColor="@color/grey"
@@ -103,6 +106,7 @@
                 android:id="@+id/notification_tv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_marginStart="@dimen/default_margin"
                 android:fontFamily="@font/typo_round_bold"
                 android:textColor="@color/grey"
@@ -127,6 +131,7 @@
                 android:id="@+id/support_tv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_marginStart="@dimen/default_margin"
                 android:fontFamily="@font/typo_round_bold"
                 android:textColor="@color/grey"
@@ -151,6 +156,7 @@
                 android:id="@+id/about_tv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_marginStart="@dimen/default_margin"
                 android:fontFamily="@font/typo_round_bold"
                 android:textColor="@color/grey"
@@ -175,6 +181,7 @@
                 android:id="@+id/logout_tv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_marginStart="@dimen/default_margin"
                 android:fontFamily="@font/typo_round_bold"
                 android:textColor="@color/grey"
@@ -185,13 +192,12 @@
     </LinearLayout>
 
 
-
     <com.wang.avi.AVLoadingIndicatorView
         android:id="@+id/progressAvi"
-        app:indicatorColor="@color/orangeButton"
-        android:layout_centerInParent="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        app:indicatorColor="@color/orangeButton"
         app:indicatorName="BallScaleIndicator" />
 
 
