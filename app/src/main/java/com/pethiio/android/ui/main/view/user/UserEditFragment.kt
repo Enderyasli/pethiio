@@ -29,6 +29,7 @@ import com.pethiio.android.ui.base.BaseFragment
 import com.pethiio.android.ui.main.viewmodel.UserDetailViewModel
 import com.pethiio.android.utils.*
 import com.theartofdev.edmodo.cropper.CropImage
+import kotlinx.android.synthetic.main.fragment_vet.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
@@ -97,6 +98,7 @@ class UserEditFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
     override fun setUpViews() {
         super.setUpViews()
 
+        progressAvi.hide()
 
         viewModel.getUserEditPageData().observe(this, { it ->
 
@@ -108,10 +110,10 @@ class UserEditFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
                     lookUps?.let { it1 -> setLookUps(it1) }
                     binding.signupTitle.text =
                         getLocalizedString(Constants.registerTitle, pageDataFields)
-                    binding.nameLy.titleTv.text =
-                        getLocalizedString(Constants.registerNameTitle, pageDataFields)
-                    binding.surnameLy.titleTv.text =
-                        getLocalizedString(Constants.registerSurnameTitle, pageDataFields)
+                    binding.nameTitleTv.text =
+                        getLocalizedSpan(Constants.registerNameTitle, pageDataFields)
+                    binding.surnameTitleTv.text =
+                        getLocalizedSpan(Constants.registerSurnameTitle, pageDataFields)
                     binding.birthTitleTv.text =
                         getLocalizedSpan(Constants.registerDateOfBirthTitle, pageDataFields)
                     binding.aboutTitleTv.text =
@@ -154,13 +156,18 @@ class UserEditFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
                         when (it.status) {
 
                             Status.LOADING -> {
+                                progressAvi.show()
+
 
                             }
                             Status.ERROR -> {
+                                progressAvi.hide()
 
                             }
 
                             Status.SUCCESS -> {
+                                progressAvi.hide()
+
                                 val response = it.data
 
 //                                Glide.with(requireContext())
@@ -169,18 +176,14 @@ class UserEditFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
 
                                 response?.avatar?.let { it1 -> setImage(it1, binding.imageProfile) }
 
+                                binding.emailTv.text = response?.email
                                 formattedString = response?.dateOfBirth.toString()
 
-                                binding.nameLy.placeholderTv.setText(response?.firstName)
-                                binding.surnameLy.placeholderTv.setText(response?.lastName)
+                                binding.namePlaceholderTv.setText(response?.firstName)
+                                binding.surnamePlaceholderTv.setText(response?.lastName)
                                 binding.aboutPlaceholderTv.setText(response?.aboutMe)
-                                binding.birthPlaceholderTv.text = parseDateToddMMyyyy(formattedString)
-
-
-
-
-
-
+                                binding.birthPlaceholderTv.text =
+                                    parseDateToddMMyyyy(formattedString)
 
 
                                 val genderIndex = response?.gender?.let { it1 ->
@@ -208,14 +211,14 @@ class UserEditFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
                         val validSpinner = binding.genderLy.spinner.selectedItem != null
 
                         var validName = getViewError(
-                            binding.nameLy.placeholderTv,
+                            binding.namePlaceholderTv,
                             getLocalizedString(Constants.nameEmptyEror, pageDataFields)
                         )
                         if (!validName)
                             return@setOnClickListener
 
                         var validLastName = getViewError(
-                            binding.surnameLy.placeholderTv,
+                            binding.surnamePlaceholderTv,
                             getLocalizedString(Constants.surnameEmtpyError, pageDataFields)
                         )
                         if (!validLastName)
@@ -261,8 +264,8 @@ class UserEditFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
                                         Constants.lookUpGender,
                                         binding.genderLy.spinner.selectedItem.toString()
                                     ),
-                                    firstName = binding.nameLy.placeholderTv.text.trim().toString(),
-                                    lastName = binding.surnameLy.placeholderTv.text.trim()
+                                    firstName = binding.namePlaceholderTv.text.trim().toString(),
+                                    lastName = binding.surnamePlaceholderTv.text.trim()
                                         .toString(),
                                 )
                             )
@@ -292,8 +295,9 @@ class UserEditFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
                                                     when (it1.status) {
                                                         Status.SUCCESS -> {
                                                             activity?.runOnUiThread {
-
                                                                 findNavController().navigateUp()
+                                                                progressAvi.hide()
+
                                                             }
 
                                                         }
@@ -302,10 +306,12 @@ class UserEditFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
                                                                 binding.root,
                                                                 it1.message.toString()
                                                             )
+                                                            progressAvi.hide()
 
 
                                                         }
                                                         Status.LOADING -> {
+                                                            progressAvi.show()
                                                         }
                                                     }
                                                 })

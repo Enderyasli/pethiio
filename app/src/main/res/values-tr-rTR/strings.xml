@@ -23,5 +23,6 @@
     <string name="something_went_wrong">Bir şeyler ters gitti.Lütfen tekrar deneyin</string>
     <string name="ok">Tamam</string>
     <string name="crop_image_menu_crop">Seç</string>
+    <string name="email_title">E-Posta</string>
 
 </resources>

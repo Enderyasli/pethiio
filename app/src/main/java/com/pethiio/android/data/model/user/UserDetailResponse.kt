@@ -3,6 +3,8 @@ package com.pethiio.android.data.model.user
 import com.google.gson.annotations.SerializedName
 
 class UserDetailResponse(
+    @SerializedName("email")
+    val email: String,
     @SerializedName("aboutMe")
     val aboutMe: String,
     @SerializedName("avatar")

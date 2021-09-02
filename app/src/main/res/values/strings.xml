@@ -28,5 +28,6 @@
     <string name="spotlight_memberlist">Bu bölümden tüm hayvanlar için ayrı ayrı arama yapabilirsin.</string>
     <string name="spotlight_like">Profili sağa kaydırıp beğenebilir veya sola kaydırıp diğer profillere bakmaya devam edebilirsiniz.</string>
     <string name="spotlight_settings">Buradan yaptığın aramaları özelleştirebilirsin.</string>
+    <string name="email_title">Email</string>
 
 </resources>
