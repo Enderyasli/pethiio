@@ -19,14 +19,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginLeft="@dimen/default_margin"
+        android:layout_marginStart="@dimen/default_margin"
+        android:layout_marginRight="@dimen/medium_size"
         android:layout_marginTop="50dp"
-        android:layout_marginRight="@dimen/default_margin"
         android:fontFamily="@font/typo_round_bold"
-        android:letterSpacing="0.01"
         android:maxLines="2"
-        tools:text="Arkadaş Bul"
+
         android:textColor="@color/white"
-        android:textSize="76sp" />
+        android:textSize="54sp"
+        app:autoSizeMaxTextSize="76sp"
+        app:autoSizeMinTextSize="50sp"
+        app:autoSizeTextType="uniform"
+        tools:text="Find a Partner" />
 
 </RelativeLayout>

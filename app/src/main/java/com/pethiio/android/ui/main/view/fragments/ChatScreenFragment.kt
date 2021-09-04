@@ -1,6 +1,7 @@
 package com.pethiio.android.ui.main.view.fragments
 
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -128,7 +129,8 @@ class ChatScreenFragment : BaseFragment() {
 
         binding.btnSend.setOnClickListener {
 
-            if (binding.etMessage.text.isNotEmpty()) {
+            if (!TextUtils.isEmpty(binding.etMessage.text.trim().toString())) {
+
                 socketIO.sendMessage(
                     ChatSendMessage(
                         binding.etMessage.text.trim().toString(),

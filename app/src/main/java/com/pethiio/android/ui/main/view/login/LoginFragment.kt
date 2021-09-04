@@ -85,9 +85,9 @@ class LoginFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
 
             setPethiioResponseList(it)
             binding.signupTitle.text = getLocalizedString(Constants.registerTitle)
-            binding.emailLayout.titleTv.text =
+            binding.emailTitleTv.text =
                 getLocalizedString(Constants.registerEmailTitle)
-            binding.emailLayout.placeholderTv.hint =
+            binding.emailPlaceholderTv.hint =
                 getLocalizedString(Constants.registerEmailPlaceholder)
             binding.passwordTitleTv.text =
                 getLocalizedString(Constants.registerPasswordTitle)
@@ -124,7 +124,7 @@ class LoginFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
         binding.loginBtn.setOnClickListener {
 
             var validEmail = getViewError(
-                binding.emailLayout.placeholderTv,
+                binding.emailPlaceholderTv,
                 getLocalizedString(Constants.emailEmtpyError)
             )
             if (!validEmail)
@@ -139,7 +139,7 @@ class LoginFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
 
             postLogin(
                 LoginRequest(
-                    binding.emailLayout.placeholderTv.text.trim().toString(),
+                    binding.emailPlaceholderTv.text.trim().toString(),
                     binding.passwordPlaceholderTv.text.trim().toString()
                 )
             )

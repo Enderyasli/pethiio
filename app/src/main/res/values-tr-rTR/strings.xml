@@ -8,7 +8,7 @@
     <string name="title_onboarding2" translatable="false">Eş Bul</string>
     <string name="title_onboarding3">Sahiplen</string>
     <string name="skip" translatable="false">Geç</string>
-    <string name="welcome_description" translatable="false">Pethiio\'ya hoşgeldin! Binlerce evcil hayvan ve hayvanserverle buluşabilmek için hemen kayıt ol!</string>
+    <string name="welcome_description" translatable="false">Pethiio\'ya hoşgeldin! Binlerce evcil hayvan ve hayvanseverle buluşabilmek için hemen kayıt ol!</string>
     <string name="login" translatable="false">Giriş Yap</string>
     <string name="sign_up">Kayıt Ol</string>
     <string name="select_purpose">Amaç Seçiniz</string>

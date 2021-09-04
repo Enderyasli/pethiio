@@ -279,7 +279,7 @@ class DashboardFragment : BaseFragment(), CardStackListener,
                 Manifest.permission.ACCESS_COARSE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) {
-            CommonMethods.onSNACK(binding.root, getString(R.string.no_location_detected))
+//            CommonMethods.onSNACK(binding.root, getString(R.string.no_location_detected))
             //main activityde handle edildi
         } else {
         }
