@@ -265,6 +265,7 @@
                             android:maxLength="16"
                             android:paddingStart="15dp"
                             android:paddingEnd="45dp"
+                            android:imeOptions="actionDone"
                             android:textColor="@color/black"
                             android:textColorHint="@color/hint_text_color"
                             android:textSize="14sp"

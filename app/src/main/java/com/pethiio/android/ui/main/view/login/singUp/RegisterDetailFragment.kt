@@ -1,5 +1,6 @@
 package com.pethiio.android.ui.main.view.login.singUp
 
+import android.R.attr
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -35,6 +36,7 @@ import okhttp3.RequestBody.Companion.asRequestBody
 import org.greenrobot.eventbus.EventBus
 import java.io.File
 import java.util.*
+import android.R.attr.data
 
 
 class RegisterDetailFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
@@ -181,6 +183,7 @@ class RegisterDetailFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
                                                             })
 
                                                     }
+
 
                                                 }
                                                 Status.ERROR -> {
@@ -403,7 +406,7 @@ class RegisterDetailFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             val result = CropImage.getActivityResult(data)
             if (resultCode == -1) {
-                val resultUri: Uri = result.uri
+                val resultUri: Uri = result.uri // TODO: 5.09.2021 cameradan alınamıyor
 
                 profileUri = resultUri.path.toString()
 
