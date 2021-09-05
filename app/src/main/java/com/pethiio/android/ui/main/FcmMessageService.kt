@@ -44,6 +44,16 @@ class FcmMessageService : FirebaseMessagingService() {
                 if (PethiioApplication.getCurrentRoom() == 0 && remoteMessage.data["roomId"] != PethiioApplication.getCurrentRoom()
                         .toString()
                 ) {
+//                    EventBus.getDefault().post(
+//                         MatchEvent(
+//                                "DATING",
+//                                73,
+//                                2,
+//                                "boncuk",
+//                                "https://api.pethiio.com/api/files/b2eccd25-c8c1-4d69-9199-d58c89ba31e8-uri1.png",
+//                                "charlie",
+//                                "https://api.pethiio.com/api/files/b50770aa-5ed5-45df-8b1e-b4d5cc311634-uri1.png"))
+
 
                     val notificationUtils = NotificationUtils(PethiioApplication.context)
                     remoteMessage.data["roomId"]?.let {

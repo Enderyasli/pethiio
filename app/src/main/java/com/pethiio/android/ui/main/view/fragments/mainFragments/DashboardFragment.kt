@@ -674,27 +674,26 @@ class DashboardFragment : BaseFragment(), CardStackListener,
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onEvent(event: MatchEvent) {
+    fun onEvent(event: MatchEvent?) {
 
         //Eşleşme anlık mesaj
 
-        val bundle =
-            bundleOf(
-                "fromNotification" to true,
-                "purpose" to event.purpose,
-                "memberId" to event.memberId,
-                "roomId" to event.roomId,
-                "sourceName" to event.sourceName,
-                "sourceAvatar" to event.sourceAvatar,
-                "targetName" to event.targetName,
-                "targetAvatar" to event.targetAvatar
-            )
+        if (event != null) {
+            val bundle =
+                bundleOf(
+                    "fromNotification" to true,
+                    "purpose" to event.purpose,
+                    "memberId" to event.memberId,
+                    "roomId" to event.roomId,
+                    "sourceName" to event.sourceName,
+                    "sourceAvatar" to event.sourceAvatar,
+                    "targetName" to event.targetName,
+                    "targetAvatar" to event.targetAvatar
+                )
 
-        NavDeepLinkBuilder(requireContext())
-            .setGraph(R.navigation.nav_graph)
-            .setDestination(R.id.navigation_dashboard)
-            .setArguments(bundle)
-            .createPendingIntent()
+            findNavController().navigate(R.id.navigation_match, bundle)
+
+        }
 
     }
 
