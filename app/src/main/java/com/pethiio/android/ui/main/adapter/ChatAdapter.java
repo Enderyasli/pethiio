@@ -109,7 +109,15 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             cal.setTime(convertedDate);
             int hours = cal.get(Calendar.HOUR_OF_DAY);
             int mins = cal.get(Calendar.MINUTE);
-            return hours + ":" + mins;
+
+            if (String.valueOf(mins).toString().length() == 1) {
+                return hours + ":" + "0" + mins;
+
+            } else {
+                return hours + ":" + mins;
+
+            }
+
 
         } catch (ParseException e) {
             e.printStackTrace();

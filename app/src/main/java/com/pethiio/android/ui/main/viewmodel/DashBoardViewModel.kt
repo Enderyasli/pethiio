@@ -94,6 +94,7 @@ class DashBoardViewModel : ViewModel() {
                     { loginData ->
                         if (loginData.code().toString().startsWith("2"))
                             locations.postValue(Resource.success(loginData))
+
                     },
                     {
                         locations.postValue(responseHandler.handleException(it))

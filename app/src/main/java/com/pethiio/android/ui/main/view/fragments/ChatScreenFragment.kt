@@ -44,6 +44,7 @@ class ChatScreenFragment : BaseFragment() {
     var lastMessageId: Int = 0
 
     private val socketIO = SocketIO()
+    var socketConnected: Boolean = false
 
 
     override fun onDestroy() {
@@ -60,13 +61,19 @@ class ChatScreenFragment : BaseFragment() {
                 Constants.chatSeen
             )
         )
+        socketConnected=false
         super.onDestroy()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        EventBus.getDefault().register(this)
+
+
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        EventBus.getDefault().register(this)
-
 
     }
 
@@ -109,10 +116,12 @@ class ChatScreenFragment : BaseFragment() {
             .into(binding.profileImage)
 
 
-        socketIO.connectSocket()
-        socketIO.setRooms(roomId)
-        PethiioApplication.setCurrentRoom(roomId)
+        if (!socketConnected) {
+            socketIO.connectSocket()
+            socketIO.setRooms(roomId)
+            PethiioApplication.setCurrentRoom(roomId)
 
+        }
 
 
 
@@ -156,6 +165,8 @@ class ChatScreenFragment : BaseFragment() {
 
 
         binding.reportIv.setOnClickListener {
+
+            onDestroy()
 
             val bundle =
                 bundleOf(

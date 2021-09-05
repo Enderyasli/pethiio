@@ -228,13 +228,17 @@ class DashboardFragment : BaseFragment(), CardStackListener,
                 val result: Location = task.result
 //                "Location (success): ${result.latitude}, ${result.longitude}"
 
-                if (!isLocationSended)
+                if (!isLocationSended) {
                     viewModel.fetchLocations(
                         LocationsRequest(
                             result.latitude.toString(),
                             result.longitude.toString()
                         )
                     )
+                    isLocationSended = true
+
+                }
+
             } else {
                 viewModel.fetchMemberList()
                 viewModel.fetchFilterList()
@@ -248,13 +252,18 @@ class DashboardFragment : BaseFragment(), CardStackListener,
 
         fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
             location?.let { it: Location ->
-                if (!isLocationSended)
+                if (!isLocationSended) {
                     viewModel.fetchLocations(
                         LocationsRequest(
                             it.latitude.toString(),
                             it.longitude.toString()
                         )
                     )
+                    isLocationSended = true
+                    viewModel.fetchMemberList()
+                    viewModel.fetchFilterList()
+                }
+
             } ?: kotlin.run {
                 viewModel.fetchMemberList()
                 viewModel.fetchFilterList()
@@ -306,13 +315,17 @@ class DashboardFragment : BaseFragment(), CardStackListener,
                 for (location in locationResult.locations) {
                     if (location != null) {
 
-                        if (!isLocationSended)
+                        if (!isLocationSended) {
                             viewModel.fetchLocations(
                                 LocationsRequest(
                                     location.latitude.toString(),
                                     location.longitude.toString()
                                 )
                             )
+                            isLocationSended = true
+                            viewModel.fetchMemberList()
+                            viewModel.fetchFilterList()
+                        }
 
                         //TODO: UI burda cagır xiomi de
                     }
@@ -413,6 +426,8 @@ class DashboardFragment : BaseFragment(), CardStackListener,
                         viewModel.fetchMemberList()
                         viewModel.fetchFilterList()
                         isLocationSended = true
+                        viewModel.fetchMemberList()
+                        viewModel.fetchFilterList()
                     }
 
                 }

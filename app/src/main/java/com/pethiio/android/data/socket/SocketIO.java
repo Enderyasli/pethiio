@@ -1,5 +1,6 @@
 package com.pethiio.android.data.socket;
 
+import android.util.Log;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -38,36 +39,56 @@ public class SocketIO {
     Socket socket;
 
     public void connectSocket() {
-        String token = "Bearer " + PreferenceHelper.SharedPreferencesManager.Companion.getInstance().getAccessToken();
-        try {
-            IO.Options options = new IO.Options();
-            SocketSSL.set(options);
+//        if (socket!=null &&!socket.connected()) {
 
-            socket = IO.socket(Constants.SOCKET_URL + URLEncoder.encode(token, StandardCharsets.UTF_8.displayName()), options);
-        } catch (URISyntaxException | UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
 
+            String token = "Bearer " + PreferenceHelper.SharedPreferencesManager.Companion.getInstance().getAccessToken();
+            try {
+                IO.Options options = new IO.Options();
+                SocketSSL.set(options);
+
+                socket = IO.socket(Constants.SOCKET_URL + URLEncoder.encode(token, StandardCharsets.UTF_8.displayName()), options);
+            } catch (URISyntaxException | UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+
+//        }
     }
 
     public void setRooms(int roomId) {
-        socket.off();
-        socket.on(Constants.SOCKET_TOPIC + roomId, new Emitter.Listener() {
-            @Override
-            public void call(Object... objects) {
-                parseMessage(objects[0], roomId);
 
-            }
-        });
+        Log.e("Socketdenemesi:", "roomID ");
+
+//        disconnect(roomId);
+//        if (!socket.hasListeners(Constants.SOCKET_TOPIC + roomId)) {
+
+            socket.on(Constants.SOCKET_TOPIC + roomId, new Emitter.Listener() {
+                @Override
+                public void call(Object... objects) {
+                    Log.e("Socketdenemesi:", "mesaja girdi");
+
+                    parseMessage(objects[0], roomId);
+
+                }
+            });
+//        }
+        Log.e("Sockethaslisteners:", "" + socket.hasListeners(Constants.SOCKET_TOPIC + roomId));
+
 
         socket.on(Socket.EVENT_CONNECT, objects -> {
             System.out.println(socket);
+            Log.e("Socketdenemesi:", "connect girdi");
+
             System.out.println("Message :" + Socket.EVENT_CONNECT);
         });
-        socket.on(Socket.EVENT_CONNECT_ERROR, objects ->
-                System.out.println("Message :" + Socket.EVENT_CONNECT_ERROR + " " + objects)
-        );
+        socket.on(Socket.EVENT_CONNECT_ERROR, objects -> {
+            Log.e("Socketdenemesi:", "connectError girdi");
+            System.out.println("Message :" + Socket.EVENT_CONNECT_ERROR + " " + objects);
+
+        });
         socket.on(Socket.EVENT_DISCONNECT, objects -> {
+            Log.e("Socketdenemesi:", "connectDisconnect girdi");
+
             System.out.println(socket);
             System.out.println("Message :" + Socket.EVENT_DISCONNECT + " " + objects);
         });
@@ -76,10 +97,10 @@ public class SocketIO {
 
     }
 
-    public void disconnect(int roomId){
+    public void disconnect(int roomId) {
         socket.off();
         socket.disconnect();
-//        socket.off(Constants.SOCKET_TOPIC + roomId);
+        socket.off(Constants.SOCKET_TOPIC + roomId);
     }
 
     private void parseMessage(Object object1, int roomId) {
@@ -94,7 +115,7 @@ public class SocketIO {
 
     }
 
-    public void sendMessage(ChatSendMessage message ) throws JSONException {
+    public void sendMessage(ChatSendMessage message) throws JSONException {
         Gson gson = new Gson();
         String obj = gson.toJson(message, ChatSendMessage.class);
         socket.emit(Constants.SOCKET_PRIVATE_CHAT, new JSONObject(obj));
