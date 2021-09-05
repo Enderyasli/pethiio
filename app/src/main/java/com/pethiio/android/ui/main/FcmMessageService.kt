@@ -5,8 +5,11 @@ import android.util.Log
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.pethiio.android.PethiioApplication
+import com.pethiio.android.data.EventBus.LoginEvent
+import com.pethiio.android.data.EventBus.MatchEvent
 import com.pethiio.android.ui.main.util.NotificationUtils
 import com.pethiio.android.utils.PreferenceHelper
+import org.greenrobot.eventbus.EventBus
 
 class FcmMessageService : FirebaseMessagingService() {
 
@@ -61,6 +64,19 @@ class FcmMessageService : FirebaseMessagingService() {
 
                 val notificationUtils = NotificationUtils(PethiioApplication.context)
 
+                EventBus.getDefault().post(remoteMessage.data["roomId"]?.let {
+                    remoteMessage.data["memberId"]?.let { it1 ->
+                        MatchEvent(
+                            remoteMessage.data["purpose"],
+                            it1.toInt(),
+                            it.toInt(),
+                            remoteMessage.data["sourceName"],
+                            remoteMessage.data["sourceAvatar"],
+                            remoteMessage.data["targetName"],
+                            remoteMessage.data["targetAvatar"]
+                        )
+                    }
+                })
                 notificationUtils.showNotificationMatch(
                     remoteMessage.data["title"],
                     remoteMessage.data["body"],

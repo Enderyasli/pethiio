@@ -19,6 +19,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.NavDeepLinkBuilder
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.DiffUtil
@@ -33,6 +34,7 @@ import com.google.android.gms.tasks.Task
 import com.pethiio.android.R
 import com.pethiio.android.data.EventBus.FilterEvent
 import com.pethiio.android.data.EventBus.LikeEvent
+import com.pethiio.android.data.EventBus.MatchEvent
 import com.pethiio.android.data.model.member.LocationsRequest
 import com.pethiio.android.data.model.member.MemberListResponse
 import com.pethiio.android.data.model.member.PetSearchRequest
@@ -669,6 +671,31 @@ class DashboardFragment : BaseFragment(), CardStackListener,
     fun onEvent(event: FilterEvent?) {
         viewModel.fetchFilterList()
         viewModel.fetchPetSearch(memberId)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: MatchEvent) {
+
+        //Eşleşme anlık mesaj
+
+        val bundle =
+            bundleOf(
+                "fromNotification" to true,
+                "purpose" to event.purpose,
+                "memberId" to event.memberId,
+                "roomId" to event.roomId,
+                "sourceName" to event.sourceName,
+                "sourceAvatar" to event.sourceAvatar,
+                "targetName" to event.targetName,
+                "targetAvatar" to event.targetAvatar
+            )
+
+        NavDeepLinkBuilder(requireContext())
+            .setGraph(R.navigation.nav_graph)
+            .setDestination(R.id.navigation_dashboard)
+            .setArguments(bundle)
+            .createPendingIntent()
+
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
