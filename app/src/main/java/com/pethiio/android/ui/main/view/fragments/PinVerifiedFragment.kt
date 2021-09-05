@@ -202,25 +202,43 @@ class PinVerifiedFragment : BaseFragment() {
 
         viewModel.getPinVerifiedPageData().observe(viewLifecycleOwner, {
 
-            val pageDataFields = it.data?.fields
+            when (it.status) {
+                Status.LOADING -> {
+                    binding.progressAvi.show()
+                }
 
-            binding.pinTitle.text =
-                getLocalizedString(Constants.registerTitle, pageDataFields)
-            if (fromLogin == true) {
-                binding.pinDescription.text =
-                    getLocalizedString(Constants.subTitleForEmail, pageDataFields)
-            } else {
-                binding.pinDescription.text =
-                    getLocalizedString(Constants.registerSubTitle, pageDataFields)
+                Status.ERROR -> {
+                    binding.progressAvi.hide()
+                    CommonMethods.onSNACK(binding.root, it.message.toString())
+                }
+
+                Status.SUCCESS -> {
+
+                    val pageDataFields = it.data?.fields
+
+                    binding.pinTitle.text =
+                        getLocalizedString(Constants.registerTitle, pageDataFields)
+                    if (fromLogin == true) {
+                        binding.pinDescription.text =
+                            getLocalizedString(Constants.subTitleForEmail, pageDataFields)
+                    } else {
+                        binding.pinDescription.text =
+                            getLocalizedString(Constants.registerSubTitle, pageDataFields)
+                    }
+
+
+                    binding.pinPlaceholderTv.hint =
+                        getLocalizedString(Constants.pinPlaceholder, pageDataFields)
+
+
+                    binding.sendBtn.text =
+                        getLocalizedString(Constants.nextButtonTitle, pageDataFields)
+
+                    binding.progressAvi.hide()
+
+
+                }
             }
-
-
-            binding.pinPlaceholderTv.hint =
-                getLocalizedString(Constants.pinPlaceholder, pageDataFields)
-
-
-            binding.sendBtn.text =
-                getLocalizedString(Constants.nextButtonTitle, pageDataFields)
 
 
         })

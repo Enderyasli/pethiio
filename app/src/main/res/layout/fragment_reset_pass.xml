@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.main.view.fragments.ResetPassFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.main.view.fragments.ResetPassStarterFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -82,7 +83,9 @@
                         android:background="@drawable/common_input_btn_bg"
                         android:fontFamily="@font/typo_round_regular"
                         android:gravity="center_vertical"
-                        android:paddingLeft="15dp"
+                        android:imeOptions="actionDone"
+                        android:paddingStart="15dp"
+                        android:singleLine="true"
                         android:textColor="@color/black"
                         android:textColorHint="@color/hint_text_color"
                         android:textSize="14sp"
@@ -109,4 +112,12 @@
         android:textColor="@color/white"
         android:textSize="@dimen/medium_size"
         tools:text="Gönder" />
+
+    <com.wang.avi.AVLoadingIndicatorView
+        android:id="@+id/progressAvi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        app:indicatorColor="@color/orangeButton"
+        app:indicatorName="BallScaleIndicator" />
 </RelativeLayout>

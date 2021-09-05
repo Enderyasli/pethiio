@@ -10,16 +10,17 @@
         android:id="@+id/title_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="26dp"
+        android:layout_marginStart="@dimen/default_margin"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="3dp"
+        android:fontFamily="@font/typo_round_bold"
         android:textColor="@color/orangeButton"
         android:textSize="@dimen/signup_title_size"
         tools:text="Mesajlar" />
 
     <com.pethiio.android.ui.main.view.customViews.NoDefaultSpinner
         android:id="@+id/memberlist_spinner"
-        android:layout_width="150dp"
+        android:layout_width="145dp"
         android:layout_height="40dp"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="25dp"

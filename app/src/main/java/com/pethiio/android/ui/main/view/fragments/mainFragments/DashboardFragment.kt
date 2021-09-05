@@ -484,7 +484,7 @@ class DashboardFragment : BaseFragment(), CardStackListener,
                             memberListSize = it.data.size
 
                             binding.memberlistSpinner.visibility = View.VISIBLE
-                            binding.noResultLayout.visibility = View.GONE
+//                            binding.noResultLayout.visibility = View.GONE
                             binding.searchFilterButton.visibility = View.VISIBLE
 
                             memberListResponse = it.data
