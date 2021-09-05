@@ -64,24 +64,23 @@ class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
     }
-
 
     @SuppressLint("ResourceType")
     override fun setUpViews() {
         super.setUpViews()
 
-
         setUpObserver()
         fetchPetAddPageData()
-        fetchAddAnimalDetail("1")
 
         if (!TextUtils.isEmpty(petId)) {
 
             petId?.let {
                 viewModel.getUserPetDetail(it)
             }
+        }else{
+            fetchAddAnimalDetail("1")
+
         }
 
         val callback: OnBackPressedCallback =
@@ -114,8 +113,6 @@ class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-
     }
 
 
@@ -141,7 +138,6 @@ class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
             }
 
         binding.skipBtn.setOnClickListener {
-
 
             val validName = getViewError(
                 binding.nameLy.placeholderTv,
@@ -317,61 +313,7 @@ class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
     @SuppressLint("ResourceType")
     fun setUpObserver() {
 
-        viewModel.getPostPetEdit().observe(viewLifecycleOwner, {
-
-            when (it.status) {
-                Status.SUCCESS -> {
-                    activity?.runOnUiThread {
-                        val bundle = bundleOf("petId" to petId)
-
-                        if (findNavController().currentDestination?.id == R.id.navigation_pet_add)
-                            findNavController().navigate(
-                                R.id.action_navigation_pet_add_to_navigation_photo,
-                                bundle
-                            )
-                    }
-                }
-                Status.ERROR -> {
-                    it.message?.let { it1 ->
-                        CommonMethods.onSNACK(
-                            binding.root,
-                            it1.toString()
-                        )
-                    }
-
-                }
-                Status.LOADING -> {
-                }
-            }
-        })
-
-        viewModel.postPetAdd.observe(viewLifecycleOwner, {
-            when (it.status) {
-                Status.SUCCESS -> {
-                    activity?.runOnUiThread {
-
-                        if (findNavController().currentDestination?.id == R.id.navigation_pet_add)
-                            findNavController().navigate(
-                                R.id.action_navigation_pet_add_to_navigation_photo
-                            )
-                    }
-                }
-                Status.ERROR -> {
-                    it.message?.let { it1 ->
-                        CommonMethods.onSNACK(
-                            binding.root,
-                            it1.toString()
-                        )
-                    }
-                }
-                Status.LOADING -> {
-                }
-            }
-        })
-
-
         viewModel.getPetAddPageData().observe(viewLifecycleOwner, { it ->
-
             when (it.status) {
                 Status.LOADING -> {
                     binding.progressAvi.show()
@@ -676,8 +618,58 @@ class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
 
                 }
             }
+        })
 
+        viewModel.getPostPetEdit().observe(viewLifecycleOwner, {
 
+            when (it.status) {
+                Status.SUCCESS -> {
+                    activity?.runOnUiThread {
+                        val bundle = bundleOf("petId" to petId)
+
+                        if (findNavController().currentDestination?.id == R.id.navigation_pet_add)
+                            findNavController().navigate(
+                                R.id.action_navigation_pet_add_to_navigation_photo,
+                                bundle
+                            )
+                    }
+                }
+                Status.ERROR -> {
+                    it.message?.let { it1 ->
+                        CommonMethods.onSNACK(
+                            binding.root,
+                            it1.toString()
+                        )
+                    }
+
+                }
+                Status.LOADING -> {
+                }
+            }
+        })
+
+        viewModel.postPetAdd.observe(viewLifecycleOwner, {
+            when (it.status) {
+                Status.SUCCESS -> {
+                    activity?.runOnUiThread {
+
+                        if (findNavController().currentDestination?.id == R.id.navigation_pet_add)
+                            findNavController().navigate(
+                                R.id.action_navigation_pet_add_to_navigation_photo
+                            )
+                    }
+                }
+                Status.ERROR -> {
+                    it.message?.let { it1 ->
+                        CommonMethods.onSNACK(
+                            binding.root,
+                            it1.toString()
+                        )
+                    }
+                }
+                Status.LOADING -> {
+                }
+            }
         })
 
 
@@ -689,7 +681,6 @@ class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
     }
 
     override fun getViewModelClass() = RegisterBaseViewModel::class.java
-
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         when (parent?.id) {
@@ -710,9 +701,7 @@ class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
         }
     }
 
-    override fun onNothingSelected(parent: AdapterView<*>?) {
-
-    }
+    override fun onNothingSelected(parent: AdapterView<*>?) {}
 
     fun addRadioButton(string: String) {
 
