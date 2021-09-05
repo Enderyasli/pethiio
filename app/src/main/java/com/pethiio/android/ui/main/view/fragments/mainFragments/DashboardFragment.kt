@@ -76,6 +76,7 @@ class DashboardFragment : BaseFragment(), CardStackListener,
     private var isSelectedMemberFirstTime = true
     private var isLocationSended = false // TODO: 8.07.2021 false yap
     private var selectedMemberId = 0
+    private var memberListSize = 0
     private var fromNotification = false
     var animalId = -1
 
@@ -120,20 +121,20 @@ class DashboardFragment : BaseFragment(), CardStackListener,
     }
 
     private fun spotlightMemberList() {
-
-        MaterialIntroView.Builder(requireActivity())
-            .enableIcon(false)
-            .setFocusGravity(FocusGravity.CENTER)
-            .setFocusType(Focus.MINIMUM)
-            .setDelayMillis(500)
-            .enableFadeAnimation(true)
-            .performClick(true)
-            .setInfoText(getString(R.string.spotlight_memberlist))
-            .setShape(ShapeType.RECTANGLE)
-            .setTarget(binding.memberlistSpinner)
-            .setUsageId(TUTORIAL_MEMBER) //THIS SHOULD BE UNIQUE ID
-            .setListener(this)
-            .show()
+        if (findNavController().currentDestination?.id == R.id.navigation_dashboard)
+            MaterialIntroView.Builder(requireActivity())
+                .enableIcon(false)
+                .setFocusGravity(FocusGravity.CENTER)
+                .setFocusType(Focus.MINIMUM)
+                .setDelayMillis(500)
+                .enableFadeAnimation(true)
+                .performClick(true)
+                .setInfoText(getString(R.string.spotlight_memberlist))
+                .setShape(ShapeType.RECTANGLE)
+                .setTarget(binding.memberlistSpinner)
+                .setUsageId(TUTORIAL_MEMBER) //THIS SHOULD BE UNIQUE ID
+                .setListener(this)
+                .show()
 
         PreferenceHelper.SharedPreferencesManager.getInstance().isLikedOnce = true
 
@@ -141,37 +142,39 @@ class DashboardFragment : BaseFragment(), CardStackListener,
 
     private fun spotlightLike() {
 
-        MaterialIntroView.Builder(requireActivity())
-            .enableIcon(false)
-            .setFocusGravity(FocusGravity.CENTER)
-            .setFocusType(Focus.MINIMUM)
-            .setDelayMillis(500)
-            .enableFadeAnimation(true)
-            .performClick(true)
-            .setInfoText(getString(R.string.spotlight_like))
-            .setShape(ShapeType.RECTANGLE)
-            .setTarget(binding.cardStackView)
-            .setUsageId(TUTORIAL_LIKE)
-            .setListener(this)
-            .show()
+        if (findNavController().currentDestination?.id == R.id.navigation_dashboard)
+            MaterialIntroView.Builder(requireActivity())
+                .enableIcon(false)
+                .setFocusGravity(FocusGravity.CENTER)
+                .setFocusType(Focus.MINIMUM)
+                .setDelayMillis(500)
+                .enableFadeAnimation(true)
+                .performClick(true)
+                .setInfoText(getString(R.string.spotlight_like))
+                .setShape(ShapeType.RECTANGLE)
+                .setTarget(binding.cardStackView)
+                .setUsageId(TUTORIAL_LIKE)
+                .setListener(this)
+                .show()
 
     }
 
     private fun spotlightSettings() {
 
-        MaterialIntroView.Builder(requireActivity())
-            .enableIcon(false)
-            .setFocusGravity(FocusGravity.CENTER)
-            .setFocusType(Focus.MINIMUM)
-            .setDelayMillis(500)
-            .enableFadeAnimation(true)
-            .performClick(true)
-            .setInfoText(getString(R.string.spotlight_settings))
-            .setShape(ShapeType.RECTANGLE)
-            .setTarget(binding.searchFilterButton)
-            .setUsageId(TUTORIAL_SETTINGS)
-            .setListener(this)
-            .show()
+        if (findNavController().currentDestination?.id == R.id.navigation_dashboard)
+            MaterialIntroView.Builder(requireActivity())
+                .enableIcon(false)
+                .setFocusGravity(FocusGravity.CENTER)
+                .setFocusType(Focus.MINIMUM)
+                .setDelayMillis(500)
+                .enableFadeAnimation(true)
+                .performClick(true)
+                .setInfoText(getString(R.string.spotlight_settings))
+                .setShape(ShapeType.RECTANGLE)
+                .setTarget(binding.searchFilterButton)
+                .setUsageId("TUTORIAL_SETTINGSs1sadd")
+                .setListener(this)
+                .show()
     }
 
     override fun onCreateView(
@@ -459,11 +462,28 @@ class DashboardFragment : BaseFragment(), CardStackListener,
                 }
 
                 Status.SUCCESS -> {
-                    if (it.data != null)
-                        memberListResponse = it.data
-                    setMembeListSpinner(memberListResponse)
+                    if (it.data != null) {
+                        if (it.data.isNotEmpty()) {
+                            memberListSize = it.data.size
+
+                            binding.memberlistSpinner.visibility = View.VISIBLE
+                            binding.noResultLayout.visibility = View.GONE
+                            binding.searchFilterButton.visibility = View.VISIBLE
+
+                            memberListResponse = it.data
+                            setMembeListSpinner(memberListResponse)
 //                    setMemberList(memberListResponse)
+                        } else {
+                            memberListSize = 0
+
+                            binding.noResultLayout.visibility = View.VISIBLE
+                            binding.memberlistSpinner.visibility = View.GONE
+                            binding.searchFilterButton.visibility = View.INVISIBLE
+
+                        }
+                    }
                     binding.progressAvi.hide()
+
                 }
                 Status.ERROR -> {
                     CommonFunctions.checkLogin(it.errorCode, findNavController())
@@ -503,6 +523,10 @@ class DashboardFragment : BaseFragment(), CardStackListener,
                         binding.likeButton.visibility = View.VISIBLE
                     }
 
+                    if (memberListSize == 0) {
+                        binding.noResultLayout.visibility = View.VISIBLE
+                    }
+
 
                     binding.progressAvi.hide()
                 }
@@ -538,10 +562,10 @@ class DashboardFragment : BaseFragment(), CardStackListener,
 
         }
 
-        viewModel.postSearchResponse().observe(viewLifecycleOwner,{
+        viewModel.postSearchResponse().observe(viewLifecycleOwner, {
 
-            when(it.status){
-                Status.SUCCESS-> {
+            when (it.status) {
+                Status.SUCCESS -> {
                     if (new.isEmpty()) {
                         viewModel.fetchPetSearch(memberId)
                     }
@@ -682,17 +706,17 @@ class DashboardFragment : BaseFragment(), CardStackListener,
         removeFirst()
 
         if (direction != null && memberId > 0) {
-                petSearch?.memberId?.let {
-                    PetSearchRequest(
-                        memberId,
-                        it,
-                        direction == Direction.Right
-                    )
-                }?.let {
-                    viewModel.postPetSearch(
-                        it
-                    )
-                }
+            petSearch?.memberId?.let {
+                PetSearchRequest(
+                    memberId,
+                    it,
+                    direction == Direction.Right
+                )
+            }?.let {
+                viewModel.postPetSearch(
+                    it
+                )
+            }
 
         }
 
@@ -731,7 +755,6 @@ class DashboardFragment : BaseFragment(), CardStackListener,
 
                     if (PreferenceHelper.SharedPreferencesManager.getInstance().isLikedOnce)
                         spotlightSettings()
-
 
                 }
 

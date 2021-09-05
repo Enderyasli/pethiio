@@ -15,9 +15,9 @@
         android:layout_marginTop="20dp"
         android:layout_marginBottom="3dp"
         android:fontFamily="@font/typo_round_bold"
-        tools:text="Bul"
         android:textColor="@color/orangeButton"
-        android:textSize="@dimen/signup_title_size" />
+        android:textSize="@dimen/signup_title_size"
+        tools:text="Bul" />
 
 
     <com.pethiio.android.ui.main.view.customViews.NoDefaultSpinner
@@ -38,9 +38,9 @@
 
 
     <LinearLayout
-        android:layout_below="@+id/title_tv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@+id/title_tv"
         android:orientation="vertical">
 
 
@@ -65,9 +65,9 @@
                     android:layout_height="70dp"
                     android:layout_marginEnd="90dp"
                     android:visibility="gone"
-                    app:cardElevation="0dp"
                     app:cardBackgroundColor="@color/tinder_btn_color"
-                    app:cardCornerRadius="25dp">
+                    app:cardCornerRadius="25dp"
+                    app:cardElevation="0dp">
 
                     <ImageView
                         android:layout_width="32dp"
@@ -83,9 +83,9 @@
                     android:layout_height="70dp"
                     android:layout_toEndOf="@id/skip_button"
                     android:visibility="gone"
-                    app:cardElevation="0dp"
                     app:cardBackgroundColor="@color/tinder_btn_color"
-                    app:cardCornerRadius="25dp">
+                    app:cardCornerRadius="25dp"
+                    app:cardElevation="0dp">
 
                     <ImageView
                         android:layout_width="32dp"
@@ -100,10 +100,11 @@
                     android:layout_width="45dp"
                     android:layout_height="45dp"
                     android:layout_centerHorizontal="true"
-                    app:cardElevation="0dp"
                     android:layout_marginTop="60dp"
                     app:cardBackgroundColor="@color/slider_bg_color"
-                    app:cardCornerRadius="15dp">
+                    app:cardCornerRadius="15dp"
+                    android:visibility="invisible"
+                    app:cardElevation="0dp">
 
                     <ImageView
                         android:layout_width="24dp"
@@ -117,12 +118,12 @@
 
 
             <com.yuyakaido.android.cardstackview.CardStackView
-                android:layout_marginTop="30dp"
                 android:id="@+id/card_stack_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_above="@+id/button_container"
                 android:layout_marginLeft="@dimen/default_margin"
+                android:layout_marginTop="30dp"
                 android:layout_marginRight="@dimen/default_margin"
                 android:layout_marginBottom="40dp"
                 android:clipToPadding="false" />
@@ -138,13 +139,13 @@
                 android:visibility="gone">
 
                 <com.airbnb.lottie.LottieAnimationView
-                    android:layout_weight="1"
                     android:id="@+id/no_result_img"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_marginLeft="60dp"
                     android:layout_marginTop="50dp"
                     android:layout_marginRight="60dp"
+                    android:layout_weight="1"
                     app:lottie_autoPlay="true"
                     app:lottie_loop="false" />
 
@@ -168,11 +169,11 @@
 
             <com.wang.avi.AVLoadingIndicatorView
                 android:id="@+id/progressAvi"
-                app:indicatorColor="@color/orangeButton"
-                android:layout_gravity="center"
-                android:layout_centerInParent="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center"
+                app:indicatorColor="@color/orangeButton"
                 app:indicatorName="BallScaleIndicator" />
 
         </RelativeLayout>

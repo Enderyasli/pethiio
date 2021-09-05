@@ -139,18 +139,30 @@ class MessageFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
 
             when (it.status) {
                 Status.LOADING -> {
+                    binding.progressAvi.show()
+
 //                    binding.progressBar.visibility = View.VISIBLE
                 }
 
                 Status.SUCCESS -> {
-                    if (it.data != null)
-                        memberListResponse = it.data
-                    setMembeListSpinner(memberListResponse)
-//                    setMemberList(memberListResponse)
-//                    binding.progressBar.visibility = View.GONE
+                    if (it.data != null) {
+
+                        if (it.data.isNotEmpty()) {
+                            binding.noMsjLayout.visibility = View.GONE
+                            binding.memberlistSpinner.visibility = View.VISIBLE
+                            memberListResponse = it.data
+                            setMembeListSpinner(memberListResponse)
+                        } else {
+                            binding.noMsjLayout.visibility = View.VISIBLE
+                            binding.memberlistSpinner.visibility = View.GONE
+                        }
+                    }
+                    binding.progressAvi.hide()
+
                 }
                 Status.ERROR -> {
                     CommonFunctions.checkLogin(it.errorCode, findNavController())
+                    binding.progressAvi.hide()
 
                 }
             }
@@ -209,6 +221,8 @@ class MessageFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
                 }
 
                 Status.ERROR -> {
+                    binding.progressAvi.hide()
+
                 }
             }
 
