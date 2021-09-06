@@ -76,6 +76,26 @@ class ResetPasswordFragment : BaseFragment() {
 
         })
 
+        binding.newPasswordAgainPlaceholder.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                if (s != null) {
+                    if (s.isEmpty())
+                        binding.newAgainEye.visibility = View.GONE
+                    else
+                        binding.newAgainEye.visibility = View.VISIBLE
+                }
+
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+            }
+
+        })
+
         binding.eye.setOnClickListener {
 
             if (!showPass) {
@@ -84,6 +104,20 @@ class ResetPasswordFragment : BaseFragment() {
                 showPass = true
             } else {
                 binding.passwordPlaceholderTv.transformationMethod =
+                    PasswordTransformationMethod.getInstance()
+                showPass = false
+            }
+
+        }
+
+        binding.newAgainEye.setOnClickListener {
+
+            if (!showPass) {
+                binding.newPasswordAgainPlaceholder.transformationMethod =
+                    HideReturnsTransformationMethod.getInstance()
+                showPass = true
+            } else {
+                binding.newPasswordAgainPlaceholder.transformationMethod =
                     PasswordTransformationMethod.getInstance()
                 showPass = false
             }
@@ -120,6 +154,8 @@ class ResetPasswordFragment : BaseFragment() {
                 getLocalizedString(Constants.passwordPlaceholder, pageDataFields)
             binding.sendBtn.text =
                 getLocalizedString(Constants.nextButtonTitle, pageDataFields)
+
+            binding.progressAvi.hide()
 
             binding.sendBtn.setOnClickListener {
                 var validPass = getViewError(
@@ -171,16 +207,22 @@ class ResetPasswordFragment : BaseFragment() {
                     binding.passwordPlaceholderTv.requestFocus()
                 }
 
+
+
                 viewModel.getResetPasswordResponse().observe(viewLifecycleOwner, { it1 ->
 
                     when (it1.status) {
+                        Status.LOADING -> {
+                            binding.progressAvi.show()
+                        }
                         Status.SUCCESS -> {
+                            binding.progressAvi.hide()
+
 
                             binding.msgLy.visibility = View.VISIBLE
                             binding.mainLayout.visibility = View.GONE
 
-                            binding.sendBtn.text = btnValue
-                            binding.sendBtn.setOnClickListener {
+                            binding.sendLoginBtn.setOnClickListener {
                                 if (findNavController().currentDestination?.id == R.id.navigation_reset_password_request)
                                     findNavController().navigate(
                                         R.id.action_navigation_reset_password_request_to_navigation_welcome
@@ -191,6 +233,8 @@ class ResetPasswordFragment : BaseFragment() {
                         }
                         Status.ERROR -> {
                             CommonMethods.onSNACK(binding.root, it1.message.toString())
+                            binding.progressAvi.hide()
+
                         }
                     }
 
@@ -207,9 +251,8 @@ class ResetPasswordFragment : BaseFragment() {
 
             binding.messageTitle.text = getLocalizedString(Constants.registerTitle, pageDataFields)
             binding.msgContent.text = getLocalizedString(Constants.registerTitle, pageDataFields)
-            btnValue =
+            binding.sendLoginBtn.text =
                 getLocalizedString(Constants.registerLoginButtonTitle, pageDataFields)
-
 
         })
 

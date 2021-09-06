@@ -12,6 +12,8 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.ktx.messaging
 import com.pethiio.android.R
 import com.pethiio.android.data.model.login.ChangePassRequest
 import com.pethiio.android.databinding.FragmentChangePasswordBinding
@@ -20,6 +22,7 @@ import com.pethiio.android.ui.base.BaseFragment
 import com.pethiio.android.ui.main.viewmodel.FAQViewModel
 import com.pethiio.android.utils.CommonMethods
 import com.pethiio.android.utils.Constants
+import com.pethiio.android.utils.PreferenceHelper
 import com.pethiio.android.utils.Status
 import java.util.regex.Pattern
 
@@ -39,7 +42,6 @@ class ChangePasswordFragment : BaseFragment() {
         activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
 
 
-
     }
 
     override fun onCreateView(
@@ -53,8 +55,13 @@ class ChangePasswordFragment : BaseFragment() {
             findNavController().navigateUp()
         }
 
+        binding.progressAvi.hide()
+
         setupViewModel()
         setUpObserver()
+        binding.msgAnim.setAnimation("sifre_sıfırlama.json")
+
+
 
 
 
@@ -167,15 +174,38 @@ class ChangePasswordFragment : BaseFragment() {
     private fun setupViewModel() {
         viewModel = ViewModelProviders.of(this).get(FAQViewModel::class.java)
         viewModel.fetchChangePassPageData()
+        viewModel.fetchResetPasswordDonePageData()
+
     }
 
     private fun setUpObserver() {
         viewModel.getChangePass().observe(viewLifecycleOwner, {
             when (it.status) {
+                Status.LOADING -> {
+                    binding.progressAvi.show()
+                }
+
                 Status.SUCCESS -> {
+
+                    binding.progressAvi.hide()
+
+                    binding.msgLy.visibility = View.VISIBLE
+                    binding.mainLayout.visibility = View.GONE
+
+                    binding.sendLoginBtn.setOnClickListener {
+                        PreferenceHelper.SharedPreferencesManager.getInstance().isLoggedIn = false
+                        PreferenceHelper.SharedPreferencesManager.getInstance().accessToken = ""
+                        PreferenceHelper.SharedPreferencesManager.getInstance().topicUserId = 0
+                        unSubscribeToTopic()
+
+                        findNavController().navigate(R.id.action_global_navigation_welcome)
+
+                    }
+
 
                 }
                 Status.ERROR -> {
+                    binding.progressAvi.hide()
                     it.message?.let { it1 -> CommonMethods.onSNACK(binding.root, it1) }
                 }
             }
@@ -183,91 +213,134 @@ class ChangePasswordFragment : BaseFragment() {
 
         viewModel.getChangePassPageData().observe(viewLifecycleOwner, {
 
-            val pageDataFields = it.data?.fields
+            when (it.status) {
 
-            binding.titleTv.text = getLocalizedString(Constants.registerTitle, pageDataFields)
-            binding.descriptionTv.text =
-                getLocalizedString(Constants.registerSubTitle, pageDataFields)
-            binding.currentPasswordTitleTv.text =
-                getLocalizedSpan(Constants.currentPasswordTitle, pageDataFields)
-            binding.currentPasswordPlaceholder.hint =
-                getLocalizedString(Constants.currentPasswordPlaceholder, pageDataFields)
-            binding.newPasswordTitleTv.text =
-                getLocalizedSpan(Constants.newPasswordTitle, pageDataFields)
-            binding.newPasswordPlaceholder.hint =
-                getLocalizedString(Constants.newPasswordPlaceholder, pageDataFields)
-            binding.passwordDetailTv.text =
-                getLocalizedString(Constants.newPasswordDetail, pageDataFields)
-            binding.newPasswordAgainTitleTv.text =
-                getLocalizedSpan(Constants.passwordTitle, pageDataFields)
-            binding.newPasswordAgainPlaceholder.hint =
-                getLocalizedString(Constants.newPasswordPlaceholder, pageDataFields)
-            binding.changeBtn.text = getLocalizedString(Constants.changeButtonTitle, pageDataFields)
-
-
-            binding.changeBtn.setOnClickListener {
-
-                var validPass = getViewError(
-                    binding.currentPasswordPlaceholder,
-                    getLocalizedString(Constants.passwordEmtpyError, pageDataFields)
-                )
-                if (!validPass)
-                    return@setOnClickListener
-
-                var validNewPass = getViewError(
-                    binding.newPasswordPlaceholder,
-                    getLocalizedString(Constants.newPasswordEmtpyError, pageDataFields)
-                )
-                if (!validNewPass)
-                    return@setOnClickListener
-                var validNewAgainPass = getViewError(
-                    binding.newPasswordAgainPlaceholder,
-                    getLocalizedString(Constants.newPasswordEmtpyError, pageDataFields)
-                )
-                if (!validNewAgainPass)
-                    return@setOnClickListener
-
-                val upperCasePattern = Pattern.compile("[A-Z ]")
-
-                val password = binding.newPasswordPlaceholder.text.toString().trim()
-
-                val validRegex: Boolean =
-                    upperCasePattern.matcher(password)
-                        .find()
-
-                if (validRegex && password.length >= 8) {
-
-                    if (binding.newPasswordPlaceholder.text.trim()
-                            .toString() == binding.newPasswordAgainPlaceholder.text.trim()
-                            .toString()
-                    )
-                        viewModel.postChangePass(
-                            ChangePassRequest(
-                                binding.currentPasswordPlaceholder.text.trim().toString(),
-                                binding.newPasswordPlaceholder.text.trim().toString()
-                            )
-                        )
-                    else {
-                        binding.newPasswordAgainPlaceholder.error =
-                            getLocalizedString(Constants.passwordDoNotMatch, pageDataFields)
-
-                        binding.newPasswordAgainPlaceholder.requestFocus()
-                    }
-
-
-                } else {
-                    binding.newPasswordPlaceholder.error =
-                        getLocalizedString(Constants.newPasswordEmtpyError, pageDataFields)
-
-                    binding.newPasswordPlaceholder.requestFocus()
+                Status.LOADING -> {
+                    binding.progressAvi.show()
                 }
 
+                Status.ERROR -> {
+                    binding.progressAvi.hide()
+                    CommonMethods.onSNACK(binding.root, it.message.toString())
+                }
+                Status.SUCCESS -> {
+                    val pageDataFields = it.data?.fields
 
+                    binding.titleTv.text =
+                        getLocalizedString(Constants.registerTitle, pageDataFields)
+                    binding.descriptionTv.text =
+                        getLocalizedString(Constants.registerSubTitle, pageDataFields)
+                    binding.currentPasswordTitleTv.text =
+                        getLocalizedSpan(Constants.currentPasswordTitle, pageDataFields)
+                    binding.currentPasswordPlaceholder.hint =
+                        getLocalizedString(Constants.currentPasswordPlaceholder, pageDataFields)
+                    binding.newPasswordTitleTv.text =
+                        getLocalizedSpan(Constants.newPasswordTitle, pageDataFields)
+                    binding.newPasswordPlaceholder.hint =
+                        getLocalizedString(Constants.newPasswordPlaceholder, pageDataFields)
+                    binding.passwordDetailTv.text =
+                        getLocalizedString(Constants.newPasswordDetail, pageDataFields)
+                    binding.newPasswordAgainTitleTv.text =
+                        getLocalizedSpan(Constants.passwordTitle, pageDataFields)
+                    binding.newPasswordAgainPlaceholder.hint =
+                        getLocalizedString(Constants.newPasswordPlaceholder, pageDataFields)
+                    binding.changeBtn.text =
+                        getLocalizedString(Constants.changeButtonTitle, pageDataFields)
+
+                    binding.progressAvi.hide()
+
+                    binding.changeBtn.setOnClickListener {
+
+                        var validPass = getViewError(
+                            binding.currentPasswordPlaceholder,
+                            getLocalizedString(Constants.passwordEmtpyError, pageDataFields)
+                        )
+                        if (!validPass)
+                            return@setOnClickListener
+
+                        var validNewPass = getViewError(
+                            binding.newPasswordPlaceholder,
+                            getLocalizedString(Constants.newPasswordEmtpyError, pageDataFields)
+                        )
+                        if (!validNewPass)
+                            return@setOnClickListener
+                        var validNewAgainPass = getViewError(
+                            binding.newPasswordAgainPlaceholder,
+                            getLocalizedString(Constants.newPasswordEmtpyError, pageDataFields)
+                        )
+                        if (!validNewAgainPass)
+                            return@setOnClickListener
+
+                        val upperCasePattern = Pattern.compile("[A-Z ]")
+
+                        val password = binding.newPasswordPlaceholder.text.toString().trim()
+
+                        val validRegex: Boolean =
+                            upperCasePattern.matcher(password)
+                                .find()
+
+                        if (validRegex && password.length >= 8) {
+
+                            if (binding.newPasswordPlaceholder.text.trim()
+                                    .toString() == binding.newPasswordAgainPlaceholder.text.trim()
+                                    .toString()
+                            )
+                                viewModel.postChangePass(
+                                    ChangePassRequest(
+                                        binding.currentPasswordPlaceholder.text.trim().toString(),
+                                        binding.newPasswordPlaceholder.text.trim().toString()
+                                    )
+                                )
+                            else {
+                                binding.newPasswordAgainPlaceholder.error =
+                                    getLocalizedString(Constants.passwordDoNotMatch, pageDataFields)
+
+                                binding.newPasswordAgainPlaceholder.requestFocus()
+                            }
+
+
+                        } else {
+                            binding.newPasswordPlaceholder.error =
+                                getLocalizedString(Constants.newPasswordEmtpyError, pageDataFields)
+
+                            binding.newPasswordPlaceholder.requestFocus()
+                        }
+
+
+                    }
+
+                }
             }
+        })
+
+
+
+        viewModel.getResetPasswordDonePageData().observe(viewLifecycleOwner, {
+            val pageDataFields = it.data?.fields
+
+            binding.messageTitle.text = getLocalizedString(Constants.registerTitle, pageDataFields)
+            binding.msgContent.text = getLocalizedString(Constants.registerTitle, pageDataFields)
+            binding.sendLoginBtn.text =
+                getLocalizedString(Constants.registerLoginButtonTitle, pageDataFields)
 
         })
 
 
+    }
+
+    private fun unSubscribeToTopic() {
+        Firebase.messaging.unsubscribeFromTopic("topic-user-" + PreferenceHelper.SharedPreferencesManager.getInstance().topicUserId)
+            .addOnFailureListener {
+                it
+            }
+            .addOnCompleteListener { task ->
+//                var msg = getString(com.google.android.gms.location.R.string.msg_subscribed)
+                if (!task.isSuccessful) {
+//                    msg = getString(com.google.android.gms.location.R.string.msg_subscribe_failed)
+                }
+//                Log.d(TAG, msg)
+//                Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
+            }
     }
 
 

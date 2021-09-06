@@ -16,7 +16,6 @@ import com.pethiio.android.R
 import com.pethiio.android.data.model.resetPass.PinVerificationRequest
 import com.pethiio.android.data.model.resetPass.ResetPassDemand
 import com.pethiio.android.databinding.FragmentPinVerifiedBinding
-import com.pethiio.android.databinding.FragmentResetPassBinding
 import com.pethiio.android.ui.base.BaseFragment
 import com.pethiio.android.ui.main.viewmodel.PasswordViewModel
 import com.pethiio.android.utils.CommonMethods

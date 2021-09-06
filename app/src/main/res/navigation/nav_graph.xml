@@ -148,9 +148,9 @@
 
     <fragment
         android:id="@+id/navigation_reset_password"
-        android:name="com.pethiio.android.ui.main.view.fragments.ResetPassFragment"
-        android:label="Reset Password"
-        tools:layout="@layout/fragment_reset_pass">
+        android:name="com.pethiio.android.ui.main.view.fragments.ResetPassStarterFragment"
+        android:label="Reset Password Starter"
+        tools:layout="@layout/fragment_reset_pass_starter">
 
         <action
             android:id="@+id/action_navigation_reset_password_to_navigation_pin_verified"

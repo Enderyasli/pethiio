@@ -11,7 +11,7 @@ import androidx.navigation.fragment.findNavController
 import com.pethiio.android.R
 import com.pethiio.android.data.model.resetPass.ResetPassDemand
 import com.pethiio.android.databinding.FragmentPetAddBinding
-import com.pethiio.android.databinding.FragmentResetPassBinding
+import com.pethiio.android.databinding.FragmentResetPassStarterBinding
 import com.pethiio.android.ui.base.BaseFragment
 import com.pethiio.android.ui.main.viewmodel.FAQViewModel
 import com.pethiio.android.ui.main.viewmodel.PasswordViewModel
@@ -20,10 +20,10 @@ import com.pethiio.android.utils.Constants
 import com.pethiio.android.utils.Status
 
 
-class ResetPassFragment : BaseFragment() {
+class ResetPassStarterFragment : BaseFragment() {
 
     override var bottomNavigationViewVisibility = View.GONE
-    private var _binding: FragmentResetPassBinding? = null
+    private var _binding: FragmentResetPassStarterBinding? = null
 
     private lateinit var viewModel: PasswordViewModel
 
@@ -38,8 +38,10 @@ class ResetPassFragment : BaseFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentResetPassBinding.inflate(inflater, container, false)
+        _binding = FragmentResetPassStarterBinding.inflate(inflater, container, false)
         val view = binding.root
+
+        binding.progressAvi.hide()
 
         setupViewModel()
         setUpObserver()
@@ -77,7 +79,19 @@ class ResetPassFragment : BaseFragment() {
 
                 viewModel.getPostResetDemand().observe(viewLifecycleOwner, {
                     when (it.status) {
+
+                        Status.LOADING -> {
+                            binding.progressAvi.show()
+                        }
+
+                        Status.ERROR -> {
+                            binding.progressAvi.hide()
+                            CommonMethods.onSNACK(binding.root, it.message.toString())
+                        }
+
                         Status.SUCCESS -> {
+
+                            binding.progressAvi.hide()
 
                             val bundle = bundleOf("referenceToken" to it.data?.referenceToken)
 
@@ -114,6 +128,8 @@ class ResetPassFragment : BaseFragment() {
 //                if (findNavController().currentDestination?.id == R.id.navigation_reset_password)
 //                    findNavController().navigate(R.id.action_navigation_reset_password_to_navigation_pin_verified)
             }
+            binding.progressAvi.hide()
+
 
         })
 

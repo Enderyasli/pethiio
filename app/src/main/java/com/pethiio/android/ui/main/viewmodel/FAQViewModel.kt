@@ -30,6 +30,7 @@ class FAQViewModel : ViewModel() {
     private val notificationList = MutableLiveData<Resource<List<NotificationListResponse>>>()
     private val postChangePass = SingleLiveEvent<Resource<AccessToken>>()
     private val postNotificationChange = MutableLiveData<Resource<Response<Void>>>()
+    private val resetPasswordDonePageData = MutableLiveData<Resource<PageData>>()
 
 
     fun fetchFAQPageData() {
@@ -209,6 +210,24 @@ class FAQViewModel : ViewModel() {
         )
     }
 
+    fun fetchResetPasswordDonePageData() {
+
+        resetPasswordDonePageData.postValue(Resource.loading(null))
+        compositeDisposable.add(
+            ServiceBuilder.buildService()
+                .getResetPasswordDonePageData()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                    { loginData ->
+                        resetPasswordDonePageData.postValue(responseHandler.handleSuccess(loginData))
+                    },
+                    {
+                        resetPasswordDonePageData.postValue(responseHandler.handleException(it))
+                    }
+                )
+        )
+    }
 
     override fun onCleared() {
         super.onCleared()
@@ -251,6 +270,9 @@ class FAQViewModel : ViewModel() {
 
     fun getPostNotificationChange(): LiveData<Resource<Response<Void>>> {
         return postNotificationChange
+    }
+    fun getResetPasswordDonePageData(): LiveData<Resource<PageData>> {
+        return resetPasswordDonePageData
     }
 
 }
