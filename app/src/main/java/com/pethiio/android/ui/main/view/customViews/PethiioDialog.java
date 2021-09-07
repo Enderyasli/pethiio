@@ -14,7 +14,7 @@ import androidx.appcompat.app.AlertDialog;
 import com.airbnb.lottie.LottieAnimationView;
 import com.pethiio.android.R;
 
-public class MaximobileDialog extends AlertDialog.Builder {
+public class PethiioDialog extends AlertDialog.Builder {
 
     private AlertDialog mAlertDialog;
     private String message;
@@ -28,7 +28,7 @@ public class MaximobileDialog extends AlertDialog.Builder {
     private String negativeBtnTitle;
 
 
-    public MaximobileDialog(@NonNull Context context, boolean isSuccess, String message) {
+    public PethiioDialog(@NonNull Context context, boolean isSuccess, String message) {
         super(context);
         this.context = context;
         this.isSuccess = isSuccess;
@@ -36,7 +36,7 @@ public class MaximobileDialog extends AlertDialog.Builder {
         setView();
     }
 
-    public MaximobileDialog(@NonNull Context context, boolean isQuestion, String message, @Nullable String positiveBtnTitle, @Nullable String negativeBtnTitle) {
+    public PethiioDialog(@NonNull Context context, boolean isQuestion, String message, @Nullable String positiveBtnTitle, @Nullable String negativeBtnTitle) {
         super(context);
         this.context = context;
         this.isQuestion = isQuestion;
@@ -47,7 +47,7 @@ public class MaximobileDialog extends AlertDialog.Builder {
     }
 
 
-    public MaximobileDialog(@NonNull Context context, boolean isSuccess, String title, String message) {
+    public PethiioDialog(@NonNull Context context, boolean isSuccess, String title, String message) {
         super(context);
         this.context = context;
         this.isSuccess = isSuccess;
@@ -57,7 +57,7 @@ public class MaximobileDialog extends AlertDialog.Builder {
     }
 
 
-    public MaximobileDialog(@NonNull Context context, int themeResId) {
+    public PethiioDialog(@NonNull Context context, int themeResId) {
         super(context, themeResId);
         this.context = context;
     }
@@ -92,7 +92,7 @@ public class MaximobileDialog extends AlertDialog.Builder {
             mAlertDialog = builder.create();
             if (mAlertDialog.getWindow() != null && mAlertDialog.getWindow().getAttributes() != null)
                 mAlertDialog.getWindow().getAttributes().windowAnimations = R.style.DialogTheme;
-//            mAlertDialog.setCancelable(false);
+            mAlertDialog.setCancelable(false);
             mAlertDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
             mAlertDialog.show();
 

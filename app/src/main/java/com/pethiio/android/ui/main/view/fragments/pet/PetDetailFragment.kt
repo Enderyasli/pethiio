@@ -22,7 +22,7 @@ import com.pethiio.android.ui.base.BaseFragment
 import com.pethiio.android.ui.base.ViewModelFactory
 import com.pethiio.android.ui.main.adapter.PetSearchDetailCharacterAdapter
 import com.pethiio.android.ui.main.adapter.ViewPagerAdapter
-import com.pethiio.android.ui.main.view.customViews.MaximobileDialog
+import com.pethiio.android.ui.main.view.customViews.PethiioDialog
 import com.pethiio.android.ui.main.viewmodel.PetDetailViewModel
 import com.pethiio.android.utils.CommonMethods
 import com.pethiio.android.utils.Constants
@@ -55,6 +55,8 @@ class PetDetailFragment : BaseFragment() {
 
     private var hasOwnerInfo: Boolean = false
     private var ownerSelected: Boolean = false
+    private var isDialogShowing = false
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -369,27 +371,36 @@ class PetDetailFragment : BaseFragment() {
 
     private fun openDelete(delete: String, title: String) {
 
-        val maximobileDialog =
-            MaximobileDialog(
-                requireContext(),
-                true,
-                title,
-                delete,
-                getString(R.string.lcl_cancel_datepicker)
-            )
+        if (!isDialogShowing) {
 
-        maximobileDialog.getPositiveButton().setOnClickListener {
-            maximobileDialog.dissmiss()
+            isDialogShowing = true
 
-            animalId.toIntOrNull()?.let { viewModel.fetchPetDelete(it) }
-            binding.progressAvi.show()
-            Handler().postDelayed({ findNavController().navigateUp() }, 500)
+            val pethiioDialog =
+                PethiioDialog(
+                    requireContext(),
+                    true,
+                    title,
+                    delete,
+                    getString(R.string.lcl_cancel_datepicker)
+                )
+
+            pethiioDialog.getPositiveButton().setOnClickListener {
+                pethiioDialog.dissmiss()
+                isDialogShowing = false
+
+
+                animalId.toIntOrNull()?.let { viewModel.fetchPetDelete(it) }
+                binding.progressAvi.show()
+                Handler().postDelayed({ findNavController().navigateUp() }, 500)
+            }
+            pethiioDialog.getNegativeButton().setOnClickListener {
+                pethiioDialog.dissmiss()
+                isDialogShowing = false
+
+            }
+            pethiioDialog.getPositiveButton().visibility = View.VISIBLE
+
         }
-        maximobileDialog.getNegativeButton().setOnClickListener {
-            maximobileDialog.dissmiss()
-        }
-        maximobileDialog.getPositiveButton().visibility = View.VISIBLE
-
     }
 
 

@@ -11,7 +11,7 @@ import com.google.firebase.messaging.ktx.messaging
 import com.pethiio.android.R
 import com.pethiio.android.databinding.FragmentSettingsBinding
 import com.pethiio.android.ui.base.BaseFragment
-import com.pethiio.android.ui.main.view.customViews.MaximobileDialog
+import com.pethiio.android.ui.main.view.customViews.PethiioDialog
 import com.pethiio.android.ui.main.viewmodel.FAQViewModel
 import com.pethiio.android.utils.Constants
 import com.pethiio.android.utils.PreferenceHelper
@@ -28,11 +28,11 @@ class SettingsFragment : BaseFragment() {
     private var logoutAlertTitle = ""
     private var logoutAlertDone = ""
     private var logoutAlertCancel = ""
+    private var isDialogShowing = false
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
     }
 
     override fun onCreateView(
@@ -80,35 +80,43 @@ class SettingsFragment : BaseFragment() {
 
     private fun openLogOut() {
 
-        val maximobileDialog =
-            MaximobileDialog(
-                requireContext(),
-                true,
-                logoutAlertTitle,
-                logoutAlertDone,
-                logoutAlertCancel
-            )
+        if (!isDialogShowing) {
 
-        maximobileDialog.getPositiveButton().setOnClickListener {
-            maximobileDialog.dissmiss()
-            PreferenceHelper.SharedPreferencesManager.getInstance().isLoggedIn = false
-            PreferenceHelper.SharedPreferencesManager.getInstance().accessToken = ""
-            PreferenceHelper.SharedPreferencesManager.getInstance().topicUserId = 0
-            unSubscribeToTopic()
+            isDialogShowing = true
 
-            findNavController().navigate(R.id.action_global_navigation_welcome)
+            val pethiioDialog =
+                PethiioDialog(
+                    requireContext(),
+                    true,
+                    logoutAlertTitle,
+                    logoutAlertDone,
+                    logoutAlertCancel
+                )
+
+            pethiioDialog.getPositiveButton().setOnClickListener {
+                pethiioDialog.dissmiss()
+                isDialogShowing = false
+
+                PreferenceHelper.SharedPreferencesManager.getInstance().isLoggedIn = false
+                PreferenceHelper.SharedPreferencesManager.getInstance().accessToken = ""
+                PreferenceHelper.SharedPreferencesManager.getInstance().topicUserId = 0
+                unSubscribeToTopic()
+
+                findNavController().navigate(R.id.action_global_navigation_welcome)
+            }
+            pethiioDialog.getNegativeButton().setOnClickListener {
+                pethiioDialog.dissmiss()
+                isDialogShowing = false
+            }
+            pethiioDialog.getPositiveButton().visibility = View.VISIBLE
+
         }
-        maximobileDialog.getNegativeButton().setOnClickListener {
-            maximobileDialog.dissmiss()
-        }
-        maximobileDialog.getPositiveButton().visibility = View.VISIBLE
-
     }
 
     private fun unSubscribeToTopic() {
         Firebase.messaging.unsubscribeFromTopic("topic-user-" + PreferenceHelper.SharedPreferencesManager.getInstance().topicUserId)
             .addOnFailureListener {
-                it
+//                it
             }
             .addOnCompleteListener { task ->
 //                var msg = getString(com.google.android.gms.location.R.string.msg_subscribed)
@@ -131,7 +139,9 @@ class SettingsFragment : BaseFragment() {
             when (it.status) {
                 Status.LOADING -> {
                     binding.progressAvi.hide()
-
+                }
+                Status.ERROR -> {
+                    binding.progressAvi.hide()
                 }
                 Status.SUCCESS -> {
                     val pageDataFields = it.data?.fields

@@ -85,7 +85,7 @@
                     android:layout_width="0dp"
                     android:layout_height="@dimen/alert_button_height"
                     android:layout_weight="1"
-                    android:background="@drawable/maximobile_dialog_error_button"
+                    android:background="@drawable/pethiio_dialog_error_button"
                     android:gravity="center"
                     android:singleLine="true"
                     android:text="@string/ok"
