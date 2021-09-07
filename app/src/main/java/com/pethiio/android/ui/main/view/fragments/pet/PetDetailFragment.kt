@@ -58,7 +58,6 @@ class PetDetailFragment : BaseFragment() {
     private var isDialogShowing = false
 
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
