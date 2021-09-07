@@ -122,61 +122,58 @@ class DashboardFragment : BaseFragment(), CardStackListener,
     override fun onUserClicked(materialIntroViewId: String?) {
     }
 
-    private fun spotlightMemberList() {
-        if (findNavController().currentDestination?.id == R.id.navigation_dashboard)
-            MaterialIntroView.Builder(requireActivity())
-                .enableIcon(false)
-                .setFocusGravity(FocusGravity.CENTER)
-                .setFocusType(Focus.MINIMUM)
-                .setDelayMillis(500)
-                .enableFadeAnimation(true)
-                .performClick(true)
-                .setInfoText(getString(R.string.spotlight_memberlist))
-                .setShape(ShapeType.RECTANGLE)
-                .setTarget(binding.memberlistSpinner)
-                .setUsageId(TUTORIAL_MEMBER) //THIS SHOULD BE UNIQUE ID
-                .setListener(this)
-                .show()
+    override fun onStart() {
+        super.onStart()
+        val locationRequest = LocationRequest.create().apply {
+            interval = 3000
+            fastestInterval = 1500
+            priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+        }
+        val builder = LocationSettingsRequest.Builder()
+            .addLocationRequest(locationRequest)
 
-        PreferenceHelper.SharedPreferencesManager.getInstance().isLikedOnce = true
+        val mLocationCallback: LocationCallback = object : LocationCallback() {
+            override fun onLocationResult(locationResult: LocationResult) {
+                for (location in locationResult.locations) {
+                    if (location != null) {
 
-    }
+                        if (!isLocationSended) {
+                            viewModel.fetchLocations(
+                                LocationsRequest(
+                                    location.latitude.toString(),
+                                    location.longitude.toString()
+                                )
+                            )
+                            isLocationSended = true
+                            viewModel.fetchMemberList()
+                        }
 
-    private fun spotlightLike() {
+                        //TODO: UI burda cagır xiomi de
+                    }
+                }
+            }
+        }
 
-        if (findNavController().currentDestination?.id == R.id.navigation_dashboard)
-            MaterialIntroView.Builder(requireActivity())
-                .enableIcon(false)
-                .setFocusGravity(FocusGravity.CENTER)
-                .setFocusType(Focus.MINIMUM)
-                .setDelayMillis(500)
-                .enableFadeAnimation(true)
-                .performClick(true)
-                .setInfoText(getString(R.string.spotlight_like))
-                .setShape(ShapeType.RECTANGLE)
-                .setTarget(binding.cardStackView)
-                .setUsageId(TUTORIAL_LIKE)
-                .setListener(this)
-                .show()
+        if (ActivityCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return
+        }
+        LocationServices.getFusedLocationProviderClient(requireContext())
+            .requestLocationUpdates(locationRequest, mLocationCallback, null);
 
-    }
-
-    private fun spotlightSettings() {
-
-        if (findNavController().currentDestination?.id == R.id.navigation_dashboard)
-            MaterialIntroView.Builder(requireActivity())
-                .enableIcon(false)
-                .setFocusGravity(FocusGravity.CENTER)
-                .setFocusType(Focus.MINIMUM)
-                .setDelayMillis(500)
-                .enableFadeAnimation(true)
-                .performClick(true)
-                .setInfoText(getString(R.string.spotlight_settings))
-                .setShape(ShapeType.RECTANGLE)
-                .setTarget(binding.searchFilterButton)
-                .setUsageId("TUTORIAL_SETTINGSs1sadd")
-                .setListener(this)
-                .show()
     }
 
     override fun onCreateView(
@@ -210,8 +207,24 @@ class DashboardFragment : BaseFragment(), CardStackListener,
         return view
     }
 
-
     //region Location
+
+    fun checkGpsPermission() {
+        if (ContextCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) !=
+            PackageManager.PERMISSION_GRANTED
+            && ActivityCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+//            CommonMethods.onSNACK(binding.root, getString(R.string.no_location_detected))
+            //main activityde handle edildi
+        } else {
+        }
+    }
 
     @SuppressLint("MissingPermission")
     private fun requestCurrentLocation() {
@@ -241,7 +254,6 @@ class DashboardFragment : BaseFragment(), CardStackListener,
 
             } else {
                 viewModel.fetchMemberList()
-                viewModel.fetchFilterList()
                 val exception = task.exception
                 "Location (failure): $exception"
             }
@@ -261,98 +273,13 @@ class DashboardFragment : BaseFragment(), CardStackListener,
                     )
                     isLocationSended = true
                     viewModel.fetchMemberList()
-                    viewModel.fetchFilterList()
                 }
 
             } ?: kotlin.run {
                 viewModel.fetchMemberList()
-                viewModel.fetchFilterList()
                 // Handle Null case or Request periodic location update https://developer.android.com/training/location/receive-location-updates
             }
         }
-    }
-
-    //endregion
-
-
-    companion object {
-        private const val MY_PERMISSIONS_REQUEST_LOCATION = 99
-        const val TUTORIAL_LIKE = "like"
-        const val TUTORIAL_MEMBER = "memberlist"
-        const val TUTORIAL_SETTINGS = "settings"
-    }
-
-    fun checkGpsPermission() {
-        if (ContextCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) !=
-            PackageManager.PERMISSION_GRANTED
-            && ActivityCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-//            CommonMethods.onSNACK(binding.root, getString(R.string.no_location_detected))
-            //main activityde handle edildi
-        } else {
-        }
-    }
-
-
-    override fun onStart() {
-        super.onStart()
-        val locationRequest = LocationRequest.create().apply {
-            interval = 3000
-            fastestInterval = 1500
-            priority = LocationRequest.PRIORITY_HIGH_ACCURACY
-        }
-        val builder = LocationSettingsRequest.Builder()
-            .addLocationRequest(locationRequest)
-
-        val mLocationCallback: LocationCallback = object : LocationCallback() {
-            override fun onLocationResult(locationResult: LocationResult) {
-                for (location in locationResult.locations) {
-                    if (location != null) {
-
-                        if (!isLocationSended) {
-                            viewModel.fetchLocations(
-                                LocationsRequest(
-                                    location.latitude.toString(),
-                                    location.longitude.toString()
-                                )
-                            )
-                            isLocationSended = true
-                            viewModel.fetchMemberList()
-                            viewModel.fetchFilterList()
-                        }
-
-                        //TODO: UI burda cagır xiomi de
-                    }
-                }
-            }
-        }
-
-        if (ActivityCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return
-        }
-        LocationServices.getFusedLocationProviderClient(requireContext())
-            .requestLocationUpdates(locationRequest, mLocationCallback, null);
-
     }
 
     override fun onRequestPermissionsResult(
@@ -386,10 +313,10 @@ class DashboardFragment : BaseFragment(), CardStackListener,
         }
     }
 
+    //endregion
+
+
     private fun setupUI() {
-
-//        findNavController().navigate(R.id.navigation_match)
-
 
         fromNotification = arguments?.getBoolean("fromNotification", false) == true
         if (fromNotification) {
@@ -410,9 +337,7 @@ class DashboardFragment : BaseFragment(), CardStackListener,
 
         }
 
-
         binding.progressAvi.hide()
-
 
         binding.noResultImg.setAnimation("bulunamadi.json")
         setupButton()
@@ -424,10 +349,7 @@ class DashboardFragment : BaseFragment(), CardStackListener,
                 Status.SUCCESS -> {
                     if (!isLocationSended) {
                         viewModel.fetchMemberList()
-                        viewModel.fetchFilterList()
                         isLocationSended = true
-                        viewModel.fetchMemberList()
-                        viewModel.fetchFilterList()
                     }
 
                 }
@@ -436,11 +358,7 @@ class DashboardFragment : BaseFragment(), CardStackListener,
         })
         if (isLocationSended) {
             viewModel.fetchMemberList()
-            viewModel.fetchFilterList()
         }
-
-
-
 
         viewModel.getPostSearchFilter().observe(viewLifecycleOwner, {
             when (it.status) {
@@ -477,15 +395,14 @@ class DashboardFragment : BaseFragment(), CardStackListener,
                 Status.LOADING -> {
                     binding.progressAvi.show()
                 }
-
                 Status.SUCCESS -> {
                     if (it.data != null) {
                         if (it.data.isNotEmpty()) {
                             memberListSize = it.data.size
-
                             binding.memberlistSpinner.visibility = View.VISIBLE
-//                            binding.noResultLayout.visibility = View.GONE
                             binding.searchFilterButton.visibility = View.VISIBLE
+                            if (adapter?.getPetSearchList()?.isEmpty() == false)
+                                binding.noResultLayout.visibility = View.GONE
 
                             memberListResponse = it.data
                             setMembeListSpinner(memberListResponse)
@@ -500,6 +417,7 @@ class DashboardFragment : BaseFragment(), CardStackListener,
                         }
                     }
                     binding.progressAvi.hide()
+
 
                 }
                 Status.ERROR -> {
@@ -563,6 +481,28 @@ class DashboardFragment : BaseFragment(), CardStackListener,
 //        })
     }
 
+    @SuppressLint("ResourceType")
+    fun setMembeListSpinner(memberListResponse: List<MemberListResponse>) {
+        val customAdapter = MemberListSpinner(requireContext(), memberListResponse)
+
+        if (PreferenceHelper.SharedPreferencesManager.getInstance().selectedSpinnerId <= memberListResponse.size - 1)
+            selectedMemberId =
+                PreferenceHelper.SharedPreferencesManager.getInstance().selectedSpinnerId
+        if (isSelectedMemberFirstTime)
+            with(binding.memberlistSpinner)
+            {
+                id = 1
+                adapter = customAdapter
+                onItemSelectedListener = this@DashboardFragment
+                gravity = Gravity.CENTER
+                if (memberListResponse.isNotEmpty() && isSelectedMemberFirstTime) {
+                    binding.memberlistSpinner.setSelection(selectedMemberId)
+                    isSelectedMemberFirstTime = false
+                }
+            }
+
+    }
+
     private fun removeFirst() {
         if (adapter?.getPetSearchList()?.isEmpty() == true) {
             return
@@ -596,29 +536,6 @@ class DashboardFragment : BaseFragment(), CardStackListener,
         adapter?.setPetSearchList(new)
         adapter?.let { result?.dispatchUpdatesTo(it) }
     }
-
-    @SuppressLint("ResourceType")
-    fun setMembeListSpinner(memberListResponse: List<MemberListResponse>) {
-        val customAdapter = MemberListSpinner(requireContext(), memberListResponse)
-
-        if (PreferenceHelper.SharedPreferencesManager.getInstance().selectedSpinnerId <= memberListResponse.size - 1)
-            selectedMemberId =
-                PreferenceHelper.SharedPreferencesManager.getInstance().selectedSpinnerId
-        if (isSelectedMemberFirstTime)
-            with(binding.memberlistSpinner)
-            {
-                id = 1
-                adapter = customAdapter
-                onItemSelectedListener = this@DashboardFragment
-                gravity = Gravity.CENTER
-                if (memberListResponse.isNotEmpty() && isSelectedMemberFirstTime) {
-                    binding.memberlistSpinner.setSelection(selectedMemberId)
-                    isSelectedMemberFirstTime = false
-                }
-            }
-
-    }
-
 
     private fun setupButton() {
 
@@ -806,6 +723,70 @@ class DashboardFragment : BaseFragment(), CardStackListener,
     }
 
     override fun onNothingSelected(parent: AdapterView<*>?) {
+    }
+
+    private fun spotlightMemberList() {
+        if (findNavController().currentDestination?.id == R.id.navigation_dashboard)
+            MaterialIntroView.Builder(requireActivity())
+                .enableIcon(false)
+                .setFocusGravity(FocusGravity.CENTER)
+                .setFocusType(Focus.MINIMUM)
+                .setDelayMillis(500)
+                .enableFadeAnimation(true)
+                .performClick(true)
+                .setInfoText(getString(R.string.spotlight_memberlist))
+                .setShape(ShapeType.RECTANGLE)
+                .setTarget(binding.memberlistSpinner)
+                .setUsageId(TUTORIAL_MEMBER) //THIS SHOULD BE UNIQUE ID
+                .setListener(this)
+                .show()
+
+        PreferenceHelper.SharedPreferencesManager.getInstance().isLikedOnce = true
+
+    }
+
+    private fun spotlightLike() {
+
+        if (findNavController().currentDestination?.id == R.id.navigation_dashboard)
+            MaterialIntroView.Builder(requireActivity())
+                .enableIcon(false)
+                .setFocusGravity(FocusGravity.CENTER)
+                .setFocusType(Focus.MINIMUM)
+                .setDelayMillis(500)
+                .enableFadeAnimation(true)
+                .performClick(true)
+                .setInfoText(getString(R.string.spotlight_like))
+                .setShape(ShapeType.RECTANGLE)
+                .setTarget(binding.cardStackView)
+                .setUsageId(TUTORIAL_LIKE)
+                .setListener(this)
+                .show()
+
+    }
+
+    private fun spotlightSettings() {
+
+        if (findNavController().currentDestination?.id == R.id.navigation_dashboard)
+            MaterialIntroView.Builder(requireActivity())
+                .enableIcon(false)
+                .setFocusGravity(FocusGravity.CENTER)
+                .setFocusType(Focus.MINIMUM)
+                .setDelayMillis(500)
+                .enableFadeAnimation(true)
+                .performClick(true)
+                .setInfoText(getString(R.string.spotlight_settings))
+                .setShape(ShapeType.RECTANGLE)
+                .setTarget(binding.searchFilterButton)
+                .setUsageId("TUTORIAL_SETTINGSs1sadd")
+                .setListener(this)
+                .show()
+    }
+
+    companion object {
+        private const val MY_PERMISSIONS_REQUEST_LOCATION = 99
+        const val TUTORIAL_LIKE = "like"
+        const val TUTORIAL_MEMBER = "memberlist"
+        const val TUTORIAL_SETTINGS = "settings"
     }
 
 

@@ -286,19 +286,12 @@ public class FilterBottomSheet extends BottomSheetDialogFragment {
                 @Override
                 public void onChanged(Resource<Response<Void>> responseResource) {
                     EventBus.getDefault().post(new FilterEvent());
-
-
                 }
             });
-
-
         }
 
         new Handler().postDelayed(FilterBottomSheet.this::dismiss, 300);
-
-
     }
-
 
     public static FilterBottomSheet newInstance() {
         return new FilterBottomSheet();

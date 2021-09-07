@@ -17,8 +17,8 @@ android {
         applicationId "com.pethiio.android"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 9
-        versionName "1.4.4"
+        versionCode 10
+        versionName "1.4.5"
         multiDexEnabled true
 
     }
