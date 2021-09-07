@@ -15,6 +15,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.os.bundleOf
+import androidx.core.view.get
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.pethiio.android.R
@@ -51,7 +52,6 @@ class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
     private val COLOR_ID = 4
     var adapterCharacter: CharacterAdapter? = null
     var selectedCharacters: ArrayList<String> = ArrayList()
-    var firstRadioButtonId: Int = 0
     var isRadioButtonAdded = false
     var fromRegister: Boolean = true
     private var petId: String? = ""
@@ -81,12 +81,14 @@ class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
 
-                    if (TextUtils.isEmpty(petId)) {
+                    if (fromRegister) {
                         if (PreferenceHelper.SharedPreferencesManager.getInstance().isLoggedIn == true)
                             if (findNavController().currentDestination?.id == R.id.navigation_pet_add)
                                 findNavController().navigate(R.id.navigation_welcome)
                     } else {
-                        findNavController().popBackStack()
+                        findNavController().navigateUp()
+
+//                        findNavController().popBackStack()
                     }
                 }
 
@@ -313,19 +315,16 @@ class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
                 }
                 Status.SUCCESS -> {
 
-                    setPethiioResponseList(it.data?.fields)
-                    it.data?.lookups?.let { it1 -> setLookUps(it1) }
                     binding.progressAvi.hide()
 
+                    setPethiioResponseList(it.data?.fields)
+                    it.data?.lookups?.let { it1 -> setLookUps(it1) }
                     binding.petAddTitle.text = getLocalizedString(Constants.petaboutTitle)
-
                     binding.skipBtn.text =
                         getLocalizedString(Constants.animalAddNextButtonTitle)
                     binding.nameLy.titleTv.text = getLocalizedSpan(Constants.registerNameTitle)
                     binding.nameLy.placeholderTv.hint =
                         getLocalizedString(Constants.registerNamePlaceholder)
-
-
                     binding.yearLy.titleTv.text = getLocalizedSpan(Constants.animalAddYearTitle)
                     binding.monthLy.titleTv.visibility = View.INVISIBLE
                     binding.genderLy.titleTv.text =
@@ -340,11 +339,8 @@ class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
                     binding.aboutTitleTv.text = getLocalizedSpan(Constants.petaboutTitle)
                     binding.aboutPlaceholderTv.hint =
                         getLocalizedString(Constants.petaboutPlaceholder)
-
                     binding.purposeTitleTv.text =
                         getLocalizedSpan(Constants.animalAddPurposeTitle)
-
-
                     binding.genderLy.spinner.prompt =
                         getLocalizedString(Constants.registerGenderTitle)
                     binding.yearLy.spinner.prompt =
@@ -368,11 +364,13 @@ class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
                     purposeList = getLookUps(Constants.lookUpPurpose)
 
                     binding.radioGroup.removeAllViews()
-                    purposeList.forEach {
-                        addRadioButton(it)
+
+                    purposeList.forEachIndexed { index, s ->
+                        addRadioButton(s, index)
                     }
                     if (purposeList.isNotEmpty())
-                        binding.radioGroup.check(1)
+                        if (binding.radioGroup.getChildAt(0) != null && TextUtils.isEmpty(petId))
+                            binding.radioGroup.check(0)
 
                     val genderAdapter =
                         ArrayAdapter(
@@ -449,7 +447,6 @@ class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
 
                     }
 
-
                     with(binding.colorLy.spinner)
                     {
                         adapter = colorAdapter
@@ -473,102 +470,75 @@ class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
 
                     }
 
-                    viewModel.getAddAnimalDetails().observe(viewLifecycleOwner,
-                        { it ->
-                            setAnimalDetail(it)
+                    if (!TextUtils.isEmpty(petId))
+                        viewModel.getUserPetDetail().observe(viewLifecycleOwner, { it ->
+                            when (it.status) {
+                                Status.ERROR -> {
+                                    it.message?.let { it1 ->
+                                        CommonMethods.onSNACK(
+                                            binding.root,
+                                            it1
+                                        )
+                                    }
+                                    binding.progressAvi.hide()
 
-                            binding.characterRc.layoutManager =
-                                GridLayoutManager(requireContext(), 3)
+                                }
+                                Status.LOADING -> {
+                                    binding.progressAvi.show()
 
-                            adapterCharacter = CharacterAdapter(
-                                requireContext(),
-                                getAnimalPersonalities(),
-                                selectedCharacters
-                            )
+                                }
+                                Status.SUCCESS -> {
+                                    val petAdd = it.data
+                                    binding.nameLy.placeholderTv.setText(petAdd?.name)
+                                    binding.aboutPlaceholderTv.setText(petAdd?.about)
 
-                            binding.characterRc.adapter = adapterCharacter
+                                    val selectedList: ArrayList<String> = ArrayList()
+                                    petAdd?.animalPersonalities?.forEach {
+                                        selectedList.add(getAnimalPersonality(it.toString()))
+                                    }
+                                    Handler().postDelayed({
+                                        adapterCharacter?.setSelectedItems(selectedList)
+                                    }, 200)
 
-                            val breedAdapter = ArrayAdapter(
-                                requireContext(),
-                                android.R.layout.simple_spinner_item,
-                                getAnimalBreeds()
-                            )
-                            breedAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                                    val genderIndex = petAdd?.gender?.let { it1 ->
+                                        getLookUpIndex(
+                                            Constants.lookUpGender,
+                                            it1
+                                        )
+                                    }
+                                    genderIndex?.let { it1 ->
+                                        binding.genderLy.spinner.setSelection(
+                                            it1
+                                        )
+                                    }
 
-                            with(binding.breedLy.spinner)
-                            {
-                                adapter = breedAdapter
-                                onItemSelectedListener = this@PetAddFragment
-                                gravity = Gravity.CENTER
+                                    val colorIndex = petAdd?.color?.let { it1 ->
+                                        getLookUpIndex(
+                                            Constants.lookUpColor,
+                                            it1
+                                        )
+                                    }
+                                    colorIndex?.let { it1 ->
+                                        binding.colorLy.spinner.setSelection(
+                                            it1
+                                        )
+                                    }
 
-                            }
-
-
-                            if (!TextUtils.isEmpty(petId))
-                                viewModel.getUserPetDetail().observe(viewLifecycleOwner, { it ->
-                                    when (it.status) {
-                                        Status.ERROR -> {
-                                            it.message?.let { it1 ->
-                                                CommonMethods.onSNACK(
-                                                    binding.root,
-                                                    it1
-                                                )
-                                            }
-                                            binding.progressAvi.hide()
-
-                                        }
-                                        Status.LOADING -> {
-                                            binding.progressAvi.show()
-
-                                        }
-                                        Status.SUCCESS -> {
-                                            val petAdd = it.data
-                                            binding.nameLy.placeholderTv.setText(petAdd?.name)
-                                            binding.aboutPlaceholderTv.setText(petAdd?.about)
-
-                                            val selectedList: ArrayList<String> = ArrayList()
-                                            petAdd?.animalPersonalities?.forEach {
-                                                selectedList.add(getAnimalPersonality(it.toString()))
-                                            }
-                                            Handler().postDelayed({
-                                                adapterCharacter?.setSelectedItems(selectedList)
-                                            }, 200)
-
-                                            val genderIndex = petAdd?.gender?.let { it1 ->
-                                                getLookUpIndex(
-                                                    Constants.lookUpGender,
-                                                    it1
-                                                )
-                                            }
-                                            genderIndex?.let { it1 ->
-                                                binding.genderLy.spinner.setSelection(
-                                                    it1
-                                                )
-                                            }
-
-                                            val colorIndex = petAdd?.color?.let { it1 ->
-                                                getLookUpIndex(
-                                                    Constants.lookUpColor,
-                                                    it1
-                                                )
-                                            }
-                                            colorIndex?.let { it1 ->
-                                                binding.colorLy.spinner.setSelection(
-                                                    it1
-                                                )
-                                            }
-
-                                            val animalIndex = petAdd?.animalId?.let { it1 ->
-                                                getLookUpIndex(
-                                                    Constants.lookUpAnimals,
-                                                    it1.toString()
-                                                )
-                                            }
-                                            animalIndex?.let { it1 ->
-                                                binding.typeLy.spinner.setSelection(
-                                                    it1
-                                                )
-                                            }
+                                    val animalIndex = petAdd?.animalId?.let { it1 ->
+                                        getLookUpIndex(
+                                            Constants.lookUpAnimals,
+                                            it1.toString()
+                                        )
+                                    }
+                                    animalIndex?.let { it1 ->
+                                        binding.typeLy.spinner.setSelection(
+                                            it1
+                                        )
+                                    }
+                                    //region Animal Details
+                                    viewModel.getAddAnimalDetails().observe(viewLifecycleOwner,
+                                        {
+                                            setAnimalDetail(it)
 
                                             val breedIndex = petAdd?.breedId?.let { it1 ->
                                                 getBreedIndex(
@@ -584,40 +554,104 @@ class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
                                             }, 200)
 
 
+                                            binding.characterRc.layoutManager =
+                                                GridLayoutManager(requireContext(), 3)
 
-                                            petAdd?.year?.let { it1 ->
-                                                binding.yearLy.spinner.setSelection(
-                                                    it1
-                                                )
+                                            adapterCharacter = CharacterAdapter(
+                                                requireContext(),
+                                                getAnimalPersonalities(),
+                                                selectedCharacters
+                                            )
+
+                                            binding.characterRc.adapter = adapterCharacter
+
+                                            val breedAdapter = ArrayAdapter(
+                                                requireContext(),
+                                                android.R.layout.simple_spinner_item,
+                                                getAnimalBreeds()
+                                            )
+                                            breedAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+
+                                            with(binding.breedLy.spinner)
+                                            {
+                                                adapter = breedAdapter
+                                                onItemSelectedListener = this@PetAddFragment
+                                                gravity = Gravity.CENTER
+
                                             }
-                                            petAdd?.month?.let { it1 ->
-                                                binding.monthLy.spinner.setSelection(
-                                                    it1
-                                                )
-                                            }
 
-                                            val purposeIndex = petAdd?.purpose?.let { it1 ->
-                                                getLookUpIndex(
-                                                    Constants.lookUpPurpose,
-                                                    it1
-                                                )
-                                            }
 
-                                            Handler().postDelayed({
-                                                purposeIndex?.let { it1 ->
-                                                    binding.radioGroup.check(firstRadioButtonId + it1)
-                                                }
-                                            }, 200)
+                                        })
 
-                                            binding.progressAvi.hide()
+                                    //endregion
 
-                                        }
 
+                                    petAdd?.year?.let { it1 ->
+                                        binding.yearLy.spinner.setSelection(
+                                            it1
+                                        )
+                                    }
+                                    petAdd?.month?.let { it1 ->
+                                        binding.monthLy.spinner.setSelection(
+                                            it1
+                                        )
                                     }
 
-                                })
+                                    val purposeIndex = petAdd?.purpose?.let { it1 ->
+                                        getLookUpIndex(
+                                            Constants.lookUpPurpose,
+                                            it1
+                                        )
+                                    }
+
+                                    Handler().postDelayed({
+                                        purposeIndex?.let { it1 ->
+                                            binding.radioGroup.check(it1)
+                                        }
+                                    }, 200)
+
+                                    binding.progressAvi.hide()
+
+                                }
+
+                            }
 
                         })
+                    else
+                        viewModel.getAddAnimalDetails().observe(viewLifecycleOwner,
+                            { it ->
+                                setAnimalDetail(it)
+
+                                binding.characterRc.layoutManager =
+                                    GridLayoutManager(requireContext(), 3)
+
+                                adapterCharacter = CharacterAdapter(
+                                    requireContext(),
+                                    getAnimalPersonalities(),
+                                    selectedCharacters
+                                )
+
+                                binding.characterRc.adapter = adapterCharacter
+
+                                val breedAdapter = ArrayAdapter(
+                                    requireContext(),
+                                    android.R.layout.simple_spinner_item,
+                                    getAnimalBreeds()
+                                )
+                                breedAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+
+                                with(binding.breedLy.spinner)
+                                {
+                                    adapter = breedAdapter
+                                    onItemSelectedListener = this@PetAddFragment
+                                    gravity = Gravity.CENTER
+
+                                }
+
+
+                            })
+
+
 
                     binding.progressAvi.hide()
 
@@ -722,7 +756,7 @@ class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
 
     override fun onNothingSelected(parent: AdapterView<*>?) {}
 
-    private fun addRadioButton(string: String) {
+    private fun addRadioButton(string: String, id: Int) {
 
         val radioButton = RadioButton(requireContext())
 
@@ -749,11 +783,11 @@ class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
         radioButton.textSize = 14F
         radioButton.typeface = typeface
         radioButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.grey))
+        radioButton.id = id
 
         binding.radioGroup.addView(radioButton)
 
         if (!isRadioButtonAdded) {
-            firstRadioButtonId = radioButton.id
             isRadioButtonAdded = true
         }
     }
