@@ -18,7 +18,6 @@ import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.pethiio.android.R
-import com.pethiio.android.data.EventBus.LoginEvent
 import com.pethiio.android.data.model.PetAdd
 import com.pethiio.android.data.model.PetEdit
 import com.pethiio.android.databinding.FragmentPetAddBinding
@@ -33,8 +32,6 @@ import kotlinx.android.synthetic.*
 import kotlinx.android.synthetic.main.common_rounded_input_tv.view.*
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_pet_add.view.*
-import org.greenrobot.eventbus.EventBus
-
 
 class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
     AdapterView.OnItemSelectedListener {
@@ -44,7 +41,6 @@ class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
 
     private val binding get() = _binding!!
     override var useSharedViewModel = true
-
     lateinit var gender: List<String>
     lateinit var type: List<String>
     lateinit var color: List<String>
@@ -58,9 +54,7 @@ class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
     var firstRadioButtonId: Int = 0
     var isRadioButtonAdded = false
     var fromRegister: Boolean = true
-
     private var petId: String? = ""
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -78,7 +72,7 @@ class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
             petId?.let {
                 viewModel.getUserPetDetail(it)
             }
-        }else{
+        } else {
             fetchAddAnimalDetail("1")
 
         }
@@ -110,11 +104,9 @@ class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
         }
     }
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
     }
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -215,13 +207,12 @@ class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
                 ).toIntOrNull()
 
 
-            var selectedPersonalities = emptyList<Int>()
-            selectedPersonalities =
-                adapterCharacter?.getSelectedItems()?.let { it1 ->
-                    getSelectedAnimalPersonality(
-                        it1
-                    )
-                }!!
+            var selectedPersonalities: List<Int>
+            adapterCharacter?.getSelectedItems()?.let { it1 ->
+                getSelectedAnimalPersonality(
+                    it1
+                )
+            }!!.also { selectedPersonalities = it }
 
 
             var purpose = ""
@@ -309,7 +300,6 @@ class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
 
     }
 
-
     @SuppressLint("ResourceType")
     fun setUpObserver() {
 
@@ -317,7 +307,9 @@ class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
             when (it.status) {
                 Status.LOADING -> {
                     binding.progressAvi.show()
-
+                }
+                Status.ERROR -> {
+                    binding.progressAvi.hide()
                 }
                 Status.SUCCESS -> {
 
@@ -514,14 +506,27 @@ class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
 
                             if (!TextUtils.isEmpty(petId))
                                 viewModel.getUserPetDetail().observe(viewLifecycleOwner, { it ->
-
                                     when (it.status) {
+                                        Status.ERROR -> {
+                                            it.message?.let { it1 ->
+                                                CommonMethods.onSNACK(
+                                                    binding.root,
+                                                    it1
+                                                )
+                                            }
+                                            binding.progressAvi.hide()
+
+                                        }
+                                        Status.LOADING -> {
+                                            binding.progressAvi.show()
+
+                                        }
                                         Status.SUCCESS -> {
                                             val petAdd = it.data
                                             binding.nameLy.placeholderTv.setText(petAdd?.name)
                                             binding.aboutPlaceholderTv.setText(petAdd?.about)
 
-                                            var selectedList: ArrayList<String> = ArrayList()
+                                            val selectedList: ArrayList<String> = ArrayList()
                                             petAdd?.animalPersonalities?.forEach {
                                                 selectedList.add(getAnimalPersonality(it.toString()))
                                             }
@@ -594,7 +599,7 @@ class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
                                             val purposeIndex = petAdd?.purpose?.let { it1 ->
                                                 getLookUpIndex(
                                                     Constants.lookUpPurpose,
-                                                    it1.toString()
+                                                    it1
                                                 )
                                             }
 
@@ -604,17 +609,20 @@ class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
                                                 }
                                             }, 200)
 
+                                            binding.progressAvi.hide()
+
                                         }
 
                                     }
-
 
                                 })
 
                         })
 
+                    binding.progressAvi.hide()
 
                     //endregion
+
 
                 }
             }
@@ -633,17 +641,22 @@ class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
                                 bundle
                             )
                     }
+                    binding.progressAvi.hide()
+
                 }
                 Status.ERROR -> {
                     it.message?.let { it1 ->
                         CommonMethods.onSNACK(
                             binding.root,
-                            it1.toString()
+                            it1
                         )
                     }
+                    binding.progressAvi.hide()
 
                 }
                 Status.LOADING -> {
+                    binding.progressAvi.show()
+
                 }
             }
         })
@@ -658,16 +671,22 @@ class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
                                 R.id.action_navigation_pet_add_to_navigation_photo
                             )
                     }
+                    binding.progressAvi.hide()
+
                 }
                 Status.ERROR -> {
                     it.message?.let { it1 ->
                         CommonMethods.onSNACK(
                             binding.root,
-                            it1.toString()
+                            it1
                         )
                     }
+                    binding.progressAvi.hide()
+
                 }
                 Status.LOADING -> {
+                    binding.progressAvi.show()
+
                 }
             }
         })
@@ -703,7 +722,7 @@ class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
 
     override fun onNothingSelected(parent: AdapterView<*>?) {}
 
-    fun addRadioButton(string: String) {
+    private fun addRadioButton(string: String) {
 
         val radioButton = RadioButton(requireContext())
 
