@@ -495,14 +495,6 @@ class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
                                     binding.nameLy.placeholderTv.setText(petAdd?.name)
                                     binding.aboutPlaceholderTv.setText(petAdd?.about)
 
-                                    val selectedList: ArrayList<String> = ArrayList()
-                                    petAdd?.animalPersonalities?.forEach {
-                                        selectedList.add(getAnimalPersonality(it.toString()))
-                                    }
-                                    Handler().postDelayed({
-                                        adapterCharacter?.setSelectedItems(selectedList)
-                                    }, 200)
-
                                     val genderIndex = petAdd?.gender?.let { it1 ->
                                         getLookUpIndex(
                                             Constants.lookUpGender,
@@ -540,8 +532,8 @@ class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
                                     }
                                     //region Animal Details
                                     viewModel.getAddAnimalDetails().observe(viewLifecycleOwner,
-                                        {
-                                            setAnimalDetail(it)
+                                        { animalDetailResponse ->
+                                            setAnimalDetail(animalDetailResponse)
 
                                             val breedIndex = petAdd?.breedId?.let { it1 ->
                                                 getBreedIndex(
@@ -565,6 +557,14 @@ class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
                                                 getAnimalPersonalities(),
                                                 selectedCharacters
                                             )
+
+                                            val selectedList: ArrayList<String> = ArrayList()
+                                            petAdd?.animalPersonalities?.forEach {
+                                                selectedList.add(getAnimalPersonality(it.toString()))
+                                            }
+                                            Handler().postDelayed({
+                                                adapterCharacter?.setSelectedItems(selectedList)
+                                            }, 200)
 
                                             binding.characterRc.adapter = adapterCharacter
 
