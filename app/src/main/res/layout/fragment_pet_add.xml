@@ -247,7 +247,7 @@
                 android:textSize="16dp"
                 tools:text="İlerle" />
 
-        </LinearLayout>"
+        </LinearLayout>
 
         <com.wang.avi.AVLoadingIndicatorView
             android:id="@+id/progressAvi"

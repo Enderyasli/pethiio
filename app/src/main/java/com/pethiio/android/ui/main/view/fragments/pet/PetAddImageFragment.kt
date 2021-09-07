@@ -66,7 +66,9 @@ class PetAddImageFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
 
         viewModel.getPetPhotos().observe(viewLifecycleOwner, {
 
-            it.data?.let { it1 -> setImages(it1) }
+            it.data?.let { it1 ->
+                setImages(it1)
+            }
         })
     }
 

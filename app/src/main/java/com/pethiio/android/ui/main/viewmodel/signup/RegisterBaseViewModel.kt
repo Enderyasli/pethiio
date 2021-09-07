@@ -47,7 +47,7 @@ class RegisterBaseViewModel : ViewModel() {
     private val addAnimalResponse = SingleLiveEvent<Resource<PageData>>()
     private val petAddDetail = MutableLiveData<AnimalDetailResponse>()
     private val petDetail = SingleLiveEvent<Resource<PetAdd>>()
-    private val petAddPhotos = MutableLiveData<Resource<List<PetImageResponse>>>()
+    private val petAddPhotos = SingleLiveEvent<Resource<List<PetImageResponse>>>()
 
 
     private val compositeDisposable = CompositeDisposable()
