@@ -55,6 +55,8 @@ class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
     var isRadioButtonAdded = false
     var fromRegister: Boolean = true
     private var petId: String? = ""
+    private var isNewPet = true
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -128,7 +130,8 @@ class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
         findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<String>("petId")
             ?.observe(viewLifecycleOwner) {
                 petId = it
-                setUpViews()
+                if (isNewPet)
+                    setUpViews()
             }
 
         binding.skipBtn.setOnClickListener {
@@ -616,6 +619,7 @@ class PetAddFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
 
                             }
 
+                            isNewPet = false
                         })
                     else
                         viewModel.getAddAnimalDetails().observe(viewLifecycleOwner,
