@@ -50,6 +50,11 @@ class ChatScreenFragment : BaseFragment() {
     override fun onDestroy() {
         //unregister event bus
         EventBus.getDefault().unregister(this)
+        clearSocket()
+        super.onDestroy()
+    }
+
+    private fun clearSocket() {
         PethiioApplication.setCurrentRoom(0)
         socketIO.disconnect(roomId)
 
@@ -62,15 +67,26 @@ class ChatScreenFragment : BaseFragment() {
             )
         )
         socketConnected = false
-        super.onDestroy()
     }
 
+    override fun onStop() {
+
+        clearSocket()
+        super.onStop()
+
+    }
     override fun onResume() {
         super.onResume()
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this)
         }
 
+        if (!socketConnected) {
+            socketIO.connectSocket()
+            socketIO.setRooms(roomId)
+            PethiioApplication.setCurrentRoom(roomId)
+            socketConnected=true
+        }
 
     }
 
@@ -116,17 +132,6 @@ class ChatScreenFragment : BaseFragment() {
             .load(petAvatar)
             .apply(RequestOptions().override(200, 200))
             .into(binding.profileImage)
-
-
-        if (!socketConnected) {
-            socketIO.connectSocket()
-            socketIO.setRooms(roomId)
-            PethiioApplication.setCurrentRoom(roomId)
-
-        }
-
-
-
 
 
         binding.backBtn.setOnClickListener {

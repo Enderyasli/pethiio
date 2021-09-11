@@ -42,15 +42,15 @@ public class SocketIO {
 //        if (socket!=null &&!socket.connected()) {
 
 
-            String token = "Bearer " + PreferenceHelper.SharedPreferencesManager.Companion.getInstance().getAccessToken();
-            try {
-                IO.Options options = new IO.Options();
-                SocketSSL.set(options);
+        String token = "Bearer " + PreferenceHelper.SharedPreferencesManager.Companion.getInstance().getAccessToken();
+        try {
+            IO.Options options = new IO.Options();
+            SocketSSL.set(options);
 
-                socket = IO.socket(Constants.SOCKET_URL + URLEncoder.encode(token, StandardCharsets.UTF_8.displayName()), options);
-            } catch (URISyntaxException | UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
+            socket = IO.socket(Constants.SOCKET_URL + URLEncoder.encode(token, StandardCharsets.UTF_8.displayName()), options);
+        } catch (URISyntaxException | UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
 
 //        }
     }
@@ -62,15 +62,15 @@ public class SocketIO {
 //        disconnect(roomId);
 //        if (!socket.hasListeners(Constants.SOCKET_TOPIC + roomId)) {
 
-            socket.on(Constants.SOCKET_TOPIC + roomId, new Emitter.Listener() {
-                @Override
-                public void call(Object... objects) {
-                    Log.e("Socketdenemesi:", "mesaja girdi");
+        socket.on(Constants.SOCKET_TOPIC + roomId, new Emitter.Listener() {
+            @Override
+            public void call(Object... objects) {
+                Log.e("Socketdenemesi:", "mesaja girdi");
 
-                    parseMessage(objects[0], roomId);
+                parseMessage(objects[0], roomId);
 
-                }
-            });
+            }
+        });
 //        }
         Log.e("Sockethaslisteners:", "" + socket.hasListeners(Constants.SOCKET_TOPIC + roomId));
 
@@ -98,9 +98,11 @@ public class SocketIO {
     }
 
     public void disconnect(int roomId) {
-        socket.off();
-        socket.disconnect();
-        socket.off(Constants.SOCKET_TOPIC + roomId);
+        if (socket != null) {
+            socket.off();
+            socket.disconnect();
+            socket.off(Constants.SOCKET_TOPIC + roomId);
+        }
     }
 
     private void parseMessage(Object object1, int roomId) {

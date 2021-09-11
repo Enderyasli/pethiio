@@ -59,9 +59,9 @@ class ReportFragment : BaseFragment() {
         if (fromFAQ == true) {
             viewModel.fetchSupportPageData()
             viewModel.fetchSupportSuccessPageData()
-
         } else {
             viewModel.fetchReportPageData()
+            viewModel.fetchSupportSuccessPageData()
         }
 
         binding.reportBtn.setOnClickListener {
@@ -196,7 +196,7 @@ class ReportFragment : BaseFragment() {
                         findNavController().navigateUp()
                     else {
 
-                        Handler().postDelayed({ findNavController().navigateUp() }, 2500)
+//                        Handler().postDelayed({ findNavController().navigateUp() }, 2500)
 
                         binding.mainLayout.visibility = View.GONE
                         binding.msgLy.visibility = View.VISIBLE
