@@ -70,11 +70,11 @@
                     android:layout_marginEnd="15dp"
                     android:fontFamily="@font/typo_round_regular"
                     android:gravity="center"
-                    tools:text="Hayvan Ekle"
                     android:textColor="@color/grey"
                     android:textSize="14sp"
                     app:background="@color/light_button"
-                    tools:ignore="RtlSymmetry" />
+                    tools:ignore="RtlSymmetry"
+                    tools:text="Hayvan Ekle" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
@@ -109,13 +109,13 @@
                 android:layout_gravity="left|center"
                 android:layout_marginEnd="40dp"
                 android:background="@null"
-                android:fontFamily="@font/typo_round_regular"
-                android:hint="Search"
+                android:fontFamily="@font/mark_pro_medium"
                 android:paddingStart="15dp"
                 android:textColor="@color/whitegrey"
                 android:textColorHint="@color/hint_text_color"
                 android:textSize="14sp"
                 app:background="@color/light_button"
+                tools:hint="Search"
                 tools:ignore="RtlSymmetry" />
 
             <ImageView

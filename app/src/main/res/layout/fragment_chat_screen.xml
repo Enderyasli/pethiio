@@ -118,6 +118,7 @@
                         android:layout_margin="6dp"
                         android:layout_weight="1"
                         android:background="@android:color/white"
+                        android:fontFamily="@font/mark_pro_medium"
                         android:gravity="left|center_vertical"
                         android:inputType="textMultiLine|textCapSentences"
                         android:maxLength="500"

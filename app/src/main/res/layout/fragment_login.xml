@@ -82,7 +82,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:background="@drawable/common_input_btn_bg"
-                    android:fontFamily="@font/typo_round_regular"
+                    android:fontFamily="@font/mark_pro_medium"
                     android:gravity="center_vertical"
                     android:imeOptions="actionNext"
                     android:maxLength="60"
@@ -91,7 +91,8 @@
                     android:textColor="@color/black"
                     android:textColorHint="@color/hint_text_color"
                     android:textSize="14sp"
-                    tools:hint="Ad" />
+                    tools:hint="Ad"
+                    tools:ignore="RtlSymmetry" />
             </androidx.cardview.widget.CardView>
 
             <LinearLayout
@@ -127,13 +128,13 @@
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:background="@drawable/common_input_btn_bg"
-                        android:fontFamily="@font/typo_round_regular"
+                        android:fontFamily="@font/mark_pro_medium"
                         android:gravity="center_vertical"
+                        android:imeOptions="actionDone"
                         android:inputType="textPassword"
                         android:maxLength="30"
-                        android:paddingStart="15dp"
-                        android:imeOptions="actionDone"
                         android:nextFocusForward="@+id/login_btn"
+                        android:paddingStart="15dp"
                         android:paddingEnd="40dp"
                         android:textColor="@color/black"
                         android:textColorHint="@color/hint_text_color"

@@ -162,14 +162,15 @@
                             android:layout_width="match_parent"
                             android:layout_height="120dp"
                             android:background="@drawable/common_input_btn_bg"
-                            android:fontFamily="@font/typo_round_regular"
+                            android:fontFamily="@font/mark_pro_medium"
                             android:gravity="left"
                             android:paddingStart="15dp"
                             android:paddingTop="5dp"
                             android:textColor="@color/black"
                             android:textColorHint="@color/hint_text_color"
                             android:textSize="14sp"
-                            tools:hint="Durumu  daha iyi anlayabilmemiz için ayrıntılandır" />
+                            tools:hint="Durumu  daha iyi anlayabilmemiz için ayrıntılandır"
+                            tools:ignore="RtlHardcoded,RtlSymmetry" />
                     </androidx.cardview.widget.CardView>
                 </LinearLayout>
 
@@ -191,13 +192,12 @@
             </LinearLayout>
 
 
-
             <com.wang.avi.AVLoadingIndicatorView
                 android:id="@+id/progressAvi"
-                app:indicatorColor="@color/orangeButton"
-                android:layout_gravity="center"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                app:indicatorColor="@color/orangeButton"
                 app:indicatorName="BallScaleIndicator" />
 
         </FrameLayout>
