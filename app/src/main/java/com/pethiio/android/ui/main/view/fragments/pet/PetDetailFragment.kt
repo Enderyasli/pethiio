@@ -83,8 +83,6 @@ class PetDetailFragment : BaseFragment() {
     override fun setUpViews() {
         super.setUpViews()
 
-
-        // TODO: 19.07.2021 animal owner textlerini ayarla
         memberId = arguments?.getInt("memberId", 0)!!
         animalId = arguments?.getString("animalId", "")!!
         isOwner = arguments?.getBoolean("isOwner", false)!!

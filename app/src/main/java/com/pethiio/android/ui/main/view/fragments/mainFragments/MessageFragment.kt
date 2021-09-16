@@ -197,6 +197,7 @@ class MessageFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
                             if (it.id == roomId) {
                                 val bundle =
                                     bundleOf(
+                                        "petId" to it.petId,
                                         "roomId" to roomId,
                                         "memberId" to memberId,
                                         "memberName" to it.name,
