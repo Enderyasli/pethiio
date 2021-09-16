@@ -8,7 +8,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -51,12 +51,6 @@
                     tools:text="Enter Your Information about yourself to register." />
 
             </RelativeLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -242,5 +236,12 @@
             android:textColor="@color/red"
             android:textSize="14sp" />
 
+        <com.wang.avi.AVLoadingIndicatorView
+            android:id="@+id/progressAvi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            app:indicatorColor="@color/orangeButton"
+            app:indicatorName="BallScaleIndicator" />
     </RelativeLayout>
 </ScrollView>

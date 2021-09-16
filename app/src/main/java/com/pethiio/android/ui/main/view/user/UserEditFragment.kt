@@ -1,12 +1,9 @@
 package com.pethiio.android.ui.main.view.user
 
 import android.content.Context
-import android.content.Intent
 import android.graphics.Bitmap
-import android.net.Uri
 import android.os.Bundle
 import android.text.TextUtils
-import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -22,18 +19,19 @@ import com.bigkoo.pickerview.builder.TimePickerBuilder
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
+import com.canhub.cropper.CropImageContract
+import com.canhub.cropper.CropImageView
+import com.canhub.cropper.options
 import com.pethiio.android.R
 import com.pethiio.android.data.model.user.UserEditRequest
 import com.pethiio.android.databinding.FragmentUserEditBinding
 import com.pethiio.android.ui.base.BaseFragment
 import com.pethiio.android.ui.main.viewmodel.UserDetailViewModel
 import com.pethiio.android.utils.*
-import com.theartofdev.edmodo.cropper.CropImage
 import kotlinx.android.synthetic.main.fragment_vet.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
-import okhttp3.internal.format
 import java.io.File
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -98,13 +96,22 @@ class UserEditFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
     override fun setUpViews() {
         super.setUpViews()
 
-        progressAvi.hide()
+        binding.progressAvi.hide()
 
         viewModel.getUserEditPageData().observe(this, { it ->
 
             when (it.status) {
 
+                Status.LOADING -> {
+                    binding.progressAvi.show()
+                }
+                Status.ERROR -> {
+                    binding.progressAvi.hide()
+                }
+
                 Status.SUCCESS -> {
+                    binding.progressAvi.hide()
+
                     val pageDataFields = it.data?.fields
                     val lookUps = it.data?.lookups
                     lookUps?.let { it1 -> setLookUps(it1) }
@@ -132,7 +139,6 @@ class UserEditFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
                             pageDataFields
                         )
 
-
                     val gender = getLookUps(Constants.lookUpGender, lookUps)
                     val genderAdapter =
                         ArrayAdapter(
@@ -141,7 +147,6 @@ class UserEditFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
                             gender
                         )
                     genderAdapter.setDropDownViewResource(R.layout.spinner_item_default)
-
 
                     with(binding.genderLy.spinner)
                     {
@@ -156,17 +161,14 @@ class UserEditFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
                         when (it.status) {
 
                             Status.LOADING -> {
-                                progressAvi.show()
-
-
+                                binding.progressAvi.show()
                             }
                             Status.ERROR -> {
-                                progressAvi.hide()
-
+                                binding.progressAvi.hide()
                             }
 
                             Status.SUCCESS -> {
-                                progressAvi.hide()
+                                binding.progressAvi.hide()
 
                                 val response = it.data
 
@@ -210,14 +212,14 @@ class UserEditFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
 
                         val validSpinner = binding.genderLy.spinner.selectedItem != null
 
-                        var validName = getViewError(
+                        val validName = getViewError(
                             binding.namePlaceholderTv,
                             getLocalizedString(Constants.nameEmptyEror, pageDataFields)
                         )
                         if (!validName)
                             return@setOnClickListener
 
-                        var validLastName = getViewError(
+                        val validLastName = getViewError(
                             binding.surnamePlaceholderTv,
                             getLocalizedString(Constants.surnameEmtpyError, pageDataFields)
                         )
@@ -296,7 +298,7 @@ class UserEditFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
                                                         Status.SUCCESS -> {
                                                             activity?.runOnUiThread {
                                                                 findNavController().navigateUp()
-                                                                progressAvi.hide()
+                                                                binding.progressAvi.hide()
 
                                                             }
 
@@ -306,12 +308,12 @@ class UserEditFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
                                                                 binding.root,
                                                                 it1.message.toString()
                                                             )
-                                                            progressAvi.hide()
+                                                            binding.progressAvi.hide()
 
 
                                                         }
                                                         Status.LOADING -> {
-                                                            progressAvi.show()
+                                                            binding.progressAvi.show()
                                                         }
                                                     }
                                                 })
@@ -324,12 +326,8 @@ class UserEditFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
                                                     pageDataFields
                                                 )
                                             )
-
-
                                         }
-
                                     }
-
                                 }
                                 Status.ERROR -> {
                                     CommonMethods.onSNACK(binding.root, it.message.toString())
@@ -339,18 +337,10 @@ class UserEditFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
                                 }
                             }
                         })
-
                     }
-
                 }
-
             }
-
-
         })
-
-
-
 
 
 
@@ -404,11 +394,6 @@ class UserEditFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
         return str
     }
 
-    fun postRegisterDetail() {
-
-    }
-
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -416,37 +401,36 @@ class UserEditFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
         _binding = FragmentUserEditBinding.inflate(inflater, container, false)
         val view = binding.root
 
+        val cropImage = registerForActivityResult(CropImageContract()) { result ->
+            if (result.isSuccessful) {
+                // use the returned uri
+                val uriContent = result.uriContent
+                val uriFilePath = result.getUriFilePath(requireContext()) // optional usage
+                profileUri = uriFilePath.toString()
+
+                Glide.with(requireContext())
+                    .load(uriContent)
+                    .into(binding.imageProfile)
+
+
+            } else {
+                val exception = result.error
+            }
+        }
         binding.imagelY.setOnClickListener {
 
-            // for fragment (DO NOT use `getActivity()`)
-            CropImage.activity()
-                .setAspectRatio(1, 1)
-                .start(requireContext(), this)
+            cropImage.launch(
+                options {
+                    setGuidelines(CropImageView.Guidelines.ON)
+                    setAspectRatio(1, 1)
+                    setOutputCompressQuality(50)
+                }
+            )
         }
-
         setUpViewmodel()
 
         return view
 
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
-            val result = CropImage.getActivityResult(data)
-            if (resultCode == -1) {
-                val resultUri: Uri = result.uri
-
-                profileUri = resultUri.path.toString()
-
-                Glide.with(requireContext())
-                    .load(resultUri)
-                    .into(binding.imageProfile)
-
-
-            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-                val error = result.error
-            }
-        }
     }
 
     override fun onDestroyView() {

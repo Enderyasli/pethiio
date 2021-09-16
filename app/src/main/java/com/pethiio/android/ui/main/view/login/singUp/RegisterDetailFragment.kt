@@ -1,9 +1,6 @@
 package com.pethiio.android.ui.main.view.login.singUp
 
-import android.R.attr
 import android.content.Context
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.text.TextUtils
@@ -15,7 +12,6 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.bigkoo.pickerview.builder.TimePickerBuilder
 import com.bumptech.glide.Glide
@@ -29,15 +25,15 @@ import com.pethiio.android.utils.CommonMethods
 import com.pethiio.android.utils.Constants
 import com.pethiio.android.utils.PreferenceHelper
 import com.pethiio.android.utils.Status
-import com.theartofdev.edmodo.cropper.CropImage
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import org.greenrobot.eventbus.EventBus
 import java.io.File
 import java.util.*
-import android.R.attr.data
-
+import com.canhub.cropper.CropImageContract
+import com.canhub.cropper.CropImageView
+import com.canhub.cropper.options
 
 class RegisterDetailFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
     AdapterView.OnItemSelectedListener {
@@ -60,6 +56,8 @@ class RegisterDetailFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
 
     override fun setUpViews() {
         super.setUpViews()
+
+        binding.progressAvi.hide()
 
 
         viewModel.getRegisterDetailFields().observe(this, {
@@ -88,6 +86,7 @@ class RegisterDetailFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
         })
 
         viewModel.getRegisterDetailLookUps().observe(this, {
+
 
             setLookUps(it)
 
@@ -153,6 +152,8 @@ class RegisterDetailFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
                 viewModel.postRegisterInfo.observe(viewLifecycleOwner, {
                     when (it.status) {
                         Status.SUCCESS -> {
+                            binding.progressAvi.hide()
+
                             activity?.runOnUiThread {
 
                                 if (!TextUtils.isEmpty(profileUri)) {
@@ -173,6 +174,8 @@ class RegisterDetailFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
                                         { it1 ->
                                             when (it1.status) {
                                                 Status.SUCCESS -> {
+                                                    binding.progressAvi.hide()
+
                                                     activity?.runOnUiThread {
                                                         fetchPetAddPageData()
                                                         fetchAddAnimalDetail("1")
@@ -183,18 +186,19 @@ class RegisterDetailFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
                                                             })
 
                                                     }
-
-
                                                 }
+
                                                 Status.ERROR -> {
                                                     CommonMethods.onSNACK(
                                                         binding.root,
                                                         it1.message.toString()
                                                     )
-
-
+                                                    binding.progressAvi.hide()
                                                 }
+
                                                 Status.LOADING -> {
+                                                    binding.progressAvi.show()
+
                                                 }
                                             }
                                         })
@@ -204,19 +208,17 @@ class RegisterDetailFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
                                         binding.root,
                                         getLocalizedString(Constants.imageEmtpyError)
                                     )
-
-
                                     binding.imagePlaceholder.requestFocus()
                                 }
-
                             }
-
                         }
                         Status.ERROR -> {
                             CommonMethods.onSNACK(binding.root, it.message.toString())
-
+                            binding.progressAvi.hide()
                         }
                         Status.LOADING -> {
+                            binding.progressAvi.show()
+
                         }
                     }
                 })
@@ -226,7 +228,6 @@ class RegisterDetailFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
         }
 
         binding.goWithoutAnimalTv.setOnClickListener {
-
 
             val validSpinner = binding.genderLy.spinner.selectedItem != null
 
@@ -272,6 +273,8 @@ class RegisterDetailFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
                 viewModel.postRegisterInfo.observe(viewLifecycleOwner, {
                     when (it.status) {
                         Status.SUCCESS -> {
+                            binding.progressAvi.hide()
+
                             activity?.runOnUiThread {
 
                                 if (!TextUtils.isEmpty(profileUri)) {
@@ -293,6 +296,8 @@ class RegisterDetailFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
                                             when (it1.status) {
 
                                                 Status.SUCCESS -> {
+                                                    binding.progressAvi.hide()
+
                                                     PreferenceHelper.SharedPreferencesManager.getInstance().isLoggedIn =
                                                         true
                                                     Handler().postDelayed({
@@ -302,39 +307,35 @@ class RegisterDetailFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
                                                         findNavController().navigate(R.id.action_navigation_register_detail_to_navigation_welcome)
                                                 }
 
-
                                                 Status.ERROR -> {
                                                     CommonMethods.onSNACK(
                                                         binding.root,
                                                         it.message.toString()
                                                     )
-
-
+                                                    binding.progressAvi.hide()
                                                 }
                                                 Status.LOADING -> {
+                                                    binding.progressAvi.show()
                                                 }
                                             }
                                         })
 
                                 } else {
-
                                     CommonMethods.onSNACK(
                                         binding.root,
                                         getLocalizedString(Constants.imageEmtpyError)
                                     )
-
                                     binding.imagePlaceholder.requestFocus()
                                 }
-
                             }
+                        }
 
+                        Status.LOADING -> {
+                            binding.progressAvi.show()
                         }
                         Status.ERROR -> {
                             CommonMethods.onSNACK(binding.root, it.message.toString())
-
-
-                        }
-                        Status.LOADING -> {
+                            binding.progressAvi.hide()
                         }
                     }
                 })
@@ -377,11 +378,6 @@ class RegisterDetailFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
 
     }
 
-    fun postRegisterDetail() {
-
-    }
-
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -389,39 +385,45 @@ class RegisterDetailFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
         _binding = FragmentRegisterDetailBinding.inflate(inflater, container, false)
         val view = binding.root
 
+        if (PreferenceHelper.SharedPreferencesManager.getInstance().isLoggedIn == true) {
+            if (findNavController().currentDestination?.id == R.id.navigation_register_detail)
+                findNavController().navigate(R.id.action_global_navigation_welcome)
+        }
+
+        val cropImage = registerForActivityResult(CropImageContract()) { result ->
+            if (result.isSuccessful) {
+                // use the returned uri
+                val uriContent = result.uriContent
+                val uriFilePath = result.getUriFilePath(requireContext()) // optional usage
+                profileUri = uriFilePath.toString()
+
+                Glide.with(requireContext())
+                    .load(uriContent)
+                    .into(binding.imageProfile)
+
+                binding.imagePlaceholder.visibility = View.GONE
+
+
+            } else {
+                val exception = result.error
+            }
+        }
+
         binding.imagelY.setOnClickListener {
 
-            // for fragment (DO NOT use `getActivity()`)
-            CropImage.activity()
-                .setAspectRatio(1, 1)
-                .start(requireContext(), this)
+            cropImage.launch(
+                options {
+                    setGuidelines(CropImageView.Guidelines.ON)
+                    setAspectRatio(1, 1)
+                    setOutputCompressQuality(50)
+                }
+            )
+
         }
 
 
         return view
 
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
-            val result = CropImage.getActivityResult(data)
-            if (resultCode == -1) {
-                val resultUri: Uri = result.uri // TODO: 5.09.2021 cameradan alınamıyor
-
-                profileUri = resultUri.path.toString()
-
-                Glide.with(requireContext())
-                    .load(resultUri)
-                    .into(binding.imageProfile)
-
-
-                binding.imagePlaceholder.visibility = View.GONE
-
-
-            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-                val error = result.error
-            }
-        }
     }
 
     override fun onDestroyView() {

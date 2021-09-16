@@ -1,8 +1,6 @@
 package com.pethiio.android.ui.main.view.fragments.pet
 
-import android.content.Intent
 import android.graphics.Bitmap
-import android.net.Uri
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.LayoutInflater
@@ -10,22 +8,23 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Toast
-import androidx.activity.OnBackPressedCallback
+import androidx.activity.result.ActivityResultLauncher
 import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
+import com.canhub.cropper.CropImageContract
+import com.canhub.cropper.CropImageContractOptions
+import com.canhub.cropper.CropImageView
+import com.canhub.cropper.options
 import com.pethiio.android.R
 import com.pethiio.android.data.model.petDetail.PetImageResponse
 import com.pethiio.android.databinding.FragmentPetAddImageBinding
 import com.pethiio.android.ui.base.RegisterBaseFragment
 import com.pethiio.android.ui.main.viewmodel.signup.RegisterBaseViewModel
-import com.pethiio.android.utils.CommonFunctions
-import com.pethiio.android.utils.Constants
-import com.pethiio.android.utils.PreferenceHelper
-import com.pethiio.android.utils.Status
-import com.theartofdev.edmodo.cropper.CropImage
+import com.pethiio.android.utils.*
+import kotlinx.android.synthetic.main.fragment_vet.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
@@ -41,9 +40,8 @@ class PetAddImageFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
     var uri1: String = ""
     var uri2: String = ""
     var uri3: String = ""
-
+    private lateinit var cropImage: ActivityResultLauncher<CropImageContractOptions>
     private var petId: String? = ""
-
 
     private val binding get() = _binding!!
 
@@ -51,6 +49,8 @@ class PetAddImageFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
     override fun setUpViews() {
         super.setUpViews()
         viewModel.getAddImageFields().observe(this, {
+
+            binding.progressAvi.hide()
 
             setPethiioResponseList(it)
             binding.animalAddPhotoTitle.text = getLocalizedString(Constants.registerTitle)
@@ -74,22 +74,22 @@ class PetAddImageFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-
     }
 
-    fun openCropImage() {
-        CropImage.activity()
-            .setAspectRatio(1, 1)
-            .start(requireContext(), this)
+    private fun openCropImage() {
+        cropImage.launch(
+            options {
+                setGuidelines(CropImageView.Guidelines.ON)
+                setAspectRatio(1, 1)
+                setOutputCompressQuality(50)
+            }
+        )
     }
 
-    fun clearImage(placeholder: ImageView, xImage: ImageView, imageView: ImageView) {
+    private fun clearImage(placeholder: ImageView, xImage: ImageView, imageView: ImageView) {
         placeholder.visibility = View.VISIBLE
         xImage.visibility = View.GONE
         imageView.setImageResource(0)
-
-
     }
 
     override fun onCreateView(
@@ -99,19 +99,77 @@ class PetAddImageFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
         _binding = FragmentPetAddImageBinding.inflate(inflater, container, false)
         val view = binding.root
 
+        binding.progressAvi.hide()
+
+        cropImage = registerForActivityResult(CropImageContract()) { result ->
+            if (result.isSuccessful) {
+                // use the returned uri
+                val uriContent = result.uriContent
+                val uriFilePath = result.getUriFilePath(requireContext()) // optional usage
+                binding.imageBg.visibility = View.VISIBLE
+                binding.photoAddAnim.visibility = View.GONE
+                Glide.with(requireContext())
+                    .load(uriContent)
+                    .into(binding.imageView)
+                when {
+                    binding.image1.drawable == null -> {
+                        Glide.with(requireContext())
+                            .load(uriContent)
+                            .into(binding.image1)
+                        binding.image1Placeholder.visibility = View.GONE
+                        binding.image1X.visibility = View.VISIBLE
+
+                        binding.completeBtn.isEnabled = true
+                        binding.completeBtn.setBackgroundResource(R.drawable.orange_button_bg)
+                        binding.completeBtn.setTextColor(
+                            ContextCompat.getColor(
+                                requireContext(),
+                                R.color.white
+                            )
+                        )
+
+                        uri1 = uriFilePath.toString()
+                    }
+                    binding.image2.drawable == null -> {
+                        Glide.with(requireContext())
+                            .load(uriContent)
+                            .into(binding.image2)
+                        binding.image2Placeholder.visibility = View.GONE
+                        binding.image2X.visibility = View.VISIBLE
+                        uri2 = uriFilePath.toString()
+
+                    }
+                    binding.image3.drawable == null -> {
+                        Glide.with(requireContext())
+                            .load(uriContent)
+                            .into(binding.image3)
+                        binding.image3Placeholder.visibility = View.GONE
+                        binding.image3X.visibility = View.VISIBLE
+
+                        uri3 = uriFilePath.toString()
+
+
+                    }
+                }
+            } else {
+                // an error occurred
+                val exception = result.error
+            }
+        }
+
 
         binding.backBtn.setOnClickListener {
-                findNavController().previousBackStackEntry?.savedStateHandle?.set("petId", PreferenceHelper.SharedPreferencesManager.getInstance().petId.toString())
-                findNavController().popBackStack()
+            findNavController().previousBackStackEntry?.savedStateHandle?.set(
+                "petId",
+                PreferenceHelper.SharedPreferencesManager.getInstance().petId.toString()
+            )
+            findNavController().popBackStack()
 
         }
 
         binding.photoAddAnim.setAnimation("foto_ekle.json")
-
         petId = arguments?.getString("petId", "")
 
-
-//        binding.imageView.setOnClickListener { openCropImage() }
         binding.img1Ly.setOnClickListener {
             if (TextUtils.isEmpty(uri1))
                 openCropImage()
@@ -180,7 +238,6 @@ class PetAddImageFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
             } else if (!TextUtils.isEmpty(uri1)) {
                 clearLast()
             }
-
         }
 
         binding.image2X.setOnClickListener {
@@ -197,9 +254,6 @@ class PetAddImageFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
                     binding.image3X,
                     binding.image3
                 )
-
-
-
                 uri2 = uri3temp
                 uri3 = ""
 
@@ -213,9 +267,7 @@ class PetAddImageFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
                     binding.image2X,
                     binding.image2
                 )
-
             }
-
         }
 
         binding.image3X.setOnClickListener {
@@ -228,10 +280,7 @@ class PetAddImageFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
                 )
                 uri3 = ""
             }
-
         }
-
-
 
 
         binding.completeBtn.setOnClickListener {
@@ -251,14 +300,16 @@ class PetAddImageFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
             viewModel.postPetPhoto.observe(viewLifecycleOwner, { it1 ->
                 when (it1.status) {
                     Status.SUCCESS -> {
-                        activity?.runOnUiThread {
+                        binding.progressAvi.hide()
 
+                        activity?.runOnUiThread {
                             fetchPetList()
                             fetchPetListPageData()
                             viewModel.petListPageData.observe(viewLifecycleOwner, { it1 ->
 
                                 when (it1.status) {
                                     Status.SUCCESS -> {
+                                        binding.progressAvi.hide()
                                         activity?.runOnUiThread {
                                             viewModel.petList.observe(viewLifecycleOwner, {
                                                 when (it.status) {
@@ -288,9 +339,15 @@ class PetAddImageFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
                                             })
                                         }
                                     }
-                                    Status.ERROR -> {
-                                    }
                                     Status.LOADING -> {
+                                        binding.progressAvi.show()
+                                    }
+                                    Status.ERROR -> {
+                                        CommonMethods.onSNACK(
+                                            binding.root,
+                                            it1.message.toString()
+                                        )
+                                        binding.progressAvi.hide()
                                     }
                                 }
 
@@ -300,11 +357,16 @@ class PetAddImageFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
                         }
 
                     }
-                    Status.ERROR -> {
-                        Toast.makeText(requireContext(), it1.message, Toast.LENGTH_LONG).show()
 
-                    }
                     Status.LOADING -> {
+                        binding.progressAvi.show()
+                    }
+                    Status.ERROR -> {
+                        CommonMethods.onSNACK(
+                            binding.root,
+                            it1.message.toString()
+                        )
+                        binding.progressAvi.hide()
                     }
                 }
             })
@@ -395,70 +457,13 @@ class PetAddImageFragment : RegisterBaseFragment<RegisterBaseViewModel>() {
 
     }
 
-    fun getFilePart(uri: String): MultipartBody.Part? {
+    private fun getFilePart(uri: String): MultipartBody.Part? {
         if (!TextUtils.isEmpty(uri)) {
             val file = File(uri)
             val requestBody = file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
             return MultipartBody.Part.createFormData("files", file.name, requestBody)
         }
-
         return null
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
-            val result = CropImage.getActivityResult(data)
-            if (resultCode == -1) {
-                binding.imageBg.visibility = View.VISIBLE
-                binding.photoAddAnim.visibility = View.GONE
-                val resultUri: Uri = result.uri
-                Glide.with(requireContext())
-                    .load(resultUri)
-                    .into(binding.imageView)
-                when {
-                    binding.image1.drawable == null -> {
-                        Glide.with(requireContext())
-                            .load(resultUri)
-                            .into(binding.image1)
-                        binding.image1Placeholder.visibility = View.GONE
-                        binding.image1X.visibility = View.VISIBLE
-
-                        binding.completeBtn.isEnabled = true
-                        binding.completeBtn.setBackgroundResource(R.drawable.orange_button_bg)
-                        binding.completeBtn.setTextColor(
-                            ContextCompat.getColor(
-                                requireContext(),
-                                R.color.white
-                            )
-                        )
-
-                        uri1 = resultUri.path.toString()
-                    }
-                    binding.image2.drawable == null -> {
-                        Glide.with(requireContext())
-                            .load(resultUri)
-                            .into(binding.image2)
-                        binding.image2Placeholder.visibility = View.GONE
-                        binding.image2X.visibility = View.VISIBLE
-                        uri2 = resultUri.path.toString()
-
-                    }
-                    binding.image3.drawable == null -> {
-                        Glide.with(requireContext())
-                            .load(resultUri)
-                            .into(binding.image3)
-                        binding.image3Placeholder.visibility = View.GONE
-                        binding.image3X.visibility = View.VISIBLE
-
-                        uri3 = resultUri.path.toString()
-
-                    }
-                }
-
-            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-                result.error
-            }
-        }
     }
 
     private fun setImageHolder(
