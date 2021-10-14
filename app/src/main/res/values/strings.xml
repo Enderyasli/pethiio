@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">Pethiio</string>
+    <string name="facebook_app_id" translatable="false">578527963452520</string>
+    <string name="facebook_client_token" translatable="false">22ff2e87caff85c2fcc338d0500cf5e5</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
     <string name="skip">Skip</string>
