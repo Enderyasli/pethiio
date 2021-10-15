@@ -127,14 +127,14 @@ class RegisterDetailFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
                 return@setOnClickListener
 
             }
-            if (TextUtils.isEmpty(profileUri)) {
-                CommonMethods.onSNACK(
-                    binding.root,
-                    getLocalizedString(Constants.imageEmtpyError)
-                )
-                return@setOnClickListener
-
-            }
+//            if (TextUtils.isEmpty(profileUri)) {
+//                CommonMethods.onSNACK(
+//                    binding.root,
+//                    getLocalizedString(Constants.imageEmtpyError)
+//                )
+//                return@setOnClickListener
+//
+//            }
 
             if (validSpinner && valid) {
 
@@ -204,11 +204,22 @@ class RegisterDetailFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
                                         })
 
                                 } else {
-                                    CommonMethods.onSNACK(
-                                        binding.root,
-                                        getLocalizedString(Constants.imageEmtpyError)
-                                    )
-                                    binding.imagePlaceholder.requestFocus()
+                                    PreferenceHelper.SharedPreferencesManager.getInstance().isLoggedIn =
+                                        true
+                                    Handler().postDelayed({
+                                        EventBus.getDefault().post(LoginEvent())
+                                    }, 1000)
+                                    
+                                    activity?.runOnUiThread {
+                                        fetchPetAddPageData()
+                                        fetchAddAnimalDetail("1")
+                                        viewModel.getAddAnimalDetails()
+                                            .observe(viewLifecycleOwner, {
+                                                if (findNavController().currentDestination?.id == R.id.navigation_register_detail)
+                                                    findNavController().navigate(R.id.action_navigation_register_detail_to_navigation_add_animal)
+                                            })
+
+                                    }
                                 }
                             }
                         }
@@ -248,14 +259,14 @@ class RegisterDetailFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
                 return@setOnClickListener
 
             }
-            if (TextUtils.isEmpty(profileUri)) {
-                CommonMethods.onSNACK(
-                    binding.root,
-                    getLocalizedString(Constants.imageEmtpyError)
-                )
-                return@setOnClickListener
-
-            }
+//            if (TextUtils.isEmpty(profileUri)) {
+//                CommonMethods.onSNACK(
+//                    binding.root,
+//                    getLocalizedString(Constants.imageEmtpyError)
+//                )
+//                return@setOnClickListener
+//
+//            }
 
             if (validSpinner && valid) {
 
@@ -321,11 +332,13 @@ class RegisterDetailFragment : RegisterBaseFragment<RegisterBaseViewModel>(),
                                         })
 
                                 } else {
-                                    CommonMethods.onSNACK(
-                                        binding.root,
-                                        getLocalizedString(Constants.imageEmtpyError)
-                                    )
-                                    binding.imagePlaceholder.requestFocus()
+                                    PreferenceHelper.SharedPreferencesManager.getInstance().isLoggedIn =
+                                        true
+                                    Handler().postDelayed({
+                                        EventBus.getDefault().post(LoginEvent())
+                                    }, 1000)
+                                    if (findNavController().currentDestination?.id == R.id.navigation_register_detail)
+                                        findNavController().navigate(R.id.action_navigation_register_detail_to_navigation_welcome)
                                 }
                             }
                         }

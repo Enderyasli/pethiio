@@ -233,6 +233,7 @@
             android:layout_marginTop="222.5dp"
             android:layout_toEndOf="@id/imagelY"
             android:text="*"
+            android:visibility="gone"
             android:textColor="@color/red"
             android:textSize="14sp" />
 
