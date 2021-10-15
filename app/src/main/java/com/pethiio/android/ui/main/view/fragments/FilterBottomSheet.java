@@ -194,7 +194,6 @@ public class FilterBottomSheet extends BottomSheetDialogFragment {
 
                         });
 
-                        distanceSeekBar.setCurrentMaxValue(petSearchFilterResponse.getMaximumDistance());
 
 //                    new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
 //                        @Override
@@ -206,9 +205,11 @@ public class FilterBottomSheet extends BottomSheetDialogFragment {
 //                    new Handler().postDelayed(() -> distanceSeekBar.setCurrentMinValue(petSearchFilterResponse.getMinimumDistance()), 100);
 
 
-                        maxDistance = petSearchFilterResponse.getMaximumDistance();
+                        maxDistance = Math.min(petSearchFilterResponse.getMaximumDistance(), 1000);
+                        distanceSeekBar.setCurrentMaxValue(maxDistance);
+
                         minDistance = petSearchFilterResponse.getMinimumDistance();
-                        distanceTv.setText(petSearchFilterResponse.getMinimumDistance() + " - " + petSearchFilterResponse.getMaximumDistance() + " km");
+                        distanceTv.setText(minDistance + " - " + maxDistance + " km");
 
                         ageSeekBar.setCurrentMaxValue(petSearchFilterResponse.getMaximumAge());
 

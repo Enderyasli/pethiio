@@ -65,7 +65,7 @@
                 app:r2circleRadius="8dp"
                 app:r2circleTextColor="@color/white"
                 app:r2fillColor="@color/orangeButton"
-                app:r2maxValue="2000"
+                app:r2maxValue="1000"
                 app:r2minValue="0" />
         </LinearLayout>
 
