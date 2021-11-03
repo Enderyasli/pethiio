@@ -56,6 +56,15 @@ class NotificationUtils(private val mContext: Context) {
         }
     }
 
+    fun showNotificationLike(
+        title: String?,
+        message: String?
+    ) {
+        if (!TextUtils.isEmpty(title) && !TextUtils.isEmpty(message)) {
+            showSmallNotification(title!!, message!!, null)
+        }
+    }
+
 
     fun showNotificationMatch(
         title: String?,

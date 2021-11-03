@@ -38,12 +38,30 @@ class FcmMessageService : FirebaseMessagingService() {
             return
         } else if (remoteMessage.data.isNotEmpty()) {
 
-            if (remoteMessage.data["type"].equals("message")) {
+            if (remoteMessage.data["type"].equals("like")) {
 
 
                 if (PethiioApplication.getCurrentRoom() == 0 && remoteMessage.data["roomId"] != PethiioApplication.getCurrentRoom()
                         .toString()
                 ) {
+                    val notificationUtils = NotificationUtils(PethiioApplication.context)
+
+                        remoteMessage.data["memberId"]?.let { it1 ->
+                            notificationUtils.showNotificationLike(
+                                remoteMessage.data["title"],
+                                remoteMessage.data["body"]
+                            )
+                        }
+
+
+                }
+            } else
+                if (remoteMessage.data["type"].equals("message")) {
+
+
+                    if (PethiioApplication.getCurrentRoom() == 0 && remoteMessage.data["roomId"] != PethiioApplication.getCurrentRoom()
+                            .toString()
+                    ) {
 //                    EventBus.getDefault().post(
 //                         MatchEvent(
 //                                "DATING",
@@ -55,52 +73,52 @@ class FcmMessageService : FirebaseMessagingService() {
 //                                "https://api.pethiio.com/api/files/b50770aa-5ed5-45df-8b1e-b4d5cc311634-uri1.png"))
 
 
+                        val notificationUtils = NotificationUtils(PethiioApplication.context)
+                        remoteMessage.data["roomId"]?.let {
+                            remoteMessage.data["memberId"]?.let { it1 ->
+                                notificationUtils.showNotificationMessage(
+                                    remoteMessage.data["title"],
+                                    remoteMessage.data["body"],
+                                    it.toInt(),
+                                    it1.toInt(),
+                                    "message",
+                                    null
+                                )
+                            }
+                        }
+
+                    }
+                } else if (remoteMessage.data["type"].equals("match")) {
+
                     val notificationUtils = NotificationUtils(PethiioApplication.context)
-                    remoteMessage.data["roomId"]?.let {
+
+                    EventBus.getDefault().post(remoteMessage.data["roomId"]?.let {
                         remoteMessage.data["memberId"]?.let { it1 ->
-                            notificationUtils.showNotificationMessage(
-                                remoteMessage.data["title"],
-                                remoteMessage.data["body"],
-                                it.toInt(),
+                            MatchEvent(
+                                remoteMessage.data["purpose"],
                                 it1.toInt(),
-                                "message",
-                                null
+                                it.toInt(),
+                                remoteMessage.data["sourceName"],
+                                remoteMessage.data["sourceAvatar"],
+                                remoteMessage.data["targetName"],
+                                remoteMessage.data["targetAvatar"]
                             )
                         }
-                    }
+                    })
+                    notificationUtils.showNotificationMatch(
+                        remoteMessage.data["title"],
+                        remoteMessage.data["body"],
+                        remoteMessage.data["purpose"],
+                        remoteMessage.data["memberId"]?.toInt(),
+                        remoteMessage.data["roomId"]?.toInt(),
+                        remoteMessage.data["sourceName"],
+                        remoteMessage.data["sourceAvatar"],
+                        remoteMessage.data["targetName"],
+                        remoteMessage.data["targetAvatar"]
+                    )
+
 
                 }
-            } else if (remoteMessage.data["type"].equals("match")) {
-
-                val notificationUtils = NotificationUtils(PethiioApplication.context)
-
-                EventBus.getDefault().post(remoteMessage.data["roomId"]?.let {
-                    remoteMessage.data["memberId"]?.let { it1 ->
-                        MatchEvent(
-                            remoteMessage.data["purpose"],
-                            it1.toInt(),
-                            it.toInt(),
-                            remoteMessage.data["sourceName"],
-                            remoteMessage.data["sourceAvatar"],
-                            remoteMessage.data["targetName"],
-                            remoteMessage.data["targetAvatar"]
-                        )
-                    }
-                })
-                notificationUtils.showNotificationMatch(
-                    remoteMessage.data["title"],
-                    remoteMessage.data["body"],
-                    remoteMessage.data["purpose"],
-                    remoteMessage.data["memberId"]?.toInt(),
-                    remoteMessage.data["roomId"]?.toInt(),
-                    remoteMessage.data["sourceName"],
-                    remoteMessage.data["sourceAvatar"],
-                    remoteMessage.data["targetName"],
-                    remoteMessage.data["targetAvatar"]
-                )
-
-
-            }
 
 
             //endregion
