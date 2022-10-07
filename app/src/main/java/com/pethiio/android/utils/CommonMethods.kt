@@ -259,7 +259,7 @@ class CommonMethods {
 
 
             try {
-                val certificate: Int = R.raw.pethiio
+                val certificate: Int = R.raw.pethiio11
                 val cf = CertificateFactory.getInstance("X.509")
                 val cert: InputStream =
                     PethiioApplication.context.resources.openRawResource(certificate)
